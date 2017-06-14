@@ -1,0 +1,100 @@
+.d3-tip {
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 2px;
+}
+
+.d3-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+}
+
+.d3-tip.n:after {
+    margin: -1px 0 0 0;
+    top: 100%;
+    left: 0;
+}
+
+/* diagraph */
+.diagraph circle {
+    fill: steelblue;
+}
+.diagraph .edge {
+    stroke: #ccc;
+    fill: none;
+}
+.diagraph text {
+    fill: #333;
+}
+
+.trace-group circle {
+    fill: red;
+}
+
+.trace-group .edge {
+    fill: none;
+    stroke: red;
+}
+
+.trace-input select {
+  display: inline-block;
+  max-width: 900px;
+  overflow: hidden;
+}
+
+.trace-input button {
+  display: inline-block;
+  width: 60px;
+}
+
+/* sankey */
+.sankey .node rect {
+  cursor: move;
+  fill-opacity: .9;
+  shape-rendering: crispEdges;
+}
+
+.sankey .node text {
+  pointer-events: none;
+  text-shadow: 0 1px 0 #fff;
+}
+
+.sankey .link {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .2;
+}
+
+.sankey .link:hover {
+  stroke-opacity: .5;
+}
+
+
+/* force-layout */
+.force-layout .links line {
+  stroke: #999;
+  stroke-opacity: 0.6;
+}
+
+.force-layout .nodes circle {
+  r: 10px;
+}
+.force-layout .link-text {
+  fill: red;
+  font-size: 8px;
+}
+
+.force-layout .node-text {
+  fill: #333;
+  font-size: 12px;
+}
