@@ -1,6 +1,7 @@
 <template>
   <div>
     <LeftSide></LeftSide>
+
   </div>
 </template>
 
@@ -9,7 +10,7 @@
 </style>
 
 <script>
-  import LeftSide from './LeftSide.vue'
+  import LeftSide from 'components/home/LeftSide.vue'
   export default{
     data(){
       return {
