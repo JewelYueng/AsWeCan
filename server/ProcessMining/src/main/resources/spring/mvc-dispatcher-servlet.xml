@@ -39,6 +39,7 @@
     <mvc:resources mapping="/js/**" location="/WEB-INF/js/" />
     <mvc:resources mapping="/org.k2.processmining/**" location="/WEB-INF/processmining/" />
     <mvc:resources mapping="/html/**" location="/WEB-INF/html/"/>
+    <mvc:resources mapping="/client" location="/WEB-INF/client/"/>
 
     <!-- 配置视图解析器 -->
     <bean id="jspViewResolver"  class="org.springframework.web.servlet.view.InternalResourceViewResolver">
