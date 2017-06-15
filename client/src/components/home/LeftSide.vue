@@ -18,9 +18,9 @@
 <script>
   export default{
       data(){
-          return {
-              msg: 'leftSide'
-          }
+        return {
+          msg: 'leftSide',
+        }
       }
   }
 </script>
