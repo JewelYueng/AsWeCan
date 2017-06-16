@@ -20,8 +20,11 @@
         <!--<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>-->
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
+    <context:component-scan base-package="org.k2.processmining"/>
     <!--配置注解的映射器和适配器以及其他配置-->
     <mvc:annotation-driven/>
+
+    <context:property-placeholder location="classpath*:algorithm.properties" order="0" ignore-unresolvable="true"/>
 
     <mvc:cors>
         <mvc:mapping path="/**/**"

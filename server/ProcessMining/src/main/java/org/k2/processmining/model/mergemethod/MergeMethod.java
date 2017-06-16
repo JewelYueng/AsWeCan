@@ -3,12 +3,12 @@ package org.k2.processmining.model.mergemethod;
 /**
  * Created by Aria on 2017/6/9.
  */
-public class LogMergeMethod {
-    private int id;
-    private String name;
+public class MergeMethod {
+    private String id;
+    private String methodName;
     private int state;
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -16,11 +16,7 @@ public class LogMergeMethod {
         this.state = state;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -28,7 +24,11 @@ public class LogMergeMethod {
         return state;
     }
 
-    public String getName() {
-        return name;
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
     }
 }

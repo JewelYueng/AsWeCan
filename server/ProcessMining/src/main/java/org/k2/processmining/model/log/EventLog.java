@@ -4,7 +4,6 @@ package org.k2.processmining.model.log;
  * Created by Aria on 2017/6/13.
  */
 public class EventLog extends AbstractLog {
-    public static final String TYPE = "EventLog";
 
     private String normalLogId;
     private int caseNumber;
@@ -12,9 +11,10 @@ public class EventLog extends AbstractLog {
     private int perEventInCase;
     private String eventNames;
     private String operatorNames;
+    private String mergeRelation;
 
     public EventLog() {
-        super(TYPE);
+        super(LogType.EVENTLOG.value);
     }
 
     public String getNormalLogId() {
@@ -63,5 +63,13 @@ public class EventLog extends AbstractLog {
 
     public void setOperatorNames(String operatorNames) {
         this.operatorNames = operatorNames;
+    }
+
+    public String getMergeRelation() {
+        return mergeRelation;
+    }
+
+    public void setMergeRelation(String mergeRelation) {
+        this.mergeRelation = mergeRelation;
     }
 }
