@@ -60,7 +60,7 @@ public class TransToEvent {
         return null;
     }
 
-    public static File runEC(Log4Normal log, String path ) throws IOException, ParseException {
+    public static File runEC(Log4Normal log, String path) throws IOException, ParseException {
         Long tStart = System.currentTimeMillis();
         System.out.println("Mission Start!");
         String nulVal = Log4Normal.nulVal;

@@ -98,6 +98,8 @@ public class MergeMethodServiceImpl implements MergeMethodService{
             return null;
         }
         EventLog resultEventLog = new EventLog();
+        resultEventLog.setId("3");
+        resultEventLog.setUserId("1");
         if (logStorage.upload(resultEventLog, outputStream -> eventLogExport.convertXLog(resultXLog, outputStream))) {
             EventLogSummary eventLogSummary = Summarize.summarizeXLog(resultXLog);
             resultEventLog.setCaseNumber(eventLogSummary.getCases());

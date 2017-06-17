@@ -76,11 +76,15 @@ public class DatabaseFillerOnStartup implements ApplicationListener<ContextRefre
         Map<String, Object> configs;
         Merger merger = null;
         for (MergeMethod mergeMethod : mergeMethods) {
-            String dirPath = WEB_INF_PATH + minerJarDir + File.separatorChar + mergeMethod.getId();
-            String[] jarPaths = new File(dirPath).list();
+            String dirPath = WEB_INF_PATH + mergerJarPath + File.separatorChar + mergeMethod.getId();
+            File dir = new File(dirPath);
+            String[] jarPaths = dir.list();
             if (jarPaths == null || jarPaths.length == 0) {
                 LOGGER.error("merger jar dir does not exist or is empty: {}", dirPath);
                 continue;
+            }
+            for (int i = 0; i < jarPaths.length; i++) {
+                jarPaths[i] = dir.getAbsolutePath() + File.separatorChar + jarPaths[i];
             }
             configs = (Map<String, Object>) loadAlgorithmConfigMapFromJar(jarPaths);
             if (configs == null) {

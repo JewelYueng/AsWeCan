@@ -113,6 +113,14 @@
       <version>3.1.0</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>5.4.1.Final</version>
+    </dependency>
+
+
     <!--数据库连接 mysql包-->
     <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
     <dependency>
