@@ -3,12 +3,14 @@ package org.k2.processmining.storage;
 
 import org.k2.processmining.model.log.AbstractLog;
 import org.k2.processmining.model.user.User;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 
 /**
  * Created by nyq on 2017/6/11.
  */
+@Component
 public class LocalLogStorage implements LogStorage {
     private static final String ROOT_DIRECTORY = "E:/ppmm";
 
@@ -110,13 +112,13 @@ public class LocalLogStorage implements LogStorage {
     }
 
     @Override
-    public boolean download(AbstractLog log, ProcessInputStream processInputStream) {
+    public <T> T download(AbstractLog log, ProcessInputStream<T> processInputStream) {
         try (InputStream inputStream = new FileInputStream(getLogLocation(log))){
             return processInputStream.processInputStream(inputStream);
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 }

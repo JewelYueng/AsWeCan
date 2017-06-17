@@ -3,6 +3,7 @@ package org.k2.processmining.support.event.parse.impl;
 import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XLog;
 import org.k2.processmining.support.event.parse.EventLogParse;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.List;
 /**
  * 事件日志流解析出XLog对象
  */
+@Component
 public class EventLogParseImpl implements EventLogParse {
 
 	@SuppressWarnings("unchecked")

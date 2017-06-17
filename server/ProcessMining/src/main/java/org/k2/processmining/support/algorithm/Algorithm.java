@@ -1,5 +1,6 @@
 package org.k2.processmining.support.algorithm;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -13,7 +14,7 @@ public class Algorithm<T> {
 
     public Algorithm(T algorithm, Map<String, Object> configMap) {
         this.algorithm = algorithm;
-        this.configMap =configMap;
+        this.configMap = new HashMap<>(configMap);
     }
 
     public T getAlgorithm() {
@@ -25,10 +26,10 @@ public class Algorithm<T> {
     }
 
     public Map<String, Object> getConfigMap() {
-        return configMap;
+        return new HashMap<>(configMap);
     }
 
     public void setConfigMap(Map<String, Object> configMap) {
-        this.configMap = configMap;
+        this.configMap = new HashMap<>(configMap);
     }
 }

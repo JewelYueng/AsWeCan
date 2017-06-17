@@ -22,7 +22,7 @@ public interface LogStorage {
         return false;
     }
     boolean download(AbstractLog log, OutputStream outputStream);
-    boolean download(AbstractLog log, ProcessInputStream processInputStream);
+    <T> T download(AbstractLog log, ProcessInputStream<T> processInputStream);
     default boolean download(AbstractLog log, File outputFile) {
         try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile))){
             return download(log, outputStream);
@@ -34,8 +34,8 @@ public interface LogStorage {
     }
     boolean delete(AbstractLog log);
 
-    interface ProcessInputStream {
-        boolean processInputStream(InputStream inputStream);
+    interface ProcessInputStream<T> {
+        T processInputStream(InputStream inputStream);
     }
 
     interface ProcessOutputStream {

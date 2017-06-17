@@ -16,8 +16,8 @@
 		http://www.springframework.org/schema/tx/spring-tx-4.3.xsd ">
 
     <!--扫描标注@Service注解的service-->
-    <context:component-scan base-package="org.k2.processmining.service">
-        <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
-    </context:component-scan>
-    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <!--<context:component-scan base-package="org.k2.processmining.service">-->
+        <!--<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>-->
+    <!--</context:component-scan>-->
+    <!--<aop:aspectj-autoproxy proxy-target-class="true"/>-->
 </beans>
