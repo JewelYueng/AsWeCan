@@ -4,9 +4,10 @@ package org.k2.processmining.support.event.export.impl;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.out.XesXmlSerializer;
 import org.k2.processmining.support.event.export.EventLogExport;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
-
+@Component
 public class EventLogExportImpl implements EventLogExport {
 
 	@Override
@@ -31,4 +32,16 @@ public class EventLogExportImpl implements EventLogExport {
 		}
 	}
 
+	@Override
+	public boolean convertXLog(XLog xLog, OutputStream outputStream) {
+		XesXmlSerializer xesXmlSerializer = new XesXmlSerializer();
+		try {
+			xesXmlSerializer.serialize(xLog, outputStream);
+			return true;
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

@@ -14,4 +14,5 @@ public interface MiningMethodMapper {
     List<MiningMethod> listMethodByState(@Param("state") int state);
     List<MiningMethod> listMethods();
     MiningMethod getMethodById(@Param("id") String id);
+
 }

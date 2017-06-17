@@ -101,14 +101,14 @@ public class LocalLogStorage implements LogStorage {
     }
 
     @Override
-    public boolean upload(AbstractLog log, ProcessOutputStream processOutputStream) {
+    public <T> T upload(AbstractLog log, ProcessOutputStream<T> processOutputStream) {
         try (OutputStream outputStream = new FileOutputStream(getLogLocation(log))){
             return processOutputStream.processOutputStream(outputStream);
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 
     @Override

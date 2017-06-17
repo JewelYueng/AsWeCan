@@ -11,7 +11,7 @@ public interface LogStorage {
     boolean makeDirectoryForUser(User user);
     boolean deleteUser(User user);
     boolean upload(AbstractLog log, InputStream inputStream);
-    boolean upload(AbstractLog log, ProcessOutputStream processOutputStream);
+    <T> T upload(AbstractLog log, ProcessOutputStream<T> processOutputStream);
     default boolean upload(AbstractLog log, File file) {
         try (InputStream inputStream = new BufferedInputStream(new FileInputStream(file))){
             return upload(log, inputStream);
@@ -38,7 +38,7 @@ public interface LogStorage {
         T processInputStream(InputStream inputStream);
     }
 
-    interface ProcessOutputStream {
-        boolean processOutputStream(OutputStream outputStream);
+    interface ProcessOutputStream<T> {
+        T processOutputStream(OutputStream outputStream);
     }
 }

@@ -3,6 +3,7 @@ package org.k2.processmining.support.event.export;
 import org.deckfour.xes.model.XLog;
 
 import java.io.File;
+import java.io.OutputStream;
 
 /**
  * 事件日志的持久化
@@ -11,6 +12,6 @@ import java.io.File;
  */
 public interface EventLogExport {
 	
-	public void convertXLogToXesFile(XLog xlog, File file);
-
+	void convertXLogToXesFile(XLog xlog, File file);
+	boolean convertXLog(XLog xLog, OutputStream outputStream);
 }

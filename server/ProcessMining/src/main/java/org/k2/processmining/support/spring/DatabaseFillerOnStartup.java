@@ -2,6 +2,7 @@ package org.k2.processmining.support.spring;
 
 import org.k2.processmining.model.mergemethod.MergeMethod;
 import org.k2.processmining.model.miningmethod.MiningMethod;
+import org.k2.processmining.service.MergeMethodService;
 import org.k2.processmining.service.MiningMethodService;
 import org.k2.processmining.support.algorithm.Algorithm;
 import org.k2.processmining.support.algorithm.MergerFactory;
@@ -55,13 +56,16 @@ public class DatabaseFillerOnStartup implements ApplicationListener<ContextRefre
     @Autowired
     private MiningMethodService miningMethodService;
 
+    @Autowired
+    private MergeMethodService mergeMethodService;
+
     private static final String WEB_INF_PATH = DatabaseFillerOnStartup.class.getClassLoader().getResource("/").getPath().replace("classes", "");
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         LOGGER.debug("start to load algorithm...");
         List<MiningMethod> miningMethods = miningMethodService.getAllMethods();
-        List<MergeMethod> mergeMethods = new LinkedList<>();
+        List<MergeMethod> mergeMethods = mergeMethodService.getAllMethods();
         loadMiner(miningMethods);
         loadMerger(mergeMethods);
         LOGGER.debug("finish to load algorithm...");

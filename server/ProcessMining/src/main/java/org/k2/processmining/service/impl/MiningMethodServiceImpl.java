@@ -14,7 +14,7 @@ import org.k2.processmining.support.mining.Miner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +33,10 @@ public class MiningMethodServiceImpl implements MiningMethodService {
     @Autowired
     private EventLogParse eventLogParse;
 
+    public MiningMethod getMethodById(String id) {
+        return miningMethodMapper.getMethodById(id);
+    }
+
     @Override
     public List<MiningMethod> getActiveMethods() {
         return miningMethodMapper.listMethodByState(State.ACTIVE.getValue());
@@ -44,38 +48,43 @@ public class MiningMethodServiceImpl implements MiningMethodService {
     }
 
     public Map<String, Object> getMethodConfig(MiningMethod miningMethod) {
-        return miningMethod == null ? new HashMap<>() : getMethodConfig(miningMethod.getId());
+        return miningMethod == null ? Collections.emptyMap() : getMethodConfig(miningMethod.getId());
     }
 
     public Map<String, Object> getMethodConfig(String methodId) {
         Algorithm<Miner> algorithm = MinerFactory.getInstance().getAlgorithm(methodId);
         if (algorithm == null) {
-            return new HashMap<>();
+            return Collections.emptyMap();
         }
         return algorithm.getConfigMap();
     }
 
     @Override
     public boolean isActive(String id) {
-        MiningMethod miningMethod = miningMethodMapper.getMethodById(id);
+        return isActive(getMethodById(id));
+    }
+
+    public boolean isActive(MiningMethod miningMethod) {
         return miningMethod != null && State.ACTIVE.getValue() == miningMethod.getState();
     }
 
     @Override
-    public String mining(String userId, String eventId, String methodId) {
+    public String mining(String userId, String eventId, String methodId, Map<String, Object> params) {
         EventLog eventLog = new EventLog();
         eventLog.setUserId(userId);
         eventLog.setId(eventId);
-        return mining(eventLog, methodId);
+        return mining(eventLog, methodId, params);
     }
 
-    public String mining(EventLog eventLog, String methodId) {
-        XLog xLog = logStorage.download(eventLog, inputStream -> eventLogParse.eventLogParse(inputStream));
+    public String mining(EventLog eventLog, String methodId, Map<String, Object> params) {
         Algorithm<Miner> algorithm = MinerFactory.getInstance().getAlgorithm(methodId);
-        if (algorithm != null && algorithm.getAlgorithm() != null) {
-            return algorithm.getAlgorithm().mining(xLog, new HashMap<>());
+        if (algorithm == null || algorithm.getAlgorithm() == null) {
+            return "";
         }
-        System.out.println("fail to mining");
+        XLog xLog = logStorage.download(eventLog, inputStream -> eventLogParse.eventLogParse(inputStream));
+        if (xLog != null) {
+            return algorithm.getAlgorithm().mining(xLog, params);
+        }
         return "";
     }
 }

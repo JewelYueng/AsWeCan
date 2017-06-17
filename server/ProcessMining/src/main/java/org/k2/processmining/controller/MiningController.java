@@ -1,5 +1,6 @@
 package org.k2.processmining.controller;
 
+import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.miningmethod.MiningMethod;
 import org.k2.processmining.service.MiningMethodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import java.util.Map;
 public class MiningController {
 
     @Autowired
-    MiningMethodService miningMethodService;
+    private MiningMethodService miningMethodService;
 
     @RequestMapping(value = "/method", method = RequestMethod.GET)
     public @ResponseBody Object getAllMiningMethods(){
@@ -31,22 +32,28 @@ public class MiningController {
         List<MiningMethod> methods = miningMethodService.getActiveMethods();
         for (MiningMethod method : methods) {
             Map<String, Object> configs = miningMethodService.getMethodConfig(method);
-            configs.put("state", method.getState());
-            methodsConfigs.add(configs);
+            if (configs != null && configs.size() > 0) {
+                configs.put("state", method.getState());
+                methodsConfigs.add(configs);
+            }
         }
         res.put("methods", methodsConfigs);
         return res;
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public@ResponseBody Object mining(@RequestParam("id") String id, @RequestParam("methodId") String methodId) {
+    public@ResponseBody Object mining(@RequestParam("id") String id,
+                                      @RequestParam("methodId") String methodId,
+                                      @RequestParam("parameters") Map<String, Object> parameters) {
 
-        if (!miningMethodService.isActive(methodId)) {
-            System.out.println("method is freeze");
+        MiningMethod miningMethod = miningMethodService.getMethodById(methodId);
+        if (miningMethod != null && miningMethodService.isActive(miningMethod)) {
+            // TODO: 2017/6/17 check whether the eventLog belongs to user
+            EventLog eventLog = new EventLog();
+            eventLog.setId(id);
+            return miningMethodService.mining(eventLog, methodId, parameters);
         }
-        // check whether the eventLog belongs to user
-
-        return miningMethodService.mining("1", id, methodId);
+        return null;
     }
 
     public void addMiningMethod(){}

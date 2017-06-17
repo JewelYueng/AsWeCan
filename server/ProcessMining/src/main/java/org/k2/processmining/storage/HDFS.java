@@ -124,7 +124,7 @@ public class HDFS implements LogStorage {
     }
 
     @Override
-    public boolean upload(AbstractLog log, ProcessOutputStream processOutputStream) {
+    public <T> T upload(AbstractLog log, ProcessOutputStream<T> processOutputStream) {
         String reqUrl = getUploadUrl(log);
         System.out.println("upload: "+reqUrl);
         URL url;
@@ -137,9 +137,10 @@ public class HDFS implements LogStorage {
             conn.setDoOutput(true);
 //           conn.setConnectTimeout(5000);
 //	         conn.setReadTimeout(30000);
-            return processOutputStream.processOutputStream(conn.getOutputStream())
-                    && isSuccess(conn.getResponseCode());
-
+            T res = processOutputStream.processOutputStream(conn.getOutputStream());
+            if (res != null && isSuccess(conn.getResponseCode())) {
+                return res;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -148,7 +149,7 @@ public class HDFS implements LogStorage {
                 conn.disconnect();
             }
         }
-        return false;
+        return null;
     }
 
     @Override
