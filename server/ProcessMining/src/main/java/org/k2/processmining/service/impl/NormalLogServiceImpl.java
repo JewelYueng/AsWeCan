@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.UUID;
 
 /**
  * Created by nyq on 2017/6/17.
@@ -27,10 +28,11 @@ public class NormalLogServiceImpl implements NormalLogService {
     public EventLog transToEventLog(NormalLog normalLog) {
         EventLog eventLog = new EventLog();
         // set eventLogId and userId
-
-        String path = "";
-        String name = "";
-        File file = logStorage.download(normalLog, inputStream -> TransToEvent.transToEvent(inputStream, path, name));
+        eventLog.setUserId(normalLog.getUserId());
+        eventLog.setId(UUID.randomUUID().toString());
+        String tmpdir = System.getProperty("java.io.tmpdir");
+        String name = eventLog.getId();
+        File file = logStorage.download(normalLog, inputStream -> TransToEvent.transToEvent(inputStream, tmpdir, name));
         if (file == null || ! file.isFile()) {
             return null;
         }

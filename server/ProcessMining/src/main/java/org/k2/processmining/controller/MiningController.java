@@ -5,11 +5,9 @@ import org.k2.processmining.model.miningmethod.MiningMethod;
 import org.k2.processmining.service.MiningMethodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,16 +40,15 @@ public class MiningController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public@ResponseBody Object mining(@RequestParam("id") String id,
-                                      @RequestParam("methodId") String methodId,
-                                      @RequestParam("parameters") Map<String, Object> parameters) {
+    public@ResponseBody Object mining(@Valid @RequestBody MiningForm form) {
 
-        MiningMethod miningMethod = miningMethodService.getMethodById(methodId);
+        MiningMethod miningMethod = miningMethodService.getMethodById(form.methodId);
         if (miningMethod != null && miningMethodService.isActive(miningMethod)) {
             // TODO: 2017/6/17 check whether the eventLog belongs to user
             EventLog eventLog = new EventLog();
-            eventLog.setId(id);
-            return miningMethodService.mining(eventLog, methodId, parameters);
+            eventLog.setId(form.id);
+            eventLog.setUserId("1");
+            return miningMethodService.mining(eventLog, form.methodId, form.parameters);
         }
         return null;
     }
@@ -61,5 +58,35 @@ public class MiningController {
     public void setMethodState(){}  //禁用或者重新激活算法
 
     public void deleteMiningMethod(){}
+
+    public static class MiningForm {
+        private String id;
+        private String methodId;
+        private Map<String, Object> parameters;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getMethodId() {
+            return methodId;
+        }
+
+        public void setMethodId(String methodId) {
+            this.methodId = methodId;
+        }
+
+        public Map<String, Object> getParameters() {
+            return parameters;
+        }
+
+        public void setParameters(Map<String, Object> parameters) {
+            this.parameters = parameters;
+        }
+    }
 }
 

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by Aria on 2017/6/13.
@@ -31,9 +32,12 @@ public class NormalLogController {
     public void getLogByUserId(){}
 
     @RequestMapping(value = "/toEventLog", method = RequestMethod.POST)
-    public EventLog transToEvent(@RequestParam("id") String id) {
+    public @ResponseBody
+    EventLog transToEvent(@RequestParam("id") String id) {
         NormalLog normalLog = new NormalLog(); // have to get from database
         // TODO: 2017/6/17 validate
+        normalLog.setUserId("1");
+        normalLog.setId(id);
         EventLog eventLog = normalLogService.transToEventLog(normalLog);
         if (eventLog != null) {
             return eventLog;
