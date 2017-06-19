@@ -1,6 +1,8 @@
 <template>
-  <div>
-    日志列表
+  <div class="log-list">
+    <div class="list-tab">
+
+    </div>
   </div>
 </template>
 
@@ -12,4 +14,5 @@
   export default{
 
   }
+
 </script>

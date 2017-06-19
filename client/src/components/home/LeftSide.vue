@@ -8,12 +8,17 @@
     </div>
     <div class="tabs" v-for="(tab,index) in tab_map">
       <div class="tab" @click="jumpTo(index)" :class="{selectedTab: selected_tab===index}">
-        <div class="">{{tab_map[index].name}}</div>
+        <div class="text">
+          <div class="decoration">-</div>
+          {{tab_map[index].name}}
+          <div class="decoration">-</div>
+        </div>
       </div>
     </div>
     <div id="logout">
       <a href="">退出</a>
     </div>
+    <img src="">
   </div>
 </template>
 
@@ -47,10 +52,24 @@
     color: white;
     width: 100%;
     height: 45px;
-    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
   }
 
-  .tab:hover {
+  .text{
+    width: 80%;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    .decoration{
+      margin: 0 10px;
+    }
+  }
+  .text:hover {
     border: 2px solid white;
     border-radius: 5px;
   }
