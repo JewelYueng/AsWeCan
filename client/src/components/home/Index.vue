@@ -1,12 +1,15 @@
 <template>
-  <div>
+  <div id="home">
     <LeftSide ></LeftSide>
     <component :is="current_view"></component>
   </div>
 </template>
 
-<style>
-
+<style rel="stylesheet/less">
+  #home{
+    display: flex;
+    flex-direction: row;
+  }
 </style>
 
 <script>
@@ -15,6 +18,7 @@
   import ShareList from 'components/home/sharelist/Index'
   import LogMerge from 'components/home/Merge'
   import ProcessMining from 'components/home/ProcessMining'
+
 
   export default{
     data(){

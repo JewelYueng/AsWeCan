@@ -1,6 +1,7 @@
 <template>
   <div>
-    日志列表
+    <NormalLog></NormalLog>
+
   </div>
 </template>
 
@@ -9,7 +10,17 @@
 </style>
 
 <script>
-  export default{
+  import NormalLog from 'components/home/logList/NormalLog.vue'
 
+  export default{
+      data(){
+          return{
+
+          }
+      },
+    components:{
+      NormalLog
+    }
   }
+
 </script>
