@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,12 +45,17 @@ public class RawLogServiceImpl implements RawLogService {
     @Override
     public List<LogGroup> getLogsByUser(User user) {
         List<LogGroup> logGroups = rawLogMapper.listLogsByUserIdAndState(user.getId(), LogState.ACTIVE.getValue());
-        for (LogGroup logGroup : logGroups) {
+        Iterator<LogGroup> iterator = logGroups.iterator();
+        while (iterator.hasNext()) {
+            LogGroup logGroup = iterator.next();
             if (!Util.isActive(logGroup.getNormalLog())) {
                 logGroup.setNormalLog(null);
             }
             if (!Util.isActive(logGroup.getEventLog())) {
                 logGroup.setEventLog(null);
+            }
+            if (logGroup.getRawLog() == null && logGroup.getNormalLog() == null && logGroup.getEventLog() == null) {
+                iterator.remove();
             }
         }
         return logGroups;
@@ -57,12 +63,17 @@ public class RawLogServiceImpl implements RawLogService {
 
     public List<LogGroup> getSharedLogs() {
         List<LogGroup> logGroups = rawLogMapper.listLogsByStateAndSharedState(LogState.ACTIVE.getValue(), LogShareState.SHARED.getValue());
-        for (LogGroup logGroup : logGroups) {
+        Iterator<LogGroup> iterator = logGroups.iterator();
+        while (iterator.hasNext()) {
+            LogGroup logGroup = iterator.next();
             if (! Util.isActiveAndShared(logGroup.getNormalLog())) {
                 logGroup.setNormalLog(null);
             }
             if (! Util.isActiveAndShared(logGroup.getEventLog())) {
                 logGroup.setEventLog(null);
+            }
+            if (logGroup.getRawLog() == null && logGroup.getNormalLog() == null && logGroup.getEventLog() == null) {
+                iterator.remove();
             }
         }
         return logGroups;

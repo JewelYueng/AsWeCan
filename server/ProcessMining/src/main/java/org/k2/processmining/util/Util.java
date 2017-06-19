@@ -5,6 +5,8 @@ import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.AbstractLog;
 import org.k2.processmining.model.user.User;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.UUID;
 
 /**
@@ -40,7 +42,7 @@ public class Util {
     }
 
     public static boolean isActiveAndShared(AbstractLog log) {
-        return isActive(log) && LogShareState.isShared(log.getState());
+        return isActive(log) && LogShareState.isShared(log.getIsShared());
     }
 
     public static boolean isBelongTo(AbstractLog log, User user) {
@@ -49,5 +51,15 @@ public class Util {
 
     public static boolean isActiveAndBelongTo(AbstractLog log, User user) {
         return isActive(log) && isBelongTo(log, user);
+    }
+
+    public static String encodeForURL(String name) {
+        try {
+            name = URLEncoder.encode(name,"UTF-8");
+        }
+        catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return name;
     }
 }

@@ -20,6 +20,8 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -56,7 +58,7 @@ public class RawLogController {
         rawLog.setUserId(user.getId());
         rawLog.setFormat(format);
         rawLog.setCreateDate(new Date());
-        rawLog.setLogName(file.getName());
+        rawLog.setLogName(file.getOriginalFilename());
         rawLog.setIsShared(isShare);
         Map<String, Object> res = new HashMap<>();
         int code = 1;
@@ -75,8 +77,7 @@ public class RawLogController {
     }
 
     @RequestMapping(value = "/download", method = RequestMethod.GET)
-    public @ResponseBody
-    void download(@RequestParam("id") String id, HttpServletResponse response) {
+    public void download(@RequestParam("id") String id, HttpServletResponse response) {
         RawLog rawLog = rawLogService.getRawLogById(id);
         User user = getUser();
         if (!Util.isActiveAndBelongTo(rawLog, user)) {
@@ -84,7 +85,7 @@ public class RawLogController {
             return;
         }
         String fileName = rawLog.getLogName();
-        response.setHeader("Content-Disposition","attachment;filename="+fileName);
+        response.setHeader("Content-Disposition","attachment;filename=" + Util.encodeForURL(fileName));
         try (OutputStream outputStream = response.getOutputStream()){
             logStorage.download(rawLog, outputStream);
             outputStream.flush();
@@ -105,7 +106,8 @@ public class RawLogController {
         if (rawLog == null || rawLog.getUserId() == null
                 || !rawLog.getUserId().equals(user.getId()) || !LogState.isActive(rawLog.getState())) {
             res.put("code", 0);
-            return res;
+            res.put("msg", "The log is not exist!");
+            return ResponseEntity.badRequest().body(res);
         }
         NormalLog normalLog = rawLogService.normalize(rawLog, form.toLogConfiguration());
         if (normalLog == null) {
