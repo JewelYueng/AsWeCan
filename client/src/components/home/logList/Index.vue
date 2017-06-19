@@ -17,16 +17,17 @@
   @import "~assets/colors.less";
   @import "~assets/layout.less";
 
-  .log-list{
+  .log-list {
     height: 100%;
   }
+
   .list-tabs {
     display: flex;
     flex-direction: row;
     width: 100%;
     border-radius: 20px 20px 0 0;
     overflow: hidden;
-    .list-tab{
+    .list-tab {
       cursor: pointer;
       flex: 1;
       height: 40px;
@@ -35,7 +36,7 @@
       border-bottom: @tab_separator 2px solid;
       background-color: #f1f1f1;
     }
-    .separator{
+    .separator {
       border-right: @tab_separator 2px solid;
     }
 
@@ -43,7 +44,8 @@
       background-color: @tab_selected;
     }
   }
-  #right-down-list{
+
+  #right-down-list {
     background-color: #f1f1f1;
     height: @main_height - 70px;
   }
@@ -52,6 +54,7 @@
 <script>
   import {mapActions} from 'vuex'
   import EventLog from './EventLog.vue'
+  import RawLog from './RawLogDetails'
   export default{
     data(){
       return {
@@ -70,8 +73,8 @@
           }
         ],
         view_dict: {
-//            normal: NormalLog,
-//            raw: RawLog,
+//          normal: NormalLog,
+          raw: RawLog,
           event: EventLog
         },
         selected_tab: 0
@@ -79,7 +82,7 @@
     },
     computed: {
       current_view(){
-        return this.view_dict[this.$store.getters.view_level2 || 'event']
+        return this.view_dict[this.$store.getters.view_level2 || 'raw']
       }
     },
     methods: {
@@ -90,7 +93,8 @@
       }
     },
     components: {
-      EventLog
+      EventLog,
+      RawLog
     }
   }
 
