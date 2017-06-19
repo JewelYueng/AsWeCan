@@ -1,7 +1,7 @@
 <template>
   <div>
-    <LeftSide></LeftSide>
-
+    <LeftSide ></LeftSide>
+    <component :is="current_view"></component>
   </div>
 </template>
 
@@ -11,14 +11,34 @@
 
 <script>
   import LeftSide from 'components/home/LeftSide.vue'
+  import LogList from 'components/home/logList/Index'
+  import ShareList from 'components/home/sharelist/Index'
+  import LogMerge from 'components/home/Merge'
+  import ProcessMining from 'components/home/ProcessMining'
+
   export default{
     data(){
       return {
-        msg: 'leftSide'
+        msg: 'leftSide',
+        view_dict: {
+        	loglist: LogList,
+          sharelist: ShareList,
+          merge: LogMerge,
+          mining: ProcessMining
+        }
       }
     },
     components: {
-        LeftSide
+      LeftSide,
+      LogList,
+      ShareList,
+      LogMerge,
+      ProcessMining
+    },
+    computed: {
+    	current_view() {
+    		return this.view_dict[this.$store.getters.view_level1 || 'loglist']
+      }
     }
   }
 </script>
