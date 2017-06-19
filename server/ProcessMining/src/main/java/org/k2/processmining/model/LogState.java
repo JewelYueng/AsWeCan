@@ -13,4 +13,8 @@ public enum LogState {
     public int getValue() {
         return value;
     }
+
+    public static boolean isActive(int state) {
+        return state == ACTIVE.value;
+    }
 }

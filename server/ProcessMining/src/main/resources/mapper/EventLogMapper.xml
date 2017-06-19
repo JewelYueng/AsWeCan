@@ -10,4 +10,27 @@
         VALUES (#{id}, #{logName}, #{createDate}, #{userId}, #{format}, #{normalLogId}, #{state}, #{isShared},
                   #{mergeRelation}, #{caseNumber}, #{eventNumber}, #{perEventInCase}, #{eventNames}, #{operatorNames})
     </insert>
+    
+    <select id="getEventLogById" resultMap="eventLog">
+        SELECT * FROM event_log WHERE id=#{id}
+    </select>
+
+    <resultMap id="eventLog" type="EventLog">
+        <id column="id" property="id"/>
+        <result column="log_name" property="logName"/>
+        <result column="create_date" property="createDate"/>
+        <result column="userid" property="userId"/>
+        <result column="format" property="format"/>
+        <result column="normal_log_id" property="normalLogId"/>
+        <result column="isshared" property="isShared"/>
+        <result column="state" property="state"/>
+        <result column="merge_relation" property="mergeRelation"/>
+        <result column="case_number" property="caseNumber"/>
+        <result column="event_number" property="eventNumber"/>
+        <result column="per_event_incase" property="perEventInCase"/>
+        <result column="event_names" property="eventNames"/>
+        <result column="operator_names" property="operatorNames"/>
+    </resultMap>
+
+
 </mapper>

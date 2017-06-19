@@ -2,6 +2,7 @@ package org.k2.processmining.service.impl;
 
 import org.k2.processmining.mapper.RawLogMapper;
 import org.k2.processmining.model.LogGroup;
+import org.k2.processmining.model.LogShareState;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.log.RawLog;
@@ -10,6 +11,7 @@ import org.k2.processmining.service.RawLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.normal.transform.LogConfiguration;
 import org.k2.processmining.support.normal.transform.Normalize;
+import org.k2.processmining.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,13 +32,18 @@ public class RawLogServiceImpl implements RawLogService {
     private RawLogMapper rawLogMapper;
 
     @Override
+    public RawLog getRawLogById(String id) {
+        return rawLogMapper.getRawLogById(id);
+    }
+
+    @Override
     public List<LogGroup> getLogsByUser(User user) {
         List<LogGroup> logGroups = rawLogMapper.listLogsByUserIdAndState(user.getId(), LogState.ACTIVE.getValue());
         for (LogGroup logGroup : logGroups) {
-            if (logGroup.getNormalLog() != null && logGroup.getNormalLog().getState() == LogState.DELETE.getValue()) {
+            if (logGroup.getNormalLog() != null && LogState.isActive(logGroup.getNormalLog().getState())) {
                 logGroup.setNormalLog(null);
             }
-            if (logGroup.getEventLog() != null && logGroup.getEventLog().getState() == LogState.DELETE.getValue()) {
+            if (logGroup.getEventLog() != null && LogState.isActive(logGroup.getEventLog().getState())) {
                 logGroup.setEventLog(null);
             }
         }
@@ -44,7 +51,7 @@ public class RawLogServiceImpl implements RawLogService {
     }
 
     public List<LogGroup> getSharedLogs() {
-        return rawLogMapper.listLogsByState(1);
+        return rawLogMapper.listLogsByStateAndSharedState(LogState.ACTIVE.getValue(), LogShareState.SHARED.getValue());
     }
 
     @Override
@@ -64,7 +71,7 @@ public class RawLogServiceImpl implements RawLogService {
     @Override
     public NormalLog normalize(RawLog rawLog, LogConfiguration lc) {
         NormalLog normalLog = new NormalLog();
-        normalLog.setId(UUID.randomUUID().toString());
+        normalLog.setId(Util.getUUIDString());
         normalLog.setUserId(rawLog.getUserId());
         if(! logStorage.upload(normalLog,
                 outputStream -> logStorage.download(rawLog,
