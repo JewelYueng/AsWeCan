@@ -3,16 +3,16 @@
 
       <div>
         <a href="" class=" btn bgbtn02 btn_upload btn_common">
-          <img src="static/upload.png"/>上传
+          <img src="static/img/upload.png"/>上传
         </a>
         <a href="" class="btn bgbtn02 btn_generate btn_common">
-          <img src="static/process.png"/>挖掘
+          <img src="static/img/process.png"/>挖掘
         </a>
         <a href="" class="btn bgbtn02 btn_download btn_common">
-          <img src="static/download.png"/>下载
+          <img src="static/img/download.png"/>下载
         </a>
         <a href="" class="btn bgbtn02 btn_share btn_common">
-          <img src="static/share_white.png"/>分享
+          <img src="static/img/share_white.png"/>分享
         </a>
         <input type="text" class='search' placeholder='输入关键字'>
       </div>
@@ -26,7 +26,7 @@
           <li><input type='checkbox'  @click="selectAll">&nbsp;文件名&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;日期&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;原始日志&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;规范化日志</li>
           <hr>
           <template v-for="item in items">
-            <li><input type='checkbox' v-model="selectArr">{{item.log_name}}&#12288;&#12288;<img src="static/process_color.png"><img src="static/download_color.png"><img src="static/share_color.png">{{item.create_date}}&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;{{item.normal_log}}&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;{{item.event_log}}</li>
+            <li><input type='checkbox' v-model="selectArr">{{item.log_name}}&#12288;&#12288;<img src="static/img/process_color.png"><img src="static/img/download_color.png"><img src="static/img/share_color.png">{{item.create_date}}&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;{{item.normal_log}}&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;{{item.event_log}}</li>
             <hr>
           </template>
         </ul>
