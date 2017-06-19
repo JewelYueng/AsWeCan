@@ -50,9 +50,9 @@ public class MergeController {
             // TODO: 2017/6/17 check eventLog owner
 
             EventLog eventLog1 = new EventLog();
-            eventLog1.setId(form.eventLogId1);eventLog1.setUserId("1");
+            eventLog1.setId(form.eventLogId1);eventLog1.setUserId("1");eventLog1.setLogName("1");
             EventLog eventLog2 = new EventLog();
-            eventLog2.setId(form.eventLogId2);eventLog2.setUserId("1");
+            eventLog2.setId(form.eventLogId2);eventLog2.setUserId("1");eventLog2.setLogName("2");
             EventLog result = mergeMethodService.merge(eventLog1, eventLog2, form.methodId, form.parameters);
             if (result != null) {
                 return result;

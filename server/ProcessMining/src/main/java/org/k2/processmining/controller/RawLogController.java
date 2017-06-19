@@ -1,20 +1,24 @@
 package org.k2.processmining.controller;
 
+import com.sun.deploy.net.HttpResponse;
+import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.log.RawLog;
+import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.RawLogService;
+import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.normal.transform.LogConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.io.OutputStream;
+import java.util.*;
 
 /**
  * Created by Aria on 2017/6/13.
@@ -26,8 +30,9 @@ public class RawLogController {
     @Autowired
     private RawLogService rawLogService;
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public@ResponseBody
+    @Autowired
+    private LogStorage logStorage;
+
     Object getAllLogs() {
         return null;
     }
@@ -57,7 +62,22 @@ public class RawLogController {
         return null;
     }
 
-    public void download() {}
+    @RequestMapping(value = "/download", method = RequestMethod.GET)
+    public void download(@RequestParam("id") String id, HttpServletResponse response) {
+        RawLog rawLog = new RawLog();
+        rawLog.setUserId("1");
+        rawLog.setId(id);
+        rawLog.setLogName("rawLog.txt");
+        String fileName = rawLog.getLogName();
+        response.setHeader("Content-Disposition","attachment;filename="+fileName);
+        try (OutputStream outputStream = response.getOutputStream()){
+            logStorage.download(rawLog, outputStream);
+            outputStream.flush();
+        }
+        catch (IOException e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
 
     public void deleteLogById(List<Integer> idList){}
 
@@ -75,11 +95,27 @@ public class RawLogController {
         return normalLog;
     }
 
-    public void getLogByUserId(){}
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public @ResponseBody
+    Object getLogByUserId() {
+        User user = new User();
+        user.setId("1");
+        List<LogGroup> logGroups = rawLogService.getLogsByUser(user);
+        Map<String, Object> map = new HashMap<>();
+        map.put("logGroups", logGroups);
+        return map;
+    }
 
     public void setLogState(int state){}
 
-    public void getSharedLog(){}
+    @RequestMapping(value = "/sharedLogs", method = RequestMethod.GET)
+    public @ResponseBody
+    Object getSharedLog() {
+        List<LogGroup> logGroups = rawLogService.getSharedLogs();
+        Map<String, Object> map = new HashMap<>();
+        map.put("logGroups", logGroups);
+        return map;
+    }
 
     public void getLogByFuzzyName(){}  //模糊搜索
 

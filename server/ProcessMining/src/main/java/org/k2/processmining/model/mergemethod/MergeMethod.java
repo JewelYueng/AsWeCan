@@ -6,7 +6,7 @@ package org.k2.processmining.model.mergemethod;
 public class MergeMethod {
     private String id;
     private String methodName;
-    private int state;
+    private int state = 1;
 
     public void setId(String id) {
         this.id = id;

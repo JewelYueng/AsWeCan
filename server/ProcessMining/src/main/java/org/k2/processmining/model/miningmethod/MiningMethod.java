@@ -6,7 +6,7 @@ package org.k2.processmining.model.miningmethod;
 public class MiningMethod {
     private String methodName;
     private String id;
-    private int state;
+    private int state = 1;
 
     public void setState(int state) {
         this.state = state;

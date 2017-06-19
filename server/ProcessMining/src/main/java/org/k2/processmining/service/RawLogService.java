@@ -14,6 +14,7 @@ import java.util.List;
  */
 public interface RawLogService {
     List<LogGroup> getLogsByUser(User user);
+    List<LogGroup> getSharedLogs();
     boolean save(RawLog log, InputStream inputStream);
     void deleteLogById(List<Integer> idList);
     NormalLog normalize(RawLog rawLog, LogConfiguration lc);

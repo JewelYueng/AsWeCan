@@ -9,7 +9,7 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private String state;
+    private int state = 1;
 
     public String getId() {
         return id;
@@ -43,11 +43,11 @@ public class User {
         this.password = password;
     }
 
-    public void setState(String state) {
+    public void setState(int state) {
         this.state = state;
     }
 
-    public String getState() {
+    public int getState() {
         return state;
     }
 }

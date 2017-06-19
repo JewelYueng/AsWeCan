@@ -9,21 +9,37 @@
          VALUES (#{id}, #{logName}, now(), #{userId}, #{format}, #{state})
     </insert>
 
-    <select id="listLogsByUserId" resultMap="logGroup">
-
-
-        select raw_log.id rawLogId, raw_log.logName rawLogName, raw_log.format rawLogFormat,
-        raw_log.createDate rawLogCreateDate, raw_log.state rawLogState, raw_log.userId rawLogUserId,
-        raw_log.normalLogId rawLogNormalLogId,
-        normal_log.id normalLogId, normal_log.logName normalLogName, normal_log.format normalLogFormat,
-        normal_log.createDate normalLogCreateDate, normal_log.state normalLogState, normal_log.userId normalLogUserId,
-        normal_log.rawLogId normalLogRawLogId, normal_log.eventLogId normalLogEventLogId,
-        event_log.id eventLogId, event_log.logName eventLogName, event_log.format eventLogFormat,
-        event_log.createDate eventLogCreateDate, event_log.state eventLogState, event_log.userId eventLogUserId,
-        event_log.normalLogId eventLogNormalLogId, caseNumber, eventNumber, perEventInCase, eventNames, operatorNames
-        from raw_log left join normal_log on raw_log.id = normal_log.raw_log_id left join event_log on normal_log.id = event_log.normalLogId
+    <select id="listLogsByUserIdAndState" resultMap="logGroup">
+        SELECT
+            RL.id rawLogId, RL.log_name rawLogName, RL.format rawLogFormat,
+            RL.create_date rawLogCreateDate, RL.state rawLogState, RL.userid rawLogUserId,
+            normal_log.id normalLogId, normal_log.log_name normalLogName, normal_log.format normalLogFormat,
+            normal_log.create_date normalLogCreateDate, normal_log.state normalLogState, normal_log.userid normalLogUserId,
+            normal_log.raw_log_id normalLogRawLogId,
+            event_log.id eventLogId, event_log.log_name eventLogName, event_log.format eventLogFormat,
+            event_log.create_date eventLogCreateDate, event_log.state eventLogState, event_log.userid eventLogUserId,
+            event_log.normal_log_id eventLogNormalLogId, case_number, event_number, per_event_inCase, event_names, operator_names
+        FROM
+            (SELECT * FROM raw_log where userid=#{id} and state=#{state}) RL
+            left join normal_log on RL.id = normal_log.raw_log_id
+            left join event_log on normal_log.id = event_log.normal_log_id
     </select>
 
+    <select id="listLogsByState" resultMap="logGroup">
+        SELECT
+            RL.id rawLogId, RL.log_name rawLogName, RL.format rawLogFormat,
+            RL.create_date rawLogCreateDate, RL.state rawLogState, RL.userid rawLogUserId,
+            normal_log.id normalLogId, normal_log.log_name normalLogName, normal_log.format normalLogFormat,
+            normal_log.create_date normalLogCreateDate, normal_log.state normalLogState, normal_log.userid normalLogUserId,
+            normal_log.raw_log_id normalLogRawLogId,
+            event_log.id eventLogId, event_log.log_name eventLogName, event_log.format eventLogFormat,
+            event_log.create_date eventLogCreateDate, event_log.state eventLogState, event_log.userid eventLogUserId,
+            event_log.normal_log_id eventLogNormalLogId, case_number, event_number, per_event_inCase, event_names, operator_names
+        FROM
+            (SELECT * FROM raw_log WHERE  state=#{state}) RL
+            left join normal_log on RL.id = normal_log.raw_log_id
+            left join event_log on normal_log.id = event_log.normal_log_id
+    </select>
 
     <resultMap id="logGroup" type="LogGroup">
         <association property="rawLog" javaType="RawLog">

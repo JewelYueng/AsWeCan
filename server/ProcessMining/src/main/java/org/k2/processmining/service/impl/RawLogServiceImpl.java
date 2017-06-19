@@ -2,6 +2,7 @@ package org.k2.processmining.service.impl;
 
 import org.k2.processmining.mapper.RawLogMapper;
 import org.k2.processmining.model.LogGroup;
+import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.log.RawLog;
 import org.k2.processmining.model.user.User;
@@ -30,7 +31,20 @@ public class RawLogServiceImpl implements RawLogService {
 
     @Override
     public List<LogGroup> getLogsByUser(User user) {
-        return rawLogMapper.listLogsByUserId(user.getId());
+        List<LogGroup> logGroups = rawLogMapper.listLogsByUserIdAndState(user.getId(), LogState.ACTIVE.getValue());
+        for (LogGroup logGroup : logGroups) {
+            if (logGroup.getNormalLog() != null && logGroup.getNormalLog().getState() == LogState.DELETE.getValue()) {
+                logGroup.setNormalLog(null);
+            }
+            if (logGroup.getEventLog() != null && logGroup.getEventLog().getState() == LogState.DELETE.getValue()) {
+                logGroup.setEventLog(null);
+            }
+        }
+        return logGroups;
+    }
+
+    public List<LogGroup> getSharedLogs() {
+        return rawLogMapper.listLogsByState(1);
     }
 
     @Override
