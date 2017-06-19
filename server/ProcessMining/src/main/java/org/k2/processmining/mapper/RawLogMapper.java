@@ -14,6 +14,6 @@ import java.util.List;
 public interface RawLogMapper {
     RawLog getRawLogById(@Param("id") String id);
     void save(RawLog log);
-    List<LogGroup> listLogsByUserIdAndState(@Param("id") String id, @Param("state") int state);
+    List<LogGroup> listLogsByUserIdAndState(@Param("userId") String userId, @Param("state") int state);
     List<LogGroup> listLogsByStateAndSharedState(@Param("state") int state, @Param("isShared") int isShared);
 }

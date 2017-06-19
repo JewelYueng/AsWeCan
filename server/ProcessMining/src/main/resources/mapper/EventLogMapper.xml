@@ -15,6 +15,28 @@
         SELECT * FROM event_log WHERE id=#{id}
     </select>
 
+
+    <select id="listLogsByUserIdAndState" resultMap="org.k2.processmining.mapper.RawLogMapper.logGroup">
+        SELECT
+          <include refid="org.k2.processmining.mapper.RawLogMapper.logGroupSelectColumns"/>
+        FROM
+        (SELECT * FROM event_log WHERE userid=#{userId} AND state=#{state}) EL
+        LEFT JOIN normal_log NL ON EL.normal_log_id = NL.id
+        LEFT JOIN raw_log RL ON NL.raw_log_id = RL.id
+    </select>
+
+    <select id="listLogsByStateAndSharedState" resultMap="org.k2.processmining.mapper.RawLogMapper.logGroup">
+        SELECT
+        <include refid="org.k2.processmining.mapper.RawLogMapper.userColumns"/>
+        ,
+        <include refid="org.k2.processmining.mapper.RawLogMapper.logGroupSelectColumns"/>
+        FROM
+        (SELECT * FROM event_log WHERE state=#{state} AND isshared=#{isShared}) EL
+        LEFT JOIN normal_log NL ON EL.normal_log_id = NL.id
+        LEFT JOIN raw_log RL ON NL.raw_log_id = RL.id
+        LEFT JOIN user ON EL.userid = user.id;
+    </select>
+
     <resultMap id="eventLog" type="EventLog">
         <id column="id" property="id"/>
         <result column="log_name" property="logName"/>
