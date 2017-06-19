@@ -76,9 +76,11 @@ public class NormalLogServiceImpl implements NormalLogService {
     }
 
     @Override
-    public int updateShareStateByLogId(List<NormalLog> normalLogList,int isshared) {
+    public int updateShareStateByLogId(List<String> idList,int isshared) {
 
-        for (NormalLog normalLog : normalLogList) {
+        for (String id : idList) {
+            NormalLog normalLog = new NormalLog();
+            normalLog.setId(id);
             normalLog.setState(isshared);//分享
             normalLogMapper.updateShareStateByLogId(normalLog);
         }
@@ -86,8 +88,13 @@ public class NormalLogServiceImpl implements NormalLogService {
     }
 
     @Override
+    public int deleteLogByLogId(List<String> idList) {
+        return 0;
+    }
+
+    @Override
     public void addNormalLog(NormalLog normalLog) {
         System.out.println("id:"+normalLog.getId());
-        normalLogMapper.add(normalLog);
+        normalLogMapper.save(normalLog);
     }
 }

@@ -1,5 +1,6 @@
 package org.k2.processmining.service.impl;
 
+import org.k2.processmining.mapper.NormalLogMapper;
 import org.k2.processmining.mapper.RawLogMapper;
 import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.LogShareState;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,6 +33,9 @@ public class RawLogServiceImpl implements RawLogService {
     @Autowired
     private RawLogMapper rawLogMapper;
 
+    @Autowired
+    private NormalLogMapper normalLogMapper;
+
     @Override
     public RawLog getRawLogById(String id) {
         return rawLogMapper.getRawLogById(id);
@@ -40,10 +45,10 @@ public class RawLogServiceImpl implements RawLogService {
     public List<LogGroup> getLogsByUser(User user) {
         List<LogGroup> logGroups = rawLogMapper.listLogsByUserIdAndState(user.getId(), LogState.ACTIVE.getValue());
         for (LogGroup logGroup : logGroups) {
-            if (logGroup.getNormalLog() != null && LogState.isActive(logGroup.getNormalLog().getState())) {
+            if (!Util.isActive(logGroup.getNormalLog())) {
                 logGroup.setNormalLog(null);
             }
-            if (logGroup.getEventLog() != null && LogState.isActive(logGroup.getEventLog().getState())) {
+            if (!Util.isActive(logGroup.getEventLog())) {
                 logGroup.setEventLog(null);
             }
         }
@@ -51,7 +56,16 @@ public class RawLogServiceImpl implements RawLogService {
     }
 
     public List<LogGroup> getSharedLogs() {
-        return rawLogMapper.listLogsByStateAndSharedState(LogState.ACTIVE.getValue(), LogShareState.SHARED.getValue());
+        List<LogGroup> logGroups = rawLogMapper.listLogsByStateAndSharedState(LogState.ACTIVE.getValue(), LogShareState.SHARED.getValue());
+        for (LogGroup logGroup : logGroups) {
+            if (! Util.isActiveAndShared(logGroup.getNormalLog())) {
+                logGroup.setNormalLog(null);
+            }
+            if (! Util.isActiveAndShared(logGroup.getEventLog())) {
+                logGroup.setEventLog(null);
+            }
+        }
+        return logGroups;
     }
 
     @Override
@@ -72,14 +86,17 @@ public class RawLogServiceImpl implements RawLogService {
     public NormalLog normalize(RawLog rawLog, LogConfiguration lc) {
         NormalLog normalLog = new NormalLog();
         normalLog.setId(Util.getUUIDString());
+        normalLog.setLogName(Util.getNormalizeName(rawLog.getLogName()));
         normalLog.setUserId(rawLog.getUserId());
+        normalLog.setRawLogId(rawLog.getId());
+        normalLog.setCreateDate(new Date());
+        normalLog.setFormat("txt");
         if(! logStorage.upload(normalLog,
                 outputStream -> logStorage.download(rawLog,
                         inputStream -> Normalize.normalize(lc, inputStream, outputStream)))) {
             return null;
         }
-        normalLog.setRawLogId(rawLog.getId());
-        // TODO: 2017/6/17 save normalLog to database
+        normalLogMapper.save(normalLog);
         return normalLog;
     }
 }

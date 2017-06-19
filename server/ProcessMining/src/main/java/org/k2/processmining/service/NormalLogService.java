@@ -14,7 +14,9 @@ public interface NormalLogService {
 
     List<NormalLog> getAllSharedNormalLogs();
 
-    int updateShareStateByLogId(List<NormalLog> normalLogList,int isshared);
+    int updateShareStateByLogId(List<String> idList,int isshared);
+
+    int deleteLogByLogId(List<String> idList);
 
     void addNormalLog(NormalLog normalLog);
 

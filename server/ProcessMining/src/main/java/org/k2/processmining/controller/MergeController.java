@@ -6,6 +6,7 @@ import org.k2.processmining.model.mergemethod.MergeMethod;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.service.MergeMethodService;
+import org.k2.processmining.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -61,7 +62,7 @@ public class MergeController {
         User user = getUser();
         EventLog eventLog1 = eventLogService.getEventLogById(form.getEventLogId1());
         EventLog eventLog2 = eventLogService.getEventLogById(form.getEventLogId2());
-        if (!isValidate(eventLog1, user) || !isValidate(eventLog2, user)) {
+        if (!Util.isActiveAndBelongTo(eventLog1, user) || !Util.isActiveAndBelongTo(eventLog2, user)) {
             res.put("msg", "The event logs are not exist!");
             return ResponseEntity.badRequest().body(res);
         }

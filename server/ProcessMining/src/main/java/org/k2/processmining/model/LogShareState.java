@@ -16,4 +16,8 @@ public enum LogShareState {
     public static boolean isValid(int state) {
         return state == UNSHARED.value || state == SHARED.value;
     }
+
+    public static boolean isShared(int state) {
+        return state == SHARED.value;
+    }
 }

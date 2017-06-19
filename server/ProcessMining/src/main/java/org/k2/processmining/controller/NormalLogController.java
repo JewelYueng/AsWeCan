@@ -1,5 +1,7 @@
 package org.k2.processmining.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.service.NormalLogService;
@@ -81,64 +83,62 @@ public class NormalLogController {
 
     /**
      * 分享规范化日志
-     * @param normalLogs
+     * @param map
      * @return
      */
-//    @RequestMapping(value = "/share",method = RequestMethod.POST)
-//    public @ResponseBody
-//    Map shareNormalLogs(@RequestBody List<NormalLog> normalLogs){
-//
-//        List<String> list = new ArrayList<>();
-//        for (int i=0;i<normalLogs.size();i++){
-//            System.out.println(i+":  "+normalLogs.get(i).getId());
-//            list.add(normalLogs.get(i).getId());
-//        }
-//
-//        Map<String,Integer> result = new HashMap<String,Integer>();
-//        if (normalLogs.size() == 0){
-//            result.put("code",0);
-//            return result;
-//        }
-//        result.put("code",normalLogService.updateShareStateByLogId(normalLogs,1));
-//        return result;
-//    }
+    @RequestMapping(value = "/share",method = RequestMethod.POST)
+    public @ResponseBody
+    Map shareNormalLogs(@RequestBody Map map){
 
-    @RequestMapping(value = "/share", method = RequestMethod.POST)
-    public@ResponseBody
-    Object shareNormalLogs(@RequestParam("test") String test){
-        System.out.println(test);
-        return null;
+        Map result = new HashMap();
+        Gson gson = new GsonBuilder().create();
+        System.out.println("map.toString:"+map.get("idList").toString());
+        List<String> idList = gson.fromJson(map.get("idList").toString(),ArrayList.class);
+        if (idList.size() == 0 ){
+            result.put("code",0);
+        }else {
+            result.put("code",normalLogService.updateShareStateByLogId(idList,1));
+        }
+        return result;
     }
 
 
     /**
      * 取消分享规范化日志
-     * @param normalLogs
+     * @param map
      * @return
      */
     @RequestMapping(value = "/unShare",method = RequestMethod.POST)
     public @ResponseBody
-    Map unShareNormalLogs(@RequestBody List<NormalLog> normalLogs){
-        Map map = new HashMap();
-        if (normalLogs.size() == 0){
-            map.put("code",0);
+    Map unShareNormalLogs(@RequestBody Map map){
+        Map result = new HashMap();
+        Gson gson = new GsonBuilder().create();
+        List<String> idList = gson.fromJson(map.get("idList").toString(),ArrayList.class);
+        if (idList.size() == 0){
+            result.put("code",0);
         }else {
-            map.put("code",normalLogService.updateShareStateByLogId(normalLogs,0));
+            result.put("code",normalLogService.updateShareStateByLogId(idList,0));
         }
-        return map;
+        return result;
     }
 
 
     /**
      * 删除规范化日志
-     * @param normalLogList
+     * @param map
      * @return
      */
     @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
     public @ResponseBody
-    Map deleteLogById(@RequestBody List<NormalLog> normalLogList){
-
-
+    Map deleteLogById(@RequestBody Map map){
+        Map result = new HashMap();
+        Gson gson = new GsonBuilder().create();
+        List<String> idList = gson.fromJson(map.get("idList").toString(),ArrayList.class);
+        if (idList.size() == 0){
+            result.put("code",0);
+        }else {
+            result.put("code",normalLogService.deleteLogByLogId(idList));
+        }
 
         return null;
     }
