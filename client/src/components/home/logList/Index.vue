@@ -20,7 +20,6 @@
   .log-list {
     height: 100%;
   }
-
   .list-tabs {
     display: flex;
     flex-direction: row;
@@ -55,6 +54,7 @@
   import {mapActions} from 'vuex'
   import EventLog from './EventLog.vue'
   import RawLog from './RawLogDetails'
+  import NormalLog from './NormalLog'
   export default{
     data(){
       return {
@@ -75,6 +75,8 @@
         view_dict: {
 //          normal: NormalLog,
           raw: RawLog,
+          normal: NormalLog,
+//            raw: RawLog,
           event: EventLog
         },
         selected_tab: 0
@@ -94,7 +96,8 @@
     },
     components: {
       EventLog,
-      RawLog
+      RawLog,
+      NormalLog
     }
   }
 
