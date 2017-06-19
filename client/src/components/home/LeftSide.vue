@@ -1,13 +1,13 @@
 <template>
   <div class="left-side">
     <div id="logo-box">
-      <img src="" alt="Logo">
+      <img src="static/img/logo.png" alt="Logo">
     </div>
-    <div id="username">
+    <div id="username" @click='modifyInfo'>
       {{username}}
     </div>
-    <div class="tabs" v-for="(tab,index) in tab_map">
-      <div class="tab" @click="jumpTo(index)" :class="{selectedTab: selected_tab===index}">
+    <div class="tabs">
+      <div class="tab" v-for="(tab,index) in tab_map" @click="jumpTo(index)" :class="{selectedTab: selected_tab===index}" >
         <div class="text">
           <div class="decoration">-</div>
           {{tab_map[index].name}}
@@ -18,7 +18,6 @@
     <div id="logout">
       <a href="">退出</a>
     </div>
-    <img src="">
   </div>
 </template>
 
@@ -30,12 +29,23 @@
   .left-side {
     background-color: @main_green;
     width: @left_side_width;
-    height: 800px;
+    height: @main_height;
+    padding: 50px 0;
+    box-sizing: border-box;
   }
 
   #username {
     font-size: 24px;
     font-weight: bold;
+    margin: 20px 0;
+    cursor: pointer;
+  }
+
+  #logo-box {
+    margin: 20px auto;
+    img {
+      width: 200px;
+    }
   }
 
   .tabs {
@@ -43,7 +53,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    height: 80px;
+    height: 250px;
   }
 
   .tab {
@@ -58,17 +68,18 @@
     justify-content: center;
   }
 
-  .text{
+  .text {
     width: 80%;
     cursor: pointer;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    .decoration{
+    .decoration {
       margin: 0 10px;
     }
   }
+
   .text:hover {
     border: 2px solid white;
     border-radius: 5px;
@@ -80,7 +91,7 @@
 </style>
 
 <script>
-  import {mapGetters, mapActions, mapMutations} from 'vuex'
+  import {mapActions} from 'vuex'
   export default{
     data(){
       return {
@@ -107,21 +118,21 @@
           }]
       }
     },
-    created()
-    {
+    created() {
       this.$http.post('http://wemeet.tech:8081/team/delete_job/?jobId=1').then(response => {
         console.log(response.data)
       })
 //      console.log(typeof this.$api)
-    }
-    ,
+    },
     methods: {
       ...
         mapActions(['jumpView']),
-      jumpTo(tabIndex)
-      {
+      jumpTo(tabIndex) {
         this.selected_tab = tabIndex
-        return this.jumpView(`/home/${this.tab_map[tabIndex].path}`)
+        return this.jumpView('/home/' + this.tab_map[tabIndex].path)
+      },
+      modifyInfo() {
+        console.log('modify')
       }
     }
   }

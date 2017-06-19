@@ -1,14 +1,22 @@
 <template>
   <div id="home">
     <LeftSide ></LeftSide>
-    <component :is="current_view"></component>
+    <div id="right-window">
+      <component :is="current_view"></component>
+    </div>
   </div>
 </template>
 
-<style rel="stylesheet/less">
+<style rel="stylesheet/less" lang="less" scoped>
+  @import "~assets/layout.less";
   #home{
     display: flex;
     flex-direction: row;
+  }
+  #right-window{
+    width: @right_side_width;
+    box-sizing: border-box;
+    padding: 30px 30px 0 30px;
   }
 </style>
 
