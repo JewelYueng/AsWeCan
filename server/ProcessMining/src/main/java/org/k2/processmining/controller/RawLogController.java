@@ -10,6 +10,7 @@ import org.k2.processmining.service.RawLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -74,8 +75,14 @@ public class RawLogController {
     }
 
     @RequestMapping(value = "/download", method = RequestMethod.GET)
-    public void download(@RequestParam("id") String id, HttpServletResponse response) {
+    public @ResponseBody
+    void download(@RequestParam("id") String id, HttpServletResponse response) {
         RawLog rawLog = rawLogService.getRawLogById(id);
+        User user = getUser();
+        if (!Util.isActiveAndBelongTo(rawLog, user)) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
         String fileName = rawLog.getLogName();
         response.setHeader("Content-Disposition","attachment;filename="+fileName);
         try (OutputStream outputStream = response.getOutputStream()){
@@ -111,7 +118,7 @@ public class RawLogController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public @ResponseBody
-    Object getLogByUserId() {
+    Object getLogsByUserId() {
         User user = getUser();
         List<LogGroup> logGroups = rawLogService.getLogsByUser(user);
         Map<String, Object> map = new HashMap<>();

@@ -32,9 +32,9 @@
         WHERE  id = #{id,jdbcType = VARCHAR}
     </update>
 
-    <insert id="add" parameterType="NormalLog">
-        INSERT INTO normal_log(id,log_name,create_date,userid,format)
-        VALUES(#{id}, #{logName}, now(), #{userId}, #{format})
+    <insert id="save" parameterType="NormalLog">
+        INSERT INTO normal_log(id,log_name,create_date,userid,format, isshared, state, raw_log_id)
+        VALUES(#{id}, #{logName}, #{createDate}, #{userId}, #{format}, #{isShared}, #{state}, #{rawLogId})
     </insert>
 
 

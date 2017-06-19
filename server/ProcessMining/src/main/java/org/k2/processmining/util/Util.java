@@ -1,5 +1,10 @@
 package org.k2.processmining.util;
 
+import org.k2.processmining.model.LogShareState;
+import org.k2.processmining.model.LogState;
+import org.k2.processmining.model.log.AbstractLog;
+import org.k2.processmining.model.user.User;
+
 import java.util.UUID;
 
 /**
@@ -20,5 +25,29 @@ public class Util {
             eventLog2Name = eventLog2Name.substring(0, j);
         }
         return eventLog1Name + "-" + eventLog2Name + "-merge.xes";
+    }
+
+    public static String getNormalizeName(String rawLogName) {
+        int i = rawLogName.lastIndexOf(".");
+        if (i != -1) {
+            rawLogName = rawLogName.substring(0, i);
+        }
+        return rawLogName + "-normal.txt";
+    }
+
+    public static boolean isActive(AbstractLog log) {
+        return log != null && LogState.isActive(log.getState());
+    }
+
+    public static boolean isActiveAndShared(AbstractLog log) {
+        return isActive(log) && LogShareState.isShared(log.getState());
+    }
+
+    public static boolean isBelongTo(AbstractLog log, User user) {
+        return log != null && user != null && user.getId() != null && user.getId().equals(log.getUserId());
+    }
+
+    public static boolean isActiveAndBelongTo(AbstractLog log, User user) {
+        return isActive(log) && isBelongTo(log, user);
     }
 }

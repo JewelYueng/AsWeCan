@@ -105,7 +105,7 @@ public class NormalLogController {
 
     @RequestMapping(value = "/share",method = RequestMethod.POST)
     public @ResponseBody
-    Map shareNormalLogs(@RequestParam("test") String test){
+    Map shareNormalLogs(@RequestParam(value = "test", required = false) String test, @RequestParam("t") String t){
 
         System.out.println(test);
         return null;

@@ -88,6 +88,6 @@ public class NormalLogServiceImpl implements NormalLogService {
     @Override
     public void addNormalLog(NormalLog normalLog) {
         System.out.println("id:"+normalLog.getId());
-        normalLogMapper.add(normalLog);
+        normalLogMapper.save(normalLog);
     }
 }
