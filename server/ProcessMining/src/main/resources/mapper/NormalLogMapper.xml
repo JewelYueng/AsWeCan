@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.k2.processmining.mapper.NormalLogMapper">
+
+
+    <select id="getAllSharedNormalLogs" resultMap="logGroup">
+        select raw_log.id rawLogId, raw_log.logName rawLogName, raw_log.format rawLogFormat,
+        raw_log.createDate rawLogCreateDate, raw_log.isShared rawLogisShared,raw_log.state rawLogState,
+        raw_log.userId rawLogUserId,raw_log.normalLogId rawLogNormalLogId,
+        normal_log.id normalLogId, normal_log.logName normalLogName, normal_log.format normalLogFormat,
+        normal_log.createDate normalLogCreateDate, normal_log.isShared norlmalLogisShared, normal_log.state normalLogState, normal_log.userId normalLogUserId,
+        normal_log.rawLogId normalLogRawLogId, normal_log.eventLogId normalLogEventLogId,
+        event_log.id eventLogId, event_log.logName eventLogName, event_log.format eventLogFormat,
+        event_log.createDate eventLogCreateDate, event_log.isShared eventLogisShared, event_log.state eventLogState, event_log.userId eventLogUserId,
+        event_log.normalLogId eventLogNormalLogId, caseNumber, eventNumber, perEventInCase, eventNames, operatorNames
+        from raw_log left join normal_log on raw_log.id = normal_log.raw_log_id left join event_log on normal_log.id = event_log.normalLogId
+        where normalLogisShared = 1 AND normalLogisState = 1
+    </select>
+    
+    <!--<update id="updateShareStateByLogId" parameterType="java.util.List">-->
+        <!--<foreach collection="list" item="item" index="index" separator=";">-->
+            <!--UPDATE normal_log-->
+            <!--SET isshared = #{item.state,jdbcType=TINYINT}-->
+            <!--WHERE id = #{item.id,jdbcType = VARCHAR}-->
+        <!--</foreach>-->
+    <!--</update>-->
+
+    <update id="updateShareStateByLogId" parameterType="NormalLog">
+        UPDATE normal_log
+        SET  isshared = #{state, jdbcType = TINYINT}
+        WHERE  id = #{id,jdbcType = VARCHAR}
+    </update>
+
+    <insert id="add" parameterType="NormalLog">
+        INSERT INTO normal_log(id,log_name,create_date,userid,format)
+        VALUES(#{id}, #{logName}, now(), #{userId}, #{format})
+    </insert>
+
+
+    <resultMap id="logGroup" type="LogGroup">
+        <association property="rawLog" javaType="RawLog">
+            <id property="id" column="rawLogId"/>
+            <result property="logName" column="rawLogName"/>
+            <result property="createDate" column="rawLogCreateDate"/>
+            <result property="format" column="rawLogFormat"/>
+            <result property="isShared" column="rawLogisShared"/>
+            <result property="state" column="rawLogState"/>
+            <result property="userId" column="rawLogUserId"/>
+            <result property="normalLogId" column="rawLogNormalLogId"/>
+        </association>
+        <association property="normalLog" javaType="NormalLog">
+            <id property="id" column="normalLogId"/>
+            <result property="logName" column="normalLogName"/>
+            <result property="createDate" column="normalLogCreateDate"/>
+            <result property="format" column="normalLogFormat"/>
+            <result property="isShared" column="normalLogisShared"/>
+            <result property="state" column="normalLogState"/>
+            <result property="userId" column="normalLogUserId"/>
+            <result property="rawLogId" column="normalLogRawLogId"/>
+            <result property="eventLogId" column="normalLogEventLogId"/>
+        </association>
+        <association property="eventLog" javaType="EventLog">
+            <id property="id" column="eventLogId"/>
+            <result property="logName" column="eventLogName"/>
+            <result property="createDate" column="eventLogCreateDate"/>
+            <result property="format" column="eventLogFormat"/>
+            <result property="isShared" column="eventLogisShared"/>
+            <result property="state" column="eventLogState"/>
+            <result property="userId" column="eventLogUserId"/>
+            <result property="caseNumber" column="caseNumber"/>
+            <result property="eventNumber" column="eventNumber"/>
+            <result property="perEventInCase" column="perEventInCase"/>
+            <result property="eventNames" column="eventNames"/>
+            <result property="operatorNames" column="operatorNames"/>
+        </association>
+    </resultMap>
+
+</mapper>
