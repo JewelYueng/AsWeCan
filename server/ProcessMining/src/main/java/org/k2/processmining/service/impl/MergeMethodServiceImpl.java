@@ -109,18 +109,18 @@ public class MergeMethodServiceImpl implements MergeMethodService{
         resultEventLog.setLogName(Util.getMergeName(eventLog1.getLogName(), eventLog2.getLogName()));
         resultEventLog.setCreateDate(new Date());
         resultEventLog.setFormat("xes");
-        if (logStorage.upload(resultEventLog, outputStream -> eventLogExport.convertXLog(resultXLog, outputStream))) {
-            EventLogSummary eventLogSummary = Summarize.summarizeXLog(resultXLog);
-            resultEventLog.setCaseNumber(eventLogSummary.getCases());
-            resultEventLog.setEventNames(eventLogSummary.getEventNames());
-            resultEventLog.setEventNumber(eventLogSummary.getEvents());
-            resultEventLog.setOperatorNames(eventLogSummary.getOperatorNames());
-
-            resultEventLog.setMergeRelation(eventLog1.getId() + "," + eventLog2.getId());
-            // TODO: 2017/6/17 save resultEventLog in database, if fail delete eventLog from file system
-            eventLogMapper.save(resultEventLog);
-            return resultEventLog;
+        if (! logStorage.upload(resultEventLog, outputStream -> eventLogExport.convertXLog(resultXLog, outputStream))) {
+            return null;
         }
-        return null;
+        EventLogSummary eventLogSummary = Summarize.summarizeXLog(resultXLog);
+        resultEventLog.setCaseNumber(eventLogSummary.getCases());
+        resultEventLog.setEventNames(eventLogSummary.getEventNames());
+        resultEventLog.setEventNumber(eventLogSummary.getEvents());
+        resultEventLog.setOperatorNames(eventLogSummary.getOperatorNames());
+
+        resultEventLog.setMergeRelation(eventLog1.getId() + "," + eventLog2.getId());
+        // TODO: 2017/6/17 save resultEventLog in database, if fail delete eventLog from file system
+        eventLogMapper.save(resultEventLog);
+        return resultEventLog;
     }
 }

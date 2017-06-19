@@ -1,13 +1,17 @@
 package org.k2.processmining.controller;
 
+import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.mergemethod.MergeMethod;
+import org.k2.processmining.model.user.User;
+import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.service.MergeMethodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -26,6 +30,9 @@ public class MergeController {
 
     @Autowired
     private MergeMethodService mergeMethodService;
+
+    @Autowired
+    private EventLogService eventLogService;
 
     @RequestMapping(value = "/method", method = RequestMethod.GET)
     public @ResponseBody Object getAllMergeMethods() {
@@ -46,21 +53,28 @@ public class MergeController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public @ResponseBody Object merge(@Valid @RequestBody MergeMethodForm form) {
         MergeMethod mergeMethod = mergeMethodService.getMethodById(form.methodId);
-        if (mergeMethod != null && mergeMethodService.isActive(mergeMethod)) {
-            // TODO: 2017/6/17 check eventLog owner
-
-            EventLog eventLog1 = new EventLog();
-            eventLog1.setId(form.eventLogId1);eventLog1.setUserId("1");eventLog1.setLogName("1");
-            EventLog eventLog2 = new EventLog();
-            eventLog2.setId(form.eventLogId2);eventLog2.setUserId("1");eventLog2.setLogName("2");
-            EventLog result = mergeMethodService.merge(eventLog1, eventLog2, form.methodId, form.parameters);
-            if (result != null) {
-                return result;
-            }
+        Map<String, Object> res = new HashMap<>();
+        if (mergeMethod == null || ! mergeMethodService.isActive(mergeMethod)) {
+            res.put("msg", "The merge algorithm is not exist!");
+            return ResponseEntity.badRequest().body(res);
         }
+        User user = getUser();
+        EventLog eventLog1 = eventLogService.getEventLogById(form.getEventLogId1());
+        EventLog eventLog2 = eventLogService.getEventLogById(form.getEventLogId2());
+        if (!isValidate(eventLog1, user) || !isValidate(eventLog2, user)) {
+            res.put("msg", "The event logs are not exist!");
+            return ResponseEntity.badRequest().body(res);
+        }
+        long start = System.currentTimeMillis(); // have to modify
+        EventLog result = mergeMethodService.merge(eventLog1, eventLog2, form.methodId, form.parameters);
 
-        // TODO: 2017/6/17 set response code and error message
-        return "";
+        if (result == null) {
+            res.put("msg", "Fail to merge the logs. Please check the input content and try again!");
+            return ResponseEntity.status(HttpServletResponse.SC_BAD_REQUEST).body(res);
+        }
+        res.put("timeCost", System.currentTimeMillis()-start);
+        res.put("eventLog", result);
+        return res;
     }
 
     public void addMergeMethod(){}
@@ -68,6 +82,20 @@ public class MergeController {
     public void setMethodState(){}
 
     public void deleteMergeMethod(){}
+
+    private boolean isValidate(EventLog eventLog, User user) {
+        return eventLog != null && user != null
+                && eventLog.getUserId() != null && user.getId() != null
+                && eventLog.getUserId().equals(user.getId())
+                && eventLog.getState() == LogState.ACTIVE.getValue();
+    }
+
+    private User getUser() {
+        User user = new User();
+        user.setId("1");
+        user.setName("y2k");
+        return user;
+    }
 
     public static class MergeMethodForm {
         @NotNull

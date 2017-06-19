@@ -4,28 +4,33 @@
 
 <mapper namespace="org.k2.processmining.mapper.RawLogMapper">
 
+    <select id="getRawLogById" resultMap="rawLog">
+        SELECT * FROM raw_log WHERE id=#{id}
+    </select>
+
     <insert id="save" parameterType="RawLog">
-        INSERT INTO raw_log(id, log_name, create_date, userid, format, state)
-         VALUES (#{id}, #{logName}, now(), #{userId}, #{format}, #{state})
+        INSERT INTO raw_log(id, log_name, create_date, userid, format, state, isshared)
+         VALUES (#{id}, #{logName}, #{createDate}, #{userId}, #{format}, #{state}, #{isShared})
     </insert>
 
     <select id="listLogsByUserIdAndState" resultMap="logGroup">
         SELECT
-            RL.id rawLogId, RL.log_name rawLogName, RL.format rawLogFormat,
+            RL.id rawLogId, RL.log_name rawLogName, RL.format rawLogFormat,RL.isshared rawLogIsShared,
             RL.create_date rawLogCreateDate, RL.state rawLogState, RL.userid rawLogUserId,
             normal_log.id normalLogId, normal_log.log_name normalLogName, normal_log.format normalLogFormat,
             normal_log.create_date normalLogCreateDate, normal_log.state normalLogState, normal_log.userid normalLogUserId,
-            normal_log.raw_log_id normalLogRawLogId,
+            normal_log.raw_log_id normalLogRawLogId, normal_log.isshared normalLogIsShared,
             event_log.id eventLogId, event_log.log_name eventLogName, event_log.format eventLogFormat,
             event_log.create_date eventLogCreateDate, event_log.state eventLogState, event_log.userid eventLogUserId,
-            event_log.normal_log_id eventLogNormalLogId, case_number, event_number, per_event_inCase, event_names, operator_names
+            event_log.normal_log_id eventLogNormalLogId, event_log.isshared eventLogIsShared,
+            case_number, event_number, per_event_inCase, event_names, operator_names,merge_relation
         FROM
             (SELECT * FROM raw_log where userid=#{id} and state=#{state}) RL
             left join normal_log on RL.id = normal_log.raw_log_id
             left join event_log on normal_log.id = event_log.normal_log_id
     </select>
 
-    <select id="listLogsByState" resultMap="logGroup">
+    <select id="listLogsByStateAndSharedState" resultMap="logGroup">
         SELECT
             RL.id rawLogId, RL.log_name rawLogName, RL.format rawLogFormat,
             RL.create_date rawLogCreateDate, RL.state rawLogState, RL.userid rawLogUserId,
@@ -34,46 +39,60 @@
             normal_log.raw_log_id normalLogRawLogId,
             event_log.id eventLogId, event_log.log_name eventLogName, event_log.format eventLogFormat,
             event_log.create_date eventLogCreateDate, event_log.state eventLogState, event_log.userid eventLogUserId,
-            event_log.normal_log_id eventLogNormalLogId, case_number, event_number, per_event_inCase, event_names, operator_names
+            event_log.normal_log_id eventLogNormalLogId, case_number, event_number, per_event_inCase, event_names, operator_names,merge_relation
         FROM
-            (SELECT * FROM raw_log WHERE  state=#{state}) RL
+            (SELECT * FROM raw_log WHERE  state=#{state} AND isshared=#{isShared}) RL
             left join normal_log on RL.id = normal_log.raw_log_id
             left join event_log on normal_log.id = event_log.normal_log_id
     </select>
 
     <resultMap id="logGroup" type="LogGroup">
         <association property="rawLog" javaType="RawLog">
-            <id property="id" column="rawLogId"/>
-            <result property="logName" column="rawLogName"/>
-            <result property="createDate" column="rawLogCreateDate"/>
-            <result property="format" column="rawLogFormat"/>
-            <result property="state" column="rawLogState"/>
-            <result property="userId" column="rawLogUserId"/>
-            <result property="normalLogId" column="rawLogNormalLogId"/>
+            <id column="rawLogId" property="id"/>
+            <result column="rawLogName" property="logName"/>
+            <result column="rawLogCreateDate" property="createDate"/>
+            <result column="rawLogFormat" property="format"/>
+            <result column="rawLogState" property="state"/>
+            <result column="rawLogUserId" property="userId"/>
+            <result column="rawLogIsShared" property="isShared"/>
+
         </association>
         <association property="normalLog" javaType="NormalLog">
-            <id property="id" column="normalLogId"/>
-            <result property="logName" column="normalLogName"/>
-            <result property="createDate" column="normalLogCreateDate"/>
-            <result property="format" column="normalLogFormat"/>
-            <result property="state" column="normalLogState"/>
-            <result property="userId" column="normalLogUserId"/>
-            <result property="rawLogId" column="normalLogRawLogId"/>
-            <result property="eventLogId" column="normalLogEventLogId"/>
+            <id column="normalLogId" property="id"/>
+            <result column="normalLogName" property="logName"/>
+            <result column="normalLogCreateDate" property="createDate"/>
+            <result column="normalLogFormat" property="format"/>
+            <result column="normalLogState" property="state"/>
+            <result column="normalLogUserId" property="userId"/>
+            <result column="normalLogRawLogId" property="rawLogId"/>
+            <result column="normalLogIsShared" property="isShared"/>
         </association>
         <association property="eventLog" javaType="EventLog">
-            <id property="id" column="eventLogId"/>
-            <result property="logName" column="eventLogName"/>
-            <result property="createDate" column="eventLogCreateDate"/>
-            <result property="format" column="eventLogFormat"/>
-            <result property="state" column="eventLogState"/>
-            <result property="userId" column="eventLogUserId"/>
-            <result property="caseNumber" column="caseNumber"/>
-            <result property="eventNumber" column="eventNumber"/>
-            <result property="perEventInCase" column="perEventInCase"/>
-            <result property="eventNames" column="eventNames"/>
-            <result property="operatorNames" column="operatorNames"/>
+            <id column="eventLogId" property="id"/>
+            <result column="eventLogName" property="logName"/>
+            <result column="eventLogCreateDate" property="createDate"/>
+            <result column="eventLogFormat" property="format"/>
+            <result column="eventLogState" property="state"/>
+            <result column="eventLogUserId" property="userId"/>
+            <result column="eventLogNormalLogId" property="normalLogId"/>
+            <result column="eventLogIsShared" property="isShared"/>
+            <result column="case_number" property="caseNumber"/>
+            <result column="event_number" property="eventNumber"/>
+            <result column="per_event_incase" property="perEventInCase"/>
+            <result column="event_names" property="eventNames"/>
+            <result column="operator_names" property="operatorNames"/>
+            <result column="merge_relation" property="mergeRelation"/>
         </association>
     </resultMap>
 
+
+    <resultMap id="rawLog" type="RawLog">
+        <id column="id" property="id"/>
+        <result column="log_name" property="logName"/>
+        <result column="create_date" property="createDate"/>
+        <result column="format" property="format"/>
+        <result column="state" property="state"/>
+        <result column="userid" property="userId"/>
+        <result column="isshared" property="isShared"/>
+    </resultMap>
 </mapper>

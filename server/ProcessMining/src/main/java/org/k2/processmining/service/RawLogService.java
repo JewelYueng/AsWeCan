@@ -13,6 +13,7 @@ import java.util.List;
  * Created by Aria on 2017/6/13.
  */
 public interface RawLogService {
+    RawLog getRawLogById(String id);
     List<LogGroup> getLogsByUser(User user);
     List<LogGroup> getSharedLogs();
     boolean save(RawLog log, InputStream inputStream);

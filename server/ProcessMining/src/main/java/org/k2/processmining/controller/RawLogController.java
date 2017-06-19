@@ -1,13 +1,14 @@
 package org.k2.processmining.controller;
 
-import com.sun.deploy.net.HttpResponse;
 import org.k2.processmining.model.LogGroup;
+import org.k2.processmining.model.LogShareState;
+import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.log.RawLog;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.RawLogService;
 import org.k2.processmining.storage.LogStorage;
-import org.k2.processmining.support.normal.transform.LogConfiguration;
+import org.k2.processmining.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -42,32 +43,39 @@ public class RawLogController {
     Object upload(@RequestParam("format") String format,
                   @RequestParam("isShare") int isShare,
                   @RequestParam("file")CommonsMultipartFile file) {
-        String rawLogId = UUID.randomUUID().toString();
+        String rawLogId = Util.getUUIDString();
+
+        User user = getUser();
+
+        if (!LogShareState.isValid(isShare)) {
+            isShare = LogShareState.UNSHARED.getValue();
+        }
         RawLog rawLog = new RawLog();
         rawLog.setId(rawLogId);
-        rawLog.setUserId("1");
+        rawLog.setUserId(user.getId());
         rawLog.setFormat(format);
         rawLog.setCreateDate(new Date());
         rawLog.setLogName(file.getName());
-        rawLog.setState(isShare);
+        rawLog.setIsShared(isShare);
+        Map<String, Object> res = new HashMap<>();
+        int code = 1;
         try (InputStream inputStream = file.getInputStream()){
-            if (rawLogService.save(rawLog, inputStream)) {
-                return rawLog;
+            if (! rawLogService.save(rawLog, inputStream)) {
+                code = 0;
             }
         }
         catch (IOException e) {
             e.printStackTrace();
+            code = 0;
         }
-
-        return null;
+        // may return rawLog
+        res.put("code", code);
+        return res;
     }
 
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public void download(@RequestParam("id") String id, HttpServletResponse response) {
-        RawLog rawLog = new RawLog();
-        rawLog.setUserId("1");
-        rawLog.setId(id);
-        rawLog.setLogName("rawLog.txt");
+        RawLog rawLog = rawLogService.getRawLogById(id);
         String fileName = rawLog.getLogName();
         response.setHeader("Content-Disposition","attachment;filename="+fileName);
         try (OutputStream outputStream = response.getOutputStream()){
@@ -83,23 +91,28 @@ public class RawLogController {
 
     @RequestMapping(value = "/normalize", method = RequestMethod.POST)
     public @ResponseBody
-    NormalLog normalize(@Valid @RequestBody NormalizeRawLogConfigForm form) {
-        RawLog rawLog = new RawLog(); // have to fix it later, get from database
-        // TODO: 2017/6/17 validate rawLog owner
-        rawLog.setId(form.getRawLogId());
-        rawLog.setUserId("1");
+    Object normalize(@Valid @RequestBody NormalizeRawLogConfigForm form) {
+        RawLog rawLog = rawLogService.getRawLogById(form.getRawLogId());
+        User user = getUser();
+        Map<String, Object> res = new HashMap<>();
+        if (rawLog == null || rawLog.getUserId() == null
+                || !rawLog.getUserId().equals(user.getId()) || !LogState.isActive(rawLog.getState())) {
+            res.put("code", 0);
+            return res;
+        }
         NormalLog normalLog = rawLogService.normalize(rawLog, form.toLogConfiguration());
         if (normalLog == null) {
-
+            res.put("code", 0);
+            return res;
         }
-        return normalLog;
+        res.put("code", 1);
+        return res;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public @ResponseBody
     Object getLogByUserId() {
-        User user = new User();
-        user.setId("1");
+        User user = getUser();
         List<LogGroup> logGroups = rawLogService.getLogsByUser(user);
         Map<String, Object> map = new HashMap<>();
         map.put("logGroups", logGroups);
@@ -119,4 +132,10 @@ public class RawLogController {
 
     public void getLogByFuzzyName(){}  //模糊搜索
 
+    private User getUser() {
+        User user = new User();
+        user.setId("1");
+        user.setName("y2k");
+        return user;
+    }
 }

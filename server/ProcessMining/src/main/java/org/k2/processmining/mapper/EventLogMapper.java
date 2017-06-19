@@ -1,5 +1,6 @@
 package org.k2.processmining.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.k2.processmining.model.log.EventLog;
 import org.springframework.stereotype.Repository;
 
@@ -8,5 +9,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface EventLogMapper {
+    EventLog getEventLogById(@Param("id") String id);
     void save(EventLog eventLog);
 }
