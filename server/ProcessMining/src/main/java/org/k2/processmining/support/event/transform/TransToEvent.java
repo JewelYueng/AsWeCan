@@ -18,6 +18,7 @@ import java.util.Map;
  */
 public class TransToEvent {
     public static File transToEvent(InputStream normalLogInputStream, String path, String name) {
+        if (!path.endsWith("/") && !path.endsWith("\\")) path += File.separatorChar;
         Log4Normal log4Normal = getLog(normalLogInputStream, name);
         if (log4Normal != null) {
             try {

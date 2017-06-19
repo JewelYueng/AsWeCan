@@ -37,6 +37,14 @@ public class Util {
         return rawLogName + "-normal.txt";
     }
 
+    public static String getTransEventName(String normalLogName) {
+        int i = normalLogName.lastIndexOf(".");
+        if (i != -1) {
+            normalLogName = normalLogName.substring(0, i);
+        }
+        return normalLogName + "-event.xes";
+    }
+
     public static boolean isActive(AbstractLog log) {
         return log != null && LogState.isActive(log.getState());
     }

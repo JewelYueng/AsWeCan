@@ -3,19 +3,29 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.k2.processmining.mapper.NormalLogMapper">
 
+    <select id="getNormalLogById" resultMap="normalLog">
+        SELECT * FROM normal_log WHERE id=#{id}
+    </select>
 
-    <select id="getAllSharedNormalLogs" resultMap="logGroup">
-        select raw_log.id rawLogId, raw_log.logName rawLogName, raw_log.format rawLogFormat,
-        raw_log.createDate rawLogCreateDate, raw_log.isShared rawLogisShared,raw_log.state rawLogState,
-        raw_log.userId rawLogUserId,raw_log.normalLogId rawLogNormalLogId,
-        normal_log.id normalLogId, normal_log.logName normalLogName, normal_log.format normalLogFormat,
-        normal_log.createDate normalLogCreateDate, normal_log.isShared norlmalLogisShared, normal_log.state normalLogState, normal_log.userId normalLogUserId,
-        normal_log.rawLogId normalLogRawLogId, normal_log.eventLogId normalLogEventLogId,
-        event_log.id eventLogId, event_log.logName eventLogName, event_log.format eventLogFormat,
-        event_log.createDate eventLogCreateDate, event_log.isShared eventLogisShared, event_log.state eventLogState, event_log.userId eventLogUserId,
-        event_log.normalLogId eventLogNormalLogId, caseNumber, eventNumber, perEventInCase, eventNames, operatorNames
-        from raw_log left join normal_log on raw_log.id = normal_log.raw_log_id left join event_log on normal_log.id = event_log.normalLogId
-        where normalLogisShared = 1 AND normalLogisState = 1
+    <select id="listLogGroupsByUserIdAndState" resultMap="org.k2.processmining.mapper.RawLogMapper.logGroup">
+        SELECT
+          <include refid="org.k2.processmining.mapper.RawLogMapper.logGroupSelectColumns"/>
+        FROM
+            (SELECT * FROM normal_log WHERE userid=#{userId} AND state=#{state}) NL
+            LEFT JOIN event_log EL ON EL.normal_log_id = NL.id
+            LEFT JOIN raw_log RL ON NL.raw_log_id = RL.id
+    </select>
+
+    <select id="listLogGroupsByStateAndSharedState" resultMap="org.k2.processmining.mapper.RawLogMapper.logGroup">
+        SELECT
+        <include refid="org.k2.processmining.mapper.RawLogMapper.userColumns"/>
+        ,
+        <include refid="org.k2.processmining.mapper.RawLogMapper.logGroupSelectColumns"/>
+        FROM
+        (SELECT * FROM normal_log WHERE state=#{state} AND isshared=#{isShared}) NL
+        LEFT JOIN event_log EL ON EL.normal_log_id = NL.id
+        LEFT JOIN raw_log RL ON NL.raw_log_id = RL.id
+        LEFT JOIN user ON EL.userid = user.id;
     </select>
     
     <!--<update id="updateShareStateByLogId" parameterType="java.util.List">-->
@@ -37,43 +47,15 @@
         VALUES(#{id}, #{logName}, #{createDate}, #{userId}, #{format}, #{isShared}, #{state}, #{rawLogId})
     </insert>
 
-
-    <resultMap id="logGroup" type="LogGroup">
-        <association property="rawLog" javaType="RawLog">
-            <id property="id" column="rawLogId"/>
-            <result property="logName" column="rawLogName"/>
-            <result property="createDate" column="rawLogCreateDate"/>
-            <result property="format" column="rawLogFormat"/>
-            <result property="isShared" column="rawLogisShared"/>
-            <result property="state" column="rawLogState"/>
-            <result property="userId" column="rawLogUserId"/>
-            <result property="normalLogId" column="rawLogNormalLogId"/>
-        </association>
-        <association property="normalLog" javaType="NormalLog">
-            <id property="id" column="normalLogId"/>
-            <result property="logName" column="normalLogName"/>
-            <result property="createDate" column="normalLogCreateDate"/>
-            <result property="format" column="normalLogFormat"/>
-            <result property="isShared" column="normalLogisShared"/>
-            <result property="state" column="normalLogState"/>
-            <result property="userId" column="normalLogUserId"/>
-            <result property="rawLogId" column="normalLogRawLogId"/>
-            <result property="eventLogId" column="normalLogEventLogId"/>
-        </association>
-        <association property="eventLog" javaType="EventLog">
-            <id property="id" column="eventLogId"/>
-            <result property="logName" column="eventLogName"/>
-            <result property="createDate" column="eventLogCreateDate"/>
-            <result property="format" column="eventLogFormat"/>
-            <result property="isShared" column="eventLogisShared"/>
-            <result property="state" column="eventLogState"/>
-            <result property="userId" column="eventLogUserId"/>
-            <result property="caseNumber" column="caseNumber"/>
-            <result property="eventNumber" column="eventNumber"/>
-            <result property="perEventInCase" column="perEventInCase"/>
-            <result property="eventNames" column="eventNames"/>
-            <result property="operatorNames" column="operatorNames"/>
-        </association>
+    <resultMap id="normalLog" type="NormalLog">
+        <id column="id" property="id"/>
+        <result column="log_name" property="logName"/>
+        <result column="create_date" property="createDate"/>
+        <result column="format" property="format"/>
+        <result column="state" property="state"/>
+        <result column="userid" property="userId"/>
+        <result column="isshared" property="isShared"/>
+        <result column="raw_log_id" property="rawLogId"/>
     </resultMap>
 
 </mapper>

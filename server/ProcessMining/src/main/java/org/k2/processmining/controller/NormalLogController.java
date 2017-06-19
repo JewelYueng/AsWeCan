@@ -2,16 +2,25 @@ package org.k2.processmining.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.k2.processmining.model.LogShareState;
+import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.log.NormalLog;
+import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.NormalLogService;
+import org.k2.processmining.storage.LogStorage;
+import org.k2.processmining.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.*;
 
 /**
@@ -24,21 +33,20 @@ public class NormalLogController {
     @Autowired
     private NormalLogService normalLogService;
 
+    @Autowired
+    private LogStorage logStorage;
+
     /**
      * 获取用户的规范化日志列表
      * @return
      */
     @RequestMapping(value = "",method = RequestMethod.GET)
     public @ResponseBody
-    List<NormalLog> getLogByUserId(HttpServletRequest request, HttpServletResponse response){
-        String userId = null;
-        if (request.getSession().getAttribute("userid")!=null){
-            userId = request.getSession().getAttribute("userid").toString();
-            //TODO
-            //验证userid是否有效
-        }
-
-        return normalLogService.getNormalLogsByUserId(userId);
+    Object getLogByUserId(HttpServletRequest request, HttpServletResponse response){
+        User user = getUser();
+        Map<String, Object> map = new HashMap<>();
+        map.put("logGroups", normalLogService.getLogGroupsByUserId(user.getId()));
+        return map;
     }
 
 
@@ -48,11 +56,8 @@ public class NormalLogController {
      */
     @RequestMapping(value = "/sharedLogs",method = RequestMethod.GET)
     public @ResponseBody
-    List<NormalLog> getSharedLog(){
-        //TODO
-        //验证session中的userid和username存在且有效后才能取数据
-
-        return normalLogService.getAllSharedNormalLogs();
+    Object getSharedLog(){
+        return new HashMap<String, Object>() {{put("logGroups", normalLogService.getSharedLogGroups());}};
     }
 
 
@@ -63,11 +68,39 @@ public class NormalLogController {
      * @param file
      * @return
      */
-    @RequestMapping(value = "/uploadLog",method = RequestMethod.POST)
+    @RequestMapping(value = "/upload",method = RequestMethod.POST)
+    public @ResponseBody
     Object uploadLog(@RequestParam("format") String format,
                      @RequestParam("isShare") int isShare,
                      @RequestParam("file")CommonsMultipartFile file){
-        return null;
+        String normalLogId = Util.getUUIDString();
+
+        User user = getUser();
+
+        if (!LogShareState.isValid(isShare)) {
+            isShare = LogShareState.UNSHARED.getValue();
+        }
+        NormalLog normalLog = new NormalLog();
+        normalLog.setId(normalLogId);
+        normalLog.setUserId(user.getId());
+        normalLog.setFormat(format);
+        normalLog.setCreateDate(new Date());
+        normalLog.setLogName(file.getOriginalFilename());
+        normalLog.setIsShared(isShare);
+        Map<String, Object> res = new HashMap<>();
+        int code = 1;
+        try (InputStream inputStream = file.getInputStream()){
+            if (! normalLogService.save(normalLog, inputStream)) {
+                code = 0;
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            code = 0;
+        }
+        // may return rawLog
+        res.put("code", code);
+        return res;
     }
 
 
@@ -75,9 +108,23 @@ public class NormalLogController {
      * 下载规范化日志
      * @return
      */
-    @RequestMapping(value = "/download")
-    Object download(){
-        return null;
+    @RequestMapping(value = "/download", method = RequestMethod.GET)
+    public void download(@RequestParam("id") String id, HttpServletResponse response) {
+        NormalLog normalLog = normalLogService.getNormalLogById(id);
+        User user = getUser();
+        if (!Util.isActiveAndBelongTo(normalLog, user)) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        String fileName = normalLog.getLogName();
+        response.setHeader("Content-Disposition","attachment;filename=" + Util.encodeForURL(fileName));
+        try (OutputStream outputStream = response.getOutputStream()){
+            logStorage.download(normalLog, outputStream);
+            outputStream.flush();
+        }
+        catch (IOException e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
     }
 
 
@@ -162,24 +209,34 @@ public class NormalLogController {
      */
     @RequestMapping(value = "/toEventLog", method = RequestMethod.POST)
     public @ResponseBody
-    EventLog transToEvent(@RequestParam("id") String id) {
-        NormalLog normalLog = new NormalLog(); // have to get from database
-        // TODO: 2017/6/17 validate
-        normalLog.setUserId("1");
-        normalLog.setId(id);
-        EventLog eventLog = normalLogService.transToEventLog(normalLog);
-        if (eventLog != null) {
-            return eventLog;
+    Object transToEvent(@RequestParam("id") String id) {
+        NormalLog normalLog = normalLogService.getNormalLogById(id);
+        User user = getUser();
+        Map<String, Object> res = new HashMap<>();
+        if (normalLog == null || normalLog.getUserId() == null
+                || !normalLog.getUserId().equals(user.getId()) || !LogState.isActive(normalLog.getState())) {
+            res.put("code", 0);
+            res.put("msg", "The log is not exist!");
+            return ResponseEntity.badRequest().body(res);
         }
-        // addNormalLog other msg
-        return null;
+        EventLog eventLog = normalLogService.transToEventLog(normalLog);
+        if (eventLog == null) {
+            res.put("code", 0);
+            return res;
+        }
+        res.put("code", 1);
+        return res;
     }
 
 
 
 
-
-
+    private User getUser() {
+        User user = new User();
+        user.setId("1");
+        user.setName("y2k");
+        return user;
+    }
 
 
 

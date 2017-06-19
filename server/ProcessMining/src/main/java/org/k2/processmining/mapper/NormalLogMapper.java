@@ -1,5 +1,7 @@
 package org.k2.processmining.mapper;
 
+import org.apache.ibatis.annotations.Param;
+import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.log.NormalLog;
 import org.springframework.stereotype.Repository;
 
@@ -12,8 +14,10 @@ import java.util.Map;
 @Repository
 public interface NormalLogMapper {
 
-    List<NormalLog> getNormalLogsByUserId(String userId);
-    List<NormalLog> getAllSharedNormalLogs();
+    List<LogGroup> listLogGroupsByUserIdAndState(@Param("userId") String userId, @Param("state") int state);
+    List<LogGroup> listLogGroupsByStateAndSharedState(@Param("state")int state, @Param("isShared") int isShared);
+
+    NormalLog getNormalLogById(@Param("id") String id);
 
 //    void updateShareStateByLogId(List<NormalLog> normalLogList);
 

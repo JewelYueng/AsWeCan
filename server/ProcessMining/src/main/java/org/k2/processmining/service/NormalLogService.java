@@ -1,8 +1,10 @@
 package org.k2.processmining.service;
 
+import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.log.NormalLog;
 
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -10,15 +12,19 @@ import java.util.List;
  */
 public interface NormalLogService {
 
-    List<NormalLog> getNormalLogsByUserId(String userId);
+    List<LogGroup> getLogGroupsByUserId(String userId);
 
-    List<NormalLog> getAllSharedNormalLogs();
+    List<LogGroup> getSharedLogGroups();
+
+    NormalLog getNormalLogById(String id);
 
     int updateShareStateByLogId(List<String> idList,int isshared);
 
     int deleteLogByLogId(List<String> idList);
 
     void addNormalLog(NormalLog normalLog);
+
+    boolean save(NormalLog normalLog, InputStream inputStream);
 
     EventLog transToEventLog(NormalLog normalLog);
 }
