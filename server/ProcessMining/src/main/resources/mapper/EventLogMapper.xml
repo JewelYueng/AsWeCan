@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.k2.processmining.mapper.EventLogMapper">
+
+    <insert id="save" parameterType="EventLog">
+        INSERT INTO event_log(id, log_name, create_date, userid, format, normal_log_id, state, isshared,
+         merge_relation, case_number, event_number, per_event_incase, event_names, operator_names)
+        VALUES (#{id}, #{logName}, #{createDate}, #{userId}, #{format}, #{normalLogId}, #{state}, #{isShared},
+                  #{mergeRelation}, #{caseNumber}, #{eventNumber}, #{perEventInCase}, #{eventNames}, #{operatorNames})
+    </insert>
+</mapper>

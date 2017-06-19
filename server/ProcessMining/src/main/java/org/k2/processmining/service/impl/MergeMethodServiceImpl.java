@@ -1,6 +1,7 @@
 package org.k2.processmining.service.impl;
 
 import org.deckfour.xes.model.XLog;
+import org.k2.processmining.mapper.EventLogMapper;
 import org.k2.processmining.mapper.MergeMethodMapper;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.EventLog;
@@ -14,10 +15,12 @@ import org.k2.processmining.support.event.parse.EventLogParse;
 import org.k2.processmining.support.event.sumarise.EventLogSummary;
 import org.k2.processmining.support.event.sumarise.Summarize;
 import org.k2.processmining.support.merge.Merger;
+import org.k2.processmining.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +32,9 @@ public class MergeMethodServiceImpl implements MergeMethodService{
 
     @Autowired
     private MergeMethodMapper mergeMethodMapper;
+
+    @Autowired
+    private EventLogMapper eventLogMapper;
 
     @Autowired
     private EventLogParse eventLogParse;
@@ -98,8 +104,11 @@ public class MergeMethodServiceImpl implements MergeMethodService{
             return null;
         }
         EventLog resultEventLog = new EventLog();
-        resultEventLog.setId("3");
-        resultEventLog.setUserId("1");
+        resultEventLog.setId(Util.getUUIDString());
+        resultEventLog.setUserId(eventLog1.getUserId());
+        resultEventLog.setLogName(Util.getMergeName(eventLog1.getLogName(), eventLog2.getLogName()));
+        resultEventLog.setCreateDate(new Date());
+        resultEventLog.setFormat("xes");
         if (logStorage.upload(resultEventLog, outputStream -> eventLogExport.convertXLog(resultXLog, outputStream))) {
             EventLogSummary eventLogSummary = Summarize.summarizeXLog(resultXLog);
             resultEventLog.setCaseNumber(eventLogSummary.getCases());
@@ -109,7 +118,7 @@ public class MergeMethodServiceImpl implements MergeMethodService{
 
             resultEventLog.setMergeRelation(eventLog1.getId() + "," + eventLog2.getId());
             // TODO: 2017/6/17 save resultEventLog in database, if fail delete eventLog from file system
-
+            eventLogMapper.save(resultEventLog);
             return resultEventLog;
         }
         return null;

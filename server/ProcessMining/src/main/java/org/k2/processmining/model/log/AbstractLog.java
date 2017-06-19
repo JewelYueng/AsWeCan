@@ -11,8 +11,8 @@ public abstract class AbstractLog {
     private String logName;
     private Date createDate;
     private String format; //日志文件格式
-    private int state;
-    private int isShare;
+    private int state = 1;
+    private int isShared = 0;
     private String userId;
 
     public AbstractLog(String type) {
@@ -63,12 +63,12 @@ public abstract class AbstractLog {
         this.state = state;
     }
 
-    public int getIsShare() {
-        return isShare;
+    public int getIsShared() {
+        return isShared;
     }
 
-    public void setIsShare(int isShare) {
-        this.isShare = isShare;
+    public void setIsShared(int isShared) {
+        this.isShared = isShared;
     }
 
     public String getUserId() {
