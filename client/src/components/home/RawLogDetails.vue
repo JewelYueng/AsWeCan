@@ -2,16 +2,16 @@
   <div class="raw-log-details">
     <div>
       <a href="" class=" btn bgbtn02 btn_upload btn_common">
-        <img src="F:\实训\界面设计\icon\upload.png"/>上传
+        <img src="static/upload.png"/>上传
       </a>
       <a href="" class="btn bgbtn02 btn_generate btn_common">
-        <img src="F:\实训\界面设计\icon\生成.png"/>生成
+        <img src="static/generator.png"/>生成
       </a>
       <a href="" class="btn bgbtn02 btn_download btn_common">
-        <img src="F:\实训\界面设计\icon\download.png"/>下载
+        <img src="static/download.png"/>下载
       </a>
       <a href="" class="btn bgbtn02 btn_share btn_common">
-        <img src="F:\实训\界面设计\icon\share_white.png"/>分享
+        <img src="static/share_white.png"/>分享
       </a>
       <input type="text" class='search' placeholder='输入关键字'>
     </div>
@@ -22,10 +22,10 @@
     </div>
     <div>
       <ul>
-        <li><input type='checkbox'  @click="selectAll">&nbsp;文件名&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;日期&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;规范化日志&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;事件日志</li>
+        <li><input type='checkbox' v-model="checkAll">&nbsp;文件名&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;日期&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;规范化日志&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;事件日志</li>
         <hr>
         <template v-for="item in items">
-          <li><input type='checkbox' v-model="selectArr">{{item.log_name}}&#12288;&#12288;<img src="F:\实训\界面设计\icon\生成_color.png"><img src="F:\实训\界面设计\icon\download_color.png"><img src="F:\实训\界面设计\icon\share_color.png">{{item.create_date}}&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;{{item.normal_log}}&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;{{item.event_log}}</li>
+          <li><input type='checkbox' v-model="checked"  :value="item.id"  @click="currClick(item,$index)">{{item.log_name}}&#12288;&#12288;<img src="static/generator_color.png"><img src="static/download_color.png"><img src="static/share_color.png">{{item.create_date}}&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;{{item.normal_log}}&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;{{item.event_log}}</li>
           <hr>
         </template>
       </ul>
@@ -130,16 +130,20 @@
   export default{
     data(){
       return {
-        selectArr: [],
-        amount: 0,
+        checked:[],
+        totalAmount:[],
+      /*  checkAll:false,*/
+       /* amount: 0,*/
         items:[
           {
+            id:1,
             log_name:'first-log',
             create_date:'2017-1-1',
             normal_log:'first-normal-log',
             event_log:'first-event-log'
           },
           {
+            id:2,
             log_name:'second-log',
             create_date:'2017-2-1',
             normal_log:'second-normal-log',
@@ -148,24 +152,73 @@
         ]
       }
     },
+   computed:{
+     amount:function(item,index){
+       let sum = this.totalAmount.length;
+       return sum;
+     },
+     checkAll: {
+       get: function() {
+         return this.checkedCount == this.items.length;
+       },
+       set: function(value){
+         var _this = this;
+         if (value) {
+           this.totalAmount = [];
+           this.checked = this.items.map(function(item) {
+             item.checked = true;
+             let total = item.id;
+             _this.totalAmount.push(total);
+             return item.id;
+           })
+         }else{
+           this.checked = [];
+           this.totalAmount=[];
+           this.items.forEach(function(item,index){
+             item.checked = false;
+           });
+         }
+       }
+     },
+     checkedCount: {
+       get: function() {
+         return this.checked.length;
+       }
+     }
+   },
     methods:{
-      selectAll(event){
-        let  _this = this;
-        console.log(event.currentTarget);
-        if (!event.currentTarget.checked){
-          this.selectArr = [];
-        }
-        else{
-          _this.selectArr = [];
-          _this.items.forEach(function(item, i) {
-            _this.selectArr.push(i);
-          });
+      currClick:function(item,index){
+        var _this = this;
+        if(typeof item.checked == 'undefined'){
+          this.$set(item,'checked',true);
+          let total = item.id;
+          this.totalAmount.push(total);
+          console.log(this.totalAmount);
+        }else{
+          item.checked = !item.checked;
+          if(item.checked){
+            this.totalAmount = [];
+            this.items.map(function(item,index){
+              if(item.checked){
+                let total = item.id;
+                _this.totalAmount.push(total);
+              }
+            });
+          }else{
+            this.totalAmount = [];
+            this.items.forEach(function(item,index){
+              if(item.checked){
+                let total = item.id;
+                _this.totalAmount.push(total);
+              }
+            });
+          }
         }
       }
     },
     watch:{
-      selectArr:function(){
-        this.amount=this.selectArr.length;
+      checked:function(){
+        this.amount=this.totalAmount.length;
       }
     }
   }
