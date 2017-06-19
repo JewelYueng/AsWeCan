@@ -13,6 +13,8 @@
   import LeftSide from 'components/home/LeftSide.vue'
   import LogList from 'components/home/logList/Index'
   import ShareList from 'components/home/sharelist/Index'
+  import LogMerge from 'components/home/Merge'
+  import ProcessMining from 'components/home/ProcessMining'
 
   export default{
     data(){
@@ -21,8 +23,8 @@
         view_dict: {
         	loglist: LogList,
           sharelist: ShareList,
-//          merge: LogMerge,
-//          mining: ProcessMining
+          merge: LogMerge,
+          mining: ProcessMining
         }
       }
     },
@@ -30,8 +32,8 @@
       LeftSide,
       LogList,
       ShareList,
-//      LogMerge,
-//      ProcessMining
+      LogMerge,
+      ProcessMining
     },
     computed: {
     	current_view() {
