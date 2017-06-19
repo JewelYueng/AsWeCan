@@ -13,5 +13,6 @@ import java.util.List;
 @Repository
 public interface RawLogMapper {
     void save(RawLog log);
-    List<LogGroup> listLogsByUserId(@Param("userId") String userId);
+    List<LogGroup> listLogsByUserIdAndState(@Param("id") String id, @Param("state") int state);
+    List<LogGroup> listLogsByState(@Param("state") int state);
 }

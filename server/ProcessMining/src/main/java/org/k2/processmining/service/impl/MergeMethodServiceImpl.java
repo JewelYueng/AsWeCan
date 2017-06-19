@@ -2,7 +2,7 @@ package org.k2.processmining.service.impl;
 
 import org.deckfour.xes.model.XLog;
 import org.k2.processmining.mapper.MergeMethodMapper;
-import org.k2.processmining.model.State;
+import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.mergemethod.MergeMethod;
 import org.k2.processmining.service.MergeMethodService;
@@ -46,7 +46,7 @@ public class MergeMethodServiceImpl implements MergeMethodService{
 
     @Override
     public List<MergeMethod> getActiveMethods() {
-        return mergeMethodMapper.listMethodByState(State.ACTIVE.getValue());
+        return mergeMethodMapper.listMethodByState(LogState.ACTIVE.getValue());
     }
 
     @Override
@@ -75,7 +75,7 @@ public class MergeMethodServiceImpl implements MergeMethodService{
 
     @Override
     public boolean isActive(MergeMethod mergeMethod) {
-        return mergeMethod != null && mergeMethod.getState() == State.ACTIVE.getValue();
+        return mergeMethod != null && mergeMethod.getState() == LogState.ACTIVE.getValue();
     }
 
 

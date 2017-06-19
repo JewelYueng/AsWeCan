@@ -2,7 +2,7 @@ package org.k2.processmining.service.impl;
 
 import org.deckfour.xes.model.XLog;
 import org.k2.processmining.mapper.MiningMethodMapper;
-import org.k2.processmining.model.State;
+import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.miningmethod.MiningMethod;
 import org.k2.processmining.service.MiningMethodService;
@@ -39,7 +39,7 @@ public class MiningMethodServiceImpl implements MiningMethodService {
 
     @Override
     public List<MiningMethod> getActiveMethods() {
-        return miningMethodMapper.listMethodByState(State.ACTIVE.getValue());
+        return miningMethodMapper.listMethodByState(LogState.ACTIVE.getValue());
     }
 
     @Override
@@ -65,7 +65,7 @@ public class MiningMethodServiceImpl implements MiningMethodService {
     }
 
     public boolean isActive(MiningMethod miningMethod) {
-        return miningMethod != null && State.ACTIVE.getValue() == miningMethod.getState();
+        return miningMethod != null && LogState.ACTIVE.getValue() == miningMethod.getState();
     }
 
     @Override

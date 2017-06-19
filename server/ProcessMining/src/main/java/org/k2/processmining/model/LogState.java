@@ -3,10 +3,10 @@ package org.k2.processmining.model;
 /**
  * Created by nyq on 2017/6/17.
  */
-public enum State {
+public enum LogState {
     FREEZE(0), ACTIVE(1), DELETE(2);
     private int value;
-    State(int state) {
+    LogState(int state) {
         this.value = state;
     }
 
