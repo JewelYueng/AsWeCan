@@ -1,8 +1,7 @@
 <template>
-  <div class="log-list">
-    <div class="list-tab">
+  <div>
+    <NormalLog></NormalLog>
 
-    </div>
   </div>
 </template>
 
@@ -11,8 +10,17 @@
 </style>
 
 <script>
-  export default{
+  import NormalLog from 'components/home/logList/NormalLog.vue'
 
+  export default{
+      data(){
+          return{
+
+          }
+      },
+    components:{
+      NormalLog
+    }
   }
 
 </script>
