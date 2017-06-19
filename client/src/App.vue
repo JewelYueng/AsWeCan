@@ -14,16 +14,19 @@
   }
 </script>
 
-<style lang="less" scoped>
+<style lang="less" scoped rel="stylesheet/less">
+  @import './assets/layout.less';
+
   .border {
     border: 1px solid red;
   }
 
   #app {
-
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
+    width: @major_width;
+    margin-left: auto;
+    margin-right: auto;
+
   }
 </style>

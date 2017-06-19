@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.k2.processmining.mapper.MiningMethodMapper">
+
+    <select id="listMethods" resultMap="MiningMethodResult">
+        SELECT * FROM mining_method;
+    </select>
+
+    <select id="listMethodByState" resultMap="MiningMethodResult">
+        SELECT * FROM mining_method WHERE state=#{state}
+    </select>
+
+    <select id="getMethodById" resultMap="MiningMethodResult">
+        SELECT * FROM mining_method WHERE id=#{id}
+    </select>
+
+    <resultMap id="MiningMethodResult" type="MiningMethod">
+        <id column="id" property="id"/>
+        <result column="method_name" property="methodName"/>
+        <result column="state" property="state"/>
+    </resultMap>
+
+</mapper>

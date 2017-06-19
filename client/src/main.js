@@ -4,12 +4,22 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
+import  Vuex from 'vuex'
+Vue.use(Vuex)
+
+import VueResource from 'vue-resource'
+Vue.use(VueResource)
+
+// import httpPlugin from './api'
+// Vue.use(httpPlugin)
+
+import store from './store'
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
-new Vue({
-  el: '#app',
+ new Vue({
   router,
-  template: '<App/>',
-  components: { App }
-})
+  render: h => h(App),
+  store: new Vuex.Store(store)
+}).$mount('#app')

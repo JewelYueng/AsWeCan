@@ -16,12 +16,15 @@
 		http://www.springframework.org/schema/tx/spring-tx-4.3.xsd ">
 
     <!--组件扫描器扫描这一层组要扫描处理器-->
-    <context:component-scan base-package="org.k2.processmining.controller">
-        <!--<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>-->
-        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-    </context:component-scan>
+    <!--<context:component-scan base-package="org.k2.processmining.controller">-->
+        <!--&lt;!&ndash;<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>&ndash;&gt;-->
+        <!--<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>-->
+    <!--</context:component-scan>-->
+    <context:component-scan base-package="org.k2.processmining"/>
     <!--配置注解的映射器和适配器以及其他配置-->
     <mvc:annotation-driven/>
+
+    <context:property-placeholder location="classpath*:algorithm.properties" order="0" ignore-unresolvable="true"/>
 
     <mvc:cors>
         <mvc:mapping path="/**/**"
@@ -64,6 +67,10 @@
                 <value>application/json;charset=utf-8</value>
             </list>
         </property>
+    </bean>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="-1" />
     </bean>
 
 </beans>
