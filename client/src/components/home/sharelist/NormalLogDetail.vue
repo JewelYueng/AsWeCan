@@ -1,47 +1,36 @@
 <template>
-  <div class="event-log-details">
-      <div id="head">
-        <a href="" class=" btn bgbtn02 btn_upload btn_common">
-          <img src="static/img/upload.png"/>上传
-        </a>
-        <a href="" class="btn bgbtn02 btn_share btn_common">
-          <img src="static/img/share_white.png"/>分享
-        </a>
-        <input type="text" class='search' placeholder='请输入关键字'><img id="search_button" src="static/img/search.png">
-      </div>
-      <div class='title'>
-        <span class='title_left'>全部文件，共{{amount}}个</span>
-        <span class='title_right'>关联文件</span>
-      </div>
+  <div class="normal-log">
+    <input type="text" class="search" placeholder="请输入关键字"><img id="search_button" src="static/img/search.png">
+    <div class="head-2"><span>全部文件，共{{amount}}个</span><span>关联文件</span></div>
     <div id="log-list">
       <div class="list"><div><input type="checkbox" v-model="checkAll" id="文件名" value="文件名">
-        <span>文件名</span></div><div></div><div>日期</div><div>原始日志</div><div>规范化日志</div><div>融合来源</div></div>
+        <span>文件名</span></div><div>上传者</div><div>日期</div><div>原始日志</div><div>事件日志</div></div>
       <div class="list" v-for="(item,index) in items">
         <div><input type="checkbox" v-model="checked" :value="item.id"  @click="currClick(item,index)">
           <span>{{item.log_name}}</span></div>
-        <div><img class="process_button" title="开始流程挖掘" v-on:click="processMining(index)" src="static/img/process_color.png">
-          <img class="download_button" title="下载" src="static/img/download_color.png">
-          <img class="share_button" title="分享" src="static/img/share_color.png"></div>
-        <div>{{item.create_date}}</div><div>{{item.raw_log}}</div><div>{{item.normal_log}}</div><div>{{item.mergeSource}}</div>
+        <div>{{item.creater}}</div><div>{{item.create_date}}</div>
+        <div>{{item.rawLog_name}}</div><div>{{item.eventLog_name}}</div>
+        <img class="download_button" title="下载" src="static/img/download_color.png">
       </div>
     </div>
-    </div>
-
+  </div>
 </template>
 
 <style lang="less" scoped rel="stylesheet/less">
   @import '~assets/colors.less';
   @import "~assets/layout.less";
-  #head{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-  }
-  .event-log-details{
+  .normal-log{
     padding-top: 20px;
   }
+  .head-2{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 20px;
+    margin-right: 210px;
+    font-size: 20px;
+  }
   .search{
-    margin-left: 400px;
     background-color: @tab_separator;
     color: @main_font_color;
     text-align: center;
@@ -53,11 +42,11 @@
   #search_button{
     width: 20px;
     height: 20px;
-    position: relative;
-    left: -40px;
-    top: 5px;
+    position: absolute;
+    right: 400px;
+    padding-top: 5px;
   }
-  .btn_common{
+  .button{
     color: white;
     font-size: 24px;
     text-decoration: none;
@@ -71,14 +60,6 @@
       vertical-align: text-top;
     }
   }
-  .title{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-left: 20px;
-    margin-right: 210px;
-    font-size: 20px;
-  }
   .list:hover{
     background-color: @logList_Choose;
   }
@@ -89,7 +70,7 @@
       img{
         width: 30px;
         height: 30px;
-        margin-right: 10px;
+        margin-left: 20px;
       }
       display: flex;
       flex-direction: row;
@@ -102,6 +83,7 @@
       }
     }
   }
+
 </style>
 
 <script>
@@ -115,33 +97,34 @@
         items:[
           {
             id:1,
-            log_name:'first-event-log',
-            create_date:'2017-3-12',
-            raw_log:'first-raw-log',
-            normal_log:'first-normal-log',
-            mergeSource:'无'
+            log_name:'first-log',
+            create_date:'2017-1-1',
+            rawLog_name:'first-raw-log',
+            eventLog_name:'first-event-log',
+            creater:'mark'
           },
           {
             id:2,
-            log_name:'second-event-log',
-            create_date:'2017-4-12',
-            raw_log:'second-raw-log',
-            normal_log:'second-normal-log',
-            mergeSource:'first-event-log'
+            log_name:'second-log',
+            create_date:'2017-2-1',
+            rawLog_name:'second-raw-log',
+            eventLog_name:'second-event-log',
+            creater:'lee'
           }
         ]
       }
     },
     computed:{
       amount:function(item,index){
-        return this.totalAmount.length;
+        let sum = this.totalAmount.length;
+        return sum;
       },
       checkAll: {
         get: function() {
-          return this.checkedCount === this.items.length;
+          return this.checkedCount == this.items.length;
         },
         set: function(value){
-          let _this = this;
+          var _this = this;
           if (value) {
             this.totalAmount = [];
             this.checked = this.items.map(function(item) {
@@ -167,8 +150,8 @@
     },
     methods:{
       currClick:function(item,index){
-        let _this = this;
-        if(typeof item.checked === 'undefined'){
+        var _this = this;
+        if(typeof item.checked == 'undefined'){
           this.$set(item,'checked',true);
           let total = item.id;
           this.totalAmount.push(total);
@@ -193,6 +176,9 @@
             });
           }
         }
+      },
+      tranferToEvent: function(index){
+        console.log(index)
       }
     },
     watch:{
