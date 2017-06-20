@@ -9,6 +9,7 @@ import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.RawLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.util.Util;
+import org.k2.processmining.utils.GsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -137,6 +138,63 @@ public class RawLogController {
         Map<String, Object> map = new HashMap<>();
         map.put("logGroups", logGroups);
         return map;
+    }
+
+
+    /**
+     * 分享规范化日志
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/share",method = RequestMethod.POST)
+    public @ResponseBody
+    Map shareNormalLogs(@RequestBody Map map){
+
+        Map result = new HashMap();
+        List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
+        if (idList.size() == 0 ){
+            result.put("code",0);
+        }else {
+            result.put("code",rawLogService.updateShareStateByLogId(idList,LogState.SHARED.getValue()));
+        }
+        return result;
+    }
+
+
+    /**
+     * 取消分享规范化日志
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/unShare",method = RequestMethod.POST)
+    public @ResponseBody
+    Map unShareNormalLogs(@RequestBody Map map){
+        Map result = new HashMap();
+        List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
+        if (idList.size() == 0){
+            result.put("code",0);
+        }else {
+            result.put("code",rawLogService.updateShareStateByLogId(idList,LogState.UNSHARED.getValue()));
+        }
+        return result;
+    }
+
+    /**
+     * 删除日志
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    public @ResponseBody
+    Map deleteByLogId(@RequestBody Map map){
+        Map result = new HashMap();
+        List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
+        if (idList.size() == 0){
+            result.put("code",0);
+        }else {
+            result.put("code",rawLogService.updateStateByLogId(idList,LogState.DELETE.getValue()));
+        }
+        return result;
     }
 
     public void getLogByFuzzyName(){}  //模糊搜索

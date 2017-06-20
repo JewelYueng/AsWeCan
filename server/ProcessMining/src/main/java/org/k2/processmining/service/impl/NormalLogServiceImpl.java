@@ -185,7 +185,7 @@ public class NormalLogServiceImpl implements NormalLogService {
             normalLog.setState(state);
             normalLogMapper.updateLogStateByLogId(normalLog);
         }
-        return 0;
+        return 1;
     }
 
     @Override

@@ -38,7 +38,7 @@
 
     <update id="updateShareStateByLogId" parameterType="NormalLog">
         UPDATE normal_log
-        SET  isshared = #{state, jdbcType = TINYINT}
+        SET  isshared = #{isShared, jdbcType = TINYINT}
         WHERE  id = #{id,jdbcType = VARCHAR}
     </update>
 

@@ -37,6 +37,18 @@
         LEFT JOIN user ON EL.userid = user.id;
     </select>
 
+    <update id="updateShareStateByLogId" parameterType="EventLog">
+        UPDATE event_log
+        SET isshared = #{isShared,jdbcType = TINYINT}
+        WHERE id = #{id,jdbcType = TINYINT}
+    </update>
+
+    <update id="updateLogStateByLogId" parameterType="EventLog">
+        UPDATE event_log
+        SET state = #{state, jdbcType = TINYINT}
+        WHERE id = #{id,jdbcType = VARCHAR}
+    </update>
+
     <resultMap id="eventLog" type="EventLog">
         <id column="id" property="id"/>
         <result column="log_name" property="logName"/>

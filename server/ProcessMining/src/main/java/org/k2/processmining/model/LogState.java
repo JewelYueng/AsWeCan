@@ -9,11 +9,9 @@ public enum LogState {
     LogState(int state) {
         this.value = state;
     }
-
     public int getValue() {
         return value;
     }
-
     public static boolean isActive(int state) {
         return state == ACTIVE.value;
     }

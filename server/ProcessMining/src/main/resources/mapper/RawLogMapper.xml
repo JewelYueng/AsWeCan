@@ -50,6 +50,18 @@
             LEFT JOIN user ON RL.userid = user.id
     </select>
 
+    <update id="updateShareStateByLogId" parameterType="RawLog">
+        UPDATE raw_log
+        SET isshared = #{isShared,jdbcType = TINYINT}
+        WHERE id = #{id,jdbcType = TINYINT}
+    </update>
+
+    <update id="updateLogStateByLogId" parameterType="RawLog">
+        UPDATE raw_log
+        SET state = #{state, jdbcType = TINYINT}
+        WHERE id = #{id,jdbcType = VARCHAR}
+    </update>
+
     <resultMap id="logGroup" type="LogGroup">
         <association property="user" javaType="User">
             <id column="userId" property="id"/>

@@ -17,6 +17,7 @@ public interface RawLogService {
     List<LogGroup> getLogsByUser(User user);
     List<LogGroup> getSharedLogs();
     boolean save(RawLog log, InputStream inputStream);
-    void deleteLogById(List<Integer> idList);
+    int updateShareStateByLogId(List<String> idList,int isshared);
+    int updateStateByLogId(List<String> idList,int state);
     NormalLog normalize(RawLog rawLog, LogConfiguration lc);
 }

@@ -143,7 +143,7 @@ public class NormalLogController {
         if (idList.size() == 0 ){
             result.put("code",0);
         }else {
-            result.put("code",normalLogService.updateShareStateByLogId(idList,LogState.UNSHARED.getValue()));
+            result.put("code",normalLogService.updateShareStateByLogId(idList,LogState.SHARED.getValue()));
         }
         return result;
     }
@@ -176,7 +176,6 @@ public class NormalLogController {
     public @ResponseBody
     Map deleteByLogId(@RequestBody Map map){
         Map result = new HashMap();
-        System.out.println("map:"+map.get("idList").toString());
         List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
         if (idList.size() == 0){
             result.put("code",0);

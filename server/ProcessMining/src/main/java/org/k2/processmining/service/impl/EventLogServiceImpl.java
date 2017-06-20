@@ -6,6 +6,7 @@ import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.LogShareState;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.EventLog;
+import org.k2.processmining.model.log.RawLog;
 import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.event.parse.EventLogParse;
@@ -75,6 +76,41 @@ public class EventLogServiceImpl implements EventLogService {
             }
         }
         return logGroups;
+    }
+
+    /**
+     * 更新日志的分享状态
+     * @param idList
+     * @param isshared
+     * @return
+     */
+    @Override
+    public int updateShareStateByLogId(List<String> idList,int isshared) {
+
+        for (String id : idList) {
+            EventLog eventLog = new EventLog();
+            eventLog.setId(id);
+            eventLog.setIsShared(isshared);//分享
+            eventLogMapper.updateShareStateByLogId(eventLog);
+        }
+        return 1;
+    }
+
+    /**
+     * 更新日志的状态
+     * @param idList
+     * @param state
+     * @return
+     */
+    @Override
+    public int updateStateByLogId(List<String> idList, int state) {
+        for (String id: idList){
+            EventLog eventLog = new EventLog();
+            eventLog.setId(id);
+            eventLog.setState(state);
+            eventLogMapper.updateLogStateByLogId(eventLog);
+        }
+        return 1;
     }
 
     @Override

@@ -14,4 +14,6 @@ public interface EventLogService {
     boolean save(EventLog log, InputStream inputForRemote, InputStream inputForSummarize);
     List<LogGroup> getLogsByUserId(String userId);
     List<LogGroup> getSharedLogs();
+    int updateShareStateByLogId(List<String> idList,int isshared);
+    int updateStateByLogId(List<String> idList,int state);
 }

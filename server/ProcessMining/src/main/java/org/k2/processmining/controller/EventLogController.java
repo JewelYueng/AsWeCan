@@ -2,27 +2,23 @@ package org.k2.processmining.controller;
 
 import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.LogShareState;
+import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.util.Util;
+import org.k2.processmining.utils.GsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Aria on 2017/6/13.
@@ -125,5 +121,61 @@ public class EventLogController {
         user.setId("1");
         user.setName("y2k");
         return user;
+    }
+
+    /**
+     * 分享规范化日志
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/share",method = RequestMethod.POST)
+    public @ResponseBody
+    Map shareNormalLogs(@RequestBody Map map){
+
+        Map result = new HashMap();
+        List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
+        if (idList.size() == 0 ){
+            result.put("code",0);
+        }else {
+            result.put("code",eventLogService.updateShareStateByLogId(idList,LogState.SHARED.getValue()));
+        }
+        return result;
+    }
+
+
+    /**
+     * 取消分享规范化日志
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/unShare",method = RequestMethod.POST)
+    public @ResponseBody
+    Map unShareNormalLogs(@RequestBody Map map){
+        Map result = new HashMap();
+        List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
+        if (idList.size() == 0){
+            result.put("code",0);
+        }else {
+            result.put("code",eventLogService.updateShareStateByLogId(idList,LogState.UNSHARED.getValue()));
+        }
+        return result;
+    }
+
+    /**
+     * 删除日志
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    public @ResponseBody
+    Map deleteByLogId(@RequestBody Map map){
+        Map result = new HashMap();
+        List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
+        if (idList.size() == 0){
+            result.put("code",0);
+        }else {
+            result.put("code",eventLogService.updateStateByLogId(idList,LogState.DELETE.getValue()));
+        }
+        return result;
     }
 }
