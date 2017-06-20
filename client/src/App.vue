@@ -1,15 +1,30 @@
 <template>
   <div id="app">
     <Home></Home>
+    <Modal @show="blurStart" @hide="blurEnd"></Modal>
   </div>
 </template>
 
 <script>
   import Home from './components/home/Index.vue'
+  import Modal from './components/component-plugins/modal/Modal.vue'
   export default {
     name: 'app',
     components: {
-        Home
+      Home, Modal
+    },
+    data() {
+      return {
+        isBlur: false
+      }
+    },
+    methods: {
+      blurStart(){
+        this.isBlur = true
+      },
+      blurEnd(){
+        this.isBlur = false
+      }
     }
   }
 </script>
@@ -28,5 +43,8 @@
     margin-left: auto;
     margin-right: auto;
 
+  }
+  .blur {
+    filter: blur(3px);
   }
 </style>

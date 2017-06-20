@@ -13,6 +13,9 @@ Vue.use(VueResource)
 // import httpPlugin from './api'
 // Vue.use(httpPlugin)
 
+import { Modal } from './components/component-plugins/modal/modal'
+Vue.use(Modal)
+
 import store from './store'
 
 Vue.config.productionTip = false
