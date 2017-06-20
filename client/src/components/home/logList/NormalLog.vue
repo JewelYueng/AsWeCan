@@ -11,11 +11,11 @@
           <span>文件名</span></div><div></div><div>日期</div><div>原始日志</div><div>事件日志</div></div>
         <div class="list" v-for="(item,index) in items">
           <div><input type="checkbox" v-model="checked" :value="item.id"  @click="currClick(item,index)">
-          <div>{{item.log_name}}</div></div>
+          <span>{{item.log_name}}</span></div>
           <div><img class="process_button" title="生成事件日志" v-on:click="tranferToEvent(index)" src="static/img/process_color.png">
             <img class="download_button" title="下载" src="static/img/download_color.png">
             <img class="share_button" title="分享" src="static/img/share_color.png"></div>
-          <div>{{item.create_date}}</div><div>{{item.rowLog_name}}</div><div>{{item.eventLog_name}}</div>
+          <div>{{item.create_date}}</div><div>{{item.rawLog_name}}</div><div>{{item.eventLog_name}}</div>
         </div>
     </div>
   </div>
@@ -95,7 +95,6 @@
     }
   }
 
-
 </style>
 
 <script>
@@ -111,14 +110,14 @@
             id:1,
             log_name:'first-log',
             create_date:'2017-1-1',
-            rowLog_name:'first-row-log',
+            rawLog_name:'first-raw-log',
             eventLog_name:'first-event-log'
           },
           {
             id:2,
             log_name:'second-log',
             create_date:'2017-2-1',
-            rowLog_name:'second-row-log',
+            rawLog_name:'second-raw-log',
             eventLog_name:'second-event-log'
           }
         ]

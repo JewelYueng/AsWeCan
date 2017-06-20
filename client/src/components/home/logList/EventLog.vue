@@ -1,43 +1,107 @@
 <template>
   <div class="event-log-details">
-
-      <div>
+      <div id="head">
         <a href="" class=" btn bgbtn02 btn_upload btn_common">
           <img src="static/img/upload.png"/>上传
-        </a>
-        <a href="" class="btn bgbtn02 btn_generate btn_common">
-          <img src="static/img/process.png"/>挖掘
-        </a>
-        <a href="" class="btn bgbtn02 btn_download btn_common">
-          <img src="static/img/download.png"/>下载
         </a>
         <a href="" class="btn bgbtn02 btn_share btn_common">
           <img src="static/img/share_white.png"/>分享
         </a>
-        <input type="text" class='search' placeholder='输入关键字'>
+        <input type="text" class='search' placeholder='请输入关键字'><img id="search_button" src="static/img/search.png">
       </div>
       <div class='title'>
-        <br>
         <span class='title_left'>全部文件，共{{amount}}个</span>
         <span class='title_right'>关联文件</span>
       </div>
-      <div>
-        <ul>
-          <li><input type='checkbox'  @click="selectAll">&nbsp;文件名&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;日期&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;原始日志&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;规范化日志</li>
-          <hr>
-          <template v-for="item in items">
-            <li><input type='checkbox' v-model="selectArr">{{item.log_name}}&#12288;&#12288;<img src="static/img/process_color.png"><img src="static/img/download_color.png"><img src="static/img/share_color.png">{{item.create_date}}&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;{{item.normal_log}}&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;{{item.event_log}}</li>
-            <hr>
-          </template>
-        </ul>
+    <div id="log-list">
+      <div class="list"><div><input type="checkbox" v-model="checkAll" id="文件名" value="文件名">
+        <span>文件名</span></div><div></div><div>日期</div><div>原始日志</div><div>规范化日志</div><div>融合来源</div></div>
+      <div class="list" v-for="(item,index) in items">
+        <div><input type="checkbox" v-model="checked" :value="item.id"  @click="currClick(item,index)">
+          <span>{{item.log_name}}</span></div>
+        <div><img class="process_button" title="开始流程挖掘" v-on:click="processMining(index)" src="static/img/process_color.png">
+          <img class="download_button" title="下载" src="static/img/download_color.png">
+          <img class="share_button" title="分享" src="static/img/share_color.png"></div>
+        <div>{{item.create_date}}</div><div>{{item.raw_log}}</div><div>{{item.normal_log}}</div><div>{{item.mergeSource}}</div>
       </div>
+    </div>
     </div>
 
 </template>
 
 <style lang="less" scoped rel="stylesheet/less">
-
-
+  @import '~assets/colors.less';
+  @import "~assets/layout.less";
+  #head{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .event-log-details{
+    padding-top: 20px;
+  }
+  .search{
+    margin-left: 400px;
+    background-color: @tab_separator;
+    color: @main_font_color;
+    text-align: center;
+    width: @search_width;
+    height: @search_height;
+    border-radius: @search_border-radius;
+    border: 1px solid @tab_color;
+  }
+  #search_button{
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    padding-left: 850px;
+    padding-top: 5px;
+  }
+  .btn_common{
+    color: white;
+    font-size: 24px;
+    text-decoration: none;
+    height: @log_button_height;
+    width: @log_button_width;
+    border-radius: @log_button_border-radius;
+    background-color: @main_green;
+    img{
+      width: 30px;
+      height: 30px;
+      vertical-align: text-top;
+    }
+  }
+  .title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 20px;
+    margin-right: 210px;
+    font-size: 20px;
+  }
+  .list:hover{
+    background-color: @logList_Choose;
+  }
+  #log-list{
+    margin-left: 10px;
+    margin-right: 10px;
+    .list{
+      img{
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+      }
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      padding: 10px 0px 10px 0px;
+      border-bottom: 1px solid #afbfb8;
+      div{
+        flex: 1;
+        text-align: left;
+      }
+    }
+  }
 </style>
 
 <script>
@@ -53,15 +117,17 @@
             id:1,
             log_name:'first-event-log',
             create_date:'2017-3-12',
-            normal_log:'first-raw-log',
-            event_log:'first-normal-log'
+            raw_log:'first-raw-log',
+            normal_log:'first-normal-log',
+            mergeSource:'无'
           },
           {
             id:2,
             log_name:'second-event-log',
             create_date:'2017-4-12',
-            normal_log:'second-raw-log',
-            event_log:'second-normal-log'
+            raw_log:'second-raw-log',
+            normal_log:'second-normal-log',
+            mergeSource:'first-event-log'
           }
         ]
       }
