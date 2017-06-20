@@ -16,6 +16,9 @@ public interface EventLogService {
     List<LogGroup> getLogsByUserId(String userId);
     List<LogGroup> getSharedLogs();
     List<LogGroup> getLogByFuzzyName(String keyWord,User user);
-    int updateShareStateByLogId(List<String> idList,int isshared);
-    int updateStateByLogId(List<String> idList,int state);
+    int updateShareStateByLogId(List<String> idList,int isShared, String userId);
+    int updateStateByLogId(List<String> idList,int state, String userId);
+
+    void updateShareStateByLogIdForUser(List<String> ids, int isShared, String userId);
+    void updateStateByLogIdForUser(List<String> ids, int state, String userId);
 }

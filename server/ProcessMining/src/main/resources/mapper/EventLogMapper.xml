@@ -16,38 +16,42 @@
     </select>
 
 
-    <select id="listLogsByUserIdAndState" resultMap="org.k2.processmining.mapper.RawLogMapper.logGroup">
+    <select id="listLogGroups" resultMap="org.k2.processmining.mapper.RawLogMapper.logGroup">
         SELECT
-          <include refid="org.k2.processmining.mapper.RawLogMapper.logGroupSelectColumns"/>
-        FROM
-        (SELECT * FROM event_log WHERE userid=#{userId} AND state=#{state}) EL
-        LEFT JOIN normal_log NL ON EL.normal_log_id = NL.id
-        LEFT JOIN raw_log RL ON NL.raw_log_id = RL.id
-    </select>
-
-    <select id="listLogsByStateAndSharedState" resultMap="org.k2.processmining.mapper.RawLogMapper.logGroup">
-        SELECT
-        <include refid="org.k2.processmining.mapper.RawLogMapper.userColumns"/>
-        ,
+        <include refid="org.k2.processmining.mapper.RawLogMapper.addUserColumnIfUserIdIsNull"/>
         <include refid="org.k2.processmining.mapper.RawLogMapper.logGroupSelectColumns"/>
         FROM
-        (SELECT * FROM event_log WHERE state=#{state} AND isshared=#{isShared}) EL
-        LEFT JOIN normal_log NL ON EL.normal_log_id = NL.id
-        LEFT JOIN raw_log RL ON NL.raw_log_id = RL.id
-        LEFT JOIN user ON EL.userid = user.id;
+            (SELECT * FROM event_log WHERE
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
+                state=#{state}
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addKeyWordIfNotNull"/>
+            ) EL
+            LEFT JOIN
+            (SELECT * FROM normal_log <if test="userId != null">WHERE userid=#{userId}</if>
+              ) NL ON EL.normal_log_id = NL.id
+              LEFT JOIN
+              (SELECT * FROM raw_log WHERE 
+                  <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
+                  state=#{state} 
+                  <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
+              ) RL ON NL.raw_log_id = RL.id
+            <if test="userId == null">
+                LEFT JOIN user ON EL.userid = user.id
+            </if>
     </select>
 
-    <select id="listLogsByFuzzyName" resultMap="org.k2.processmining.mapper.RawLogMapper.logGroup">
-        SELECT
-        <include refid="org.k2.processmining.mapper.RawLogMapper.userColumns"/>
-        ,
-        <include refid="org.k2.processmining.mapper.RawLogMapper.logGroupSelectColumns"/>
-        FROM
-        (SELECT * FROM event_log WHERE log_name LIKE concat(concat('%',#{keyWord}),'%') AND userid = #{userid}) EL
-        LEFT JOIN normal_log NL ON EL.normal_log_id = NL.id
-        LEFT JOIN raw_log RL ON NL.raw_log_id = RL.id
-        LEFT JOIN user ON EL.userid = user.id;
-    </select>
+    <update id="updateLogState">
+        <include refid="org.k2.processmining.mapper.RawLogMapper.updateLogStateSQL">
+            <property name="table" value="event_log"/>
+        </include>
+    </update>
+
+    <update id="updateIsShared">
+        <include refid="org.k2.processmining.mapper.RawLogMapper.updateIsSharedSQL">
+            <property name="table" value="event_log"/>
+        </include>
+    </update>
 
     <update id="updateShareStateByLogId" parameterType="EventLog">
         UPDATE event_log

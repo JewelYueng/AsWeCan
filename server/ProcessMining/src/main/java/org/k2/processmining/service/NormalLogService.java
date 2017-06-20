@@ -31,4 +31,8 @@ public interface NormalLogService {
     boolean save(NormalLog normalLog, InputStream inputStream);
 
     EventLog transToEventLog(NormalLog normalLog);
+
+    void updateShareStateByLogIdForUser(List<String> ids, int isShared, String userId);
+
+    void updateStateByLogIdForUser(List<String> ids, int state, String userId);
 }

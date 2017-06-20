@@ -4,8 +4,26 @@
 
 <mapper namespace="org.k2.processmining.mapper.RawLogMapper">
 
-    <sql id="userColumns">
-        user.id userId, user.username username
+    <sql id="addUserIdIfNotNull">
+        <if test="userId != null">
+            userid=#{userId} AND
+        </if>
+    </sql>
+
+    <sql id="addIsSharedIfNotMinus1">
+        <if test="isShared != -1">
+            AND isshared=#{isShared}
+        </if>
+    </sql>
+    <sql id="addKeyWordIfNotNull">
+        <if test="keyWord != null">
+            AND log_name LIKE concat(concat('%',#{keyWord}),'%')
+        </if>
+    </sql>
+    <sql id="addUserColumnIfUserIdIsNull">
+        <if test="userId == null">
+            user.id userId, user.username username,
+        </if>
     </sql>
 
     <sql id="logGroupSelectColumns">
@@ -20,6 +38,40 @@
         case_number, event_number, per_event_inCase, event_names, operator_names,merge_relation
     </sql>
 
+    <sql id="rawNormalEventLeftJoin">
+        (SELECT * FROM raw_log WHERE
+            <include refid="addUserIdIfNotNull"/>
+            state=#{state}
+            <include refid="addIsSharedIfNotMinus1"/>
+            <include refid="addKeyWordIfNotNull"/>
+        ) RL
+        LEFT JOIN
+            (SELECT
+                nl.*
+            FROM
+                normal_log nl,
+                (SELECT raw_log_id,MAX(create_date) create_date FROM normal_log GROUP BY raw_log_id HAVING raw_log_id IS NOT NULL) a
+            WHERE <include refid="addUserIdIfNotNull"/> nl.raw_log_id=a.raw_log_id AND nl.create_date=a.create_date GROUP BY nl.raw_log_id) NL
+        ON RL.id = NL.raw_log_id
+        LEFT JOIN
+            (SELECT * FROM event_log
+            WHERE <include refid="addUserIdIfNotNull"/>
+                    state=#{state}
+                    <include refid="addIsSharedIfNotMinus1"/>) EL
+        ON NL.id = EL.normal_log_id
+    </sql>
+
+    <select id="listLogGroups" resultMap="logGroup">
+        SELECT
+          <include refid="addUserColumnIfUserIdIsNull"/>
+          <include refid="logGroupSelectColumns"/>
+        FROM
+            <include refid="rawNormalEventLeftJoin"/>
+            <if test="userId == null">
+                LEFT JOIN user ON RL.userid = user.id
+            </if>
+    </select>
+
     <select id="getRawLogById" resultMap="rawLog">
         SELECT * FROM raw_log WHERE id=#{id}
     </select>
@@ -28,39 +80,6 @@
         INSERT INTO raw_log(id, log_name, create_date, userid, format, state, isshared)
          VALUES (#{id}, #{logName}, #{createDate}, #{userId}, #{format}, #{state}, #{isShared})
     </insert>
-
-    <select id="listLogsByUserIdAndState" resultMap="logGroup">
-        SELECT
-          <include refid="logGroupSelectColumns"/>
-        FROM
-            (SELECT * FROM raw_log WHERE userid=#{userId} AND state=#{state}) RL
-            LEFT JOIN normal_log NL ON RL.id = NL.raw_log_id
-            LEFT JOIN event_log EL ON NL.id = EL.normal_log_id
-    </select>
-
-    <select id="listLogsByStateAndSharedState" resultMap="logGroup">
-        SELECT
-          <include refid="userColumns"/>
-          ,
-          <include refid="logGroupSelectColumns"/>
-        FROM
-            (SELECT * FROM raw_log WHERE  state=#{state} AND isshared=#{isShared}) RL
-            LEFT JOIN normal_log NL ON RL.id = NL.raw_log_id
-            LEFT JOIN event_log EL ON NL.id = EL.normal_log_id
-            LEFT JOIN user ON RL.userid = user.id
-    </select>
-
-    <select id="listLogsByFuzzyName" parameterType="java.util.Map" resultMap="logGroup">
-        SELECT
-        <include refid="userColumns"/>
-        ,
-        <include refid="logGroupSelectColumns"/>
-        FROM
-        (SELECT * FROM raw_log WHERE log_name LIKE concat(concat('%',#{keyWord}),'%') AND userid = #{userid}) RL
-        LEFT JOIN normal_log NL ON RL.id = NL.raw_log_id
-        LEFT JOIN event_log EL ON NL.id = EL.normal_log_id
-        LEFT JOIN user ON RL.userid = user.id
-    </select>
 
     <update id="updateShareStateByLogId" parameterType="RawLog">
         UPDATE raw_log
@@ -72,6 +91,51 @@
         UPDATE raw_log
         SET state = #{state, jdbcType = TINYINT}
         WHERE id = #{id,jdbcType = VARCHAR}
+    </update>
+
+    <sql id="updateLogStateSQL">
+        UPDATE ${table} SET state=#{state} WHERE
+        <if test="userId != null">
+            userid = #{userId} AND
+        </if>
+        state!=2 AND
+        id in
+        <foreach item="item" index="index" collection="ids"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </sql>
+
+    <sql id="updateIsSharedSQL">
+        UPDATE ${table} SET isshared=#{isShared} WHERE
+        <if test="userId != null">
+          userid = #{userId} AND
+        </if>
+        state!=2 AND
+        id in
+        <foreach item="item" index="index" collection="ids"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </sql>
+
+    <update id="delete">
+        <bind name="state" value="2" />
+        <include refid="updateLogStateSQL">
+            <property name="table" value="raw_log"/>
+        </include>
+    </update>
+
+    <update id="updateLogState">
+        <include refid="updateLogStateSQL">
+            <property name="table" value="raw_log"/>
+        </include>
+    </update>
+
+    <update id="updateIsShared">
+        <include refid="updateIsSharedSQL">
+            <property name="table" value="raw_log"/>
+        </include>
     </update>
 
     <resultMap id="logGroup" type="LogGroup">

@@ -38,10 +38,6 @@ public class RawLogController {
     @Autowired
     private LogStorage logStorage;
 
-    Object getAllLogs() {
-        return null;
-    }
-
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public@ResponseBody
     Object upload(@RequestParam("format") String format,
@@ -96,8 +92,6 @@ public class RawLogController {
         }
     }
 
-    public void deleteLogById(List<Integer> idList){}
-
     @RequestMapping(value = "/normalize", method = RequestMethod.POST)
     public @ResponseBody
     Object normalize(@Valid @RequestBody NormalizeRawLogConfigForm form) {
@@ -129,8 +123,6 @@ public class RawLogController {
         return map;
     }
 
-    public void setLogState(int state){}
-
     @RequestMapping(value = "/sharedLogs", method = RequestMethod.GET)
     public @ResponseBody
     Object getSharedLog() {
@@ -141,60 +133,41 @@ public class RawLogController {
     }
 
 
-    /**
-     * 分享规范化日志
-     * @param map
-     * @return
-     */
     @RequestMapping(value = "/share",method = RequestMethod.POST)
     public @ResponseBody
-    Map shareNormalLogs(@RequestBody Map map){
-
-        Map result = new HashMap();
-        List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
-        if (idList.size() == 0 ){
-            result.put("code",0);
-        }else {
-            result.put("code",rawLogService.updateShareStateByLogId(idList,LogState.SHARED.getValue()));
-        }
-        return result;
+    Object shareLogs(@Valid @RequestBody IdListForm form){
+        User user = getUser();
+        rawLogService.updateShareStateByLogIdForUser(form.getIdList(), LogShareState.SHARED.getValue(), user.getId());
+        return new HashMap<String,Object>(){{put("code", 1);}};
     }
 
 
     /**
      * 取消分享规范化日志
-     * @param map
+     * @param form
      * @return
      */
     @RequestMapping(value = "/unShare",method = RequestMethod.POST)
     public @ResponseBody
-    Map unShareNormalLogs(@RequestBody Map map){
-        Map result = new HashMap();
-        List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
-        if (idList.size() == 0){
-            result.put("code",0);
-        }else {
-            result.put("code",rawLogService.updateShareStateByLogId(idList,LogState.UNSHARED.getValue()));
-        }
-        return result;
+    Object unShareRawLogs(@RequestBody IdListForm form){
+        User user = getUser();
+        rawLogService.updateShareStateByLogIdForUser(form.getIdList(), LogShareState.UNSHARED.getValue(), user.getId());
+        return new HashMap<String,Object>(){{put("code", 1);}};
     }
 
     /**
      * 删除日志
-     * @param map
+     * @param form
      * @return
      */
-    @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
     public @ResponseBody
-    Map deleteByLogId(@RequestBody Map map){
-        Map result = new HashMap();
-        List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
-        if (idList.size() == 0){
-            result.put("code",0);
-        }else {
-            result.put("code",rawLogService.updateStateByLogId(idList,LogState.DELETE.getValue()));
-        }
-        return result;
+    Object deleteByLogId(@RequestBody IdListForm form){
+        Map<String, Object> res = new HashMap<>();
+        User user = getUser();
+        rawLogService.updateStateByLogIdForUser(form.getIdList(), LogState.DELETE.getValue(), user.getId());
+        res.put("code", 1);
+        return res;
     }
 
     /**
@@ -205,8 +178,7 @@ public class RawLogController {
     public @ResponseBody
     Object getLogByFuzzyName(@RequestParam("keyWord")String keyWord){
         Map<String,Object> result = new HashMap<>();
-        User user = new User();
-        user.setId("0000000000000001");
+        User user = getUser();
         List<LogGroup> logGroups = rawLogService.getLogByFuzzyName(keyWord,user);
         result.put("logGroups",logGroups);
         return result;

@@ -76,8 +76,9 @@ public class NormalLogServiceImpl implements NormalLogService {
                 }
                 return eventLog;
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("io");
         }
         return null;
     }
@@ -92,20 +93,8 @@ public class NormalLogServiceImpl implements NormalLogService {
         if (userId == null) {
             return Collections.emptyList();
         }
-        List<LogGroup> logGroups = normalLogMapper.listLogGroupsByUserIdAndState(userId, LogState.ACTIVE.getValue());
-        Iterator<LogGroup> iterator = logGroups.iterator();
-        while (iterator.hasNext()) {
-            LogGroup logGroup = iterator.next();
-            if (!Util.isActive(logGroup.getRawLog())) {
-                logGroup.setRawLog(null);
-            }
-            if (!Util.isActive(logGroup.getEventLog())) {
-                logGroup.setEventLog(null);
-            }
-            if (logGroup.getRawLog() == null && logGroup.getNormalLog() == null && logGroup.getEventLog() == null) {
-                iterator.remove();
-            }
-        }
+        List<LogGroup> logGroups = normalLogMapper.listLogGroups(userId, LogState.ACTIVE.getValue(),-1, null);
+        verifyLogGroupsIsActive(logGroups);
         return logGroups;
     }
 
@@ -116,20 +105,8 @@ public class NormalLogServiceImpl implements NormalLogService {
      */
     @Override
     public List<LogGroup> getSharedLogGroups() {
-        List<LogGroup> logGroups = normalLogMapper.listLogGroupsByStateAndSharedState(LogState.ACTIVE.getValue(), LogShareState.SHARED.getValue());
-        Iterator<LogGroup> iterator = logGroups.iterator();
-        while (iterator.hasNext()) {
-            LogGroup logGroup = iterator.next();
-            if (! Util.isActiveAndShared(logGroup.getRawLog())) {
-                logGroup.setRawLog(null);
-            }
-            if (! Util.isActiveAndShared(logGroup.getEventLog())) {
-                logGroup.setEventLog(null);
-            }
-            if (logGroup.getRawLog() == null && logGroup.getNormalLog() == null && logGroup.getEventLog() == null) {
-                iterator.remove();
-            }
-        }
+        List<LogGroup> logGroups = normalLogMapper.listLogGroups(null, LogState.ACTIVE.getValue(), LogShareState.SHARED.getValue(), null);
+        verifyLogGroupsIsShared(logGroups);
         return logGroups ;
     }
 
@@ -140,13 +117,8 @@ public class NormalLogServiceImpl implements NormalLogService {
      */
     @Override
     public List<LogGroup> getLogByFuzzyName(String keyWord, User user) {
-        Map<String,Object> request = new HashMap<String,Object>();
-        request.put("keyWord",keyWord);
-        request.put("userid",user.getId());
-        List<LogGroup> logGroups = normalLogMapper.listLogGroupsByFuzzyName(request);
-        System.out.println("logGroups:"+logGroups.size());
-        Iterator<LogGroup> iterator = logGroups.iterator();
-        verificateLogGroups(iterator);
+        List<LogGroup> logGroups = normalLogMapper.listLogGroups(user.getId(), LogState.ACTIVE.getValue(), -1, keyWord);
+        verifyLogGroupsIsActive(logGroups);
         return logGroups;
     }
 
@@ -205,17 +177,46 @@ public class NormalLogServiceImpl implements NormalLogService {
         return false;
     }
 
-    private void verificateLogGroups(Iterator iterator){
+    @Override
+    public void updateShareStateByLogIdForUser(List<String> ids, int isShared, String userId) {
+        normalLogMapper.updateIsShared(ids, isShared, userId);
+    }
+
+    @Override
+    public void updateStateByLogIdForUser(List<String> ids, int state, String userId) {
+        normalLogMapper.updateLogState(ids, state, userId);
+    }
+
+    private void verifyLogGroupsIsActive(List<LogGroup> logGroups){
+        Iterator<LogGroup> iterator = logGroups.iterator();
         while (iterator.hasNext()){
-            LogGroup logGroup = (LogGroup) iterator.next();
+            LogGroup logGroup = iterator.next();
+            if (logGroup.getNormalLog() == null){
+                iterator.remove();
+                continue;
+            }
             if (!Util.isActive(logGroup.getRawLog())){
                 logGroup.setRawLog(null);
             }
             if (!Util.isActive(logGroup.getEventLog())){
                 logGroup.setEventLog(null);
             }
-            if (logGroup.getRawLog() == null && logGroup.getNormalLog() == null && logGroup.getEventLog() == null){
+        }
+    }
+
+    private void verifyLogGroupsIsShared(List<LogGroup> logGroups) {
+        Iterator<LogGroup> iterator = logGroups.iterator();
+        while (iterator.hasNext()) {
+            LogGroup logGroup = iterator.next();
+            if (logGroup.getNormalLog() == null) {
                 iterator.remove();
+                continue;
+            }
+            if (! Util.isActiveAndShared(logGroup.getRawLog())) {
+                logGroup.setRawLog(null);
+            }
+            if (! Util.isActiveAndShared(logGroup.getEventLog())) {
+                logGroup.setEventLog(null);
             }
         }
     }

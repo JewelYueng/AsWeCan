@@ -13,15 +13,14 @@ import java.util.Map;
  */
 @Repository
 public interface NormalLogMapper {
-
-    List<LogGroup> listLogGroupsByUserIdAndState(@Param("userId") String userId, @Param("state") int state);
-    List<LogGroup> listLogGroupsByStateAndSharedState(@Param("state")int state, @Param("isShared") int isShared);
-    List<LogGroup> listLogGroupsByFuzzyName(Map request);
-
+    List<LogGroup> listLogGroups(@Param("userId")String userId,
+                                 @Param("state") int state,
+                                 @Param("isShared") int isShared,
+                                 @Param("keyWord") String keyWord);
     NormalLog getNormalLogById(@Param("id") String id);
 
-
-//    void updateShareStateByLogId(List<NormalLog> normalLogList);
+    void updateLogState(@Param("ids") List<String> ids, @Param("state") int state, @Param("userId") String userId);
+    void updateIsShared(@Param("ids") List<String> ids, @Param("isShared") int isShared, @Param("userId") String userId);
 
     void updateShareStateByLogId(NormalLog normalLog);
     void save(NormalLog normalLog);

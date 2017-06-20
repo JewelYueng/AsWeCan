@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +60,18 @@ public class DatabaseFillerOnStartup implements ApplicationListener<ContextRefre
     @Autowired
     private MergeMethodService mergeMethodService;
 
-    private static final String WEB_INF_PATH = DatabaseFillerOnStartup.class.getClassLoader().getResource("/").getPath().replace("classes", "");
+    private static final String WEB_INF_PATH;
+    static {
+        URL url = DatabaseFillerOnStartup.class.getClassLoader().getResource("/");
+        if (url != null) {
+            WEB_INF_PATH = url.getPath().replace("classes", "");
+        }
+        else {
+            WEB_INF_PATH = "E:/IdeaProjects/AsWeCan/server/ProcessMining/src/main/webapp/WEB-INF/";
+            System.out.println(new java.io.File(".").getAbsolutePath());
+        }
+    }
+
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {

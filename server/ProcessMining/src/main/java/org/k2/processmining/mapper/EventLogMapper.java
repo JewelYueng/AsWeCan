@@ -16,9 +16,13 @@ import java.util.Map;
 public interface EventLogMapper {
     EventLog getEventLogById(@Param("id") String id);
     void save(EventLog eventLog);
-    List<LogGroup> listLogsByUserIdAndState(@Param("userId") String userId, @Param("state") int state);
-    List<LogGroup> listLogsByStateAndSharedState(@Param("state") int state, @Param("isShared") int isShared);
-    List<LogGroup> listLogsByFuzzyName(Map request);
+    List<LogGroup> listLogGroups(@Param("userId")String userId,
+                                 @Param("state") int state,
+                                 @Param("isShared") int isShared,
+                                 @Param("keyWord") String keyWord);
+    void updateLogState(@Param("ids") List<String> ids, @Param("state") int state, @Param("userId") String userId);
+    void updateIsShared(@Param("ids") List<String> ids, @Param("isShared") int isShared, @Param("userId") String userId);
+
     void updateShareStateByLogId(EventLog eventLog);
     void updateLogStateByLogId(EventLog eventLog);
 }

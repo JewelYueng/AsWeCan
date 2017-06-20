@@ -10,6 +10,7 @@ import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.util.Util;
 import org.k2.processmining.utils.GsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -33,7 +34,6 @@ public class EventLogController {
     @Autowired
     private LogStorage logStorage;
 
-    public void getAllLogs(){}
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public@ResponseBody
@@ -89,8 +89,6 @@ public class EventLogController {
         }
     }
 
-    public void deleteLogById(List<Integer> idList){}
-
     @RequestMapping(value = "", method = RequestMethod.GET)
     public @ResponseBody
     Object getLogsByUserId() {
@@ -101,8 +99,6 @@ public class EventLogController {
         return map;
     }
 
-    public void setLogState(int state){}
-
     @RequestMapping(value = "/sharedLogs", method = RequestMethod.GET)
     public @ResponseBody
     Object getSharedLog() {
@@ -111,10 +107,6 @@ public class EventLogController {
         map.put("logGroups", logGroups);
         return map;
     }
-
-    public void getLogByFuzzyName(){}
-
-    public void getSubmarizeByLogName(String logName){}
 
     private User getUser() {
         User user = new User();
@@ -125,57 +117,44 @@ public class EventLogController {
 
     /**
      * 分享规范化日志
-     * @param map
+     * @param form
      * @return
      */
     @RequestMapping(value = "/share",method = RequestMethod.POST)
     public @ResponseBody
-    Object shareNormalLogs(@RequestBody Map map){
-
-        Map result = new HashMap();
-        List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
-        if (idList.size() == 0 ){
-            result.put("code",0);
-        }else {
-            result.put("code",eventLogService.updateShareStateByLogId(idList,LogState.SHARED.getValue()));
-        }
-        return result;
+    Object shareEventLogs(@RequestBody IdListForm form){
+        User user = getUser();
+        eventLogService.updateShareStateByLogIdForUser(form.getIdList(), LogShareState.SHARED.getValue(), user.getId());
+        return new HashMap<String,Object>(){{put("code", 1);}};
     }
 
 
     /**
      * 取消分享规范化日志
-     * @param map
+     * @param form
      * @return
      */
     @RequestMapping(value = "/unShare",method = RequestMethod.POST)
     public @ResponseBody
-    Object unShareNormalLogs(@RequestBody Map map){
-        Map result = new HashMap();
-        List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
-        if (idList.size() == 0){
-            result.put("code",0);
-        }else {
-            result.put("code",eventLogService.updateShareStateByLogId(idList,LogState.UNSHARED.getValue()));
-        }
+    Object unShareEventLogs(@RequestBody IdListForm form){
+        Map<String,Object> result = new HashMap();
+        User user = getUser();
+        eventLogService.updateShareStateByLogId(form.getIdList(),LogState.UNSHARED.getValue(), user.getId());
+        result.put("code", 1);
         return result;
     }
 
     /**
      * 删除日志
-     * @param map
+     * @param form
      * @return
      */
-    @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
     public @ResponseBody
-    Object deleteByLogId(@RequestBody Map map){
-        Map result = new HashMap();
-        List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
-        if (idList.size() == 0){
-            result.put("code",0);
-        }else {
-            result.put("code",eventLogService.updateStateByLogId(idList,LogState.DELETE.getValue()));
-        }
+    Object deleteByLogId(@RequestBody IdListForm form){
+        Map<String,Object> result = new HashMap<>();
+        User user = getUser();
+        eventLogService.updateStateByLogId(form.getIdList(),LogState.DELETE.getValue(), user.getId());
         return result;
     }
 
@@ -186,10 +165,9 @@ public class EventLogController {
      */
     @RequestMapping(value = "/search",method = RequestMethod.GET)
     public @ResponseBody
-    Object getLogByFuzzyName(@RequestParam("keyWord")String keyWord){
+    Object getLogByFuzzyName(@RequestParam("keyWord") String keyWord){
         Map<String,Object> result = new HashMap<>();
-        User user = new User();
-        user.setId("0000000000000001");
+        User user = getUser();
         List<LogGroup> logGroups = eventLogService.getLogByFuzzyName(keyWord,user);
         result.put("logGroups",logGroups);
         return result;
