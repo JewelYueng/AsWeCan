@@ -119,10 +119,10 @@
       }
     },
     created() {
-      this.$http.post('http://wemeet.tech:8081/team/delete_job/?jobId=1').then(response => {
-        console.log(response.data)
-      })
-//      console.log(typeof this.$api)
+//      this.$http.post('http://wemeet.tech:8081/team/delete_job/?jobId=1').then(response => {
+//        console.log(response.data)
+//      })
+
     },
     methods: {
       ...

@@ -10,11 +10,14 @@ Vue.use(Vuex)
 import VueResource from 'vue-resource'
 Vue.use(VueResource)
 
-// import httpPlugin from './api'
-// Vue.use(httpPlugin)
+import httpPlugin from './api'
+Vue.use(httpPlugin)
 
 import { Modal } from './components/component-plugins/modal/modal'
 Vue.use(Modal)
+
+import { HintMessage } from './components/component-plugins/hintMessage/hint'
+Vue.use(HintMessage)
 
 import store from './store'
 

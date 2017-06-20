@@ -2,7 +2,7 @@
 
 const _ = require("lodash")
 
-const api_map = require("./api_map")
+const api_map = require("./api_map").default
 const base_url = api_map.__base_url__
 
 const replaceArgs = (string, args) => {
@@ -23,7 +23,7 @@ class WrapResponse {
     this.status = response.status
     this._origin = response
   }
-
+  
   handle(error_object) {
     if (this.data === undefined)
       new Error("attribute \"data\" not in response")
@@ -38,7 +38,7 @@ class WrapResponse {
     }
     return this
   }
-
+  
   success(fn) {
     if (this.data.error === 0)
       fn(this)
@@ -54,9 +54,9 @@ each_action.trigger = function (key, ...args) {
 }.bind(each_action)
 
 
-var httpPlugin = {}
-httpPlugin.install = function (Vue, options){
-
+let httpPlugin = {}
+httpPlugin.install = function (Vue, options) {
+  
   Vue.prototype.$api = function ({method, args = {}, body = {}, query = {}}) {
     const headers = {}
     if (typeof this.$store.getters.getToken === "string" && this.$store.getters.getToken) {
@@ -94,11 +94,11 @@ httpPlugin.install = function (Vue, options){
       })
     })
   }
-
+  
   Vue.prototype.$api.onEach = function (event, action) {
     each_action[event] = action
   }
-
+  
 }
 
 export default httpPlugin

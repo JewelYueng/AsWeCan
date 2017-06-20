@@ -2,16 +2,18 @@
   <div id="app">
     <Home></Home>
     <Modal></Modal>
+    <Hint></Hint>
   </div>
 </template>
 
 <script>
   import Home from './components/home/Index.vue'
   import Modal from './components/component-plugins/modal/Modal.vue'
+  import Hint from './components/component-plugins/hintMessage/HintMessage.vue'
   export default {
     name: 'app',
     components: {
-      Home, Modal
+      Home, Modal, Hint
     },
     data() {
       return {}

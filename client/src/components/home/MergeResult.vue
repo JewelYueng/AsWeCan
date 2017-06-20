@@ -135,7 +135,11 @@
     methods: {
       ...mapActions(['jumpView']),
       backToMerge: function(){
-        this.jumpView('/home/merge')
+//        this.jumpView('/home/merge')
+        console.log(this.$api)
+        this.$api({method: 'test'}).then((data) => {
+          console.log(data)
+        })
       },
       jumpToMining: function(){
         this.jumpView('/home/mining')
