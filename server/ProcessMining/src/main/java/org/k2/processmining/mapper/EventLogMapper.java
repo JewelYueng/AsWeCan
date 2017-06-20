@@ -19,6 +19,6 @@ public interface EventLogMapper {
     List<LogGroup> listLogsByUserIdAndState(@Param("userId") String userId, @Param("state") int state);
     List<LogGroup> listLogsByStateAndSharedState(@Param("state") int state, @Param("isShared") int isShared);
     List<LogGroup> listLogsByFuzzyName(Map request);
-    void updateShareStateByLogId(EventLog eventLog);
-    void updateLogStateByLogId(EventLog eventLog);
+    void updateShareStateByLogId(@Param("isshared")int isshared,@Param("idList")List<String> idList);
+    void updateLogStateByLogId(@Param("state")int state,@Param("idList")List<String> idList);
 }

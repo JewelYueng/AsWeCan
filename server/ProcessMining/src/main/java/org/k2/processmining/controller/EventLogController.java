@@ -130,7 +130,7 @@ public class EventLogController {
      */
     @RequestMapping(value = "/share",method = RequestMethod.POST)
     public @ResponseBody
-    Object shareNormalLogs(@RequestBody Map map){
+    Object shareEventLogs(@RequestBody Map map){
 
         Map result = new HashMap();
         List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
@@ -150,7 +150,7 @@ public class EventLogController {
      */
     @RequestMapping(value = "/unShare",method = RequestMethod.POST)
     public @ResponseBody
-    Object unShareNormalLogs(@RequestBody Map map){
+    Object unShareEventLogs(@RequestBody Map map){
         Map result = new HashMap();
         List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
         if (idList.size() == 0){

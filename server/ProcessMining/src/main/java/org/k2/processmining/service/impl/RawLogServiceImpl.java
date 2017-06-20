@@ -112,12 +112,10 @@ public class RawLogServiceImpl implements RawLogService {
     @Override
     public int updateShareStateByLogId(List<String> idList,int isshared) {
 
-        for (String id : idList) {
-            RawLog rawLog = new RawLog();
-            rawLog.setId(id);
-            rawLog.setIsShared(isshared);//分享
-            rawLogMapper.updateShareStateByLogId(rawLog);
-        }
+        Map<String,Object> map = new HashMap<>();
+        map.put("idList",idList);
+        map.put("isshared",isshared);
+        rawLogMapper.updateShareStateByLogId(isshared,idList);
         return 1;
     }
 
@@ -129,12 +127,7 @@ public class RawLogServiceImpl implements RawLogService {
      */
     @Override
     public int updateStateByLogId(List<String> idList, int state) {
-        for (String id: idList){
-            RawLog rawLog = new RawLog();
-            rawLog.setId(id);
-            rawLog.setState(state);
-            rawLogMapper.updateLogStateByLogId(rawLog);
-        }
+        rawLogMapper.updateLogStateByLogId(state,idList);
         return 1;
     }
 

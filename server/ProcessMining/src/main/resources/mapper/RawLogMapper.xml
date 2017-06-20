@@ -62,16 +62,28 @@
         LEFT JOIN user ON RL.userid = user.id
     </select>
 
-    <update id="updateShareStateByLogId" parameterType="RawLog">
-        UPDATE raw_log
-        SET isshared = #{isShared,jdbcType = TINYINT}
-        WHERE id = #{id,jdbcType = TINYINT}
-    </update>
+    <!--<update id="updateShareStateByLogId" parameterType="RawLog">-->
+        <!--UPDATE raw_log-->
+        <!--SET isshared = #{isShared,jdbcType = TINYINT}-->
+        <!--WHERE id = #{id,jdbcType = TINYINT}-->
+    <!--</update>-->
 
-    <update id="updateLogStateByLogId" parameterType="RawLog">
+    <update id="updateLogStateByLogId">
         UPDATE raw_log
         SET state = #{state, jdbcType = TINYINT}
-        WHERE id = #{id,jdbcType = VARCHAR}
+        WHERE id IN
+        <foreach collection="idList" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="updateShareStateByLogId">
+        UPDATE raw_log
+        SET isshared = #{isshared}
+        WHERE id IN
+        <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </update>
 
     <resultMap id="logGroup" type="LogGroup">

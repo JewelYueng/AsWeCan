@@ -107,13 +107,7 @@ public class EventLogServiceImpl implements EventLogService {
      */
     @Override
     public int updateShareStateByLogId(List<String> idList,int isshared) {
-
-        for (String id : idList) {
-            EventLog eventLog = new EventLog();
-            eventLog.setId(id);
-            eventLog.setIsShared(isshared);//分享
-            eventLogMapper.updateShareStateByLogId(eventLog);
-        }
+        eventLogMapper.updateShareStateByLogId(isshared,idList);
         return 1;
     }
 
@@ -125,12 +119,7 @@ public class EventLogServiceImpl implements EventLogService {
      */
     @Override
     public int updateStateByLogId(List<String> idList, int state) {
-        for (String id: idList){
-            EventLog eventLog = new EventLog();
-            eventLog.setId(id);
-            eventLog.setState(state);
-            eventLogMapper.updateLogStateByLogId(eventLog);
-        }
+        eventLogMapper.updateLogStateByLogId(state,idList);
         return 1;
     }
 

@@ -19,6 +19,7 @@ public interface RawLogMapper {
     List<LogGroup> listLogsByUserIdAndState(@Param("userId") String userId, @Param("state") int state);
     List<LogGroup> listLogsByStateAndSharedState(@Param("state") int state, @Param("isShared") int isShared);
     List<LogGroup> listLogsByFuzzyName(Map request);
-    void updateShareStateByLogId(RawLog rawLog);
-    void updateLogStateByLogId(RawLog rawLog);
+    void updateShareStateByLogId(@Param("isshared")int isShared,@Param("idList")List<String> idList);
+    void updateLogStateByLogId(@Param("state")int state,@Param("idList")List<String> idList);
+    void testUpdate(Map request);
 }

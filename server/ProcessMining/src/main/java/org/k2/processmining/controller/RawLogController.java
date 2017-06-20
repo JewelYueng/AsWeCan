@@ -148,7 +148,7 @@ public class RawLogController {
      */
     @RequestMapping(value = "/share",method = RequestMethod.POST)
     public @ResponseBody
-    Map shareNormalLogs(@RequestBody Map map){
+    Map shareRawLogs(@RequestBody Map map){
 
         Map result = new HashMap();
         List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
@@ -168,7 +168,7 @@ public class RawLogController {
      */
     @RequestMapping(value = "/unShare",method = RequestMethod.POST)
     public @ResponseBody
-    Map unShareNormalLogs(@RequestBody Map map){
+    Map unShareRawLogs(@RequestBody Map map){
         Map result = new HashMap();
         List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
         if (idList.size() == 0){
