@@ -2,6 +2,7 @@ package org.k2.processmining.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.LogShareState;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.EventLog;
@@ -190,12 +191,16 @@ public class NormalLogController {
      * 搜索日志
      * @return
      */
-    @RequestMapping(value = "/search")
+    @RequestMapping(value = "/search",method = RequestMethod.GET)
     public @ResponseBody
     Object getLogByFuzzyName(@RequestParam("keyWord")String keyWord){
+        System.out.println("keyWord:"+keyWord);
         Map<String,Object> result = new HashMap<>();
-        normalLogService.getLogByFuzzyName(keyWord);
-        return null;
+        User user = new User();
+        user.setId("0000000000000001");
+        List<LogGroup> logGroups = normalLogService.getLogByFuzzyName(keyWord,user);
+        result.put("logGroups",logGroups);
+        return result;
     }
 
 

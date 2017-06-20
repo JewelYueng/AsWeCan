@@ -1,8 +1,10 @@
 package org.k2.processmining.service;
 
+import cern.jet.random.Normal;
 import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.log.NormalLog;
+import org.k2.processmining.model.user.User;
 
 import java.io.InputStream;
 import java.util.List;
@@ -16,7 +18,7 @@ public interface NormalLogService {
 
     List<LogGroup> getSharedLogGroups();
 
-    List<LogGroup> getLogByFuzzyName(String keyWord);
+    List<LogGroup> getLogByFuzzyName(String keyWord, User user);
 
     NormalLog getNormalLogById(String id);
 

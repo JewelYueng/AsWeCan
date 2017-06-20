@@ -16,7 +16,7 @@ public interface NormalLogMapper {
 
     List<LogGroup> listLogGroupsByUserIdAndState(@Param("userId") String userId, @Param("state") int state);
     List<LogGroup> listLogGroupsByStateAndSharedState(@Param("state")int state, @Param("isShared") int isShared);
-    List<LogGroup> listLogGroupsByFuzzyName(String keyWord);
+    List<LogGroup> listLogGroupsByFuzzyName(Map request);
 
     NormalLog getNormalLogById(@Param("id") String id);
 

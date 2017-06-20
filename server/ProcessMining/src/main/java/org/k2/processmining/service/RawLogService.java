@@ -16,8 +16,10 @@ public interface RawLogService {
     RawLog getRawLogById(String id);
     List<LogGroup> getLogsByUser(User user);
     List<LogGroup> getSharedLogs();
+    List<LogGroup> getLogByFuzzyName(String keyWord,User user);
     boolean save(RawLog log, InputStream inputStream);
     int updateShareStateByLogId(List<String> idList,int isshared);
     int updateStateByLogId(List<String> idList,int state);
     NormalLog normalize(RawLog rawLog, LogConfiguration lc);
+
 }

@@ -8,6 +8,7 @@ import org.k2.processmining.model.LogShareState;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.log.NormalLog;
+import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.NormalLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.event.parse.EventLogParse;
@@ -129,7 +130,7 @@ public class NormalLogServiceImpl implements NormalLogService {
                 iterator.remove();
             }
         }
-        return logGroups;
+        return logGroups ;
     }
 
     /**
@@ -138,13 +139,14 @@ public class NormalLogServiceImpl implements NormalLogService {
      * @return
      */
     @Override
-    public List<LogGroup> getLogByFuzzyName(String keyWord) {
-        List<LogGroup> logGroups = normalLogMapper.listLogGroupsByFuzzyName(keyWord);
+    public List<LogGroup> getLogByFuzzyName(String keyWord, User user) {
+        Map<String,Object> request = new HashMap<String,Object>();
+        request.put("keyWord",keyWord);
+        request.put("userid",user.getId());
+        List<LogGroup> logGroups = normalLogMapper.listLogGroupsByFuzzyName(request);
+        System.out.println("logGroups:"+logGroups.size());
         Iterator<LogGroup> iterator = logGroups.iterator();
-        while (iterator.hasNext()){
-            LogGroup logGroup = iterator.next();
-
-        }
+        verificateLogGroups(iterator);
         return logGroups;
     }
 
@@ -201,5 +203,20 @@ public class NormalLogServiceImpl implements NormalLogService {
             return true;
         }
         return false;
+    }
+
+    private void verificateLogGroups(Iterator iterator){
+        while (iterator.hasNext()){
+            LogGroup logGroup = (LogGroup) iterator.next();
+            if (!Util.isActive(logGroup.getRawLog())){
+                logGroup.setRawLog(null);
+            }
+            if (!Util.isActive(logGroup.getEventLog())){
+                logGroup.setEventLog(null);
+            }
+            if (logGroup.getRawLog() == null && logGroup.getNormalLog() == null && logGroup.getEventLog() == null){
+                iterator.remove();
+            }
+        }
     }
 }

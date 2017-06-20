@@ -17,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by nyq on 2017/6/17.
@@ -76,6 +73,24 @@ public class RawLogServiceImpl implements RawLogService {
                 iterator.remove();
             }
         }
+        return logGroups;
+    }
+
+    /**
+     * 通过关键字搜索日志
+     * @param keyWord
+     * @param user
+     * @return
+     */
+    @Override
+    public List<LogGroup> getLogByFuzzyName(String keyWord,User user) {
+        Map<String,Object> request = new HashMap<String,Object>();
+        request.put("keyWord",keyWord);
+        request.put("userid",user.getId());
+        List<LogGroup> logGroups = rawLogMapper.listLogsByFuzzyName(request);
+        System.out.println("logGroups:"+logGroups.size());
+        Iterator<LogGroup> iterator = logGroups.iterator();
+        verificateLogGroups(iterator);
         return logGroups;
     }
 
@@ -139,5 +154,20 @@ public class RawLogServiceImpl implements RawLogService {
         }
         normalLogMapper.save(normalLog);
         return normalLog;
+    }
+
+    private void verificateLogGroups(Iterator iterator){
+        while (iterator.hasNext()){
+            LogGroup logGroup = (LogGroup) iterator.next();
+            if (!Util.isActive(logGroup.getNormalLog())){
+                logGroup.setNormalLog(null);
+            }
+            if (!Util.isActive(logGroup.getEventLog())){
+                logGroup.setEventLog(null);
+            }
+            if (logGroup.getRawLog() == null && logGroup.getNormalLog() == null && logGroup.getEventLog() == null){
+                iterator.remove();
+            }
+        }
     }
 }

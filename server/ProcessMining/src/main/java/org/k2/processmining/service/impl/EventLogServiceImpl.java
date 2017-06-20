@@ -7,6 +7,7 @@ import org.k2.processmining.model.LogShareState;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.log.RawLog;
+import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.event.parse.EventLogParse;
@@ -17,8 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by nyq on 2017/6/19.
@@ -79,6 +82,24 @@ public class EventLogServiceImpl implements EventLogService {
     }
 
     /**
+     * 根据关键字搜索日志
+     * @param keyWord
+     * @param user
+     * @return
+     */
+    @Override
+    public List<LogGroup> getLogByFuzzyName(String keyWord, User user) {
+        Map<String,Object> request = new HashMap<String,Object>();
+        request.put("keyWord",keyWord);
+        request.put("userid",user.getId());
+        List<LogGroup> logGroups = eventLogMapper.listLogsByFuzzyName(request);
+        System.out.println("logGroups:"+logGroups.size());
+        Iterator<LogGroup> iterator = logGroups.iterator();
+        verificateLogGroups(iterator);
+        return logGroups;
+    }
+
+    /**
      * 更新日志的分享状态
      * @param idList
      * @param isshared
@@ -131,5 +152,20 @@ public class EventLogServiceImpl implements EventLogService {
         log.setOperatorNames(eventLogSummary.getOperatorNames());
         eventLogMapper.save(log);
         return true;
+    }
+
+    private void verificateLogGroups(Iterator iterator){
+        while (iterator.hasNext()){
+            LogGroup logGroup = (LogGroup) iterator.next();
+            if (!Util.isActive(logGroup.getRawLog())){
+                logGroup.setRawLog(null);
+            }
+            if (!Util.isActive(logGroup.getNormalLog())){
+                logGroup.setEventLog(null);
+            }
+            if (logGroup.getRawLog() == null && logGroup.getNormalLog() == null && logGroup.getEventLog() == null){
+                iterator.remove();
+            }
+        }
     }
 }

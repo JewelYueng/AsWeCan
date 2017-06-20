@@ -130,7 +130,7 @@ public class EventLogController {
      */
     @RequestMapping(value = "/share",method = RequestMethod.POST)
     public @ResponseBody
-    Map shareNormalLogs(@RequestBody Map map){
+    Object shareNormalLogs(@RequestBody Map map){
 
         Map result = new HashMap();
         List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
@@ -150,7 +150,7 @@ public class EventLogController {
      */
     @RequestMapping(value = "/unShare",method = RequestMethod.POST)
     public @ResponseBody
-    Map unShareNormalLogs(@RequestBody Map map){
+    Object unShareNormalLogs(@RequestBody Map map){
         Map result = new HashMap();
         List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
         if (idList.size() == 0){
@@ -168,7 +168,7 @@ public class EventLogController {
      */
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
     public @ResponseBody
-    Map deleteByLogId(@RequestBody Map map){
+    Object deleteByLogId(@RequestBody Map map){
         Map result = new HashMap();
         List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
         if (idList.size() == 0){
@@ -176,6 +176,22 @@ public class EventLogController {
         }else {
             result.put("code",eventLogService.updateStateByLogId(idList,LogState.DELETE.getValue()));
         }
+        return result;
+    }
+
+    /**
+     * 搜索日志
+     * @param keyWord
+     * @return
+     */
+    @RequestMapping(value = "/search",method = RequestMethod.GET)
+    public @ResponseBody
+    Object getLogByFuzzyName(@RequestParam("keyWord")String keyWord){
+        Map<String,Object> result = new HashMap<>();
+        User user = new User();
+        user.setId("0000000000000001");
+        List<LogGroup> logGroups = eventLogService.getLogByFuzzyName(keyWord,user);
+        result.put("logGroups",logGroups);
         return result;
     }
 }

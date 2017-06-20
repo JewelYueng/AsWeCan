@@ -50,6 +50,18 @@
             LEFT JOIN user ON RL.userid = user.id
     </select>
 
+    <select id="listLogsByFuzzyName" parameterType="java.util.Map" resultMap="logGroup">
+        SELECT
+        <include refid="userColumns"/>
+        ,
+        <include refid="logGroupSelectColumns"/>
+        FROM
+        (SELECT * FROM raw_log WHERE log_name LIKE concat(concat('%',#{keyWord}),'%') AND userid = #{userid}) RL
+        LEFT JOIN normal_log NL ON RL.id = NL.raw_log_id
+        LEFT JOIN event_log EL ON NL.id = EL.normal_log_id
+        LEFT JOIN user ON RL.userid = user.id
+    </select>
+
     <update id="updateShareStateByLogId" parameterType="RawLog">
         UPDATE raw_log
         SET isshared = #{isShared,jdbcType = TINYINT}

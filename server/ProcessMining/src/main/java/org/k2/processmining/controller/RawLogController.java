@@ -197,7 +197,20 @@ public class RawLogController {
         return result;
     }
 
-    public void getLogByFuzzyName(){}  //模糊搜索
+    /**
+     * 日志搜索
+     * @param keyWord
+     */
+    @RequestMapping(value = "/search",method = RequestMethod.GET)
+    public @ResponseBody
+    Object getLogByFuzzyName(@RequestParam("keyWord")String keyWord){
+        Map<String,Object> result = new HashMap<>();
+        User user = new User();
+        user.setId("0000000000000001");
+        List<LogGroup> logGroups = rawLogService.getLogByFuzzyName(keyWord,user);
+        result.put("logGroups",logGroups);
+        return result;
+    }
 
     private User getUser() {
         User user = new User();

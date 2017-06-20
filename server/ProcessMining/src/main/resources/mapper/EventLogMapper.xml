@@ -37,6 +37,18 @@
         LEFT JOIN user ON EL.userid = user.id;
     </select>
 
+    <select id="listLogsByFuzzyName" resultMap="org.k2.processmining.mapper.RawLogMapper.logGroup">
+        SELECT
+        <include refid="org.k2.processmining.mapper.RawLogMapper.userColumns"/>
+        ,
+        <include refid="org.k2.processmining.mapper.RawLogMapper.logGroupSelectColumns"/>
+        FROM
+        (SELECT * FROM event_log WHERE log_name LIKE concat(concat('%',#{keyWord}),'%') AND userid = #{userid}) EL
+        LEFT JOIN normal_log NL ON EL.normal_log_id = NL.id
+        LEFT JOIN raw_log RL ON NL.raw_log_id = RL.id
+        LEFT JOIN user ON EL.userid = user.id;
+    </select>
+
     <update id="updateShareStateByLogId" parameterType="EventLog">
         UPDATE event_log
         SET isshared = #{isShared,jdbcType = TINYINT}
