@@ -1,16 +1,22 @@
 <template>
   <div id="app">
     <Home></Home>
+    <Modal></Modal>
   </div>
 </template>
 
 <script>
   import Home from './components/home/Index.vue'
+  import Modal from './components/component-plugins/modal/Modal.vue'
   export default {
     name: 'app',
     components: {
-        Home
-    }
+      Home, Modal
+    },
+    data() {
+      return {}
+    },
+    methods: {}
   }
 </script>
 

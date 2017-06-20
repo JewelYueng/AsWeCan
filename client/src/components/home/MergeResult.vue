@@ -73,7 +73,7 @@
         flex-direction: row;
         width: @right_side_width - 130px;
         border-bottom: @main_green 1px solid;
-        padding: 20px;
+        padding: 20px  ;
         .key{
           text-align: left;
           flex: 0 0 20%;
