@@ -62,20 +62,24 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      justify-content: center;
-      width: 100%;
+      justify-content: flex-start;
       height: 650px;
-      overflow: auto;
+      overflow-y: auto;
+      width: @right_side_width - 80px;
+      padding: 10px;
+      box-sizing: border-box;
       .result-item{
         display: flex;
         flex-direction: row;
-        width: @right_side_width - 80px;
+        width: @right_side_width - 130px;
         border-bottom: @main_green 1px solid;
-        padding: 10px;
+        padding: 20px;
         .key{
+          text-align: left;
           flex: 0 0 20%;
         }
         .value{
+          text-align: left;
           flex: 0 0 80%;
         }
       }
