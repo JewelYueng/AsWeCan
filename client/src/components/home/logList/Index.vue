@@ -73,10 +73,8 @@
           }
         ],
         view_dict: {
-//          normal: NormalLog,
           raw: RawLog,
           normal: NormalLog,
-//            raw: RawLog,
           event: EventLog
         },
         selected_tab: 0
