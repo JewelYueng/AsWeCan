@@ -15,8 +15,10 @@
   }
   #right-window{
     width: @right_side_width;
+    height: @main_height;
     box-sizing: border-box;
     padding: 30px 30px 0 30px;
+    overflow: auto;
   }
 </style>
 
@@ -24,7 +26,7 @@
   import LeftSide from 'components/home/LeftSide.vue'
   import LogList from 'components/home/logList/Index'
   import ShareList from 'components/home/sharelist/Index'
-  import LogMerge from 'components/home/Merge'
+  import LogMerge from 'components/home/MergeResult'
   import ProcessMining from 'components/home/ProcessMining'
 
 
