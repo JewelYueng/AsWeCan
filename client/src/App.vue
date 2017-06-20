@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Home></Home>
-    <Modal @show="blurStart" @hide="blurEnd"></Modal>
+    <Modal></Modal>
   </div>
 </template>
 
@@ -14,18 +14,9 @@
       Home, Modal
     },
     data() {
-      return {
-        isBlur: false
-      }
+      return {}
     },
-    methods: {
-      blurStart(){
-        this.isBlur = true
-      },
-      blurEnd(){
-        this.isBlur = false
-      }
-    }
+    methods: {}
   }
 </script>
 
@@ -43,8 +34,5 @@
     margin-left: auto;
     margin-right: auto;
 
-  }
-  .blur {
-    filter: blur(3px);
   }
 </style>

@@ -114,11 +114,9 @@
         val.length > 0
           ? this.$nextTick(() => {
           this.show = true
-          this.$emit('show')
         })
           : this.$nextTick(() => {
           this.show = false
-          this.$emit('hide')
         })
 
       }

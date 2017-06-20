@@ -14,8 +14,8 @@
     methods: {
       back(){
         this.commit(true)
+//        浏览器测试：this.$modal({type:'alert',data: {key: 'q'}}).then((a)=>{console.log(a)})
       }
     }
-
   }
 </script>
