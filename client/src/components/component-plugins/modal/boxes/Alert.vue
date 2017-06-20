@@ -10,11 +10,12 @@
 <script>
   import BaseBox from './BaseBox'
   export default{
+    mixins: [BaseBox],
     methods: {
-      mixins: [BaseBox],
       back(){
         this.commit(true)
       }
     }
+
   }
 </script>

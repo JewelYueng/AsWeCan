@@ -1,6 +1,6 @@
 <template>
   <div id="modal" v-if="show">
-    <div class="mask" @click="clickMask"></div>
+    <div class="mask"></div>
     <transition-group name="list" tag="div" appear>
       <div class="modal-container list-item" :key="box.id" v-for="box in boxes">
         <component :is="box.type" :data="box.data" :onCommit="box.onCommit"></component>
@@ -92,10 +92,6 @@
       window.$modal = this.modal
     },
     methods: {
-      clickMask(){
-        this.show = false
-        this.$emit('hide')
-      },
       modal ({type, data}) {
         const id = this.id++
         let __onCommit__
@@ -120,7 +116,7 @@
           this.show = true
           this.$emit('show')
         })
-          : this.nextTick(() => {
+          : this.$nextTick(() => {
           this.show = false
           this.$emit('hide')
         })
