@@ -132,25 +132,59 @@ public class NormalLogServiceImpl implements NormalLogService {
         return logGroups;
     }
 
+    /**
+     * 通过关键字获取日志
+     * @param keyWord
+     * @return
+     */
+    @Override
+    public List<LogGroup> getLogByFuzzyName(String keyWord) {
+        List<LogGroup> logGroups = normalLogMapper.listLogGroupsByFuzzyName(keyWord);
+        Iterator<LogGroup> iterator = logGroups.iterator();
+        while (iterator.hasNext()){
+            LogGroup logGroup = iterator.next();
+
+        }
+        return logGroups;
+    }
+
     @Override
     public NormalLog getNormalLogById(String id) {
         return normalLogMapper.getNormalLogById(id);
     }
 
+    /**
+     * 更新日志的分享状态
+     * @param idList
+     * @param isshared
+     * @return
+     */
     @Override
     public int updateShareStateByLogId(List<String> idList,int isshared) {
 
         for (String id : idList) {
             NormalLog normalLog = new NormalLog();
             normalLog.setId(id);
-            normalLog.setState(isshared);//分享
+            normalLog.setIsShared(isshared);//分享
             normalLogMapper.updateShareStateByLogId(normalLog);
         }
         return 1;
     }
 
+    /**
+     * 更新日志的状态
+     * @param idList
+     * @param state
+     * @return
+     */
     @Override
-    public int deleteLogByLogId(List<String> idList) {
+    public int updateStateByLogId(List<String> idList, int state) {
+        for (String id: idList){
+            NormalLog normalLog = new NormalLog();
+            normalLog.setId(id);
+            normalLog.setState(state);
+            normalLogMapper.updateLogStateByLogId(normalLog);
+        }
         return 0;
     }
 

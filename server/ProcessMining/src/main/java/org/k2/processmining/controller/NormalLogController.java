@@ -10,6 +10,7 @@ import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.NormalLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.util.Util;
+import org.k2.processmining.utils.GsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -138,13 +139,11 @@ public class NormalLogController {
     Map shareNormalLogs(@RequestBody Map map){
 
         Map result = new HashMap();
-        Gson gson = new GsonBuilder().create();
-        System.out.println("map.toString:"+map.get("idList").toString());
-        List<String> idList = gson.fromJson(map.get("idList").toString(),ArrayList.class);
+        List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
         if (idList.size() == 0 ){
             result.put("code",0);
         }else {
-            result.put("code",normalLogService.updateShareStateByLogId(idList,1));
+            result.put("code",normalLogService.updateShareStateByLogId(idList,LogState.UNSHARED.getValue()));
         }
         return result;
     }
@@ -159,35 +158,32 @@ public class NormalLogController {
     public @ResponseBody
     Map unShareNormalLogs(@RequestBody Map map){
         Map result = new HashMap();
-        Gson gson = new GsonBuilder().create();
-        List<String> idList = gson.fromJson(map.get("idList").toString(),ArrayList.class);
+        List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
         if (idList.size() == 0){
             result.put("code",0);
         }else {
-            result.put("code",normalLogService.updateShareStateByLogId(idList,0));
+            result.put("code",normalLogService.updateShareStateByLogId(idList,LogState.UNSHARED.getValue()));
         }
         return result;
     }
 
-
     /**
-     * 删除规范化日志
+     * 删除日志
      * @param map
      * @return
      */
-    @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete",method = RequestMethod.POST)
     public @ResponseBody
-    Map deleteLogById(@RequestBody Map map){
+    Map deleteByLogId(@RequestBody Map map){
         Map result = new HashMap();
-        Gson gson = new GsonBuilder().create();
-        List<String> idList = gson.fromJson(map.get("idList").toString(),ArrayList.class);
+        System.out.println("map:"+map.get("idList").toString());
+        List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
         if (idList.size() == 0){
             result.put("code",0);
         }else {
-            result.put("code",normalLogService.deleteLogByLogId(idList));
+            result.put("code",normalLogService.updateStateByLogId(idList,LogState.DELETE.getValue()));
         }
-
-        return null;
+        return result;
     }
 
 
@@ -197,7 +193,9 @@ public class NormalLogController {
      */
     @RequestMapping(value = "/search")
     public @ResponseBody
-    List<NormalLog> getLogByFuzzyName(){
+    Object getLogByFuzzyName(@RequestParam("keyWord")String keyWord){
+        Map<String,Object> result = new HashMap<>();
+        normalLogService.getLogByFuzzyName(keyWord);
         return null;
     }
 

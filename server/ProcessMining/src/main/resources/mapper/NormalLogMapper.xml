@@ -47,6 +47,12 @@
         VALUES(#{id}, #{logName}, #{createDate}, #{userId}, #{format}, #{isShared}, #{state}, #{rawLogId})
     </insert>
 
+    <update id="updateLogStateByLogId" parameterType="NormalLog">
+        UPDATE normal_log
+        SET state = #{state, jdbcType = TINYINT}
+        WHERE id = #{id,jdbcType = VARCHAR}
+    </update>
+
     <resultMap id="normalLog" type="NormalLog">
         <id column="id" property="id"/>
         <result column="log_name" property="logName"/>

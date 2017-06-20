@@ -16,11 +16,13 @@ public interface NormalLogService {
 
     List<LogGroup> getSharedLogGroups();
 
+    List<LogGroup> getLogByFuzzyName(String keyWord);
+
     NormalLog getNormalLogById(String id);
 
     int updateShareStateByLogId(List<String> idList,int isshared);
 
-    int deleteLogByLogId(List<String> idList);
+    int updateStateByLogId(List<String> idList,int state);
 
     void addNormalLog(NormalLog normalLog);
 
