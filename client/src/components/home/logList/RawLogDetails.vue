@@ -48,9 +48,9 @@
   #search_button{
     width: 20px;
     height: 20px;
-    position: absolute;
-    padding-left: 850px;
-    padding-top: 5px;
+    position: relative;
+    left: -40px;
+    top: 5px;
   }
   .btn_common{
     color: white;
