@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+        xmlns="http://www.springframework.org/schema/security"
+        xmlns:beans="http://www.springframework.org/schema/beans"
+        xmlns:p="http://www.springframework.org/schema/p"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/context
+          http://www.springframework.org/schema/context/spring-context.xsd
+          http://www.springframework.org/schema/security
+              http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <!--<http pattern="/myHome" security="none"/>-->
+
+    <!--<http auto-config="true" use-expressions="false">-->
+        <!--<intercept-url pattern="/**" access="ROLE_USER"/>-->
+        <!--&lt;!&ndash;<form-login login-page="/html/admin.html" default-target-url="/myHome" always-use-default-target="true"/>&ndash;&gt;-->
+        <!--<session-management invalid-session-url="/login"/>-->
+    <!--</http>-->
+
+    <!--<authentication-manager>-->
+        <!--<authentication-provider>-->
+            <!--<user-service>-->
+                <!--<user name="user" password="123456" authorities="ROLE_USER"/>-->
+                <!--<user name="admin" authorities="ROLE_ADMIN" password="123456"/>-->
+            <!--</user-service>-->
+        <!--</authentication-provider>-->
+
+        <!--<authentication-provider user-service-ref="myUserDetailsService"/>-->
+    <!--</authentication-manager>-->
+
+    <!--<beans:bean id="myUserDetailsService"-->
+    <!--class="org.k2.processmining.security.UserLoginServiceImpl">-->
+
+    <!--</beans:bean>-->
+
+</beans:beans>
