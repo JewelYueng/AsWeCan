@@ -1,25 +1,53 @@
-<!DOCTYPE html>
 <html lang="en">
-<script src="/js/jquery-3.2.1.slim.min.js"></script>
+<script src="/js/jquery-3.2.1.min.js"></script>
 <head>
     <meta charset="UTF-8">
     <title>管理员</title>
 </head>
 <body>
-    <div>
-        账号：<input id="userName" type="text">
-        密码:<input id="password" type="text">
-        <button id="btnSubmit" onclick="onsubmit()">测试点我</button>
-    </div>
+<div>
+    账号：<input id="userName" type="text">
+    密码:<input id="password" type="text">
+    <input type="button" value="测试点我" id="clickMe">
+    <form name='f'
+          action='/login'
+          method='POST'>
+        <table class="formtable">
+            <tr>
+                <td class="title">User:</td>
+                <td><input  class="control" type='text' name='username'    value=''></td>
+            </tr>
+            <tr>
+                <td class="title">Password:</td>
+                <td><input class="control" type='password' name='password' /></td>
+            </tr>
+            <tr>
+                <td colspan='2'><input name="submit" type="submit"
+                                       value="aaa" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
 </body>
 
 <script>
-    function onsubmit() {
-        var name = $('#userName').val();
-        var pwd = $('#password').val();
-        console.log("name:"+name);
-        console.log("pwd:"+pwd);
+    $(document).ready(function(){
+     $('#clickMe').click(function () {
+         var name = $('#userName').val();
+         var pwd = $('#password').val();
+         console.log("name:" + name);
+         console.log("pwd:" + pwd);
 
-    }
+         $.ajax({
+             type: "POST",
+             dataType: 'json',
+             data: {username: name, password: pwd},
+             url: '/login'
+         });
+
+     })
+    })
+
+
 </script>
 </html>

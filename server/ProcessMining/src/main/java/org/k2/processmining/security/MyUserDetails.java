@@ -14,14 +14,14 @@ import java.util.HashSet;
 /**
  * Created by Aria on 2017/6/21.
  */
-public class MyUserDetrails implements UserDetails{
+public class MyUserDetails implements UserDetails{
     private String id;
     private String username;
     private String password;
     private boolean enabled;
     private Collection<SimpleGrantedAuthority> authorities;
 
-    public MyUserDetrails(String id, String username, String password, boolean enabled){
+    public MyUserDetails(String id, String username, String password, boolean enabled){
         super();
         this.id = id;
         this.username = username;
@@ -32,8 +32,8 @@ public class MyUserDetrails implements UserDetails{
         authorities.add(grantedAuthority);
     }
 
-    public MyUserDetrails(String id, String username, String password, boolean enabled,
-                Collection<SimpleGrantedAuthority> authorities) {
+    public MyUserDetails(String id, String username, String password, boolean enabled,
+                         Collection<SimpleGrantedAuthority> authorities) {
         super();
         this.id = id;
         this.username = username;

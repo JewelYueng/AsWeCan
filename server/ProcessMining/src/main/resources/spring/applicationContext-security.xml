@@ -7,20 +7,20 @@
 		http://www.springframework.org/schema/security
 		http://www.springframework.org/schema/security/spring-security.xsd">
 
-
-
+    <security:http pattern="/loginPage" security="none"/>
+    <security:http pattern="/js/**" security="none"/>
 
     <security:http>
         <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
-        <security:form-login/>
-        <security:logout/>
+        <security:form-login login-page="/loginPage" login-processing-url="/login" always-use-default-target="true"
+                             default-target-url="/welcome" authentication-failure-url="/loginPage?error=error"/>
+        <security:csrf disabled="true"/>
     </security:http>
+
+
 
     <security:authentication-manager>
         <security:authentication-provider user-service-ref="myUserDetailsService">
-            <!--<security:user-service>-->
-                <!--<security:user name="user" authorities="ROLE_USER" password="123456"/>-->
-            <!--</security:user-service>-->
         </security:authentication-provider>
     </security:authentication-manager>
 
