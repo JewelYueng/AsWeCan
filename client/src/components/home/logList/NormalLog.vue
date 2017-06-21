@@ -49,6 +49,7 @@
     height: @search_height;
     border-radius: @search_border-radius;
     border: 1px solid @tab_color;
+    outline-style:none;
   }
   #search_button{
     width: 20px;
@@ -123,17 +124,21 @@
         ]
       }
     },
+    created(){
+      this.$api({method: 'getNormalLog'}).then((res) => {
+        console.log(res)
+      })
+    },
     computed:{
       amount:function(item,index){
-        let sum = this.totalAmount.length;
-        return sum;
+        return this.totalAmount.length;
       },
       checkAll: {
         get: function() {
-          return this.checkedCount == this.items.length;
+          return this.checkedCount === this.items.length;
         },
         set: function(value){
-          var _this = this;
+          const _this = this;
           if (value) {
             this.totalAmount = [];
             this.checked = this.items.map(function(item) {
@@ -159,8 +164,8 @@
     },
     methods:{
       currClick:function(item,index){
-        var _this = this;
-        if(typeof item.checked == 'undefined'){
+        const _this = this;
+        if(typeof item.checked === 'undefined'){
           this.$set(item,'checked',true);
           let total = item.id;
           this.totalAmount.push(total);

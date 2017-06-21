@@ -1,6 +1,7 @@
 <template>
   <div class="event-log-details">
       <div id="head">
+
         <a href="" class=" btn bgbtn02 btn_upload btn_common">
           <img src="static/img/upload.png"/>上传
         </a>
@@ -49,6 +50,7 @@
     height: @search_height;
     border-radius: @search_border-radius;
     border: 1px solid @tab_color;
+    outline-style:none;
   }
   #search_button{
     width: 20px;
