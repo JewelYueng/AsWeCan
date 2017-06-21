@@ -105,6 +105,7 @@
 
 </style>
 <script>
+  import { mapActions } from 'vuex'
   export default{
     data(){
       return {
@@ -232,6 +233,7 @@
       })
     },
     methods: {
+      ...mapActions(['jumpView']),
       change: function (m_index, p_key, min, max) {
 //  console.log(event.target.value);
         let send_data = this.send_params_arr[m_index][p_key]
@@ -247,7 +249,7 @@
         }
       },
       merge:function () {
-        console.log('starting merge!');
+        this.jumpView('/home/mergeresult')
       }
 
     }

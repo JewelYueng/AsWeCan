@@ -57,12 +57,13 @@
     margin-left: 400px;
     background-color: @tab_separator;
     color: @main_font_color;
+
     text-align: center;
     width: @search_width;
     height: @search_height;
     border-radius: @search_border-radius;
     border: 1px solid @tab_color;
-    outline-style:none;
+    outline-style: none;
   }
 
   #search_button {
@@ -123,22 +124,7 @@
         totalAmount: [],
         /*  checkAll:false,*/
         /* amount: 0,*/
-        items: [
-//          {
-//            id:1,
-//            log_name:'first-log',
-//            create_date:'2017-1-1',
-//            rawLog_name:'first-raw-log',
-//            eventLog_name:'first-event-log'
-//          },
-//          {
-//            id:2,
-//            log_name:'second-log',
-//            create_date:'2017-2-1',
-//            rawLog_name:'second-raw-log',
-//            eventLog_name:'second-event-log'
-//          }
-        ]
+        items: []
       }
     },
     created(){

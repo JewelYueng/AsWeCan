@@ -27,6 +27,7 @@
   import LogList from 'components/home/logList/Index'
   import ShareList from 'components/home/sharelist/Index'
   import LogMerge from 'components/home/Merge'
+  import MergeResult from 'components/home/MergeResult'
   import ProcessMining from 'components/home/ProcessMining'
 
 
@@ -38,7 +39,8 @@
         	loglist: LogList,
           sharelist: ShareList,
           merge: LogMerge,
-          mining: ProcessMining
+          mining: ProcessMining,
+          mergeresult: MergeResult
         }
       }
     },
@@ -47,7 +49,8 @@
       LogList,
       ShareList,
       LogMerge,
-      ProcessMining
+      ProcessMining,
+      MergeResult
     },
     computed: {
     	current_view() {
