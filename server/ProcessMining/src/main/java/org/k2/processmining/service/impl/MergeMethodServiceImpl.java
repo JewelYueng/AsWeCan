@@ -33,6 +33,9 @@ import java.util.Map;
 public class MergeMethodServiceImpl implements MergeMethodService{
 
     @Autowired
+    private MergeMethodService mergeMethodService;
+
+    @Autowired
     private MergeMethodMapper mergeMethodMapper;
 
     @Autowired
@@ -116,10 +119,11 @@ public class MergeMethodServiceImpl implements MergeMethodService{
         if (! logStorage.upload(resultEventLog, outputStream -> eventLogExport.convertXLog(resultXLog, outputStream))) {
             return null;
         }
-        afterSaveInLogStorage(resultEventLog, resultXLog);
+        mergeMethodService.afterSaveInLogStorage(resultEventLog, resultXLog);
         return resultEventLog;
     }
 
+    @Override
     public void afterSaveInLogStorage(EventLog resultEventLog, XLog resultXLog) {
         EventLogSummary eventLogSummary = Summarize.summarizeXLog(resultXLog);
         resultEventLog.setCaseNumber(eventLogSummary.getCases());

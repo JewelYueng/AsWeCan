@@ -30,6 +30,9 @@ import java.util.Map;
 public class EventLogServiceImpl implements EventLogService {
 
     @Autowired
+    private EventLogService eventLogService;
+
+    @Autowired
     private EventLogMapper eventLogMapper;
 
     @Autowired
@@ -86,7 +89,7 @@ public class EventLogServiceImpl implements EventLogService {
         if (! logStorage.upload(log, inputForRemote)) {
             return false;
         }
-        afterSaveInLogStorage(log, inputForSummarize);
+        eventLogService.afterSaveInLogStorage(log, inputForSummarize);
         return true;
     }
 

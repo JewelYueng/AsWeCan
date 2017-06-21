@@ -34,6 +34,9 @@ import java.util.*;
 public class NormalLogServiceImpl implements NormalLogService {
 
     @Autowired
+    private NormalLogService normalLogService;
+
+    @Autowired
     private LogStorage logStorage;
 
     @Autowired
@@ -62,9 +65,10 @@ public class NormalLogServiceImpl implements NormalLogService {
         }
         try (InputStream inputStream = new FileInputStream(file)) {
             if (logStorage.upload(eventLog, inputStream)) {
-                afterSaveInLogStorageForTransToEventLog(eventLog, normalLog, file);
+                normalLogService.afterSaveInLogStorageForTransToEventLog(eventLog, normalLog, file);
+                return eventLog;
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         finally {
@@ -120,7 +124,8 @@ public class NormalLogServiceImpl implements NormalLogService {
     @Override
     public boolean save(NormalLog normalLog, InputStream inputStream) {
         if (logStorage.upload(normalLog, inputStream)) {
-            afterSaveInLogStorage(normalLog);
+            normalLogService.afterSaveInLogStorage(normalLog);
+            return true;
         }
         return false;
     }

@@ -27,6 +27,9 @@ import java.util.*;
 public class RawLogServiceImpl implements RawLogService {
 
     @Autowired
+    private RawLogService rawLogService;
+
+    @Autowired
     private LogStorage logStorage;
 
     @Autowired
@@ -69,7 +72,7 @@ public class RawLogServiceImpl implements RawLogService {
     @Override
     public boolean save(RawLog log, InputStream inputStream) {
         if (logStorage.upload(log, inputStream)) {
-            afterSaveInLogStorage(log);
+            rawLogService.afterSaveInLogStorage(log);
             return true;
         }
         return false;
@@ -110,7 +113,7 @@ public class RawLogServiceImpl implements RawLogService {
                         inputStream -> Normalize.normalize(lc, inputStream, outputStream)))) {
             return null;
         }
-        afterSaveInLogStorageForNormalize(normalLog, rawLog);
+        rawLogService.afterSaveInLogStorageForNormalize(normalLog, rawLog);
         return normalLog;
     }
 

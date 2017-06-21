@@ -8,6 +8,7 @@ import org.k2.processmining.mapper.RawLogMapper;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.MethodState;
 import org.k2.processmining.model.log.EventLog;
+import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.log.RawLog;
 import org.k2.processmining.model.mergemethod.MergeMethod;
 import org.k2.processmining.support.spring.SaveExceptionThrowsAdvice;
@@ -48,12 +49,19 @@ public class MergeMethodServiceTest {
     @Test
     public void d() {
         RawLog rawLog = new RawLog();
-        rawLog.setId("fuck");
+        rawLog.setId("e4c4e1e1-eb5a-49ac-8839-9d09f30690bf");
         rawLog.setLogName("fuck");
         rawLog.setUserId("1");
         rawLog.setCreateDate(new Date());
         rawLog.setFormat("txt");
         RawLogService rawLogService = applicationContext.getBean(RawLogService.class);
+
+        NormalLog normalLog = new NormalLog();
+        normalLog.setId("a0289f21-ecab-4486-b96f-039121cc86c4");
+        normalLog.setLogName("123");
+        normalLog.setUserId("1");
+        NormalLogService service = applicationContext.getBean(NormalLogService.class);
+        service.transToEventLog(normalLog);
 //        applicationContext.getBean(RawLogService.class).save(null, null);
     }
 
