@@ -44,27 +44,18 @@
         </include>
     </update>
 
-    <update id="updateIsShared">
-        <include refid="org.k2.processmining.mapper.RawLogMapper.updateIsSharedSQL">
-            <property name="table" value="normal_log"/>
-        </include>
-    </update>
-
-    <update id="updateShareStateByLogId" parameterType="NormalLog">
-        UPDATE normal_log
-        SET  isshared = #{isShared, jdbcType = TINYINT}
-        WHERE  id = #{id,jdbcType = VARCHAR}
-    </update>
-
     <insert id="save" parameterType="NormalLog">
         INSERT INTO normal_log(id,log_name,create_date,userid,format, isshared, state, raw_log_id)
         VALUES(#{id}, #{logName}, #{createDate}, #{userId}, #{format}, #{isShared}, #{state}, #{rawLogId})
     </insert>
 
-    <update id="updateLogStateByLogId" parameterType="NormalLog">
+    <update id="updateLogStateByLogId">
         UPDATE normal_log
         SET state = #{state, jdbcType = TINYINT}
-        WHERE id = #{id,jdbcType = VARCHAR}
+        WHERE id IN
+        <foreach collection="idList" index="index" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
     </update>
 
     <resultMap id="normalLog" type="NormalLog">

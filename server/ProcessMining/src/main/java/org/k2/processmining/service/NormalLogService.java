@@ -15,24 +15,15 @@ import java.util.List;
 public interface NormalLogService {
 
     List<LogGroup> getLogGroupsByUserId(String userId);
-
     List<LogGroup> getSharedLogGroups();
-
     List<LogGroup> getLogByFuzzyName(String keyWord, User user);
-
     NormalLog getNormalLogById(String id);
-
-    int updateShareStateByLogId(List<String> idList,int isshared);
-
-    int updateStateByLogId(List<String> idList,int state);
 
     boolean save(NormalLog normalLog, InputStream inputStream);
 
     boolean saveInDB(NormalLog normalLog);
 
     EventLog transToEventLog(NormalLog normalLog);
-
     void updateShareStateByLogIdForUser(List<String> ids, int isShared, String userId);
-
     void updateStateByLogIdForUser(List<String> ids, int state, String userId);
 }

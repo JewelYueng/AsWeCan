@@ -128,41 +128,6 @@ public class NormalLogServiceImpl implements NormalLogService {
         return normalLogMapper.getNormalLogById(id);
     }
 
-    /**
-     * 更新日志的分享状态
-     * @param idList
-     * @param isshared
-     * @return
-     */
-    @Override
-    public int updateShareStateByLogId(List<String> idList,int isshared) {
-
-        for (String id : idList) {
-            NormalLog normalLog = new NormalLog();
-            normalLog.setId(id);
-            normalLog.setIsShared(isshared);//分享
-            normalLogMapper.updateShareStateByLogId(normalLog);
-        }
-        return 1;
-    }
-
-    /**
-     * 更新日志的状态
-     * @param idList
-     * @param state
-     * @return
-     */
-    @Override
-    public int updateStateByLogId(List<String> idList, int state) {
-        for (String id: idList){
-            NormalLog normalLog = new NormalLog();
-            normalLog.setId(id);
-            normalLog.setState(state);
-            normalLogMapper.updateLogStateByLogId(normalLog);
-        }
-        return 1;
-    }
-
     @Override
     public boolean save(NormalLog normalLog, InputStream inputStream) {
         if (logStorage.upload(normalLog, inputStream)) {

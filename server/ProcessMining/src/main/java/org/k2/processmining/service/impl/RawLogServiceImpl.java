@@ -90,41 +90,6 @@ public class RawLogServiceImpl implements RawLogService {
         rawLogMapper.updateLogState(ids, state, userId);
     }
 
-    /**
-     * 更新日志的分享状态
-     * @param idList
-     * @param isshared
-     * @return
-     */
-    @Override
-    public int updateShareStateByLogId(List<String> idList,int isshared) {
-
-        for (String id : idList) {
-            RawLog rawLog = new RawLog();
-            rawLog.setId(id);
-            rawLog.setIsShared(isshared);//分享
-            rawLogMapper.updateShareStateByLogId(rawLog);
-        }
-        return 1;
-    }
-
-    /**
-     * 更新日志的状态
-     * @param idList
-     * @param state
-     * @return
-     */
-    @Override
-    public int updateStateByLogId(List<String> idList, int state) {
-        for (String id: idList){
-            RawLog rawLog = new RawLog();
-            rawLog.setId(id);
-            rawLog.setState(state);
-            rawLogMapper.updateLogStateByLogId(rawLog);
-        }
-        return 1;
-    }
-
     @Override
     public NormalLog normalize(RawLog rawLog, LogConfiguration lc) {
         NormalLog normalLog = new NormalLog();
