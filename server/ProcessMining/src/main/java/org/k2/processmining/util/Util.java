@@ -3,6 +3,7 @@ package org.k2.processmining.util;
 import org.k2.processmining.model.LogShareState;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.AbstractLog;
+import org.k2.processmining.model.log.LogType;
 import org.k2.processmining.model.user.User;
 
 import java.io.UnsupportedEncodingException;
@@ -69,5 +70,14 @@ public class Util {
             e.printStackTrace();
         }
         return name;
+    }
+
+    public static String[] getLogTypeNames() {
+        LogType[] logTypes = LogType.values();
+        String[] names = new String[logTypes.length];
+        for (int i = 0; i < names.length; i++) {
+            names[i] = logTypes[i].value;
+        }
+        return names;
     }
 }

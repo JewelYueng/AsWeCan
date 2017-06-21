@@ -30,6 +30,9 @@ import java.util.Map;
 public class EventLogServiceImpl implements EventLogService {
 
     @Autowired
+    private EventLogService eventLogService;
+
+    @Autowired
     private EventLogMapper eventLogMapper;
 
     @Autowired
@@ -86,23 +89,19 @@ public class EventLogServiceImpl implements EventLogService {
         if (! logStorage.upload(log, inputForRemote)) {
             return false;
         }
-        XLog xLog = eventLogParse.eventLogParse(inputForSummarize);
-        if (xLog == null) {
-            logStorage.delete(log);
-            return false;
-        }
-        EventLogSummary eventLogSummary = Summarize.summarizeXLog(xLog);
-        log.setCaseNumber(eventLogSummary.getCases());
-        log.setEventNames(eventLogSummary.getEventNames());
-        log.setEventNumber(eventLogSummary.getEvents());
-        log.setOperatorNames(eventLogSummary.getOperatorNames());
-        return saveInDB(log);
+        eventLogService.afterSaveInLogStorage(log, inputForSummarize);
+        return true;
     }
 
     @Override
-    public boolean saveInDB(EventLog log) {
-        eventLogMapper.save(log);
-        return true;
+    public void afterSaveInLogStorage(EventLog eventLog, InputStream inputForSummarize) {
+        XLog xLog = eventLogParse.eventLogParse(inputForSummarize);
+        EventLogSummary eventLogSummary = Summarize.summarizeXLog(xLog);
+        eventLog.setCaseNumber(eventLogSummary.getCases());
+        eventLog.setEventNames(eventLogSummary.getEventNames());
+        eventLog.setEventNumber(eventLogSummary.getEvents());
+        eventLog.setOperatorNames(eventLogSummary.getOperatorNames());
+        eventLogMapper.save(eventLog);
     }
 
     private void verifyLogGroupsIsActive(List<LogGroup> logGroups) {

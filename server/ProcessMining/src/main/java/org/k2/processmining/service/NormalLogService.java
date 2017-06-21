@@ -5,7 +5,9 @@ import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.user.User;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
@@ -18,12 +20,12 @@ public interface NormalLogService {
     List<LogGroup> getSharedLogGroups();
     List<LogGroup> getLogByFuzzyName(String keyWord, User user);
     NormalLog getNormalLogById(String id);
-
     boolean save(NormalLog normalLog, InputStream inputStream);
-
-    boolean saveInDB(NormalLog normalLog);
-
     EventLog transToEventLog(NormalLog normalLog);
     void updateShareStateByLogIdForUser(List<String> ids, int isShared, String userId);
     void updateStateByLogIdForUser(List<String> ids, int state, String userId);
+    void afterSaveInLogStorage(NormalLog normalLog);
+
+    @Transactional
+    void afterSaveInLogStorageForTransToEventLog(EventLog eventLog, NormalLog normalLog, File file);
 }

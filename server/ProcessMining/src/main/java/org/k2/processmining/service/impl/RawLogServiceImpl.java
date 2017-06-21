@@ -8,6 +8,7 @@ import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.log.RawLog;
 import org.k2.processmining.model.user.User;
+import org.k2.processmining.service.NormalLogService;
 import org.k2.processmining.service.RawLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.normal.transform.LogConfiguration;
@@ -24,6 +25,9 @@ import java.util.*;
  */
 @Service
 public class RawLogServiceImpl implements RawLogService {
+
+    @Autowired
+    private RawLogService rawLogService;
 
     @Autowired
     private LogStorage logStorage;
@@ -68,16 +72,21 @@ public class RawLogServiceImpl implements RawLogService {
     @Override
     public boolean save(RawLog log, InputStream inputStream) {
         if (logStorage.upload(log, inputStream)) {
-            saveInDB(log);
+            rawLogService.afterSaveInLogStorage(log);
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean saveInDB(RawLog log) {
+    public void afterSaveInLogStorage(RawLog log) {
         rawLogMapper.save(log);
-        return true;
+    }
+
+    @Override
+    public void afterSaveInLogStorageForNormalize(NormalLog normalLog, RawLog rawLog) {
+        normalLogMapper.deleteNormalLogByRawLogId(rawLog.getId());
+        normalLogMapper.save(normalLog);
     }
 
     @Override
@@ -104,7 +113,7 @@ public class RawLogServiceImpl implements RawLogService {
                         inputStream -> Normalize.normalize(lc, inputStream, outputStream)))) {
             return null;
         }
-        normalLogMapper.save(normalLog);
+        rawLogService.afterSaveInLogStorageForNormalize(normalLog, rawLog);
         return normalLog;
     }
 

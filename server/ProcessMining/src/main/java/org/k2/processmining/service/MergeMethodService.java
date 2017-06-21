@@ -1,5 +1,6 @@
 package org.k2.processmining.service;
 
+import org.deckfour.xes.model.XLog;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.mergemethod.MergeMethod;
 
@@ -18,4 +19,5 @@ public interface MergeMethodService {
     boolean isActive(String id);
     boolean isActive(MergeMethod mergeMethod);
     EventLog merge(EventLog eventLog1, EventLog eventLog2, String methodId, Map<String, Object> params);
+    void afterSaveInLogStorage(EventLog resultEventLog, XLog resultXLog);
 }

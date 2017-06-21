@@ -9,6 +9,8 @@ import java.io.*;
 public interface LogStorage {
     String getLogLocation(AbstractLog log);
     boolean makeDirectoryForUser(User user);
+    boolean isExist(AbstractLog log);
+    boolean isExist(User user);
     boolean deleteUser(User user);
     boolean upload(AbstractLog log, InputStream inputStream);
     <T> T upload(AbstractLog log, ProcessOutputStream<T> processOutputStream);

@@ -41,11 +41,12 @@ public class NormalLogController {
 
     /**
      * 获取用户的规范化日志列表
+     *
      * @return
      */
-    @RequestMapping(value = "",method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public @ResponseBody
-    Object getLogByUserId(HttpServletRequest request, HttpServletResponse response){
+    Object getLogByUserId(HttpServletRequest request, HttpServletResponse response) {
         User user = getUser();
         Map<String, Object> map = new HashMap<>();
         map.put("logGroups", normalLogService.getLogGroupsByUserId(user.getId()));
@@ -55,27 +56,31 @@ public class NormalLogController {
 
     /**
      * 获取分享规范化日志列表
+     *
      * @return
      */
-    @RequestMapping(value = "/sharedLogs",method = RequestMethod.GET)
+    @RequestMapping(value = "/sharedLogs", method = RequestMethod.GET)
     public @ResponseBody
-    Object getSharedLog(){
-        return new HashMap<String, Object>() {{put("logGroups", normalLogService.getSharedLogGroups());}};
+    Object getSharedLog() {
+        return new HashMap<String, Object>() {{
+            put("logGroups", normalLogService.getSharedLogGroups());
+        }};
     }
 
 
     /**
      * 上传规范化日志
+     *
      * @param format
      * @param isShare
      * @param file
      * @return
      */
-    @RequestMapping(value = "/upload",method = RequestMethod.POST)
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public @ResponseBody
     Object uploadLog(@RequestParam("format") String format,
                      @RequestParam("isShare") int isShare,
-                     @RequestParam("file")CommonsMultipartFile file){
+                     @RequestParam("file") CommonsMultipartFile file) {
         String normalLogId = Util.getUUIDString();
 
         User user = getUser();
@@ -92,12 +97,11 @@ public class NormalLogController {
         normalLog.setIsShared(isShare);
         Map<String, Object> res = new HashMap<>();
         int code = 1;
-        try (InputStream inputStream = file.getInputStream()){
-            if (! normalLogService.save(normalLog, inputStream)) {
+        try (InputStream inputStream = file.getInputStream()) {
+            if (!normalLogService.save(normalLog, inputStream)) {
                 code = 0;
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             code = 0;
         }
@@ -109,6 +113,7 @@ public class NormalLogController {
 
     /**
      * 下载规范化日志
+     *
      * @return
      */
     @RequestMapping(value = "/download", method = RequestMethod.GET)
@@ -120,12 +125,11 @@ public class NormalLogController {
             return;
         }
         String fileName = normalLog.getLogName();
-        response.setHeader("Content-Disposition","attachment;filename=" + Util.encodeForURL(fileName));
-        try (OutputStream outputStream = response.getOutputStream()){
+        response.setHeader("Content-Disposition", "attachment;filename=" + Util.encodeForURL(fileName));
+        try (OutputStream outputStream = response.getOutputStream()) {
             logStorage.download(normalLog, outputStream);
             outputStream.flush();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
@@ -133,12 +137,13 @@ public class NormalLogController {
 
     /**
      * 分享规范化日志
+     *
      * @param form
      * @return
      */
-    @RequestMapping(value = "/share",method = RequestMethod.POST)
+    @RequestMapping(value = "/share", method = RequestMethod.POST)
     public @ResponseBody
-    Object shareLogs(@Valid @RequestBody IdListForm form){
+    Object shareLogs(@Valid @RequestBody IdListForm form) {
         Map<String, Object> res = new HashMap<>();
         User user = getUser();
         normalLogService.updateShareStateByLogIdForUser(form.getIdList(), LogShareState.SHARED.getValue(), user.getId());
@@ -149,12 +154,13 @@ public class NormalLogController {
 
     /**
      * 取消分享规范化日志
+     *
      * @param form
      * @return
      */
-    @RequestMapping(value = "/unShare",method = RequestMethod.POST)
+    @RequestMapping(value = "/unShare", method = RequestMethod.POST)
     public @ResponseBody
-    Object unShareNormalLogs(@RequestBody IdListForm form){
+    Object unShareNormalLogs(@RequestBody IdListForm form) {
         Map<String, Object> res = new HashMap<>();
         User user = getUser();
         normalLogService.updateShareStateByLogIdForUser(form.getIdList(), LogShareState.UNSHARED.getValue(), user.getId());
@@ -164,39 +170,42 @@ public class NormalLogController {
 
     /**
      * 删除日志
+     *
      * @param form
      * @return
      */
-    @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     public @ResponseBody
-    Object deleteByLogId(@RequestBody IdListForm form){
-        Map<String,Object> result = new HashMap<>();
+    Object deleteByLogId(@RequestBody IdListForm form) {
+        Map<String, Object> result = new HashMap<>();
         User user = getUser();
-        normalLogService.updateStateByLogIdForUser(form.getIdList(),LogState.DELETE.getValue(), user.getId());
-        result.put("code",1);
+        normalLogService.updateStateByLogIdForUser(form.getIdList(), LogState.DELETE.getValue(), user.getId());
+        result.put("code", 1);
         return result;
     }
 
 
     /**
      * 搜索日志
+     *
      * @return
      */
-    @RequestMapping(value = "/search",method = RequestMethod.GET)
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
     public @ResponseBody
-    Object getLogByFuzzyName(@RequestParam("keyWord")String keyWord){
-        System.out.println("keyWord:"+keyWord);
-        Map<String,Object> result = new HashMap<>();
+    Object getLogByFuzzyName(@RequestParam("keyWord") String keyWord) {
+        System.out.println("keyWord:" + keyWord);
+        Map<String, Object> result = new HashMap<>();
         User user = new User();
         user.setId("1");
-        List<LogGroup> logGroups = normalLogService.getLogByFuzzyName(keyWord,user);
-        result.put("logGroups",logGroups);
+        List<LogGroup> logGroups = normalLogService.getLogByFuzzyName(keyWord, user);
+        result.put("logGroups", logGroups);
         return result;
     }
 
 
     /**
      * 转化为事件日志
+     *
      * @param id
      * @return
      */
@@ -222,32 +231,10 @@ public class NormalLogController {
     }
 
 
-
-
     private User getUser() {
         User user = new User();
         user.setId("1");
         user.setName("y2k");
         return user;
     }
-
-
-
-    /**
-     * 测试用
-     * @return
-     */
-    @RequestMapping(value = "/testNormal")
-    public @ResponseBody
-    Map addNormalLog(){
-        Map result = new HashMap();
-        String id = UUID.randomUUID().toString();
-        NormalLog normalLog = new NormalLog();
-        normalLog.setId(id);
-        normalLog.setUserId("0000000000000001");
-        normalLog.setFormat("txt");
-        normalLog.setCreateDate(new Date());
-        normalLog.setLogName("testNormalLog");
-        normalLogService.saveInDB(normalLog);
-        return null;
-    }}
+}
