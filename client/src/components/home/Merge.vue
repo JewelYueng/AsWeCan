@@ -3,10 +3,10 @@
     <div class="title">日志融合</div>
     <hr>
     <div class="file1_choose">
-      <a href="" class="button">选择文件1</a><span>placeholder</span>
+      <el-button  type="success">文件1</el-button><span>placeholder</span>
     </div>
     <div class="file2_choose">
-      <a href="" class="button">选择文件2</a><span>placeholder</span>
+      <el-button  type="success">文件2</el-button><span>placeholder</span>
     </div>
     <hr>
     <div class="algorithm_choose">
@@ -19,9 +19,10 @@
         </el-option>
       </el-select>
     </div>
-    <div v-for="(item,itemIndex) in methods" v-if="item.id === selectedId">
+
+    <div class="para"  v-for="(item,itemIndex) in methods" v-if="item.id === selectedId">
       <div v-for="params in item.parameters">
-        {{params.name}}:<el-input size="small" type="number" v-if="params.type!='Enum'" :min="params.minVal" :max="params.maxVal" v-model="send_params_arr[itemIndex][params.key]"
+        <br>{{params.name}}:<el-input size="small" type="number" v-if="params.type!='Enum'" :min="params.minVal" :max="params.maxVal" v-model="send_params_arr[itemIndex][params.key]"
                   @blur="change(itemIndex, params.key, params.minVal,params.maxVal)" ></el-input>
        <el-select v-model="send_params_arr[itemIndex][params.key]" v-if="params.type=='Enum'">
          <el-option
@@ -29,10 +30,11 @@
            :key="item"
            :label="item"
            :value="item"></el-option>
-
        </el-select>
+    </div><br>
+      <el-button type="success" @click="merge()">开始融合</el-button>
     </div>
-    </div>
+
 
   </div>
 </template>
@@ -40,9 +42,10 @@
   @import "~assets/colors.less";
   @import "~assets/layout.less";
 
-  .active {
-    color: yellow;
-  }
+ .para{
+   margin:auto;
+   width:30%;
+ }
 
   span {
     margin-left: 20px;
@@ -239,20 +242,13 @@
         else if (parseFloat(send_data)  >= max) {
           this.send_params_arr[m_index][p_key] = max;
         }
+        else if(isNaN(parseFloat(send_data))){
+          this.send_params_arr[m_index][p_key]=0;
+        }
+      },
+      merge:function () {
+        console.log('starting merge!');
       }
-//    getMethod:function(methodId) {
-//      if(!methodId) return ""
-//      // 透過 id 取得
-//      return this.methods.find( d => d.id === methodId)
-//    },
-//    showTable:function(event) {
-//      let method = this.getMethod(event.target.value);
-//      // 照你的算法～
-//     console.log(this.selectedId,method.id);
-////     for(item in method){
-////       for
-////     }
-////     this.defaultValue=method.parameters.
 
     }
   }

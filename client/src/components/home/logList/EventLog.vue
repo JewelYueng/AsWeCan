@@ -1,6 +1,7 @@
 <template>
   <div class="event-log-details">
       <div id="head">
+
         <a href="" class=" btn bgbtn02 btn_upload btn_common">
           <img src="static/img/upload.png"/>上传
         </a>
