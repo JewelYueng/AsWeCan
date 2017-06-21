@@ -19,6 +19,11 @@ Vue.use(Modal)
 import { HintMessage } from './components/component-plugins/hintMessage/hint'
 Vue.use(HintMessage)
 
+import ElementUI from 'element-ui'
+//样式文件需要单独引入
+import 'element-ui/lib/theme-default/index.css'
+Vue.use(ElementUI)
+
 import store from './store'
 
 Vue.config.productionTip = false

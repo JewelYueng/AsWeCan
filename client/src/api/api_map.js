@@ -12,4 +12,5 @@ const
 export default {
     __base_url__: base_url,
     'test': [POST, ''],
+  
 }

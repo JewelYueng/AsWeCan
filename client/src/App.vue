@@ -16,7 +16,8 @@
       Home, Modal, Hint
     },
     data() {
-      return {}
+      return {
+      }
     },
     methods: {}
   }
