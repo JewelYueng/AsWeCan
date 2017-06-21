@@ -111,12 +111,14 @@ public class RawLogServiceImpl implements RawLogService {
     private void verifyLogGroupsIsActive(List<LogGroup> logGroups){
         Iterator<LogGroup> iterator =logGroups.iterator();
         LogGroup logGroup;
+        Set<String> rawLogIdSet = new HashSet<>();
         while (iterator.hasNext()){
             logGroup = iterator.next();
-            if (logGroup.getRawLog() == null){
+            if (logGroup.getRawLog() == null || rawLogIdSet.contains(logGroup.getRawLog().getId())){
                 iterator.remove();
                 continue;
             }
+            rawLogIdSet.add(logGroup.getRawLog().getId());
             if (!Util.isActive(logGroup.getNormalLog())){
                 logGroup.setNormalLog(null);
             }
@@ -128,17 +130,21 @@ public class RawLogServiceImpl implements RawLogService {
 
     private void verifyLogGroupsIsShared(List<LogGroup> logGroups) {
         Iterator<LogGroup> iterator = logGroups.iterator();
+        Set<String> rawLogIdSet = new HashSet<>();
         while (iterator.hasNext()) {
             LogGroup logGroup = iterator.next();
+            if (logGroup.getRawLog() == null || rawLogIdSet.contains(logGroup.getRawLog().getId())) {
+                iterator.remove();
+                continue;
+            }
+            rawLogIdSet.add(logGroup.getRawLog().getId());
             if (! Util.isActiveAndShared(logGroup.getNormalLog())) {
                 logGroup.setNormalLog(null);
             }
             if (! Util.isActiveAndShared(logGroup.getEventLog())) {
                 logGroup.setEventLog(null);
             }
-            if (logGroup.getRawLog() == null) {
-                iterator.remove();
-            }
+
         }
     }
 }

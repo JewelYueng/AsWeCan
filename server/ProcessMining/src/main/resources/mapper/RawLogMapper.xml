@@ -51,7 +51,7 @@
             FROM
                 normal_log nl,
                 (SELECT raw_log_id,MAX(create_date) create_date FROM normal_log GROUP BY raw_log_id HAVING raw_log_id IS NOT NULL) a
-            WHERE <include refid="addUserIdIfNotNull"/> nl.raw_log_id=a.raw_log_id AND nl.create_date=a.create_date GROUP BY nl.raw_log_id) NL
+            WHERE <include refid="addUserIdIfNotNull"/> nl.raw_log_id=a.raw_log_id AND nl.create_date=a.create_date) NL
         ON RL.id = NL.raw_log_id
         LEFT JOIN
             (SELECT * FROM event_log
