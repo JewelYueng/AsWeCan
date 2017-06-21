@@ -62,6 +62,7 @@
     height: @search_height;
     border-radius: @search_border-radius;
     border: 1px solid @tab_color;
+    outline-style:none;
   }
 
   #search_button {

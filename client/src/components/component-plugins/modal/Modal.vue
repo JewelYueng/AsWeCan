@@ -74,11 +74,13 @@
 
 <script>
   import Alert from './boxes/Alert.vue'
+  import NormalInfo from './boxes/NormalInfo.vue'
   import LogDetail from './boxes/LogDetail.vue'
   import { register } from './modal'
   export default {
     components: {
       Alert,
+      NormalInfo,
       LogDetail
     },
     data(){

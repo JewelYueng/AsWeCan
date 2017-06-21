@@ -15,7 +15,7 @@
       <div class="list" v-for="(item,index) in items">
         <div><input type="checkbox" v-model="checked" :value="item.id"  @click="currClick(item,index)">
           <span>{{item.log_name}}</span></div>
-        <div><img class="process_button" title="生成规范化日志" v-on:click="tranferToNormal(index)" src="static/img/process_color.png">
+        <div><img class="process_button" title="生成规范化日志" @click="transferToNormal" src="static/img/process_color.png">
           <img class="download_button" title="下载" src="static/img/download_color.png">
           <img class="share_button" title="分享" src="static/img/share_color.png"></div>
         <div>{{item.create_date}}</div><div>{{item.normal_log}}</div><div>{{item.event_log}}</div>
@@ -44,6 +44,7 @@
     height: @search_height;
     border-radius: @search_border-radius;
     border: 1px solid @tab_color;
+    outline-style:none;
   }
   #search_button{
     width: 20px;
@@ -188,6 +189,9 @@
             });
           }
         }
+      },
+      transferToNormal:function(){
+        this.$modal({type:'normal-info',data: {key: 'q'}}).then((a)=>{console.log(a)})
       }
     },
     watch:{
