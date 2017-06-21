@@ -109,23 +109,22 @@
         totalAmount:[],
       /*  checkAll:false,*/
        /* amount: 0,*/
-       items:[],
-//        items:[
-//          {
-//            id:1,
-//            log_name:'first-log',
-//            create_date:'2017-1-1',
-//            normal_log:'first-normal-log',
-//            event_log:'first-event-log'
-//          },
-//          {
-//            id:2,
-//            log_name:'second-log',
-//            create_date:'2017-2-1',
-//            normal_log:'second-normal-log',
-//            event_log:'second-event-log'
-//          }
-//        ]
+        items:[
+          {
+            id:1,
+            log_name:'first-log',
+            create_date:'2017-1-1',
+            normal_log:'first-normal-log',
+            event_log:'first-event-log'
+          },
+          {
+            id:2,
+            log_name:'second-log',
+            create_date:'2017-2-1',
+            normal_log:'second-normal-log',
+            event_log:'second-event-log'
+          }
+        ]
       }
     },
     created(){
@@ -198,6 +197,9 @@
             });
           }
         }
+      },
+      transferToNormal:function(){
+        this.$modal({type:'normal-info',data: {key: 'q'}}).then((a)=>{console.log(a)})
       }
     },
     watch:{
