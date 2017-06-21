@@ -10,19 +10,28 @@
     </div>
     <hr>
     <div class="algorithm_choose">
-      <select v-model="selectedId">
-        <option v-for="item in methods" v-bind:value="item.id">
-          {{item.name}}
-        </option>
-      </select>
+      <el-select v-model="selectedId" placeholder="请选择算法类型">
+        <el-option
+          v-for="item in methods"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id">
+        </el-option>
+      </el-select>
     </div>
     <div v-for="(item,itemIndex) in methods" v-if="item.id === selectedId">
-      <div v-for="(params,paramsIndex) in item.parameters">
-        {{params.name}}:<input type="number" :min="params.minVal" :max="params.maxVal" v-model="send_params_arr[itemIndex][params.key]"
-                               @blur="change(itemIndex, params.key, params.minVal,params.maxVal)">
-      </div>
-      <!--<div v-for="params in item.parameters">-->
-      <!--<div v-for=" i in params">{{i.type}}</div>-->
+      <div v-for="params in item.parameters">
+        {{params.name}}:<el-input size="small" type="number" v-if="params.type!='Enum'" :min="params.minVal" :max="params.maxVal" v-model="send_params_arr[itemIndex][params.key]"
+                  @blur="change(itemIndex, params.key, params.minVal,params.maxVal)" ></el-input>
+       <el-select v-model="send_params_arr[itemIndex][params.key]" v-if="params.type=='Enum'">
+         <el-option
+           v-for="item in params.values"
+           :key="item"
+           :label="item"
+           :value="item"></el-option>
+
+       </el-select>
+    </div>
     </div>
 
   </div>
@@ -96,7 +105,8 @@
   export default{
     data(){
       return {
-        selectedId: '1',
+
+        selectedId: "",
         isActive: true,
         msg: 'hello vue',
         send_params_arr: [],
@@ -222,10 +232,11 @@
       change: function (m_index, p_key, min, max) {
 //  console.log(event.target.value);
         let send_data = this.send_params_arr[m_index][p_key]
-        if (parseInt(send_data) < min) {
+
+        if (parseFloat(send_data) <= min) {
           this.send_params_arr[m_index][p_key] = min;
         }
-        else if (parseInt(send_data)  > max) {
+        else if (parseFloat(send_data)  >= max) {
           this.send_params_arr[m_index][p_key] = max;
         }
       }
