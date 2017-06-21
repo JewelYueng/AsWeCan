@@ -7,6 +7,7 @@ import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.MethodState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.mergemethod.MergeMethod;
+import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.service.MergeMethodService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.algorithm.Algorithm;
@@ -35,7 +36,7 @@ public class MergeMethodServiceImpl implements MergeMethodService{
     private MergeMethodMapper mergeMethodMapper;
 
     @Autowired
-    private EventLogMapper eventLogMapper;
+    private EventLogService eventLogService;
 
     @Autowired
     private EventLogParse eventLogParse;
@@ -122,7 +123,7 @@ public class MergeMethodServiceImpl implements MergeMethodService{
 
         resultEventLog.setMergeRelation(eventLog1.getId() + "," + eventLog2.getId());
         // TODO: 2017/6/17 save resultEventLog in database, if fail delete eventLog from file system
-        eventLogMapper.save(resultEventLog);
+        eventLogService.saveInDB(resultEventLog);
         return resultEventLog;
     }
 }

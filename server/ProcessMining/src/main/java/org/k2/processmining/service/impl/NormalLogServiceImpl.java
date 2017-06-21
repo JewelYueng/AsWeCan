@@ -9,6 +9,7 @@ import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.user.User;
+import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.service.NormalLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.event.parse.EventLogParse;
@@ -39,7 +40,7 @@ public class NormalLogServiceImpl implements NormalLogService {
     private NormalLogMapper normalLogMapper;
 
     @Autowired
-    private EventLogMapper eventLogMapper;
+    private EventLogService eventLogService;
 
     @Autowired
     private EventLogParse eventLogParse;
@@ -72,7 +73,7 @@ public class NormalLogServiceImpl implements NormalLogService {
                     eventLog.setEventNames(eventLogSummary.getEventNames());
                     eventLog.setEventNumber(eventLogSummary.getEvents());
                     eventLog.setOperatorNames(eventLogSummary.getOperatorNames());
-                    eventLogMapper.save(eventLog);
+                    eventLogService.saveInDB(eventLog);
                 }
                 return eventLog;
             }
@@ -163,18 +164,17 @@ public class NormalLogServiceImpl implements NormalLogService {
     }
 
     @Override
-    public void addNormalLog(NormalLog normalLog) {
-        System.out.println("id:"+normalLog.getId());
-        normalLogMapper.save(normalLog);
+    public boolean save(NormalLog normalLog, InputStream inputStream) {
+        if (logStorage.upload(normalLog, inputStream)) {
+            return saveInDB(normalLog);
+        }
+        return false;
     }
 
     @Override
-    public boolean save(NormalLog normalLog, InputStream inputStream) {
-        if (logStorage.upload(normalLog, inputStream)) {
-            normalLogMapper.save(normalLog);
-            return true;
-        }
-        return false;
+    public boolean saveInDB(NormalLog normalLog) {
+        normalLogMapper.save(normalLog);
+        return true;
     }
 
     @Override

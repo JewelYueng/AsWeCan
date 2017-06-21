@@ -121,6 +121,11 @@ public class EventLogServiceImpl implements EventLogService {
         log.setEventNames(eventLogSummary.getEventNames());
         log.setEventNumber(eventLogSummary.getEvents());
         log.setOperatorNames(eventLogSummary.getOperatorNames());
+        return saveInDB(log);
+    }
+
+    @Override
+    public boolean saveInDB(EventLog log) {
         eventLogMapper.save(log);
         return true;
     }

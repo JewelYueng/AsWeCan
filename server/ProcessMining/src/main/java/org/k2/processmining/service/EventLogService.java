@@ -13,6 +13,7 @@ import java.util.List;
 public interface EventLogService {
     EventLog getEventLogById(String id);
     boolean save(EventLog log, InputStream inputForRemote, InputStream inputForSummarize);
+    boolean saveInDB(EventLog log);
     List<LogGroup> getLogsByUserId(String userId);
     List<LogGroup> getSharedLogs();
     List<LogGroup> getLogByFuzzyName(String keyWord,User user);

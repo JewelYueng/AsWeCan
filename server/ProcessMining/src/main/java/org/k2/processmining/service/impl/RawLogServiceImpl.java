@@ -68,10 +68,16 @@ public class RawLogServiceImpl implements RawLogService {
     @Override
     public boolean save(RawLog log, InputStream inputStream) {
         if (logStorage.upload(log, inputStream)) {
-            rawLogMapper.save(log);
+            saveInDB(log);
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean saveInDB(RawLog log) {
+        rawLogMapper.save(log);
+        return true;
     }
 
     @Override

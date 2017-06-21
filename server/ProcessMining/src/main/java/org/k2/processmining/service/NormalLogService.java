@@ -26,9 +26,9 @@ public interface NormalLogService {
 
     int updateStateByLogId(List<String> idList,int state);
 
-    void addNormalLog(NormalLog normalLog);
-
     boolean save(NormalLog normalLog, InputStream inputStream);
+
+    boolean saveInDB(NormalLog normalLog);
 
     EventLog transToEventLog(NormalLog normalLog);
 

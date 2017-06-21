@@ -248,6 +248,6 @@ public class NormalLogController {
         normalLog.setFormat("txt");
         normalLog.setCreateDate(new Date());
         normalLog.setLogName("testNormalLog");
-        normalLogService.addNormalLog(normalLog);
+        normalLogService.saveInDB(normalLog);
         return null;
     }}
