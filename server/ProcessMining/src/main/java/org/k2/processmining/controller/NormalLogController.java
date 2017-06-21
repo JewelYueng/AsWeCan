@@ -20,6 +20,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -132,57 +133,47 @@ public class NormalLogController {
 
     /**
      * 分享规范化日志
-     * @param map
+     * @param form
      * @return
      */
     @RequestMapping(value = "/share",method = RequestMethod.POST)
     public @ResponseBody
-    Map shareNormalLogs(@RequestBody Map map){
-
-        Map result = new HashMap();
-        List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
-        if (idList.size() == 0 ){
-            result.put("code",0);
-        }else {
-            result.put("code",normalLogService.updateShareStateByLogId(idList,LogState.SHARED.getValue()));
-        }
-        return result;
+    Object shareLogs(@Valid @RequestBody IdListForm form){
+        Map<String, Object> res = new HashMap<>();
+        User user = getUser();
+        normalLogService.updateShareStateByLogIdForUser(form.getIdList(), LogShareState.SHARED.getValue(), user.getId());
+        res.put("code", 1);
+        return res;
     }
 
 
     /**
      * 取消分享规范化日志
-     * @param map
+     * @param form
      * @return
      */
     @RequestMapping(value = "/unShare",method = RequestMethod.POST)
     public @ResponseBody
-    Map unShareNormalLogs(@RequestBody Map map){
-        Map result = new HashMap();
-        List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
-        if (idList.size() == 0){
-            result.put("code",0);
-        }else {
-            result.put("code",normalLogService.updateShareStateByLogId(idList,LogState.UNSHARED.getValue()));
-        }
-        return result;
+    Object unShareNormalLogs(@RequestBody IdListForm form){
+        Map<String, Object> res = new HashMap<>();
+        User user = getUser();
+        normalLogService.updateShareStateByLogIdForUser(form.getIdList(), LogShareState.UNSHARED.getValue(), user.getId());
+        res.put("code", 1);
+        return res;
     }
 
     /**
      * 删除日志
-     * @param map
+     * @param form
      * @return
      */
-    @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
     public @ResponseBody
-    Map deleteByLogId(@RequestBody Map map){
-        Map result = new HashMap();
-        List<String> idList = GsonParser.fromJson(map.get("idList").toString(),ArrayList.class);
-        if (idList.size() == 0){
-            result.put("code",0);
-        }else {
-            result.put("code",normalLogService.updateStateByLogId(idList,LogState.DELETE.getValue()));
-        }
+    Object deleteByLogId(@RequestBody IdListForm form){
+        Map<String,Object> result = new HashMap<>();
+        User user = getUser();
+        normalLogService.updateStateByLogIdForUser(form.getIdList(),LogState.DELETE.getValue(), user.getId());
+        result.put("code",1);
         return result;
     }
 
@@ -197,7 +188,7 @@ public class NormalLogController {
         System.out.println("keyWord:"+keyWord);
         Map<String,Object> result = new HashMap<>();
         User user = new User();
-        user.setId("0000000000000001");
+        user.setId("1");
         List<LogGroup> logGroups = normalLogService.getLogByFuzzyName(keyWord,user);
         result.put("logGroups",logGroups);
         return result;

@@ -3,6 +3,7 @@ package org.k2.processmining.service.impl;
 import org.deckfour.xes.model.XLog;
 import org.k2.processmining.mapper.MiningMethodMapper;
 import org.k2.processmining.model.LogState;
+import org.k2.processmining.model.MethodState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.miningmethod.MiningMethod;
 import org.k2.processmining.service.MiningMethodService;
@@ -61,11 +62,12 @@ public class MiningMethodServiceImpl implements MiningMethodService {
 
     @Override
     public boolean isActive(String id) {
-        return isActive(getMethodById(id));
+        MiningMethod miningMethod = getMethodById(id);
+        return miningMethod != null && MethodState.isActive(miningMethod.getState()) ;
     }
 
     public boolean isActive(MiningMethod miningMethod) {
-        return miningMethod != null && LogState.ACTIVE.getValue() == miningMethod.getState();
+        return miningMethod != null && isActive(miningMethod.getId());
     }
 
     @Override
