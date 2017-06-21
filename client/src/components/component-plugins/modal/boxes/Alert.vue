@@ -1,7 +1,7 @@
 <template>
   <div>
     测试弹出框,key值为{{data.key}}
-    <button @click="back"></button>
+    <button @click="back">x</button>
   </div>
 </template>
 <style lang="less" scoped rel="stylesheet/less">

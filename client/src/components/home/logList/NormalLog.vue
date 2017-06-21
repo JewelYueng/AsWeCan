@@ -187,7 +187,7 @@
         }
       },
       tranferToEvent: function(index){
-          console.log(index)
+
       }
     },
     watch:{
