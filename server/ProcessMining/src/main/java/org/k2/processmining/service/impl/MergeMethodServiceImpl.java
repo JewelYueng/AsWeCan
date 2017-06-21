@@ -36,7 +36,7 @@ public class MergeMethodServiceImpl implements MergeMethodService{
     private MergeMethodMapper mergeMethodMapper;
 
     @Autowired
-    private EventLogService eventLogService;
+    private EventLogMapper eventLogMapper;
 
     @Autowired
     private EventLogParse eventLogParse;
@@ -112,18 +112,20 @@ public class MergeMethodServiceImpl implements MergeMethodService{
         resultEventLog.setLogName(Util.getMergeName(eventLog1.getLogName(), eventLog2.getLogName()));
         resultEventLog.setCreateDate(new Date());
         resultEventLog.setFormat("xes");
+        resultEventLog.setMergeRelation(eventLog1.getId() + "," + eventLog2.getId());
         if (! logStorage.upload(resultEventLog, outputStream -> eventLogExport.convertXLog(resultXLog, outputStream))) {
             return null;
         }
+        afterSaveInLogStorage(resultEventLog, resultXLog);
+        return resultEventLog;
+    }
+
+    public void afterSaveInLogStorage(EventLog resultEventLog, XLog resultXLog) {
         EventLogSummary eventLogSummary = Summarize.summarizeXLog(resultXLog);
         resultEventLog.setCaseNumber(eventLogSummary.getCases());
         resultEventLog.setEventNames(eventLogSummary.getEventNames());
         resultEventLog.setEventNumber(eventLogSummary.getEvents());
         resultEventLog.setOperatorNames(eventLogSummary.getOperatorNames());
-
-        resultEventLog.setMergeRelation(eventLog1.getId() + "," + eventLog2.getId());
-        // TODO: 2017/6/17 save resultEventLog in database, if fail delete eventLog from file system
-        eventLogService.saveInDB(resultEventLog);
-        return resultEventLog;
+        eventLogMapper.save(resultEventLog);
     }
 }

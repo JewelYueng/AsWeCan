@@ -22,7 +22,7 @@ public class SaveExceptionThrowsAdvice{
     @Autowired
     private LogStorage logStorage;
 
-    @Around("execution(public * org.k2.processmining.service.*.saveInDB(..))")
+    @Around("execution(public * org.k2.processmining.service.*.afterSaveInLogStorage*(..))")
     public Object deleteFromLogStorageIfFail(ProceedingJoinPoint joinPoint) throws Throwable{
         Object[] objects = joinPoint.getArgs();
         Object o = null;

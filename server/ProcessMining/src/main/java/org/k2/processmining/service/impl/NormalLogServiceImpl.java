@@ -40,7 +40,7 @@ public class NormalLogServiceImpl implements NormalLogService {
     private NormalLogMapper normalLogMapper;
 
     @Autowired
-    private EventLogService eventLogService;
+    private EventLogMapper eventLogMapper;
 
     @Autowired
     private EventLogParse eventLogParse;
@@ -62,24 +62,13 @@ public class NormalLogServiceImpl implements NormalLogService {
         }
         try (InputStream inputStream = new FileInputStream(file)) {
             if (logStorage.upload(eventLog, inputStream)) {
-                try ( InputStream inputForParse = new FileInputStream(file)){
-                    XLog xLog = eventLogParse.eventLogParse(inputForParse);
-                    if (xLog == null) {
-                        logStorage.delete(eventLog);
-                        return null;
-                    }
-                    EventLogSummary eventLogSummary = Summarize.summarizeXLog(xLog);
-                    eventLog.setCaseNumber(eventLogSummary.getCases());
-                    eventLog.setEventNames(eventLogSummary.getEventNames());
-                    eventLog.setEventNumber(eventLogSummary.getEvents());
-                    eventLog.setOperatorNames(eventLogSummary.getOperatorNames());
-                    eventLogService.saveInDB(eventLog);
-                }
-                return eventLog;
+                afterSaveInLogStorageForTransToEventLog(eventLog, normalLog, file);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("io");
+        }
+        finally {
+            file.delete();
         }
         return null;
     }
@@ -131,15 +120,9 @@ public class NormalLogServiceImpl implements NormalLogService {
     @Override
     public boolean save(NormalLog normalLog, InputStream inputStream) {
         if (logStorage.upload(normalLog, inputStream)) {
-            return saveInDB(normalLog);
+            afterSaveInLogStorage(normalLog);
         }
         return false;
-    }
-
-    @Override
-    public boolean saveInDB(NormalLog normalLog) {
-        normalLogMapper.save(normalLog);
-        return true;
     }
 
     @Override
@@ -150,6 +133,28 @@ public class NormalLogServiceImpl implements NormalLogService {
     @Override
     public void updateStateByLogIdForUser(List<String> ids, int state, String userId) {
         normalLogMapper.updateLogState(ids, state, userId);
+    }
+
+    @Override
+    public void afterSaveInLogStorage(NormalLog normalLog) {
+        normalLogMapper.save(normalLog);
+    }
+
+    @Override
+    public void afterSaveInLogStorageForTransToEventLog(EventLog eventLog, NormalLog normalLog, File file) {
+        try ( InputStream inputForParse = new FileInputStream(file)){
+            XLog xLog = eventLogParse.eventLogParse(inputForParse);
+            EventLogSummary eventLogSummary = Summarize.summarizeXLog(xLog);
+            eventLog.setCaseNumber(eventLogSummary.getCases());
+            eventLog.setEventNames(eventLogSummary.getEventNames());
+            eventLog.setEventNumber(eventLogSummary.getEvents());
+            eventLog.setOperatorNames(eventLogSummary.getOperatorNames());
+            eventLogMapper.deleteEventLogByNormalLogId(normalLog.getId());
+            eventLogMapper.save(eventLog);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void verifyLogGroupsIsActive(List<LogGroup> logGroups){

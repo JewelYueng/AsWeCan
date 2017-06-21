@@ -1,6 +1,7 @@
 package org.k2.processmining.mapper;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.log.NormalLog;
 import org.springframework.stereotype.Repository;
@@ -21,8 +22,8 @@ public interface NormalLogMapper {
 
     void updateLogState(@Param("ids") List<String> ids, @Param("state") int state, @Param("userId") String userId);
     void updateIsShared(@Param("ids") List<String> ids, @Param("isShared") int isShared, @Param("userId") String userId);
-
-    void updateShareStateByLogId(NormalLog normalLog);
     void save(NormalLog normalLog);
-    void updateLogStateByLogId(@Param("state")int state,@Param("idList")List<String> idList);
+
+    @Update("UPDATE normal_log SET state=2 WHERE raw_log_id=#{rawLogId}")
+    void deleteNormalLogByRawLogId(@Param("rawLogId") String rawLogId);
 }

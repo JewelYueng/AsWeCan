@@ -54,7 +54,6 @@ public class MergeMethodServiceTest {
         rawLog.setCreateDate(new Date());
         rawLog.setFormat("txt");
         RawLogService rawLogService = applicationContext.getBean(RawLogService.class);
-        rawLogService.saveInDB(rawLog);
 //        applicationContext.getBean(RawLogService.class).save(null, null);
     }
 

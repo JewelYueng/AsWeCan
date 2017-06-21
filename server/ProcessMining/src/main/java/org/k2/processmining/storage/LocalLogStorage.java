@@ -3,6 +3,7 @@ package org.k2.processmining.storage;
 
 import org.k2.processmining.model.log.AbstractLog;
 import org.k2.processmining.model.user.User;
+import org.k2.processmining.util.Util;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -10,7 +11,7 @@ import java.io.*;
 /**
  * Created by nyq on 2017/6/11.
  */
-@Component
+//@Component
 public class LocalLogStorage implements LogStorage {
     private static final String ROOT_DIRECTORY = "E:/ppmm";
 
@@ -25,13 +26,24 @@ public class LocalLogStorage implements LogStorage {
 
     @Override
     public boolean makeDirectoryForUser(User user) {
-        String[] dirs = {"RawLog", "NormalLog", "EventLog"};
+        String[] dirs = Util.getLogTypeNames();
         for (String dir : dirs) {
             if (! new File(ROOT_DIRECTORY + "/" + user.getId() + "/" + dir).mkdirs()) {
+                deleteUser(user);
                 return false;
             }
         }
         return true;
+    }
+
+    @Override
+    public boolean isExist(AbstractLog log) {
+        return new File(getLogLocation(log)).isFile();
+    }
+
+    @Override
+    public boolean isExist(User user) {
+        return new File(ROOT_DIRECTORY + "/" + user.getId()).isDirectory();
     }
 
     private boolean deleteTempFile(File tempFile) {
