@@ -6,10 +6,10 @@
       <div class="list"><div><input type="checkbox" v-model="checkAll" id="文件名" value="文件名">
         <span>文件名</span></div><div>上传者</div><div>日期</div><div>规范化日志</div><div>事件日志</div></div>
       <div class="list" v-for="(item,index) in items">
-        <div><input type="checkbox" v-model="checked" :value="item.id"  @click="currClick(item,index)">
-          <span>{{item.log_name}}</span></div>
-        <div>{{item.creater}}</div><div>{{item.create_date}}</div>
-        <div>{{item.normalLog_name}}</div><div>{{item.eventLog_name}}</div>
+        <div><input type="checkbox" v-model="checked" :value="item.rawLog.id"  @click="currClick(item,index)">
+          <span>{{`${item.rawLog.logName}.${item.rawLog.format}`}}</span></div>
+        <div>{{item.user.name}}</div><div>{{Date(item.rawLog.createDate)}}</div>
+        <div>{{`${item.normalLog.logName}.${item.normalLog.format}`}}</div><div>{{`${item.eventLog.logName}.${item.eventLog.format}`}}</div>
         <img class="download_button" title="下载" src="static/img/download_color.png">
       </div>
     </div>
@@ -92,27 +92,36 @@
       return {
         checked:[],
         totalAmount:[],
+        items:[],
         /*  checkAll:false,*/
         /* amount: 0,*/
-        items:[
-          {
-            id:1,
-            log_name:'first-log',
-            create_date:'2017-1-1',
-            normalLog_name:'first-normal-log',
-            eventLog_name:'first-event-log',
-            creater:'jack'
-          },
-          {
-            id:2,
-            log_name:'second-log',
-            create_date:'2017-2-1',
-            normalLog_name:'second-normal-log',
-            eventLog_name:'second-event-log',
-            creater:'rose'
-          }
-        ]
+//        items:[
+//          {
+//            id:1,
+//            log_name:'first-log',
+//            create_date:'2017-1-1',
+//            normalLog_name:'first-normal-log',
+//            eventLog_name:'first-event-log',
+//            creater:'jack'
+//          },
+//          {
+//            id:2,
+//            log_name:'second-log',
+//            create_date:'2017-2-1',
+//            normalLog_name:'second-normal-log',
+//            eventLog_name:'second-event-log',
+//            creater:'rose'
+//          }
+//        ]
       }
+    },
+    created(){
+      this.$api({method:'getShareRawLog'}).then((res)=>{
+        console.log(res);
+        res.data.logGroups.map((log)=>{
+          this.items.push(log);
+        })
+        })
     },
     computed:{
       amount:function(item,index){

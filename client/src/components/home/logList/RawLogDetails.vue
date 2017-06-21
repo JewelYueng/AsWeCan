@@ -13,12 +13,12 @@
       <div class="list"><div><input type="checkbox" v-model="checkAll" id="文件名" value="文件名">
         <span>文件名</span></div><div></div><div>日期</div><div>规范化日志</div><div>事件日志</div></div>
       <div class="list" v-for="(item,index) in items">
-        <div><input type="checkbox" v-model="checked" :value="item.id"  @click="currClick(item,index)">
-          <span>{{item.log_name}}</span></div>
+        <div><input type="checkbox" v-model="checked" :value="item.rawLog.id"  @click="currClick(item,index)">
+          <span>{{`${item.rawLog.logName}.${item.rawLog.format}`}}</span></div>
         <div><img class="process_button" title="生成规范化日志" v-on:click="tranferToNormal(index)" src="static/img/process_color.png">
           <img class="download_button" title="下载" src="static/img/download_color.png">
           <img class="share_button" title="分享" src="static/img/share_color.png"></div>
-        <div>{{item.create_date}}</div><div>{{item.normal_log}}</div><div>{{item.event_log}}</div>
+        <div>{{Date(item.rawLog.createDate)}}</div><div>{{`${item.normalLog.logName}.${item.normalLog.format}`}}</div><div>{{`${item.eventLog.logName}.${item.eventLog.format}`}}</div>
       </div>
     </div>
   </div>
@@ -109,23 +109,32 @@
         totalAmount:[],
       /*  checkAll:false,*/
        /* amount: 0,*/
-        items:[
-          {
-            id:1,
-            log_name:'first-log',
-            create_date:'2017-1-1',
-            normal_log:'first-normal-log',
-            event_log:'first-event-log'
-          },
-          {
-            id:2,
-            log_name:'second-log',
-            create_date:'2017-2-1',
-            normal_log:'second-normal-log',
-            event_log:'second-event-log'
-          }
-        ]
+       items:[],
+//        items:[
+//          {
+//            id:1,
+//            log_name:'first-log',
+//            create_date:'2017-1-1',
+//            normal_log:'first-normal-log',
+//            event_log:'first-event-log'
+//          },
+//          {
+//            id:2,
+//            log_name:'second-log',
+//            create_date:'2017-2-1',
+//            normal_log:'second-normal-log',
+//            event_log:'second-event-log'
+//          }
+//        ]
       }
+    },
+    created(){
+      this.$api({method:'getRawLog'}).then((res)=>{
+      console.log(res);
+      res.data.logGroups.map((log)=>{
+      this.items.push(log);
+      })
+      })
     },
    computed:{
      amount:function(item,index){

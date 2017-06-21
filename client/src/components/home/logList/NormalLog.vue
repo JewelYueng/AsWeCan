@@ -106,6 +106,7 @@
         totalAmount:[],
         /*  checkAll:false,*/
         /* amount: 0,*/
+
         items:[
           {
             id:1,
@@ -126,7 +127,8 @@
     },
     created(){
       this.$api({method: 'getNormalLog'}).then((res) => {
-        console.log(res)
+        console.log(res);
+
       })
     },
     computed:{

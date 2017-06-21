@@ -17,7 +17,7 @@ export default {
   "getRawLog": [GET, "/rawLog"],
   "shareRawLog": [POST, "/rawLog/share"],
   "unShareRawLog": [POST, "/rawLog/unShare"],
-  "uploadRawLog": [POST,"／rawLog/upload"],
+  "uploadRawLog": [POST,"/rawLog/upload"],
   "downLoadRawLog": [POST, '/rawLog/download'],
   'deleteRawLog': [DELETE, '/rawLog/delete'],
   // 规范化日志
@@ -26,7 +26,7 @@ export default {
   "getNormalLog": [GET, "/normalLog"],
   "shareNormalLog": [POST, "/normalLog/share"],
   "unShareNormalLog": [POST, "/normalLog/unShare"],
-  "uploadNormalLog": [POST,"／normalLog/upload"],
+  "uploadNormalLog": [POST,"/normalLog/upload"],
   "downLoadNormalLog": [POST, '/normalLog/download'],
   'deleteNormalLog': [DELETE, '/normalLog/delete'],
   // 事件日志
@@ -35,7 +35,7 @@ export default {
   "getEventLog": [GET, "/eventLog"],
   "shareEventLog": [POST, "/eventLog/share"],
   "unShareEventLog": [POST, "/eventLog/unShare"],
-  "uploadEventLog": [POST,"／eventLog/upload"],
+  "uploadEventLog": [POST,"/eventLog/upload"],
   "downLoadEventLog": [POST, '/eventLog/download'],
   'deleteEventLog': [DELETE, '/eventLog/delete'],
 //  事件预处理
@@ -47,5 +47,5 @@ export default {
 // 流程挖掘
   'getMiningMethods': [GET, '/mining/method'],
   'mining': [POST, '/mining']
-  
+
 }
