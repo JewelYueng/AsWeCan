@@ -46,5 +46,4 @@
         <!-- 这边不能使用ref="sqlSessionFactory"原因是因为上面加载配置文件导致这边引用会报错 -->
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     </bean>
-
 </beans>

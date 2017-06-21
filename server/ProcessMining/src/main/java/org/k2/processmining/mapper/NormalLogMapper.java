@@ -24,5 +24,5 @@ public interface NormalLogMapper {
 
     void updateShareStateByLogId(NormalLog normalLog);
     void save(NormalLog normalLog);
-    void updateLogStateByLogId(NormalLog normalLog);
+    void updateLogStateByLogId(@Param("state")int state,@Param("idList")List<String> idList);
 }

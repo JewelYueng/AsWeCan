@@ -68,10 +68,16 @@ public class RawLogServiceImpl implements RawLogService {
     @Override
     public boolean save(RawLog log, InputStream inputStream) {
         if (logStorage.upload(log, inputStream)) {
-            rawLogMapper.save(log);
+            saveInDB(log);
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean saveInDB(RawLog log) {
+        rawLogMapper.save(log);
+        return true;
     }
 
     @Override
@@ -82,41 +88,6 @@ public class RawLogServiceImpl implements RawLogService {
     @Override
     public void updateStateByLogIdForUser(List<String> ids, int state, String userId) {
         rawLogMapper.updateLogState(ids, state, userId);
-    }
-
-    /**
-     * 更新日志的分享状态
-     * @param idList
-     * @param isshared
-     * @return
-     */
-    @Override
-    public int updateShareStateByLogId(List<String> idList,int isshared) {
-
-        for (String id : idList) {
-            RawLog rawLog = new RawLog();
-            rawLog.setId(id);
-            rawLog.setIsShared(isshared);//分享
-            rawLogMapper.updateShareStateByLogId(rawLog);
-        }
-        return 1;
-    }
-
-    /**
-     * 更新日志的状态
-     * @param idList
-     * @param state
-     * @return
-     */
-    @Override
-    public int updateStateByLogId(List<String> idList, int state) {
-        for (String id: idList){
-            RawLog rawLog = new RawLog();
-            rawLog.setId(id);
-            rawLog.setState(state);
-            rawLogMapper.updateLogStateByLogId(rawLog);
-        }
-        return 1;
     }
 
     @Override
@@ -140,12 +111,14 @@ public class RawLogServiceImpl implements RawLogService {
     private void verifyLogGroupsIsActive(List<LogGroup> logGroups){
         Iterator<LogGroup> iterator =logGroups.iterator();
         LogGroup logGroup;
+        Set<String> rawLogIdSet = new HashSet<>();
         while (iterator.hasNext()){
             logGroup = iterator.next();
-            if (logGroup.getRawLog() == null){
+            if (logGroup.getRawLog() == null || rawLogIdSet.contains(logGroup.getRawLog().getId())){
                 iterator.remove();
                 continue;
             }
+            rawLogIdSet.add(logGroup.getRawLog().getId());
             if (!Util.isActive(logGroup.getNormalLog())){
                 logGroup.setNormalLog(null);
             }
@@ -157,17 +130,21 @@ public class RawLogServiceImpl implements RawLogService {
 
     private void verifyLogGroupsIsShared(List<LogGroup> logGroups) {
         Iterator<LogGroup> iterator = logGroups.iterator();
+        Set<String> rawLogIdSet = new HashSet<>();
         while (iterator.hasNext()) {
             LogGroup logGroup = iterator.next();
+            if (logGroup.getRawLog() == null || rawLogIdSet.contains(logGroup.getRawLog().getId())) {
+                iterator.remove();
+                continue;
+            }
+            rawLogIdSet.add(logGroup.getRawLog().getId());
             if (! Util.isActiveAndShared(logGroup.getNormalLog())) {
                 logGroup.setNormalLog(null);
             }
             if (! Util.isActiveAndShared(logGroup.getEventLog())) {
                 logGroup.setEventLog(null);
             }
-            if (logGroup.getRawLog() == null) {
-                iterator.remove();
-            }
+
         }
     }
 }

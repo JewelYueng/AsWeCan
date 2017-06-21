@@ -1,3 +1,4 @@
+
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:security="http://www.springframework.org/schema/security"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -26,3 +27,4 @@
     <bean id="myUserDetailsService" class="org.k2.processmining.security.MyUserDetailService"/>
 
 </beans>
+

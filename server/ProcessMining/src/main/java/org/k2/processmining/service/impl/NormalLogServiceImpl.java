@@ -9,6 +9,7 @@ import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.user.User;
+import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.service.NormalLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.event.parse.EventLogParse;
@@ -39,7 +40,7 @@ public class NormalLogServiceImpl implements NormalLogService {
     private NormalLogMapper normalLogMapper;
 
     @Autowired
-    private EventLogMapper eventLogMapper;
+    private EventLogService eventLogService;
 
     @Autowired
     private EventLogParse eventLogParse;
@@ -72,7 +73,7 @@ public class NormalLogServiceImpl implements NormalLogService {
                     eventLog.setEventNames(eventLogSummary.getEventNames());
                     eventLog.setEventNumber(eventLogSummary.getEvents());
                     eventLog.setOperatorNames(eventLogSummary.getOperatorNames());
-                    eventLogMapper.save(eventLog);
+                    eventLogService.saveInDB(eventLog);
                 }
                 return eventLog;
             }
@@ -127,54 +128,18 @@ public class NormalLogServiceImpl implements NormalLogService {
         return normalLogMapper.getNormalLogById(id);
     }
 
-    /**
-     * 更新日志的分享状态
-     * @param idList
-     * @param isshared
-     * @return
-     */
-    @Override
-    public int updateShareStateByLogId(List<String> idList,int isshared) {
-
-        for (String id : idList) {
-            NormalLog normalLog = new NormalLog();
-            normalLog.setId(id);
-            normalLog.setIsShared(isshared);//分享
-            normalLogMapper.updateShareStateByLogId(normalLog);
-        }
-        return 1;
-    }
-
-    /**
-     * 更新日志的状态
-     * @param idList
-     * @param state
-     * @return
-     */
-    @Override
-    public int updateStateByLogId(List<String> idList, int state) {
-        for (String id: idList){
-            NormalLog normalLog = new NormalLog();
-            normalLog.setId(id);
-            normalLog.setState(state);
-            normalLogMapper.updateLogStateByLogId(normalLog);
-        }
-        return 1;
-    }
-
-    @Override
-    public void addNormalLog(NormalLog normalLog) {
-        System.out.println("id:"+normalLog.getId());
-        normalLogMapper.save(normalLog);
-    }
-
     @Override
     public boolean save(NormalLog normalLog, InputStream inputStream) {
         if (logStorage.upload(normalLog, inputStream)) {
-            normalLogMapper.save(normalLog);
-            return true;
+            return saveInDB(normalLog);
         }
         return false;
+    }
+
+    @Override
+    public boolean saveInDB(NormalLog normalLog) {
+        normalLogMapper.save(normalLog);
+        return true;
     }
 
     @Override

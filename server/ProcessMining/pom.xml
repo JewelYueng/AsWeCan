@@ -253,19 +253,14 @@
       <version>2.8.0</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-config</artifactId>
-      <version>4.2.2.RELEASE</version>
-    </dependency>
-
+    <!--Spring Security相关-->
     <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-core</artifactId>
       <version>4.2.2.RELEASE</version>
     </dependency>
+
 
     <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-web -->
     <dependency>
@@ -274,6 +269,13 @@
       <version>4.2.2.RELEASE</version>
     </dependency>
 
+
+    <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-config</artifactId>
+      <version>4.2.2.RELEASE</version>
+    </dependency>
 
 
   </dependencies>

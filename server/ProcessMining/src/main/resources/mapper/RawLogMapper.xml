@@ -51,7 +51,7 @@
             FROM
                 normal_log nl,
                 (SELECT raw_log_id,MAX(create_date) create_date FROM normal_log GROUP BY raw_log_id HAVING raw_log_id IS NOT NULL) a
-            WHERE <include refid="addUserIdIfNotNull"/> nl.raw_log_id=a.raw_log_id AND nl.create_date=a.create_date GROUP BY nl.raw_log_id) NL
+            WHERE <include refid="addUserIdIfNotNull"/> nl.raw_log_id=a.raw_log_id AND nl.create_date=a.create_date) NL
         ON RL.id = NL.raw_log_id
         LEFT JOIN
             (SELECT * FROM event_log
@@ -81,16 +81,28 @@
          VALUES (#{id}, #{logName}, #{createDate}, #{userId}, #{format}, #{state}, #{isShared})
     </insert>
 
-    <update id="updateShareStateByLogId" parameterType="RawLog">
-        UPDATE raw_log
-        SET isshared = #{isShared,jdbcType = TINYINT}
-        WHERE id = #{id,jdbcType = TINYINT}
-    </update>
+    <!--<update id="updateShareStateByLogId" parameterType="RawLog">-->
+        <!--UPDATE raw_log-->
+        <!--SET isshared = #{isShared,jdbcType = TINYINT}-->
+        <!--WHERE id = #{id,jdbcType = TINYINT}-->
+    <!--</update>-->
 
-    <update id="updateLogStateByLogId" parameterType="RawLog">
+    <update id="updateLogStateByLogId">
         UPDATE raw_log
         SET state = #{state, jdbcType = TINYINT}
-        WHERE id = #{id,jdbcType = VARCHAR}
+        WHERE id IN
+        <foreach collection="idList" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="updateShareStateByLogId">
+        UPDATE raw_log
+        SET isshared = #{isshared}
+        WHERE id IN
+        <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </update>
 
     <sql id="updateLogStateSQL">

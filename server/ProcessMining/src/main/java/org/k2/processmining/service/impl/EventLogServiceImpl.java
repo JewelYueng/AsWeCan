@@ -70,31 +70,6 @@ public class EventLogServiceImpl implements EventLogService {
         return logGroups;
     }
 
-    /**
-     * 更新日志的分享状态
-     * @param idList
-     * @param isShared
-     * @param userId
-     * @return
-     */
-    @Override
-    public int updateShareStateByLogId(List<String> idList,int isShared, String userId) {
-        eventLogMapper.updateIsShared(idList, isShared, userId);
-        return 1;
-    }
-
-    /**
-     * 更新日志的状态
-     * @param idList
-     * @param state
-     * @return
-     */
-    @Override
-    public int updateStateByLogId(List<String> idList, int state, String userId) {
-        eventLogMapper.updateLogState(idList, state, userId);
-        return 1;
-    }
-
     @Override
     public void updateShareStateByLogIdForUser(List<String> ids, int isShared, String userId) {
         eventLogMapper.updateIsShared(ids, isShared, userId);
@@ -121,6 +96,11 @@ public class EventLogServiceImpl implements EventLogService {
         log.setEventNames(eventLogSummary.getEventNames());
         log.setEventNumber(eventLogSummary.getEvents());
         log.setOperatorNames(eventLogSummary.getOperatorNames());
+        return saveInDB(log);
+    }
+
+    @Override
+    public boolean saveInDB(EventLog log) {
         eventLogMapper.save(log);
         return true;
     }

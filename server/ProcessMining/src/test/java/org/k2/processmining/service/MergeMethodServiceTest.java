@@ -3,14 +3,19 @@ package org.k2.processmining.service;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.k2.processmining.mapper.EventLogMapper;
 import org.k2.processmining.mapper.RawLogMapper;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.MethodState;
+import org.k2.processmining.model.log.EventLog;
+import org.k2.processmining.model.log.RawLog;
 import org.k2.processmining.model.mergemethod.MergeMethod;
+import org.k2.processmining.support.spring.SaveExceptionThrowsAdvice;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -42,7 +47,15 @@ public class MergeMethodServiceTest {
 
     @Test
     public void d() {
-        System.out.println(applicationContext.getBean(RawLogMapper.class).updateIsShared(Arrays.asList("2","3"), 0, null));
+        RawLog rawLog = new RawLog();
+        rawLog.setId("fuck");
+        rawLog.setLogName("fuck");
+        rawLog.setUserId("1");
+        rawLog.setCreateDate(new Date());
+        rawLog.setFormat("txt");
+        RawLogService rawLogService = applicationContext.getBean(RawLogService.class);
+        rawLogService.saveInDB(rawLog);
+//        applicationContext.getBean(RawLogService.class).save(null, null);
     }
 
     @Test

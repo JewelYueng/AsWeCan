@@ -139,7 +139,7 @@ public class EventLogController {
     Object unShareEventLogs(@RequestBody IdListForm form){
         Map<String,Object> result = new HashMap();
         User user = getUser();
-        eventLogService.updateShareStateByLogId(form.getIdList(),LogState.UNSHARED.getValue(), user.getId());
+        eventLogService.updateStateByLogIdForUser(form.getIdList(),LogState.UNSHARED.getValue(), user.getId());
         result.put("code", 1);
         return result;
     }
@@ -154,7 +154,7 @@ public class EventLogController {
     Object deleteByLogId(@RequestBody IdListForm form){
         Map<String,Object> result = new HashMap<>();
         User user = getUser();
-        eventLogService.updateStateByLogId(form.getIdList(),LogState.DELETE.getValue(), user.getId());
+        eventLogService.updateShareStateByLogIdForUser(form.getIdList(),LogState.DELETE.getValue(), user.getId());
         return result;
     }
 
