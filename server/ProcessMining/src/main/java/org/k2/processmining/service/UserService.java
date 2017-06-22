@@ -16,5 +16,5 @@ public interface UserService {
     List<User> getAllUsers();
     void setUserState();
     void changePassword();
-    User getUserByEmail(String email);
+//    User getUserByEmail(String email);
 }

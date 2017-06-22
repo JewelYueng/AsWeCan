@@ -16,6 +16,29 @@
         SELECT * FROM mining_method WHERE id=#{id}
     </select>
 
+
+    <insert id="save" parameterType="MiningMethod">
+        INSERT INTO mining_method(id, method_name, state) VALUES (#{id}, #{methodName}, #{state})
+    </insert>
+
+    <update id="updateState">
+        UPDATE mining_method
+        SET state = #{state}
+        WHERE id IN
+        <foreach item="item" index="index" collection="ids"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <delete id="delete">
+        DELETE FROM mining_method WHERE id IN
+        <foreach item="item" index="index" collection="ids"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
     <resultMap id="MiningMethodResult" type="MiningMethod">
         <id column="id" property="id"/>
         <result column="method_name" property="methodName"/>

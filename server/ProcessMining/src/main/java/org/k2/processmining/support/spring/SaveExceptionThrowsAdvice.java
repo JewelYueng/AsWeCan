@@ -10,6 +10,7 @@ import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.algorithm.MergerFactory;
 import org.k2.processmining.support.algorithm.MethodManage;
 import org.k2.processmining.support.algorithm.MinerFactory;
+import org.k2.processmining.support.reflect.ReflectUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,7 @@ public class SaveExceptionThrowsAdvice{
         return o;
     }
 
-
+    @Around("execution(public * org.k2.processmining.service.MiningMethodService.afterSaveMethod(..))")
     public Object deleteMinerMethod(ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] objects = joinPoint.getArgs();
         Object o = null;
@@ -77,6 +78,8 @@ public class SaveExceptionThrowsAdvice{
             }
             catch (Throwable throwable) {
                 LOGGER.error("fail to save MiningMethod in db");
+                ReflectUtil.getInstance().closeClassLoader(miningMethod.getId());
+                System.gc();
                 MinerFactory.getInstance().deleteAlgorithm(miningMethod.getId());
                 methodManage.deleteMiner(miningMethod.getId());
                 throw throwable;

@@ -62,10 +62,10 @@ public class UserController {
         return map;
     }
 
-    @RequestMapping(value = "/register",method = RequestMethod.POST)
-    public @ResponseBody
-    Object register(@RequestBody User user){
-        Map map = new HashMap();
-//        userService.addUser();
-    }
+//    @RequestMapping(value = "/register",method = RequestMethod.POST)
+//    public @ResponseBody
+//    Object register(@RequestBody User user){
+//        Map map = new HashMap();
+////        userService.addUser();
+//    }
 }
