@@ -1,12 +1,12 @@
 <template>
   <div class="upload">
-    <form :action=type_map[data.type] method="post"
-          enctype="multipart/form-data">
-      <input type="text" name="format"/>
-      <input type="text" name="isShare"/>
-      上传文件：<input type="file" name="file">
-      <input type="submit" value="确定">
-    </form>
+    <!--<form :action=type_map[data.type] method="post"-->
+          <!--enctype="multipart/form-data">-->
+      <!--<input type="text" name="format"/>-->
+      <!--<input type="text" name="isShare"/>-->
+      <!--上传文件：<input type="file" name="file">-->
+      <!--<input type="submit" value="确定">-->
+    <!--</form>-->
     <div>
       <input type="file" ref="file">
     </div>
@@ -45,14 +45,14 @@
   export default {
     data(){
       return {
-        type_map: {
-          'raw': base_url + '/rawLog/upload',
-          'normal': base_url + '/normalLog/upload',
-          'event': base_url + '/eventLog/upload'
-        },
+//        type_map: {
+//          'raw': base_url + '/rawLog/upload',
+//          'normal': base_url + '/normalLog/upload',
+//          'event': base_url + '/eventLog/upload'
+//        },
         share_status: false,
         file: new FormData(),
-        fileList: []
+//        fileList: []
       }
     },
     mixins: [BaseBox],
