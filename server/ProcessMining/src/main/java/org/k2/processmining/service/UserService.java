@@ -17,4 +17,5 @@ public interface UserService {
     User getUserByEmail(String email);
     int checkoutUserByEmailAndPwd(String email,String password);
     int activeAccount(String email);
+
 }

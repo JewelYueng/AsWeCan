@@ -1,16 +1,23 @@
 package org.k2.processmining.controller;
 
+import org.apache.ibatis.annotations.Param;
+import org.k2.processmining.model.MethodState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.miningmethod.MiningMethod;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.service.MiningMethodService;
+import org.k2.processmining.support.algorithm.LoadMethodException;
 import org.k2.processmining.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -72,11 +79,50 @@ public class MiningController {
         return user;
     }
 
-    public void addMiningMethod(){}
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public @ResponseBody
+    Object addMiningMethod(@Param("files") MultipartFile[] files) {
+        if (files == null || files.length == 0) {
+            return ResponseEntity.badRequest().body("at least one file!");
+        }
+        Map<String,Object> res = new HashMap<>();
+        try {
+            MiningMethod miningMethod = miningMethodService.addMethod(files);
+            res.put("state", miningMethod.getState());
+            res.put("id", miningMethod.getId());
+            res.put("configs", miningMethodService.getMethodConfig(miningMethod));
+            return res;
+        }
+        catch (IOException | LoadMethodException e) {
+            return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 
-    public void setMethodState(){}  //禁用或者重新激活算法
+    @RequestMapping(value = "/active", method = RequestMethod.POST)
+    public @ResponseBody
+    Object active(@RequestBody IdListForm form) {
+        return setMethodState(form.getIdList(), MethodState.ACTIVE.getValue());
+    }
 
-    public void deleteMiningMethod(){}
+    @RequestMapping(value = "/freeze", method = RequestMethod.POST)
+    public @ResponseBody
+    Object freeze(@RequestBody IdListForm form) {
+        return setMethodState(form.getIdList(), MethodState.FREEZE.getValue());
+    }
+
+    private Map<String,Object> setMethodState(List<String> ids, int state) {
+        miningMethodService.setMethodState(ids, state);
+        Map<String,Object> res = new HashMap<>();
+        res.put("code", 1);
+        return res;
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    public @ResponseBody
+    Object delete(@RequestBody IdListForm form) {
+        miningMethodService.delete(form.getIdList());
+        return new HashMap<String,Object>(){{put("code", 1);}};
+    }
 
     public static class MiningForm {
         private String id;

@@ -77,7 +77,7 @@ public class RawLogController {
     public void download(@RequestParam("id") String id, HttpServletResponse response) {
         RawLog rawLog = rawLogService.getRawLogById(id);
         User user = getUser();
-        if (!Util.isActiveAndBelongTo(rawLog, user)) {
+        if (!Util.isActiveAndBelongTo(rawLog, user) && !Util.isActiveAndShared(rawLog)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
@@ -182,6 +182,13 @@ public class RawLogController {
         List<LogGroup> logGroups = rawLogService.getLogByFuzzyName(keyWord,user);
         result.put("logGroups",logGroups);
         return result;
+    }
+
+    @RequestMapping(value = "/sharedLogs/search", method = RequestMethod.GET)
+    public @ResponseBody
+    Object getSharedLogByFuzzyName(@RequestParam("keyWord") String keyWord) {
+        List<LogGroup> logGroups = rawLogService.getSharedLogsByFuzzyName(keyWord);
+        return new HashMap<String,Object>(){{put("logGroups", logGroups);}};
     }
 
     private User getUser() {

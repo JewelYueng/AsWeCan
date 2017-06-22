@@ -120,7 +120,7 @@ public class NormalLogController {
     public void download(@RequestParam("id") String id, HttpServletResponse response) {
         NormalLog normalLog = normalLogService.getNormalLogById(id);
         User user = getUser();
-        if (!Util.isActiveAndBelongTo(normalLog, user)) {
+        if (!Util.isActiveAndBelongTo(normalLog, user) || !Util.isActiveAndShared(normalLog)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
@@ -202,6 +202,13 @@ public class NormalLogController {
         return result;
     }
 
+
+    @RequestMapping(value = "/sharedLogs/search", method = RequestMethod.GET)
+    public @ResponseBody
+    Object getSharedLogByFuzzyName(@RequestParam("keyWord") String keyWord) {
+        List<LogGroup> logGroups = normalLogService.getSharedLogsByFuzzyName(keyWord);
+        return new HashMap<String,Object>(){{put("logGroups", logGroups);}};
+    }
 
     /**
      * 转化为事件日志

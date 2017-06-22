@@ -1,6 +1,7 @@
 package org.k2.processmining.storage;
 
 
+import org.apache.commons.io.FileUtils;
 import org.k2.processmining.model.log.AbstractLog;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.util.Util;
@@ -46,29 +47,16 @@ public class LocalLogStorage implements LogStorage {
         return new File(ROOT_DIRECTORY + "/" + user.getId()).isDirectory();
     }
 
-    private boolean deleteTempFile(File tempFile) {
-        try {
-            if(tempFile.isDirectory()) {
-                File[] entries = tempFile.listFiles();
-                for (File currentFile : entries) {
-                    if (!deleteTempFile(currentFile)) {
-                        return false;
-                    }
-                }
-            }
-            if (! tempFile.delete()) {
-                return false;
-            }
-        }
-        catch(Throwable t) {
-            t.printStackTrace();
-        }
-        return true;
-    }
-
     @Override
     public boolean deleteUser(User user) {
-        return deleteTempFile(new File(ROOT_DIRECTORY + "/" + user.getId()));
+        try {
+            FileUtils.deleteDirectory(new File(ROOT_DIRECTORY + "/" + user.getId()));
+            return true;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override

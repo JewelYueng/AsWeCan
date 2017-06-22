@@ -19,6 +19,7 @@ public interface NormalLogService {
     List<LogGroup> getLogGroupsByUserId(String userId);
     List<LogGroup> getSharedLogGroups();
     List<LogGroup> getLogByFuzzyName(String keyWord, User user);
+    List<LogGroup> getSharedLogsByFuzzyName(String keyWord);
     NormalLog getNormalLogById(String id);
     boolean save(NormalLog normalLog, InputStream inputStream);
     EventLog transToEventLog(NormalLog normalLog);

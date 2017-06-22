@@ -117,6 +117,16 @@ public class NormalLogServiceImpl implements NormalLogService {
     }
 
     @Override
+    public List<LogGroup> getSharedLogsByFuzzyName(String keyWord) {
+        List<LogGroup> logGroups = normalLogMapper.listLogGroups(null,
+                                                                    LogState.ACTIVE.getValue(),
+                                                                    LogShareState.SHARED.getValue(),
+                                                                    keyWord);
+        verifyLogGroupsIsShared(logGroups);
+        return logGroups;
+    }
+
+    @Override
     public NormalLog getNormalLogById(String id) {
         return normalLogMapper.getNormalLogById(id);
     }

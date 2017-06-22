@@ -9,12 +9,19 @@ import org.k2.processmining.model.miningmethod.MiningMethod;
 import org.k2.processmining.service.MiningMethodService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.algorithm.Algorithm;
+import org.k2.processmining.support.algorithm.LoadMethodException;
+import org.k2.processmining.support.algorithm.MethodManage;
 import org.k2.processmining.support.algorithm.MinerFactory;
 import org.k2.processmining.support.event.parse.EventLogParse;
 import org.k2.processmining.support.mining.Miner;
+import org.k2.processmining.support.reflect.ReflectUtil;
+import org.k2.processmining.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +33,9 @@ import java.util.Map;
 public class MiningMethodServiceImpl implements MiningMethodService {
 
     @Autowired
+    private MiningMethodService miningMethodService;
+
+    @Autowired
     private MiningMethodMapper miningMethodMapper;
 
     @Autowired
@@ -33,6 +43,9 @@ public class MiningMethodServiceImpl implements MiningMethodService {
 
     @Autowired
     private EventLogParse eventLogParse;
+
+    @Autowired
+    private MethodManage methodManage;
 
     public MiningMethod getMethodById(String id) {
         return miningMethodMapper.getMethodById(id);
@@ -68,6 +81,46 @@ public class MiningMethodServiceImpl implements MiningMethodService {
 
     public boolean isActive(MiningMethod miningMethod) {
         return miningMethod != null && isActive(miningMethod.getId());
+    }
+
+    @Override
+    public MiningMethod addMethod(MultipartFile[] multipartFiles) throws IOException, LoadMethodException {
+        MiningMethod miningMethod = new MiningMethod();
+        miningMethod.setId(Util.getUUIDString());
+
+        for (MultipartFile file : multipartFiles) {
+            try (InputStream inputStream = file.getInputStream()){
+                methodManage.saveMinerJar(miningMethod.getId(), file.getOriginalFilename(), inputStream);
+            }
+        }
+        Algorithm<Miner> minerAlgorithm = methodManage.loadMinerById(miningMethod.getId());
+        miningMethod.setMethodName((String)minerAlgorithm.getConfigMap().get("key"));
+        MinerFactory.getInstance().put(miningMethod.getId(), minerAlgorithm);
+        miningMethodService.afterSaveMethod(miningMethod);
+        return miningMethod;
+    }
+
+    @Override
+    public void afterSaveMethod(MiningMethod miningMethod) {
+        miningMethodMapper.save(miningMethod);
+    }
+
+    @Override
+    public void setMethodState(List<String> ids, int state) {
+        miningMethodMapper.updateState(ids, state);
+    }
+
+    @Override
+    public void delete(List<String> ids) {
+        miningMethodMapper.delete(ids);
+        for (String id : ids) {
+            MinerFactory.getInstance().deleteAlgorithm(id);
+            ReflectUtil.getInstance().closeClassLoader(id);
+        }
+        System.gc();
+//        for (String id :ids) {
+//            methodManage.deleteMerger(id);
+//        }
     }
 
     @Override

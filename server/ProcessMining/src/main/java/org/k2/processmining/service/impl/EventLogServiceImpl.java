@@ -74,6 +74,13 @@ public class EventLogServiceImpl implements EventLogService {
     }
 
     @Override
+    public List<LogGroup> getSharedLogsByFuzzyName(String keyWord) {
+        List<LogGroup> logGroups = eventLogMapper.listLogGroups(null, LogState.ACTIVE.getValue(), LogShareState.SHARED.getValue(), keyWord);
+        verifyLogGroupsIsShared(logGroups);
+        return logGroups;
+    }
+
+    @Override
     public void updateShareStateByLogIdForUser(List<String> ids, int isShared, String userId) {
         eventLogMapper.updateIsShared(ids, isShared, userId);
     }
