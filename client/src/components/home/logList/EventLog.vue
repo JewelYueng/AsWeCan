@@ -7,7 +7,7 @@
       <a href="" class="btn bgbtn02 btn_share btn_common">
         <img src="static/img/share_white.png"/>分享
       </a>
-      <input type="text" class='search' placeholder='请输入关键字'><img id="search_button" src="static/img/search.png">
+      <input type="text" class='search' placeholder='请输入关键字' ><img id="search_button" src="static/img/search.png" >
     </div>
     <div class='title'>
       <span class='title_left'>全部文件，共{{amount}}个</span>
@@ -32,7 +32,7 @@
                   src="static/img/process_color.png">
           <img class="download_button" title="下载" src="static/img/download_color.png">
           <img class="share_button" title="分享" src="static/img/share_color.png"></div>
-        <div>{{Date(item.eventLog.createDate)}}</div>
+        <div>{{new Date(item.eventLog.createDate).toString()}}</div>
         <div>{{item.rawLog ? `${item.rawLog.logName}.${item.rawLog.format}` : '无'}}</div>
         <div>{{item.normalLog ? `${item.normalLog.logName}.${item.normalLog.format}` : '无'}}</div>
         <div>{{item.eventLog.mergeRelation ? `` : '无'}}</div>
@@ -183,6 +183,7 @@
       }
     },
     methods: {
+
       showDetail: function (index) {
 //        {
 //          "type": "EventLog",

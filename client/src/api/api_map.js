@@ -1,4 +1,4 @@
-const base_url = "http://192.168.0.101:8080"
+const base_url = "http://192.168.0.104:8080"
 
 const
   GET = "get",
@@ -12,13 +12,14 @@ export default {
   __base_url__: base_url,
 // 日志文件管理
   // 原始日志
-  "searchRawLog": [GET, "/rawLog"],
+  "searchShareRawLog":[GET,"/rawLog/search"],
+  "searchRawLog": [GET, "/rawLog/search"],
   "getShareRawLog": [GET, "/rawLog/sharedLogs"],
   "getRawLog": [GET, "/rawLog"],
   "shareRawLog": [POST, "/rawLog/share"],
   "unShareRawLog": [POST, "/rawLog/unShare"],
   "uploadRawLog": [POST, "/rawLog/upload"],
-  "downLoadRawLog": [POST, "/rawLog/download"],
+  "downLoadRawLog": [GET, "/rawLog/download"],
   "deleteRawLog": [DELETE, "/rawLog/delete"],
   // 规范化日志
   "searchNormalLog": [GET, "/normalLog"],

@@ -1,6 +1,6 @@
 <template>
   <div class="raw-log">
-    <input type="text" class="search" placeholder="请输入关键字"><img id="search_button" src="static/img/search.png">
+    <input type="text" class="search" placeholder="请输入关键字" ref="input1"><img id="search_button" src="static/img/search.png" @click="search()">
     <div class="head-2"><span>全部文件，共{{amount}}个</span><span>关联文件</span></div>
     <div id="log-list">
       <div class="list"><div><input type="checkbox" v-model="checkAll" id="文件名" value="文件名">
@@ -8,8 +8,8 @@
       <div class="list" v-for="(item,index) in items">
         <div><input type="checkbox" v-model="checked" :value="item.rawLog.id"  @click="currClick(item,index)">
           <span>{{`${item.rawLog.logName}.${item.rawLog.format}`}}</span></div>
-        <div>{{item.user.name}}</div><div>{{Date(item.rawLog.createDate)}}</div>
-        <div>{{`${item.normalLog.logName}.${item.normalLog.format}`}}</div><div>{{`${item.eventLog.logName}.${item.eventLog.format}`}}</div>
+        <div>{{item.user.name}}</div><div>{{new Date(item.rawLog.createDate).toString()}}</div>
+        <div>{{item.normalLog ? `${item.normalLog.logName}.${item.normalLog.format}` : '无'}}</div><div>{{item.eventLog ? `${item.eventLog.logName}.${item.eventLog.format}` : '无'}}</div>
         <img class="download_button" title="下载" src="static/img/download_color.png">
       </div>
     </div>
@@ -138,9 +138,9 @@
             this.totalAmount = [];
             this.checked = this.items.map(function(item) {
               item.checked = true;
-              let total = item.id;
+              let total = item.rawLog.id;
               _this.totalAmount.push(total);
-              return item.id;
+              return item.rawLog.id;
             })
           }else{
             this.checked = [];
@@ -158,6 +158,15 @@
       }
     },
     methods:{
+      search:function () {
+        console.log(this.$refs.input1.value);
+        this.$api({method: 'searchShareRawLog', query: {keyWord:this.$refs.input1.value}}).then((res)=>{
+          this.items=[];
+          res.data.logGroups.map((log)=>{
+            this.items.push(log);
+          })
+        })
+      },
       currClick:function(item,index){
         var _this = this;
         if(typeof item.checked == 'undefined'){

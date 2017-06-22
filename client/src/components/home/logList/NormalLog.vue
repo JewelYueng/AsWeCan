@@ -22,7 +22,7 @@
                   src="static/img/process_color.png">
           <img class="download_button" title="下载" src="static/img/download_color.png">
           <img class="share_button" title="分享" src="static/img/share_color.png"></div>
-        <div>{{Date(item.normalLog.createDate)}}</div>
+        <div>{{new Date(item.normalLog.createDate).toString()}}</div>
         <div>{{item.rawLog ? `${item.rawLog.logName}.${item.rawLog.format}` : '无'}}</div>
         <div>{{item.eventLog ? `${item.eventLog.logName}.${item.eventLog.format}` : '无'}}</div>
       </div>
