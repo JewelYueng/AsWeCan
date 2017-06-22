@@ -22,8 +22,17 @@ public class UserServiceImpl implements UserService{
     UserService userService;
 
     @Override
-    public void addUser(User user) {
-
+    public int addUser(User user) {
+        if (user == null){
+            return 0;//用户为空
+        }
+        if (user.getEmail() == null){
+            return 1; //邮箱为空
+        }
+        if (userService.getUserByEmail(user.getEmail()) != null){
+            return 2;//邮箱重复
+        }
+        return 3;
     }
 
     @Override
@@ -55,5 +64,10 @@ public class UserServiceImpl implements UserService{
     @Override
     public void changePassword() {
 
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userMapper.getUserByEmail(email);
     }
 }

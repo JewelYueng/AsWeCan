@@ -67,5 +67,7 @@ public class UserController {
     Object register(@RequestBody User user){
         Map map = new HashMap();
 //        userService.addUser();
+        userService.addUser(user);
+        return map;
     }
 }
