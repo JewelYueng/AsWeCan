@@ -6,16 +6,23 @@ import org.k2.processmining.model.mergemethod.MergeMethod;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.service.MergeMethodService;
+import org.k2.processmining.support.algorithm.Algorithm;
+import org.k2.processmining.support.algorithm.LoadMethodException;
+import org.k2.processmining.support.algorithm.MethodManage;
+import org.k2.processmining.support.merge.Merger;
 import org.k2.processmining.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,6 +42,9 @@ public class MergeController {
     @Autowired
     private EventLogService eventLogService;
 
+    @Autowired
+    private MethodManage methodManage;
+
     @RequestMapping(value = "/method", method = RequestMethod.GET)
     public @ResponseBody Object getAllMergeMethods() {
         Map<String, Object> res = new HashMap<>();
@@ -44,6 +54,7 @@ public class MergeController {
             Map<String, Object> configs = mergeMethodService.getMethodConfig(method);
             if (configs != null && configs.size() > 0) {
                 configs.put("state", method.getState());
+                configs.put("id", method.getId());
                 methodsConfigs.add(configs);
             }
         }
@@ -78,7 +89,29 @@ public class MergeController {
         return res;
     }
 
-    public void addMergeMethod(){}
+
+    public Object addMergeMethod(MultipartFile[] files) {
+        MergeMethod mergeMethod = new MergeMethod();
+        mergeMethod.setId(Util.getUUIDString());
+        for (MultipartFile file : files) {
+            try (InputStream inputStream = file.getInputStream()){
+                methodManage.saveMergerJar(mergeMethod.getId(), file.getOriginalFilename(), inputStream);
+            }
+            catch (IOException e) {
+                return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).body(e.getMessage());
+            }
+        }
+        try {
+            Algorithm<Merger> algorithm = methodManage.loadMergerById(mergeMethod.getId());
+            Map<String, Object> configs = algorithm.getConfigMap();
+            configs.put("id", mergeMethod.getId());
+            configs.put("state", mergeMethod.getState());
+            return configs;
+        }
+        catch (LoadMethodException e) {
+            return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 
     public void setMethodState(){}
 

@@ -38,6 +38,7 @@ public class MiningController {
             Map<String, Object> configs = miningMethodService.getMethodConfig(method);
             if (configs != null && configs.size() > 0) {
                 configs.put("state", method.getState());
+                configs.put("id", method.getId());
                 methodsConfigs.add(configs);
             }
         }

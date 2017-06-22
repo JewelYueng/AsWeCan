@@ -4,9 +4,7 @@ import org.k2.processmining.model.mergemethod.MergeMethod;
 import org.k2.processmining.model.miningmethod.MiningMethod;
 import org.k2.processmining.service.MergeMethodService;
 import org.k2.processmining.service.MiningMethodService;
-import org.k2.processmining.support.algorithm.Algorithm;
-import org.k2.processmining.support.algorithm.MergerFactory;
-import org.k2.processmining.support.algorithm.MinerFactory;
+import org.k2.processmining.support.algorithm.*;
 import org.k2.processmining.support.merge.Merger;
 import org.k2.processmining.support.mining.Miner;
 import org.k2.processmining.support.reflect.ReflectUtil;
@@ -39,20 +37,8 @@ public class DatabaseFillerOnStartup implements ApplicationListener<ContextRefre
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseFillerOnStartup.class);
 
-    @Value("${miner.jar.path}")
-    private String minerJarDir;
-
-    @Value("${merger.jar.path}")
-    private String mergerJarPath;
-
-    @Value("${algorithm.config.path}")
-    private String algorithmConfigPath;
-
-    @Value("${impl.path.key}")
-    private String implPathKey;
-
-    @Value("${algorithm.adapter.jar.suffix}")
-    private String algorithmAdapterJarSuffix;
+    @Autowired
+    private MethodManage methodManage;
 
     @Autowired
     private MiningMethodService miningMethodService;
@@ -60,21 +46,9 @@ public class DatabaseFillerOnStartup implements ApplicationListener<ContextRefre
     @Autowired
     private MergeMethodService mergeMethodService;
 
-    private static final String WEB_INF_PATH;
-    static {
-        URL url = DatabaseFillerOnStartup.class.getClassLoader().getResource("/");
-        if (url != null) {
-            WEB_INF_PATH = url.getPath().replace("classes", "");
-        }
-        else {
-            WEB_INF_PATH = "E:/IdeaProjects/AsWeCan/server/ProcessMining/src/main/webapp/WEB-INF/";
-            System.out.println(new java.io.File(".").getAbsolutePath());
-        }
-    }
-
-
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        methodManage.init();
         LOGGER.debug("start to load algorithm...");
         List<MiningMethod> miningMethods = miningMethodService.getAllMethods();
         List<MergeMethod> mergeMethods = mergeMethodService.getAllMethods();
@@ -83,93 +57,28 @@ public class DatabaseFillerOnStartup implements ApplicationListener<ContextRefre
         LOGGER.debug("finish to load algorithm...");
     }
 
-    @SuppressWarnings("unchecked")
+
     private void loadMerger(List<MergeMethod> mergeMethods) {
-        Map<String, Object> configs;
-        Merger merger = null;
+        Algorithm<Merger> algorithm;
         for (MergeMethod mergeMethod : mergeMethods) {
-            String dirPath = WEB_INF_PATH + mergerJarPath + File.separatorChar + mergeMethod.getId();
-            File dir = new File(dirPath);
-            String[] jarPaths = dir.list();
-            if (jarPaths == null || jarPaths.length == 0) {
-                LOGGER.error("merger jar dir does not exist or is empty: {}", dirPath);
-                continue;
-            }
-            for (int i = 0; i < jarPaths.length; i++) {
-                jarPaths[i] = dir.getAbsolutePath() + File.separatorChar + jarPaths[i];
-            }
-            configs = (Map<String, Object>) loadAlgorithmConfigMapFromJar(jarPaths);
-            if (configs == null) {
-                LOGGER.error("fail to load config: {}", dirPath);
-                continue;
-            }
             try {
-                merger = ReflectUtil.getInstanceFromJar(jarPaths,configs.get(implPathKey).toString());
+                algorithm = methodManage.loadMergerById(mergeMethod.getId());
+                MergerFactory.getInstance().put(mergeMethod.getId(), algorithm);
             }
-            catch (Exception e) {
-                LOGGER.error("fail to reflect for MergerImpl: {}", dirPath, e);
-                continue;
+            catch (LoadMethodException e) {
+                LOGGER.error(e.getMessage());
             }
-            MergerFactory.getInstance().put(mergeMethod.getId(), new Algorithm(merger, configs));
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void loadMiner(List<MiningMethod> miningMethods) {
-        Map<String, Object> configs;
-        Miner miner = null;
         for (MiningMethod miningMethod : miningMethods) {
-            String dirPath = WEB_INF_PATH + minerJarDir + File.separatorChar + miningMethod.getId();
-            File dir = new File(dirPath);
-            String[] jarPaths = dir.list();
-            if (jarPaths == null || jarPaths.length == 0) {
-                System.out.println(new File(".").getAbsolutePath());
-                LOGGER.error("miner jar dir does not exist or is empty: {}", dirPath);
-                continue;
-            }
-            for (int i = 0; i < jarPaths.length; i++) {
-                jarPaths[i] = dir.getAbsolutePath() + File.separatorChar + jarPaths[i];
-            }
-            configs = (Map<String, Object>) loadAlgorithmConfigMapFromJar(jarPaths);
-            if (configs == null) {
-                LOGGER.error("fail to load config: {}", dirPath);
-                continue;
-            }
             try {
-                miner = ReflectUtil.getInstanceFromJar(jarPaths,configs.get(implPathKey).toString());
+                MinerFactory.getInstance().put(miningMethod.getId(), methodManage.loadMinerById(miningMethod.getId()));
             }
-            catch (Exception e) {
-                LOGGER.error("fail to reflect for MinerImpl: {}", dirPath, e);
-                continue;
-            }
-            MinerFactory.getInstance().put(miningMethod.getId(), new Algorithm(miner, configs));
-        }
-    }
-
-    private Object loadAlgorithmConfigMapFromJar(String[] jarPaths)  {
-        for (String jarPath : jarPaths) {
-            File f = new File(jarPath);
-            if (f.getName().endsWith(algorithmAdapterJarSuffix)) {
-                try {
-                    ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(f));
-                    ZipEntry zipEntry;
-                    while ((zipEntry=zipInputStream.getNextEntry()) != null) {
-                        if (zipEntry.getName().equals(algorithmConfigPath)) {
-                            ZipFile zipFile = new ZipFile(f);
-                            Yaml yaml = new Yaml();
-                            try (InputStream inputStream = zipFile.getInputStream(zipEntry)){
-                                return yaml.load(inputStream);
-                            }
-                        }
-                    }
-                }
-                catch (IOException e) {
-                    LOGGER.error("fail to load algorithm-config.yml from: {}",jarPath, e);
-                    return null;
-                }
+            catch (LoadMethodException e) {
+                LOGGER.error(e.getMessage());
             }
         }
-        LOGGER.error("*-k2.jar does not exist");
-        return null;
     }
 }

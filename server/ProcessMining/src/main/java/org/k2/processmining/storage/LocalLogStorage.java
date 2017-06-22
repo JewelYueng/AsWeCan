@@ -11,7 +11,7 @@ import java.io.*;
 /**
  * Created by nyq on 2017/6/11.
  */
-//@Component
+@Component
 public class LocalLogStorage implements LogStorage {
     private static final String ROOT_DIRECTORY = "E:/ppmm";
 

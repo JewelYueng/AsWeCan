@@ -15,7 +15,7 @@ import java.net.URL;
 /**
  * Created by nyq on 2017/6/13.
  */
-@Component
+//@Component
 public class HDFS implements LogStorage {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HDFS.class);
