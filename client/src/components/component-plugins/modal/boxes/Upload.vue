@@ -1,16 +1,10 @@
 <template>
   <div class="upload">
-    <!--<form :action=type_map[data.type] method="post"-->
-          <!--enctype="multipart/form-data">-->
-      <!--<input type="text" name="format"/>-->
-      <!--<input type="text" name="isShare"/>-->
-      <!--上传文件：<input type="file" name="file">-->
-      <!--<input type="submit" value="确定">-->
-    <!--</form>-->
     <div>
       <input type="file" ref="file">
     </div>
     <div>
+      是否分享
       <el-switch
         v-model="share_status"
         on-color="#13ce66"
@@ -45,14 +39,8 @@
   export default {
     data(){
       return {
-//        type_map: {
-//          'raw': base_url + '/rawLog/upload',
-//          'normal': base_url + '/normalLog/upload',
-//          'event': base_url + '/eventLog/upload'
-//        },
         share_status: false,
         file: new FormData(),
-//        fileList: []
       }
     },
     mixins: [BaseBox],
@@ -67,6 +55,9 @@
           contentType: 'multipart/form-data'
         }).then(res => {
           console.log('success', res)
+          if (res.body.code === 1){
+            this.commit(true)
+          }
         }, err => {
           console.log('err:', err)
         })
@@ -74,12 +65,6 @@
       cancel(){
         this.commit(true)
       },
-      handlePreview(file){
-        console.log(file)
-      },
-      handleRemove(file, fileList){
-        console.log(file, fileList)
-      }
     }
   }
 </script>

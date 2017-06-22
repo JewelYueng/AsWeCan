@@ -1,10 +1,10 @@
 <template>
   <div class="event-log-details">
     <div id="head">
-      <a class=" btn bgbtn02 btn_upload btn_common" @click="upload">
+      <a class=" btn bgbtn02 btn_upload btn_common img-button" @click="upload">
         <img src="static/img/upload.png"/>上传
       </a>
-      <a href="" class="btn bgbtn02 btn_share btn_common">
+      <a class="btn bgbtn02 btn_share btn_common img-button" @click="shareSome()">
         <img src="static/img/share_white.png"/>分享
       </a>
       <input type="text" class='search' placeholder='请输入关键字'><img id="search_button" src="static/img/search.png">
@@ -24,15 +24,15 @@
         <div>融合来源</div>
       </div>
       <div class="list" v-for="(item,index) in items">
-        <div class="input-box"><input type="checkbox" v-model="checked" :value="item.id" @click="currClick(item,index)">
+        <div class="input-box"><input type="checkbox" v-model="checked" :value="item.eventLog.id" @click="currClick(item,index)">
           <span @click="showDetail(index)"
-                class="log-name">{{`${item.eventLog.logName}.${item.eventLog.format}`}}</span>
+                class="log-name">{{item.eventLog.logName}}</span>
         </div>
         <div><img class="process_button img-button" title="开始流程挖掘" v-on:click="processMining(index)"
                   src="static/img/process_color.png">
           <img class="download_button img-button" title="下载" src="static/img/download_color.png"
                @click="download(index)">
-          <img class="share_button img-button" title="分享" src="static/img/share_color.png" @click="share(index)"></div>
+          <img class="share_button img-button" title="分享" :src="item.eventLog.isShared === 0 ? 'static/img/share_color.png' : 'static/img/forbidden_color.png'" @click="share(index)"></div>
         <div>
           {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()}`}}
         </div>
@@ -172,9 +172,9 @@
             this.totalAmount = [];
             this.checked = this.items.map(function (item) {
               item.checked = true;
-              let total = item.id;
+              let total = item.eventLog.id;
               _this.totalAmount.push(total);
-              return item.id;
+              return item.eventLog.id;
             })
           } else {
             this.checked = [];
@@ -200,8 +200,37 @@
       download(index){
         this.$api({method: 'downLoadEventLog', query: {id: this.items[index].eventLog.id}}).then((res) => {
           console.log(res.data)
-          this.createAndDownloadFile('event_log', res.data)
+          this.createAndDownloadFile(this.items[index].eventLog.logName, res.data)
         })
+      },
+      shareSome(){
+        this.$api({method: 'shareEventLog', body: {idList: this.checked}}).then( res => {
+          if(res.data.code === 1){
+            this.$hint('分享成功', 'success')
+          }else {
+            this.$hint('分享失败', 'warn')
+          }
+
+        })
+      },
+      share(index){
+        if(this.items[index].eventLog.isShared === 0) {
+          this.$api({method: 'shareEventLog', body: {idList: [this.items[index].eventLog.id]}}).then(res => {
+            if (res.data.code === 1) {
+              this.$hint('分享成功', 'success')
+            } else {
+              this.$hint('分享失败', 'warn')
+            }
+          })
+        }else{
+          this.$api({method: 'unShareEventLog', body: {idList: [this.items[index].eventLog.id]}}).then(res => {
+            if (res.data.code === 1) {
+              this.$hint('取消分享成功', 'success')
+            } else {
+              this.$hint('取消分享失败', 'warn')
+            }
+          })
+        }
       },
       createAndDownloadFile(fileName, content) {
         let aTag = document.createElement('a');
