@@ -27,8 +27,8 @@ export default {
   "getNormalLog": [GET, "/normalLog"],
   "shareNormalLog": [POST, "/normalLog/share"],
   "unShareNormalLog": [POST, "/normalLog/unShare"],
+  "downLoadNormalLog": [GET, "/normalLog/download"],
   "uploadNormalLog": [POST, "/normalLog/upload"],
-  "downLoadNormalLog": [POST, "/normalLog/download"],
   "deleteNormalLog": [DELETE, "/normalLog/delete"],
   // 事件日志
   "searchEventLog": [GET, "/eventLog"],

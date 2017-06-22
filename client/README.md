@@ -29,13 +29,13 @@ npm test
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
-## 开发中引进来的所有插件的用法	
+## 开发中引进来的所有插件的用法
 
 ### api插件
 
 - 插件的意义：重新封装了vueResource的插件，使ajax的写法对前端开发更加友好
 - 插件的用处：使用来进行http请求。
-- 用法： 
+- 用法：
 
 1. 首先在api/api_map.js文件夹中填写相应的映射，例如
 
@@ -52,13 +52,13 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 	this.$api({method: 'test'}).then((data) => {
           console.log(data)
         })
-        
+
    //上传参数时的三种参数上传的写法
    //直接写在请求体中
    	this.$api({method: 'test', body: {object}})
    	//作为arg传上去的例如http://110.110.110.2:3000/page/:page中的page
-   	this.$api({method: 'test', arg: {page: 1}})
-   	//作为query传上去的例如'http://110.110.110.2:3000/team/delete_job/?jobId=1'中的jobId
+   	this.$api({method: 'test', args: {page: 1}})
+   	//作为query传上去的例如'http://110.110.110.2:3000/team/delete_job?jobId=1'中的jobId
    	this.$api({method: 'test', query: {jobId: 1}})
 ```
 
