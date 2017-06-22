@@ -1,5 +1,6 @@
 package org.k2.processmining.support.algorithm;
 
+import org.apache.commons.io.FileUtils;
 import org.k2.processmining.model.mergemethod.MergeMethod;
 import org.k2.processmining.model.miningmethod.MiningMethod;
 import org.k2.processmining.support.merge.Merger;
@@ -67,6 +68,11 @@ public class MethodManage {
     }
 
     private void saveJar(String outputPath, InputStream inputStream) throws IOException {
+        File file = new File(outputPath);
+        System.out.println(file.getParent());
+        if ((!file.getParentFile().isDirectory() && !file.getParentFile().mkdir())) {
+            throw new IOException("fail to make dirs to save jars");
+        }
         try (BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputPath))){
             BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
             int byteRead = 0;
@@ -79,15 +85,15 @@ public class MethodManage {
     }
 
     public Algorithm<Miner> loadMinerById(String id) throws LoadMethodException {
-        return loadMethod(getMinerDir(id));
+        return loadMethod(id, getMinerDir(id));
     }
 
     public Algorithm<Merger> loadMergerById(String id) throws LoadMethodException {
-        return loadMethod(getMergerDir(id));
+        return loadMethod(id, getMergerDir(id));
     }
 
     @SuppressWarnings("unchecked")
-    private  <T> Algorithm<T> loadMethod(String methodDir) throws LoadMethodException {
+    private  <T> Algorithm<T> loadMethod(String id, String methodDir) throws LoadMethodException {
         Map<String, Object> configs;
         T method;
         File dir = new File(methodDir);
@@ -103,7 +109,7 @@ public class MethodManage {
             throw new LoadMethodException("fail to load config: " + methodDir);
         }
         try {
-            method = ReflectUtil.getInstanceFromJar(jarPaths,configs.get(implPathKey).toString());
+            method = ReflectUtil.getInstance().getInstanceFromJar(id, jarPaths,configs.get(implPathKey).toString());
         }
         catch (Exception e) {
             LOGGER.error("fail to reflect for MinerImpl: {}", methodDir, e);
@@ -112,12 +118,30 @@ public class MethodManage {
         return new Algorithm<>(method, configs);
     }
 
+
+    public void deleteMerger(String methodId) {
+        try {
+            FileUtils.deleteDirectory(new File(getMergerDir(methodId)));
+        }
+        catch (IOException e) {
+            LOGGER.error("fail to delete merger: {}", getMergerDir(methodId), e);
+        }
+    }
+
+    public void deleteMiner(String methodId) {
+        try {
+            FileUtils.deleteDirectory(new File(getMinerDir(methodId)));
+        }
+        catch (IOException e) {
+            LOGGER.error("fail to delete miner: {}", getMinerDir(methodId), e);
+        }
+    }
+
     private Object loadAlgorithmConfigMapFromJar(String[] jarPaths) throws LoadMethodException {
         for (String jarPath : jarPaths) {
             File f = new File(jarPath);
             if (f.getName().endsWith(algorithmAdapterJarSuffix)) {
-                try {
-                    ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(f));
+                try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(f));){
                     ZipEntry zipEntry;
                     while ((zipEntry=zipInputStream.getNextEntry()) != null) {
                         if (zipEntry.getName().equals(algorithmConfigPath)) {

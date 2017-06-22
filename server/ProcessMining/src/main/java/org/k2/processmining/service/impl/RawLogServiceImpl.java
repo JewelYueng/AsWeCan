@@ -70,6 +70,16 @@ public class RawLogServiceImpl implements RawLogService {
     }
 
     @Override
+    public List<LogGroup> getSharedLogsByFuzzyName(String keyWord) {
+        List<LogGroup> logGroups = rawLogMapper.listLogGroups(null,
+                                                        LogState.ACTIVE.getValue(),
+                                                        LogShareState.SHARED.getValue(),
+                                                        keyWord);
+        verifyLogGroupsIsShared(logGroups);
+        return logGroups;
+    }
+
+    @Override
     public boolean save(RawLog log, InputStream inputStream) {
         if (logStorage.upload(log, inputStream)) {
             rawLogService.afterSaveInLogStorage(log);

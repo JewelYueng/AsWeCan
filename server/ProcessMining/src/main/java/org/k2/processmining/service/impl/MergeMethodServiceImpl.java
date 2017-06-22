@@ -11,16 +11,22 @@ import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.service.MergeMethodService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.algorithm.Algorithm;
+import org.k2.processmining.support.algorithm.LoadMethodException;
 import org.k2.processmining.support.algorithm.MergerFactory;
+import org.k2.processmining.support.algorithm.MethodManage;
 import org.k2.processmining.support.event.export.EventLogExport;
 import org.k2.processmining.support.event.parse.EventLogParse;
 import org.k2.processmining.support.event.sumarise.EventLogSummary;
 import org.k2.processmining.support.event.sumarise.Summarize;
 import org.k2.processmining.support.merge.Merger;
+import org.k2.processmining.support.reflect.ReflectUtil;
 import org.k2.processmining.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -49,6 +55,9 @@ public class MergeMethodServiceImpl implements MergeMethodService{
 
     @Autowired
     private EventLogExport eventLogExport;
+
+    @Autowired
+    private MethodManage methodManage;
 
     @Override
     public MergeMethod getMethodById(String id) {
@@ -92,7 +101,7 @@ public class MergeMethodServiceImpl implements MergeMethodService{
 
 
     @Override
-    public EventLog merge(EventLog eventLog1, EventLog eventLog2, String methodId, Map<String, Object> params) {
+    public MergeResult merge(EventLog eventLog1, EventLog eventLog2, String methodId, Map<String, Object> params) {
         Algorithm<Merger> algorithm = MergerFactory.getInstance().getAlgorithm(methodId);
         if (algorithm == null || algorithm.getAlgorithm() == null) {
             return null;
@@ -105,7 +114,9 @@ public class MergeMethodServiceImpl implements MergeMethodService{
         if (xLog2 == null) {
             return null;
         }
+        long cost = System.currentTimeMillis();
         XLog resultXLog =  algorithm.getAlgorithm().merge(xLog1, xLog2, params);
+        cost = System.currentTimeMillis() - cost;
         if (resultXLog == null) {
             return null;
         }
@@ -120,7 +131,47 @@ public class MergeMethodServiceImpl implements MergeMethodService{
             return null;
         }
         mergeMethodService.afterSaveInLogStorage(resultEventLog, resultXLog);
-        return resultEventLog;
+        return new MergeResult(resultEventLog, cost);
+    }
+
+    @Override
+    public MergeMethod addMethod(MultipartFile[] multipartFiles) throws IOException, LoadMethodException {
+        MergeMethod mergeMethod = new MergeMethod();
+        mergeMethod.setId(Util.getUUIDString());
+
+        for (MultipartFile file : multipartFiles) {
+            try (InputStream inputStream = file.getInputStream()){
+                methodManage.saveMergerJar(mergeMethod.getId(), file.getOriginalFilename(), inputStream);
+            }
+        }
+        Algorithm<Merger> mergerAlgorithm = methodManage.loadMergerById(mergeMethod.getId());
+        mergeMethod.setMethodName((String)mergerAlgorithm.getConfigMap().get("key"));
+        MergerFactory.getInstance().put(mergeMethod.getId(), mergerAlgorithm);
+        mergeMethodService.afterSaveMethod(mergeMethod);
+        return mergeMethod;
+    }
+
+    @Override
+    public void setMethodState(List<String> ids, int state) {
+        mergeMethodMapper.updateState(ids, state);
+    }
+
+    @Override
+    public void delete(List<String> ids) {
+        mergeMethodMapper.delete(ids);
+        for (String id : ids) {
+            MergerFactory.getInstance().deleteAlgorithm(id);
+            ReflectUtil.getInstance().closeClassLoader(id);
+        }
+        System.gc();
+//        for (String id :ids) {
+//            methodManage.deleteMerger(id);
+//        }
+    }
+
+    @Override
+    public void afterSaveMethod(MergeMethod mergeMethod) {
+        mergeMethodMapper.save(mergeMethod);
     }
 
     @Override
@@ -131,5 +182,17 @@ public class MergeMethodServiceImpl implements MergeMethodService{
         resultEventLog.setEventNumber(eventLogSummary.getEvents());
         resultEventLog.setOperatorNames(eventLogSummary.getOperatorNames());
         eventLogMapper.save(resultEventLog);
+    }
+
+    // a little ugly
+    public static class MergeResult {
+        private EventLog eventLog;
+        private long cost;
+        public MergeResult() {}
+        public MergeResult(EventLog eventLog, long cost) { this.eventLog = eventLog; this.cost = cost; }
+        public EventLog getEventLog() {return eventLog;}
+        public void setEventLog(EventLog eventLog) {this.eventLog = eventLog;}
+        public long getCost() {return cost;}
+        public void setCost(long cost) {this.cost = cost;}
     }
 }

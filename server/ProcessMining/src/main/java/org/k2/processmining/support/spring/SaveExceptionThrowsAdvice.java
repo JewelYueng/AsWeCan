@@ -4,7 +4,12 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.k2.processmining.model.log.AbstractLog;
+import org.k2.processmining.model.mergemethod.MergeMethod;
+import org.k2.processmining.model.miningmethod.MiningMethod;
 import org.k2.processmining.storage.LogStorage;
+import org.k2.processmining.support.algorithm.MergerFactory;
+import org.k2.processmining.support.algorithm.MethodManage;
+import org.k2.processmining.support.algorithm.MinerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +27,9 @@ public class SaveExceptionThrowsAdvice{
     @Autowired
     private LogStorage logStorage;
 
+    @Autowired
+    private MethodManage methodManage;
+
     @Around("execution(public * org.k2.processmining.service.*.afterSaveInLogStorage*(..)) && args(..)")
     public Object deleteFromLogStorageIfFail(ProceedingJoinPoint joinPoint) throws Throwable{
         Object[] objects = joinPoint.getArgs();
@@ -31,8 +39,46 @@ public class SaveExceptionThrowsAdvice{
                 o = joinPoint.proceed();
             }
             catch (Throwable throwable) {
-                LOGGER.error("fail to save in db");
+                LOGGER.error("fail to save " + ((AbstractLog)objects[0]).getType() +" in db");
                 logStorage.delete((AbstractLog) (objects[0]));
+                throw throwable;
+            }
+        }
+        return o;
+    }
+
+    @Around("execution(public * org.k2.processmining.service.MergeMethodService.afterSaveMethod(..))")
+    public Object deleteMergeMethod(ProceedingJoinPoint joinPoint) throws Throwable {
+        Object[] objects = joinPoint.getArgs();
+        Object o = null;
+        if (objects.length > 0 && objects[0] instanceof MergeMethod) {
+            MergeMethod mergeMethod = (MergeMethod) objects[0];
+            try {
+                o = joinPoint.proceed();
+            }
+            catch (Throwable throwable) {
+                LOGGER.error("fail to save MergeMethod in db");
+                MergerFactory.getInstance().deleteAlgorithm(mergeMethod.getId());
+                methodManage.deleteMerger(mergeMethod.getId());
+                throw throwable;
+            }
+        }
+        return o;
+    }
+
+
+    public Object deleteMinerMethod(ProceedingJoinPoint joinPoint) throws Throwable {
+        Object[] objects = joinPoint.getArgs();
+        Object o = null;
+        if (objects.length > 0 && objects[0] instanceof MiningMethod) {
+            MiningMethod miningMethod = (MiningMethod) objects[0];
+            try {
+                o = joinPoint.proceed();
+            }
+            catch (Throwable throwable) {
+                LOGGER.error("fail to save MiningMethod in db");
+                MinerFactory.getInstance().deleteAlgorithm(miningMethod.getId());
+                methodManage.deleteMiner(miningMethod.getId());
                 throw throwable;
             }
         }

@@ -74,7 +74,7 @@ public class EventLogController {
     public void download(@RequestParam("id") String id, HttpServletResponse response) {
         EventLog eventLog = eventLogService.getEventLogById(id);
         User user = getUser();
-        if (!Util.isActiveAndBelongTo(eventLog, user)) {
+        if (!Util.isActiveAndBelongTo(eventLog, user) && !Util.isActiveAndShared(eventLog)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
@@ -155,6 +155,7 @@ public class EventLogController {
         Map<String,Object> result = new HashMap<>();
         User user = getUser();
         eventLogService.updateShareStateByLogIdForUser(form.getIdList(),LogState.DELETE.getValue(), user.getId());
+        result.put("code", 1);
         return result;
     }
 
@@ -171,5 +172,12 @@ public class EventLogController {
         List<LogGroup> logGroups = eventLogService.getLogByFuzzyName(keyWord,user);
         result.put("logGroups",logGroups);
         return result;
+    }
+
+    @RequestMapping(value = "/sharedLogs/search", method = RequestMethod.GET)
+    public @ResponseBody
+    Object getSharedLogByFuzzyName(@RequestParam("keyWord") String keyWord) {
+        List<LogGroup> logGroups = eventLogService.getSharedLogsByFuzzyName(keyWord);
+        return new HashMap<String,Object>(){{put("logGroups", logGroups);}};
     }
 }

@@ -1,15 +1,15 @@
 package org.k2.processmining.controller;
 
+import org.apache.ibatis.annotations.Param;
 import org.k2.processmining.model.LogState;
+import org.k2.processmining.model.MethodState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.mergemethod.MergeMethod;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.service.MergeMethodService;
-import org.k2.processmining.support.algorithm.Algorithm;
+import org.k2.processmining.service.impl.MergeMethodServiceImpl;
 import org.k2.processmining.support.algorithm.LoadMethodException;
-import org.k2.processmining.support.algorithm.MethodManage;
-import org.k2.processmining.support.merge.Merger;
 import org.k2.processmining.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,9 +40,6 @@ public class MergeController {
 
     @Autowired
     private EventLogService eventLogService;
-
-    @Autowired
-    private MethodManage methodManage;
 
     @RequestMapping(value = "/method", method = RequestMethod.GET)
     public @ResponseBody Object getAllMergeMethods() {
@@ -77,43 +73,61 @@ public class MergeController {
             res.put("msg", "The event logs are not exist!");
             return ResponseEntity.badRequest().body(res);
         }
-        long start = System.currentTimeMillis(); // have to modify
-        EventLog result = mergeMethodService.merge(eventLog1, eventLog2, form.methodId, form.parameters);
-
+        MergeMethodServiceImpl.MergeResult result = mergeMethodService.merge(eventLog1, eventLog2, form.methodId, form.parameters);
         if (result == null) {
             res.put("msg", "Fail to merge the logs. Please check the input content and try again!");
             return ResponseEntity.status(HttpServletResponse.SC_BAD_REQUEST).body(res);
         }
-        res.put("timeCost", System.currentTimeMillis()-start);
-        res.put("eventLog", result);
+        res.put("timeCost", result.getCost());
+        res.put("eventLog", result.getEventLog());
         return res;
     }
 
 
-    public Object addMergeMethod(MultipartFile[] files) {
-        MergeMethod mergeMethod = new MergeMethod();
-        mergeMethod.setId(Util.getUUIDString());
-        for (MultipartFile file : files) {
-            try (InputStream inputStream = file.getInputStream()){
-                methodManage.saveMergerJar(mergeMethod.getId(), file.getOriginalFilename(), inputStream);
-            }
-            catch (IOException e) {
-                return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).body(e.getMessage());
-            }
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public @ResponseBody
+    Object addMergeMethod(@Param("files") MultipartFile[] files) {
+        if (files == null || files.length == 0) {
+            return ResponseEntity.badRequest().body("at least one file!");
         }
+        Map<String,Object> res = new HashMap<>();
         try {
-            Algorithm<Merger> algorithm = methodManage.loadMergerById(mergeMethod.getId());
-            Map<String, Object> configs = algorithm.getConfigMap();
-            configs.put("id", mergeMethod.getId());
-            configs.put("state", mergeMethod.getState());
-            return configs;
+            MergeMethod mergeMethod = mergeMethodService.addMethod(files);
+            res.put("state", mergeMethod.getState());
+            res.put("id", mergeMethod.getId());
+            res.put("configs", mergeMethodService.getMethodConfig(mergeMethod));
+            return res;
         }
-        catch (LoadMethodException e) {
+        catch (IOException | LoadMethodException e) {
             return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
-    public void setMethodState(){}
+    @RequestMapping(value = "/active", method = RequestMethod.POST)
+    public @ResponseBody
+    Object active(@RequestBody IdListForm form) {
+        return setMethodState(form.getIdList(), MethodState.ACTIVE.getValue());
+    }
+
+    @RequestMapping(value = "/freeze", method = RequestMethod.POST)
+    public @ResponseBody
+    Object freeze(@RequestBody IdListForm form) {
+        return setMethodState(form.getIdList(), MethodState.FREEZE.getValue());
+    }
+
+    private Map<String,Object> setMethodState(List<String> ids, int state) {
+        mergeMethodService.setMethodState(ids, state);
+        Map<String,Object> res = new HashMap<>();
+        res.put("code", 1);
+        return res;
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    public @ResponseBody
+    Object delete(@RequestBody IdListForm form) {
+        mergeMethodService.delete(form.getIdList());
+        return new HashMap<String,Object>(){{put("code", 1);}};
+    }
 
     public void deleteMergeMethod(){}
 
