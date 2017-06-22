@@ -10,11 +10,11 @@ import java.util.List;
 public interface UserService {
 
     int addUser(User user);
-    void deleteUser();
-    void getUserById();
+    User getUserById(String id);
     void updateStateByUserId(List<String>ids,int state);
     List<User> getAllUsers();
-    void setUserState();
-    void changePassword();
+    void updatePwdById(String userId,String password);
     User getUserByEmail(String email);
+    int checkoutUserByEmailAndPwd(String email,String password);
+    int activeAccount(String email);
 }

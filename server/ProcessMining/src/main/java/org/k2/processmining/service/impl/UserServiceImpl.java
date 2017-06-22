@@ -1,12 +1,15 @@
 package org.k2.processmining.service.impl;
 
 import org.k2.processmining.mapper.UserMapper;
+import org.k2.processmining.model.UserState;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.UserService;
+import org.k2.processmining.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Aria on 2017/6/14.
@@ -32,17 +35,15 @@ public class UserServiceImpl implements UserService{
         if (userService.getUserByEmail(user.getEmail()) != null){
             return 2;//邮箱重复
         }
+        user.setId(Util.getUUIDString());
+        user.setState(UserState.FREEZE.getValue());
+        userMapper.save(user);
         return 3;
     }
 
     @Override
-    public void deleteUser() {
-
-    }
-
-    @Override
-    public void getUserById() {
-
+    public User getUserById(String id) {
+        return userMapper.getUserByUserId(id);
     }
 
     @Override
@@ -50,10 +51,9 @@ public class UserServiceImpl implements UserService{
         userMapper.updateStateByUserId(ids,state);
     }
 
-
     @Override
-    public void setUserState() {
-
+    public void updatePwdById(String userId,String password) {
+        userMapper.updatePwdById(userId,password);
     }
 
     @Override
@@ -62,12 +62,29 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void changePassword() {
-
+    public User getUserByEmail(String email) {
+        return userMapper.getUserByEmail(email);
     }
 
     @Override
-    public User getUserByEmail(String email) {
-        return userMapper.getUserByEmail(email);
+    public int checkoutUserByEmailAndPwd(String email, String password) {
+
+        if (userMapper.getUserByEmail(email) == null){
+            return 0;
+        }
+        System.out.println("111111");
+        if (userMapper.getUserByEmailAndPwd(email,password) == null){
+            return 1;
+        }
+        return 2;
+    }
+
+    @Override
+    public int activeAccount(String email) {
+        StringBuffer buffer = new StringBuffer("点击下面链接激活账号，48小时生效，否则重新注册账号，链接只能使用一次，请尽快激活！</br>");
+        buffer.append("<a href=\"http://localhost:8080/springmvc/user/register?action=activate&email=");
+        buffer.append(email);
+
+        return 0;
     }
 }

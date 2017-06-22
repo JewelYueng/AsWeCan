@@ -4,24 +4,6 @@
 
 <mapper namespace="org.k2.processmining.mapper.UserMapper">
 
-    <!--<select id="listMethods" resultMap="MiningMethodResult">-->
-        <!--SELECT * FROM mining_method;-->
-    <!--</select>-->
-
-    <!--<select id="listMethodByState" resultMap="MiningMethodResult">-->
-        <!--SELECT * FROM mining_method WHERE state=#{state}-->
-    <!--</select>-->
-
-    <!--<select id="getMethodById" resultMap="MiningMethodResult">-->
-        <!--SELECT * FROM mining_method WHERE id=#{id}-->
-    <!--</select>-->
-
-    <!--<resultMap id="MiningMethodResult" type="MiningMethod">-->
-        <!--<id column="id" property="id"/>-->
-        <!--<result column="method_name" property="methodName"/>-->
-        <!--<result column="state" property="state"/>-->
-    <!--</resultMap>-->
-
     <update id="updateStateByUserId">
         UPDATE user SET state = #{state}
         WHERE
@@ -31,5 +13,36 @@
         </foreach>
     </update>
 
+    <insert id="save">
+        INSERT INTO user(id,username,password,email,state)
+        VALUE (#{id},#{name},#{password},#{email},#{state})
+    </insert>
 
+    <select id="listAllUsers" resultMap="user">
+        SELECT * FROM user
+    </select>
+
+    <select id="getUserByUserId" resultType="user">
+        SELECT * FROM user WHERE id = #{id}
+    </select>
+
+    <select id="getUserByEmail" resultType="user">
+        SELECT * FROM user WHERE email = #{email}
+    </select>
+
+    <select id="getUserByEmailAndPwd" resultType="user">
+        SELECT * FROM user WHERE email = #{email} AND password = #{password}
+    </select>
+
+    <update id="updatePwdById">
+        UPDATE user SET password = #{password} WHERE id = #{id}
+    </update>
+
+    <resultMap id="user" type="User">
+        <id column="id" property="id"/>
+        <result column="username" property="name"/>
+        <result column="password" property="password"/>
+        <result column="email" property="email"/>
+        <result column="state" property="state"/>
+    </resultMap>
 </mapper>
