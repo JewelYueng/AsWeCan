@@ -1,7 +1,7 @@
 <template>
   <div class="event-log-details">
     <div id="head">
-      <a href="" class=" btn bgbtn02 btn_upload btn_common">
+      <a class=" btn bgbtn02 btn_upload btn_common" @click="upload">
         <img src="static/img/upload.png"/>上传
       </a>
       <a href="" class="btn bgbtn02 btn_share btn_common">
@@ -24,15 +24,18 @@
         <div>融合来源</div>
       </div>
       <div class="list" v-for="(item,index) in items">
-        <div><input type="checkbox" v-model="checked" :value="item.id" @click="currClick(item,index)">
+        <div class="input-box"><input type="checkbox" v-model="checked" :value="item.id" @click="currClick(item,index)">
           <span @click="showDetail(index)"
                 class="log-name">{{`${item.eventLog.logName}.${item.eventLog.format}`}}</span>
         </div>
-        <div><img class="process_button" title="开始流程挖掘" v-on:click="processMining(index)"
+        <div><img class="process_button img-button" title="开始流程挖掘" v-on:click="processMining(index)"
                   src="static/img/process_color.png">
-          <img class="download_button" title="下载" src="static/img/download_color.png">
-          <img class="share_button" title="分享" src="static/img/share_color.png"></div>
-        <div>{{new Date(item.eventLog.createDate).toString()}}</div>
+          <img class="download_button img-button" title="下载" src="static/img/download_color.png"
+               @click="download(index)">
+          <img class="share_button img-button" title="分享" src="static/img/share_color.png" @click="share(index)"></div>
+        <div>
+          {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()}`}}
+        </div>
         <div>{{item.rawLog ? `${item.rawLog.logName}.${item.rawLog.format}` : '无'}}</div>
         <div>{{item.normalLog ? `${item.normalLog.logName}.${item.normalLog.format}` : '无'}}</div>
         <div>{{item.eventLog.mergeRelation ? `` : '无'}}</div>
@@ -65,7 +68,7 @@
     height: @search_height;
     border-radius: @search_border-radius;
     border: 1px solid @tab_color;
-    outline-style:none;
+    outline-style: none;
   }
 
   #search_button {
@@ -89,6 +92,10 @@
       height: 30px;
       vertical-align: text-top;
     }
+  }
+
+  .img-button {
+    cursor: pointer;
   }
 
   .title {
@@ -131,7 +138,9 @@
 </style>
 
 <script>
+  import ElButton from "../../../../node_modules/element-ui/packages/button/src/button"
   export default{
+    components: {ElButton},
     data(){
       return {
         checked: [],
@@ -183,26 +192,26 @@
       }
     },
     methods: {
-
+      upload(){
+        this.$modal({type: 'upload', data: {type: 'event'}}).then((res) => {
+          console.log(res)
+        })
+      },
+      download(index){
+        this.$api({method: 'downLoadEventLog', query: {id: this.items[index].eventLog.id}}).then((res) => {
+          console.log(res.data)
+          this.createAndDownloadFile('event_log', res.data)
+        })
+      },
+      createAndDownloadFile(fileName, content) {
+        let aTag = document.createElement('a');
+        let blob = new Blob([content]);
+        aTag.download = fileName;
+        aTag.href = URL.createObjectURL(blob);
+        aTag.click();
+        URL.revokeObjectURL(blob);
+      },
       showDetail: function (index) {
-//        {
-//          "type": "EventLog",
-//          "id": "1",
-//          "logName": "eventLog1.log",
-//          "createDate": 1497280019000,
-//          "format": "txt",
-//          "state": 1,
-//          "userId": "1",
-//          "normalLogId": null,
-//          "caseNumber": 6,
-//          "eventNumber": 28,
-//          "perEventInCase": 4,
-//          "eventNames": "a,b,d,c,f,e",
-//          "operatorNames": "y2k",
-//          "mergeRelation": "1,2",
-//          "isShared": 1
-//        }
-
         this.$modal({
           type: 'log-detail',
           data: this.items[index].eventLog

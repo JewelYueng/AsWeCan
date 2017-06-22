@@ -77,11 +77,14 @@
   import NormalInfo from './boxes/NormalInfo.vue'
   import LogDetail from './boxes/LogDetail.vue'
   import { register } from './modal'
+  import Upload from './boxes/Upload.vue'
+
   export default {
     components: {
       Alert,
       NormalInfo,
-      LogDetail
+      LogDetail,
+      Upload
     },
     data(){
       return {

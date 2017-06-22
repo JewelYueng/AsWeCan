@@ -36,8 +36,7 @@ export default {
   "getEventLog": [GET, "/eventLog"],
   "shareEventLog": [POST, "/eventLog/share"],
   "unShareEventLog": [POST, "/eventLog/unShare"],
-  "uploadEventLog": [POST, "/eventLog/upload"],
-  "downLoadEventLog": [POST, "/eventLog/download"],
+  "downLoadEventLog": [GET, "/eventLog/download"],
   "deleteEventLog": [DELETE, "/eventLog/delete"],
 //  事件预处理
   "normalize": [POST, "/rawLog/normalize"],
