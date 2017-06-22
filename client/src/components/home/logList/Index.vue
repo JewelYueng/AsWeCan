@@ -53,7 +53,7 @@
 <script>
   import {mapActions} from 'vuex'
   import EventLog from './EventLog.vue'
-  import RawLog from './RawLogDetails'
+  import RawLog from './RawLog'
   import NormalLog from './NormalLog'
   export default{
     data(){

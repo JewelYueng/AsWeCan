@@ -3,7 +3,7 @@
     <div id="head">
       <a href="" class=" btn bgbtn02 btn_upload btn_common"><img src="static/img/upload.png"/>上传</a>
       <a href="" class="btn bgbtn02 btn_share btn_common"><img src="static/img/share_white.png"/>分享</a>
-      <input type="text" class='search' placeholder='请输入关键字'><img id="search_button" src="static/img/search.png">
+      <input type="text" class='search' placeholder='请输入关键字' ref="input1"><img id="search_button" src="static/img/search.png" @click="searchRawLog()">
     </div>
     <div class='title'>
       <span class='title_left'>全部文件，共{{amount}}个</span>
@@ -16,9 +16,11 @@
         <div><input type="checkbox" v-model="checked" :value="item.rawLog.id"  @click="currClick(item,index)">
           <span>{{`${item.rawLog.logName}.${item.rawLog.format}`}}</span></div>
         <div><img class="process_button" title="生成规范化日志" v-on:click="tranferToNormal(index)" src="static/img/process_color.png">
-          <img class="download_button" title="下载" src="static/img/download_color.png">
-          <img class="share_button" title="分享" src="static/img/share_color.png"></div>
-        <div>{{Date(item.rawLog.createDate)}}</div><div>{{`${item.normalLog.logName}.${item.normalLog.format}`}}</div><div>{{`${item.eventLog.logName}.${item.eventLog.format}`}}</div>
+          <img class="download_button" title="下载" src="static/img/download_color.png" @click="download(item.rawLog.id)" v-model="item.rawLog.id">
+          <img class="share_button" title="分享" src="static/img/share_color.png">
+          <!--<img class="delete_button" title="删除" src="static/img/Delete_color.png" @click="deleteRawLog(item.rawLog.id)" v-model="item.rawLog.id">-->
+        </div>
+        <div>{{new Date(item.rawLog.createDate).toString()}}</div><div>{{item.normalLog ? `${item.normalLog.logName}.${item.normalLog.format}` : '无'}}</div><div>{{item.eventLog ? `${item.eventLog.logName}.${item.eventLog.format}` : '无'}}</div>
       </div>
     </div>
   </div>
@@ -109,22 +111,36 @@
         totalAmount:[],
       /*  checkAll:false,*/
        /* amount: 0,*/
-        items:[
-          {
-            id:1,
-            log_name:'first-log',
-            create_date:'2017-1-1',
-            normal_log:'first-normal-log',
-            event_log:'first-event-log'
-          },
-          {
-            id:2,
-            log_name:'second-log',
-            create_date:'2017-2-1',
-            normal_log:'second-normal-log',
-            event_log:'second-event-log'
-          }
-        ]
+       items:[
+//           {
+//         "user":{"id":"1","name":"y2k" },
+//
+//         "rawLog":{"type":"RawLog","id":"1","logName":"rawLog1.log","createDate":1497280019000,"format":"txt","state":1,"userId":"1"},
+//
+//         "normalLog":{"type":"NormalLog","id":"1","logName":"normalLog1.log","createDate":1497280019000,"format":"txt","state":1,"userId":"1","rawLogId":"1"},
+//
+//         "eventLog":{"type":"EventLog","id":"1","logName":"eventLog1.log","createDate":1497280019000,"format":"txt","state":1,"userId":"1","normalLogId":null,"caseNumber":6,"eventNumber":28,"perEventInCase":4,"eventNames":"a,b,d,c,f,e","operatorNames":"y2k",mergeRelation: "1,2"}
+//
+//       },
+//
+//         {"user":{"id":"1","name":"y2k","email":null,"password":null},"rawLog":{"type":"RawLog","id":"2","logName":"rawLog2.log","createDate":1497280019000,"format":"txt","state":1,"userId":"1" },"normalLog":null,"eventLog":null}
+         ],
+//        items:[
+//          {
+//            id:1,
+//            log_name:'first-log',
+//            create_date:'2017-1-1',
+//            normal_log:'first-normal-log',
+//            event_log:'first-event-log'
+//          },
+//          {
+//            id:2,
+//            log_name:'second-log',
+//            create_date:'2017-2-1',
+//            normal_log:'second-normal-log',
+//            event_log:'second-event-log'
+//          }
+//        ]
       }
     },
     created(){
@@ -150,9 +166,9 @@
            this.totalAmount = [];
            this.checked = this.items.map(function(item) {
              item.checked = true;
-             let total = item.id;
+             let total = item.rawLog.id;
              _this.totalAmount.push(total);
-             return item.id;
+             return item.rawLog.id;
            })
          }else{
            this.checked = [];
@@ -170,6 +186,31 @@
      }
    },
     methods:{
+      deleteRawLog:function (val) {
+        this.$api({method:'deleteRawLog',body:{idList:val}}).then((res)=>{
+          if(parseInt(res.data.code)==1){
+            this.$hint('删除成功','success');
+          }
+        })
+      },
+
+      download:function (val) {
+      this.$api({method:'downLoadRawLog',query:{id:val}}).then((res)=>{
+        console.log(res);
+        this.$hint('下载成功','success');
+      })
+
+      },
+
+      searchRawLog:function () {
+        console.log(this.$refs.input1.value);
+        this.$api({method: 'searchRawLog', query: {keyWord:this.$refs.input1.value}}).then((res)=>{
+          this.items=[];
+          res.data.logGroups.map((log)=>{
+            this.items.push(log);
+          })
+        })
+      },
       currClick:function(item,index){
         var _this = this;
         if(typeof item.checked == 'undefined'){

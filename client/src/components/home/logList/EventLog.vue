@@ -7,7 +7,7 @@
       <a class="btn bgbtn02 btn_share btn_common img-button" @click="shareSome()">
         <img src="static/img/share_white.png"/>分享
       </a>
-      <input type="text" class='search' placeholder='请输入关键字'><img id="search_button" src="static/img/search.png">
+      <input type="text" class='search' placeholder='请输入关键字' ><img id="search_button" src="static/img/search.png" >
     </div>
     <div class='title'>
       <span class='title_left'>全部文件，共{{amount}}个</span>
