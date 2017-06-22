@@ -57,7 +57,7 @@ each_action.trigger = function (key, ...args) {
 let httpPlugin = {}
 httpPlugin.install = function (Vue, options) {
   
-  Vue.prototype.$api = function ({method, args = {}, body = {}, query = {}}) {
+  Vue.prototype.$api = function ({method, args = {}, body = {}, query = {}, opts = {}}) {
     const headers = {}
     if (typeof this.$store.getters.getToken === "string" && this.$store.getters.getToken) {
       headers["Authorization"] = this.$store.getters.getToken
@@ -68,7 +68,8 @@ httpPlugin.install = function (Vue, options) {
     if (["get", "head", "delete"].indexOf(http_method) >= 0) {
       promise = this.$http[http_method](base_url + replaceArgs(uri, args), {
         headers: headers,
-        params: query
+        params: query,
+        body: opts['body']
       })
     } else {
       promise = this.$http[http_method](base_url + replaceArgs(uri, args), JSON.stringify(body), {
