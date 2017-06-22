@@ -1,6 +1,5 @@
 <template>
   <div class="form-data">
-    <button class="close" @click="back"><i class="el-icon-close"></i></button>
     <el-table :data="eventData">
       <el-table-column prop="name" label="名称" width="180">
       </el-table-column>
@@ -16,18 +15,6 @@
     text-align: left;
     padding: 30px;
     background-color: whitesmoke;
-    .close{
-      padding: 5px;
-      border: none;
-      background-color: #58a181;
-      border-radius: 3px;
-      position: absolute;
-      left: 670px;
-      top: 274px;
-      i{
-        color: white;
-      }
-    }
   }
   .back-btn{
     margin: 20px auto 0 auto;
@@ -45,19 +32,19 @@
         test: 'msg',
         eventData: [{
           name: '总实例数',
-          value: this.data.caseNumber
+          value: this.data.caseNumber || 0
         }, {
           name: '总事件数',
-          value: this.data.eventNumber
+          value: this.data.eventNumber || 0
         }, {
           name: '平均每实例中事件数',
-          value: this.data.perEventInCase
+          value: this.data.perEventInCase || 0
         }, {
           name: '流程活动事件',
-          value: this.data.eventNames
+          value: this.data.eventNames || '无'
         }, {
           name: '流程活动操作人',
-          value: this.data.operatorNames
+          value: this.data.operatorNames || '无'
         }, ]
       }
     },

@@ -1,4 +1,4 @@
-const base_url = "http://192.168.0.101:8080"
+const base_url = "http://192.168.0.104:8080"
 
 const
   GET = "get",
@@ -17,7 +17,6 @@ export default {
   "getRawLog": [GET, "/rawLog"],
   "shareRawLog": [POST, "/rawLog/share"],
   "unShareRawLog": [POST, "/rawLog/unShare"],
-  "uploadRawLog": [POST, "/rawLog/upload"],
   "downLoadRawLog": [POST, "/rawLog/download"],
   "deleteRawLog": [DELETE, "/rawLog/delete"],
   // 规范化日志
@@ -26,7 +25,6 @@ export default {
   "getNormalLog": [GET, "/normalLog"],
   "shareNormalLog": [POST, "/normalLog/share"],
   "unShareNormalLog": [POST, "/normalLog/unShare"],
-  "uploadNormalLog": [POST, "/normalLog/upload"],
   "downLoadNormalLog": [POST, "/normalLog/download"],
   "deleteNormalLog": [DELETE, "/normalLog/delete"],
   // 事件日志
@@ -35,8 +33,7 @@ export default {
   "getEventLog": [GET, "/eventLog"],
   "shareEventLog": [POST, "/eventLog/share"],
   "unShareEventLog": [POST, "/eventLog/unShare"],
-  "uploadEventLog": [POST, "/eventLog/upload"],
-  "downLoadEventLog": [POST, "/eventLog/download"],
+  "downLoadEventLog": [GET, "/eventLog/download"],
   "deleteEventLog": [DELETE, "/eventLog/delete"],
 //  事件预处理
   "normalize": [POST, "/rawLog/normalize"],
