@@ -1,15 +1,20 @@
 package org.k2.processmining.service;
 
+import org.k2.processmining.model.user.User;
+
+import java.util.List;
+
 /**
  * Created by Aria on 2017/6/13.
  */
 public interface UserService {
 
-    void addUser();
+    void addUser(User user);
     void deleteUser();
     void getUserById();
-    void updateUser();
+    void updateStateByUserId(List<String>ids,int state);
+    List<User> getAllUsers();
     void setUserState();
-    void getAllUsers();
     void changePassword();
+    User getUserByEmail(String email);
 }

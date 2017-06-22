@@ -4,7 +4,7 @@ package org.k2.processmining.model;
  * Created by nyq on 2017/6/17.
  */
 public enum LogState {
-    FREEZE(0), ACTIVE(1), DELETE(2),SHARED(1),UNSHARED(0);
+    FREEZE(0), ACTIVE(1), DELETE(2);
     private int value;
     LogState(int state) {
         this.value = state;

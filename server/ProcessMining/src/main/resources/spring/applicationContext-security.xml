@@ -11,7 +11,7 @@
     <security:http pattern="/js/**" security="none"/>
 
     <security:http>
-        <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
+        <security:intercept-url pattern="/**" access="permitAll"/>
         <security:form-login login-page="/loginPage" login-processing-url="/login" always-use-default-target="true"
                              default-target-url="/welcome" authentication-failure-url="/loginPage?error=error"/>
         <security:csrf disabled="true"/>

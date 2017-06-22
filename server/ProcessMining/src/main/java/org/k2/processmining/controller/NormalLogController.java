@@ -227,6 +227,7 @@ public class NormalLogController {
             return res;
         }
         res.put("code", 1);
+        res.put("eventLog",eventLog);
         return res;
     }
 
