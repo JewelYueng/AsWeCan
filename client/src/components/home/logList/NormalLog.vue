@@ -1,10 +1,11 @@
 <template>
   <div class="normal-log">
     <div class="head">
-      <a href="" class="button" @click="upload"><img src="static/img/upload.png">上传</a>
-      <a href="" class="button" @click="shareSome"><img src="static/img/share_white.png">分享</a>
-      <a href="" class="button" @click="deleteSome"><img src="static/img/Delete.png" style="padding-top: 2px">删除</a>
-      <input type="text" class="search" placeholder="请输入关键字"><img id="search_button" src="static/img/search.png">
+      <a style="cursor:pointer" class="button" @click="upload"><img src="static/img/upload.png">上传</a>
+      <a style="cursor:pointer" class="button" @click="shareSome"><img src="static/img/share_white.png">分享</a>
+      <a style="cursor:pointer" class="button" @click="deleteSome"><img src="static/img/Delete.png" style="padding-top: 2px">删除</a>
+      <input type="text" id="searchBox" placeholder="请输入关键字">
+      <img id="search_button" src="static/img/search.png" @click="search">
     </div>
     <div class="head-2"><span>全部文件，共{{amount}}个</span><span>关联文件</span></div>
     <div id="log-list">
@@ -32,7 +33,9 @@
           <img @click="deleteLog(index)" style="cursor:pointer"
                class="delete_button" title="删除" src="static/img/delete_color.png">
         </div>
-        <div>{{new Date(item.normalLog.createDate).toString()}}</div>
+        <div>
+          {{`${new Date(item.normalLog.createDate).getFullYear()}-${new Date(item.normalLog.createDate).getMonth() + 1}-${new Date(item.normalLog.createDate).getDate()}`}}
+        </div>
         <div><a href="">
           {{item.rawLog ? `${item.rawLog.logName}.${item.rawLog.format}` : '无'}}</a></div>
         <div><a href="">
@@ -82,8 +85,8 @@
     }
   }
 
-  .search {
-    margin-left: 400px;
+#searchBox{
+    margin-left: 300px;
     background-color: @light_theme;
     color: @dark_theme;
     text-align: center;
@@ -221,14 +224,18 @@
       transferToEvent: function (index) {
         this.$api({method: 'toEventLog', query: {id: this.items[index].normalLog.id}}).then((res) => {
           console.log(res.data)
-
+          if (res.data.code === 1) {
+            this.$hint('生成成功', 'success')
+          } else {
+            this.$hint('生成失败', 'warn')
+          }
         })
       },
 
       download: function (index) {
         this.$api({method: "downLoadNormalLog", query: {id: this.items[index].normalLog.id}}).then((res) => {
           console.log(res.data)
-          this.createAndDownloadFile('normal_log', res.data)
+          this.createAndDownloadFile(this.items[index].normalLog.logName, res.data)
         })
       },
       createAndDownloadFile(fileName, content) {
@@ -246,7 +253,13 @@
           opts: {body: {idList: [this.items[index].normalLog.id]}}
         }).then((res) => {
           console.log(res.data)
+          if (res.data.code === 1) {
+            this.$hint('删除成功', 'success')
+          } else {
+            this.$hint('删除失败', 'error')
+          }
         })
+
       },
       deleteSome: function () {
         this.$api({
@@ -254,7 +267,13 @@
           ops: {body: {idList: [this.checked]}}
         }).then((res) => {
           console.log(res.data)
+          if (res.data.code === 1) {
+            this.$hint('删除成功', 'success')
+          } else {
+            this.$hint('删除失败', 'error')
+          }
         })
+
       },
 
       shareSome(){
@@ -288,7 +307,7 @@
       },
 
       search: function () {
-        this.$api({method: 'searchNormalLog', query: {keyWord: keyWord}}).then((res) => {
+        this.$api({method: 'searchNormalLog', body: {keyWord: document.getElementById("searchBox")}}).then((res) => {
           console.log(res)
         })
       }

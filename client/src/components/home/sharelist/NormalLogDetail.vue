@@ -1,15 +1,20 @@
 <template>
   <div class="normal-log">
-    <input type="text" class="search" placeholder="请输入关键字"><img id="search_button" src="static/img/search.png">
+    <input type="text" id="searchBox" placeholder="请输入关键字">
+    <img id="search_button" src="static/img/search.png" @click="search">
     <div class="head-2"><span>全部文件，共{{amount}}个</span><span>关联文件</span></div>
     <div id="log-list">
       <div class="list"><div><input type="checkbox" v-model="checkAll" id="文件名" value="文件名">
         <span>文件名</span></div><div>上传者</div><div>日期</div><div>原始日志</div><div>事件日志</div></div>
       <div class="list" v-for="(item,index) in items">
         <div><input type="checkbox" v-model="checked" :value="item.id"  @click="currClick(item,index)">
-          <span>{{item.log_name}}</span></div>
-        <div>{{item.creater}}</div><div>{{item.create_date}}</div>
-        <div>{{item.rawLog_name}}</div><div>{{item.eventLog_name}}</div>
+          <span>{{item.normalLog.logName}}</span></div>
+        <div>{{item.normalLog.userId}}</div>
+        <div>
+        {{`${new Date(item.normalLog.createDate).getFullYear()}-${new Date(item.normalLog.createDate).getMonth() + 1}-${new Date(item.normalLog.createDate).getDate()}`}}
+        </div>
+        <div>{{item.rawLog ? item.rawLog.logName: '无'}}</div>
+        <div>{{item.eventLog ?item.eventLog.logName : '无'}}</div>
         <img class="download_button" title="下载" src="static/img/download_color.png">
       </div>
     </div>
@@ -30,8 +35,7 @@
     margin-right: 210px;
     font-size: 20px;
   }
-  .search{
-    margin-left: 400px;
+  #searchBox{
     background-color: @light_theme;
     color: @dark_theme;
     text-align: center;
@@ -96,88 +100,83 @@
         totalAmount:[],
         /*  checkAll:false,*/
         /* amount: 0,*/
-        items:[
-          {
-            id:1,
-            log_name:'first-log',
-            create_date:'2017-1-1',
-            rawLog_name:'first-raw-log',
-            eventLog_name:'first-event-log',
-            creater:'mark'
-          },
-          {
-            id:2,
-            log_name:'second-log',
-            create_date:'2017-2-1',
-            rawLog_name:'second-raw-log',
-            eventLog_name:'second-event-log',
-            creater:'lee'
-          }
-        ]
+        items:[]
       }
     },
-    computed:{
-      amount:function(item,index){
-        let sum = this.totalAmount.length;
-        return sum;
+    created(){
+      this.$api({method: 'getShareNormalLog'}).then((res) => {
+        console.log(res)
+        res.data.logGroups.map((log) => {
+          this.items.push(log)
+        })
+      })
+    },
+    computed: {
+      amount: function (item, index) {
+        return this.totalAmount.length;
       },
       checkAll: {
-        get: function() {
-          return this.checkedCount == this.items.length;
+        get: function () {
+          return this.checkedCount === this.items.length;
         },
-        set: function(value){
-          var _this = this;
+        set: function (value) {
+          const _this = this;
           if (value) {
             this.totalAmount = [];
-            this.checked = this.items.map(function(item) {
+            this.checked = this.items.map(function (item) {
               item.checked = true;
               let total = item.id;
               _this.totalAmount.push(total);
               return item.id;
             })
-          }else{
+          } else {
             this.checked = [];
-            this.totalAmount=[];
-            this.items.forEach(function(item,index){
+            this.totalAmount = [];
+            this.items.forEach(function (item, index) {
               item.checked = false;
             });
           }
         }
       },
       checkedCount: {
-        get: function() {
+        get: function () {
           return this.checked.length;
         }
       }
     },
     methods:{
-      currClick:function(item,index){
-        var _this = this;
-        if(typeof item.checked == 'undefined'){
-          this.$set(item,'checked',true);
+      currClick: function (item, index) {
+        const _this = this;
+        if (typeof item.checked === 'undefined') {
+          this.$set(item, 'checked', true);
           let total = item.id;
           this.totalAmount.push(total);
           console.log(this.totalAmount);
-        }else{
+        } else {
           item.checked = !item.checked;
-          if(item.checked){
+          if (item.checked) {
             this.totalAmount = [];
-            this.items.map(function(item,index){
-              if(item.checked){
+            this.items.map(function (item, index) {
+              if (item.checked) {
                 let total = item.id;
                 _this.totalAmount.push(total);
               }
             });
-          }else{
+          } else {
             this.totalAmount = [];
-            this.items.forEach(function(item,index){
-              if(item.checked){
+            this.items.forEach(function (item, index) {
+              if (item.checked) {
                 let total = item.id;
                 _this.totalAmount.push(total);
               }
             });
           }
         }
+      },
+      search: function () {
+        this.$api({method: 'searchNormalLog', body: {keyWord: document.getElementById("searchBox")}}).then((res) => {
+          console.log(res)
+        })
       },
       tranferToEvent: function(index){
         console.log(index)
