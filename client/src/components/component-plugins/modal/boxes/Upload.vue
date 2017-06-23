@@ -58,7 +58,7 @@
           contentType: 'multipart/form-data',
           progress(e) {
             if (e.lengthComputable) {
-              _this.progress = e.loaded / e.total  * 100;
+              _this.progress = parseInt(e.loaded / e.total  * 100);
             }
           }
 
