@@ -15,33 +15,38 @@
         <div>原始日志</div>
         <div>事件日志</div>
       </div>
-      <div class="list" v-for="(item,index) in items">
+      <div class="list" v-for="(item, index) in items">
         <div><input type="checkbox" v-model="checked" :value="item.id" @click="currClick(item,index)">
           <span style="cursor:pointer">
             {{`${item.normalLog.logName}.${item.normalLog.format}`}}</span></div>
         <div>
-          <img  style="cursor:pointer" class="process_button" title="生成事件日志"
-                  v-on:click="transferToEvent(index)"
-                  src="static/img/process_color.png">
-          <img @click="download(index)"  style="cursor:pointer"
+          <img style="cursor:pointer" class="process_button" title="生成事件日志"
+               v-on:click="transferToEvent(index)"
+               src="static/img/process_color.png">
+          <img @click="download(index)" style="cursor:pointer"
                class="download_button" title="下载" src="static/img/download_color.png">
-          <img @click="share(index)"  style="cursor:pointer"
+          <img @click="share(index)" style="cursor:pointer"
                class="share_button" title="分享" src="static/img/share_color.png">
-          <img @click="deleteLog(index)"  style="cursor:pointer"
+          <img @click="deleteLog(index)" style="cursor:pointer"
                class="delete_button" title="删除" src="static/img/delete_color.png">
         </div>
         <div>{{new Date(item.normalLog.createDate).toString()}}</div>
         <div><a href="">
           {{item.rawLog ? `${item.rawLog.logName}.${item.rawLog.format}` : '无'}}</a></div>
         <div><a href="">
-          {{item.eventLog ? `${item.eventLog.logName}.${item.eventLog.format}` : '无'}}</a></div>
+          {{item.eventLog ? `${item.eventLog.logName}.${item.eventLog.format}` : '无'}}</a>
+        </div>
+        <div>
           <img class="download_button" title="下载" src="static/img/download_color.png">
-          <img class="share_button" title="分享" src="static/img/share_color.png"></div>
+          <img class="share_button" title="分享" src="static/img/share_color.png">
+        </div>
         <div>{{new Date(item.normalLog.createDate).toString()}}</div>
         <div>{{item.rawLog ? `${item.rawLog.logName}.${item.rawLog.format}` : '无'}}</div>
         <div>{{item.eventLog ? `${item.eventLog.logName}.${item.eventLog.format}` : '无'}}</div>
       </div>
     </div>
+  </div>
+
 </template>
 
 <style lang="less" scoped rel="stylesheet/less">
@@ -86,7 +91,7 @@
     position: relative;
     left: -40px;
     top: 5px;
-    cursor:pointer;
+    cursor: pointer;
   }
 
   .list:hover {
@@ -205,17 +210,17 @@
       },
 
       transferToEvent: function (index) {
-        this.$api({method: 'toEventLog',query: {id:this.items[index].normalLog.id}}).then((res) =>{
-            console.log(res.data)
+        this.$api({method: 'toEventLog', query: {id: this.items[index].normalLog.id}}).then((res) => {
+          console.log(res.data)
 
         })
       },
 
-      download: function(index){
-          this.$api({method: "downLoadNormalLog", query: {id: this.items[index].normalLog.id}}).then((res) => {
-              console.log(res.data)
-            this.createAndDownloadFile('normal_log', res.data)
-          })
+      download: function (index) {
+        this.$api({method: "downLoadNormalLog", query: {id: this.items[index].normalLog.id}}).then((res) => {
+          console.log(res.data)
+          this.createAndDownloadFile('normal_log', res.data)
+        })
       },
       createAndDownloadFile(fileName, content) {
         let aTag = document.createElement('a');
@@ -226,18 +231,21 @@
         URL.revokeObjectURL(blob);
       },
 
-      deleteLog: function(index){
-        this.$api({method: 'deleteNormalLog',options: {body: {idList: [this.items[index].normalLog.id]}}}).then((res) =>{
+      deleteLog: function (index) {
+        this.$api({
+          method: 'deleteNormalLog',
+          options: {body: {idList: [this.items[index].normalLog.id]}}
+        }).then((res) => {
           console.log(res.data)
 
         })
       },
 
       shareSome(){
-        this.$api({method: 'shareEventLog', body: {idList: this.checked}}).then( res => {
-          if(res.data.code === 1){
+        this.$api({method: 'shareEventLog', body: {idList: this.checked}}).then(res => {
+          if (res.data.code === 1) {
             this.$hint('分享成功', 'success')
-          }else {
+          } else {
             this.$hint('分享失败', 'warn')
           }
 
@@ -245,7 +253,7 @@
       },
 
       share(index){
-        if(this.items[index].eventLog.isShared === 0) {
+        if (this.items[index].eventLog.isShared === 0) {
           this.$api({method: 'shareEventLog', body: {idList: [this.items[index].eventLog.id]}}).then(res => {
             if (res.data.code === 1) {
               this.$hint('分享成功', 'success')
@@ -253,7 +261,7 @@
               this.$hint('分享失败', 'warn')
             }
           })
-        }else{
+        } else {
           this.$api({method: 'unShareEventLog', body: {idList: [this.items[index].eventLog.id]}}).then(res => {
             if (res.data.code === 1) {
               this.$hint('取消分享成功', 'success')
@@ -264,10 +272,10 @@
         }
       },
 
-      search: function(){
-          this.$api({method: 'searchNormalLog',query:{keyWord:keyWord}}).then((res)=>{
-              console.log(res)
-          })
+      search: function () {
+        this.$api({method: 'searchNormalLog', query: {keyWord: keyWord}}).then((res) => {
+          console.log(res)
+        })
       }
     },
     watch: {
