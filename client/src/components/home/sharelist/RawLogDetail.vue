@@ -22,6 +22,9 @@
   .raw-log{
     padding-top: 20px;
   }
+  .download_button{
+    cursor:pointer;
+  }
   .head-2{
     display: flex;
     flex-direction: row;
