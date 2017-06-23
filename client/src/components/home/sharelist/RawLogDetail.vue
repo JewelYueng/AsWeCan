@@ -34,13 +34,15 @@
     font-size: 20px;
   }
   .search{
-    background-color: @tab_separator;
-    color: @main_font_color;
+    margin-left: 400px;
+    background-color: @light_theme;
+    color: @dark_theme;
     text-align: center;
     width: @search_width;
     height: @search_height;
     border-radius: @search_border-radius;
-    border: 1px solid @tab_color;
+    border: 1px solid @dark_theme;
+    outline-style: none;
   }
   #search_button{
     width: 20px;

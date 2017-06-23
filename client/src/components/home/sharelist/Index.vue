@@ -51,10 +51,10 @@
 </style>
 
 <script>
-  import {mapActions} from 'vuex'
-  import EventLog from './EventLogDetail.vue'
-  import RawLog from './RawLogDetail.vue'
-  import NormalLog from './NormalLogDetail.vue'
+//  import {mapActions} from 'vuex'
+//  import EventLog from './EventLogDetail.vue'
+//  import RawLog from './RawLogDetail.vue'
+//  import NormalLog from './NormalLogDetail.vue'
   export default{
     data(){
       return {
@@ -73,9 +73,9 @@
           }
         ],
         view_dict: {
-          raw: RawLog,
-          normal: NormalLog,
-          event: EventLog
+//          raw: RawLog,
+//          normal: NormalLog,
+//          event: EventLog
         },
         selected_tab: 0
       }
@@ -86,16 +86,16 @@
       }
     },
     methods: {
-      ...mapActions(['jumpView']),
+//      ...mapActions(['jumpView']),
       jumpTo(index){
         this.selected_tab = index
         this.jumpView(this.tab_map[index].path)
       }
     },
     components: {
-      EventLog,
-      RawLog,
-      NormalLog
+//      EventLog,
+//      RawLog,
+//      NormalLog
     }
   }
 </script>
