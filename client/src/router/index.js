@@ -5,6 +5,8 @@ import FilesManager from "components/home/FilesManager"
 import LogMerge from "components/home/Merge"
 import MergeResult from "components/home/MergeResult"
 import ProcessMining from "components/home/ProcessMining"
+import Login from "components/login/index"
+import Register from "components/register/index"
 
 
 Vue.use(Router)
@@ -20,6 +22,16 @@ export default new Router({
       path: "/",
       name: "files",
       component: FilesManager
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: Login
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: Register
     },
     {
       path: "/merge",
@@ -41,6 +53,6 @@ export default new Router({
       name: "miningResult",
       component: ProcessMining
     }
-  
+
   ]
 })
