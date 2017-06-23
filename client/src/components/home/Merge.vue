@@ -249,7 +249,8 @@
         }
       },
       merge:function () {
-        this.jumpView('/home/mergeresult')
+//        this.jumpView('/home/mergeresult')
+        this.$router.push({name: 'mergeResult'})
       }
 
     }

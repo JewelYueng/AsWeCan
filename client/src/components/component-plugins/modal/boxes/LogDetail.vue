@@ -1,9 +1,9 @@
 <template>
   <div class="form-data">
     <el-table :data="eventData">
-      <el-table-column prop="name" label="名称" width="180">
+      <el-table-column  class="form-item" prop="name" label="名称" width="180">
       </el-table-column>
-      <el-table-column prop="value" label="项值" width="180">
+      <el-table-column class="form-item"  prop="value" label="项值" width="180">
       </el-table-column>
     </el-table>
     <el-button type="primary" @click="back" class="back-btn">返回</el-button>
@@ -15,10 +15,18 @@
     text-align: left;
     padding: 30px;
     background-color: whitesmoke;
+    max-height: 500px;
+    overflow: auto;
+  }
+  .form-item{
+    max-height: 100px;
+    overflow: auto;
+    /*text-overflow:ellipsis;*/
   }
   .back-btn{
     margin: 20px auto 0 auto;
     display: block;
+
   }
 </style>
 

@@ -1,23 +1,24 @@
 <template>
   <div class="left-side">
-    <div id="logo-box">
-      <img src="static/img/logo.png" alt="Logo">
-    </div>
-    <div id="username" @click='modifyInfo'>
-      {{username}}
-    </div>
-    <div class="tabs">
-      <div class="tab" v-for="(tab,index) in tab_map" @click="jumpTo(index)" :class="{selectedTab: selected_tab===index}" >
-        <div class="text">
-          <div class="decoration">-</div>
-          {{tab_map[index].name}}
-          <div class="decoration">-</div>
-        </div>
-      </div>
-    </div>
-    <div id="logout">
-      <a href="">退出</a>
-    </div>
+    <!--<div id="logo-box">-->
+      <!--<img src="static/img/logo.png" alt="Logo">-->
+    <!--</div>-->
+    <!--<div id="username" @click='modifyInfo'>-->
+      <!--{{username}}-->
+    <!--</div>-->
+    <!--<div class="tabs">-->
+      <!--<div class="tab" v-for="(tab,index) in tab_map" @click="jumpTo(index)" :class="{selectedTab: selected_tab===index}" >-->
+        <!--<div class="text">-->
+          <!--<div class="decoration">-</div>-->
+          <!--{{tab_map[index].name}}-->
+          <!--<div class="decoration">-</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div id="logout">-->
+      <!--<a href="">退出</a>-->
+    <!--</div>-->
+
   </div>
 </template>
 
@@ -27,10 +28,9 @@
   @import "~assets/layout.less";
 
   .left-side {
-    background-color: @main_green;
+    background-color: @light_theme;
     width: @left_side_width;
     height: @main_height;
-    padding: 50px 0;
     box-sizing: border-box;
   }
 

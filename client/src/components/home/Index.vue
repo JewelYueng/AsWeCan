@@ -1,25 +1,40 @@
 <template>
   <div id="home">
-    <LeftSide ></LeftSide>
-    <div id="right-window">
-      <component :is="current_view"></component>
+    <div class="header">
+      <div class="logo">
+        <img src="static/img/logo.png" alt="K2" title="K2流程挖掘平台">
+      </div>
+      <el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>
+        <el-menu-item index="/">日志文件管理</el-menu-item>
+        <el-menu-item index="/merge">日志融合</el-menu-item>
+        <el-menu-item index="/mining">流程挖掘</el-menu-item>
+      </el-menu>
     </div>
+    <router-view></router-view>
   </div>
 </template>
 
 <style rel="stylesheet/less" lang="less" scoped>
   @import "~assets/layout.less";
-  #home{
+  @import "~assets/colors.less";
+
+  .header {
+    background-color: @dark_theme;
+    width: 100%;
+    box-sizing: border-box;
     display: flex;
     flex-direction: row;
   }
-  #right-window{
-    width: @right_side_width;
-    height: @main_height - 30px;
-    box-sizing: border-box;
-    padding: 30px 30px 0 30px;
-    overflow: auto;
+
+  .logo {
+    padding: 4px;
+    width: @left_side_width;
+    img {
+      width: 60px;
+    }
   }
+
+
 </style>
 
 <script>
@@ -35,8 +50,9 @@
     data(){
       return {
         msg: 'leftSide',
+        activeIndex: '/',
         view_dict: {
-        	loglist: LogList,
+          loglist: LogList,
           sharelist: ShareList,
           merge: LogMerge,
           mining: ProcessMining,
@@ -53,8 +69,8 @@
       MergeResult
     },
     computed: {
-    	current_view() {
-    		return this.view_dict[this.$store.getters.view_level1 || 'loglist']
+      current_view() {
+        return this.view_dict[this.$store.getters.view_level1 || 'loglist']
       }
     }
   }
