@@ -1,6 +1,9 @@
 <template>
   <div class="raw-log">
-    <input type="text" class="search" placeholder="请输入关键字" ref="input1"><img id="search_button" src="static/img/search.png" @click="search()">
+    <div class="head"><input type="text" class="search" placeholder="请输入关键字" v-model="keyWord">
+    <div v-show="isSearching" class="img-button close-btn" @click="close_search">
+      <i class="el-icon-circle-cross"></i>
+    </div><img id="search_button" src="static/img/search.png" @click="search()"></div>
     <div class="head-2"><span>全部文件，共{{amount}}个</span><span>关联文件</span></div>
     <div id="log-list">
       <div class="list"><div><input type="checkbox" v-model="checkAll" id="文件名" value="文件名">
@@ -8,7 +11,9 @@
       <div class="list" v-for="(item,index) in items">
         <div><input type="checkbox" v-model="checked" :value="item.rawLog.id"  @click="currClick(item,index)">
           <span>{{`${item.rawLog.logName}.${item.rawLog.format}`}}</span></div>
-        <div>{{item.user.name}}</div><div>{{new Date(item.rawLog.createDate).toString()}}</div>
+        <div>{{item.user.name}}</div><div>
+        {{`${new Date(item.rawLog.createDate).getFullYear()}-${new Date(item.rawLog.createDate).getMonth() + 1}-${new Date(item.rawLog.createDate).getDate()}`}}
+      </div>
         <div>{{item.normalLog ? `${item.normalLog.logName}.${item.normalLog.format}` : '无'}}</div><div>{{item.eventLog ? `${item.eventLog.logName}.${item.eventLog.format}` : '无'}}</div>
         <img class="download_button" title="下载" src="static/img/download_color.png" @click="download(index)">
       </div>
@@ -19,11 +24,31 @@
 <style lang="less" scoped rel="stylesheet/less">
   @import '~assets/colors.less';
   @import "~assets/layout.less";
+
+  .img-button {
+    cursor: pointer;
+  }
+  .close-btn {
+    position: absolute;
+    right: 70px;
+    top: 4px;
+    i {
+      color: #5c8aac;
+    }
+  }
+
   .raw-log{
     padding-top: 20px;
   }
   .download_button{
     cursor:pointer;
+  }
+
+  .head {
+    position:relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
   }
   .head-2{
     display: flex;
@@ -97,27 +122,10 @@
       return {
         checked:[],
         totalAmount:[],
-        items:[],
-        /*  checkAll:false,*/
-        /* amount: 0,*/
-//        items:[
-//          {
-//            id:1,
-//            log_name:'first-log',
-//            create_date:'2017-1-1',
-//            normalLog_name:'first-normal-log',
-//            eventLog_name:'first-event-log',
-//            creater:'jack'
-//          },
-//          {
-//            id:2,
-//            log_name:'second-log',
-//            create_date:'2017-2-1',
-//            normalLog_name:'second-normal-log',
-//            eventLog_name:'second-event-log',
-//            creater:'rose'
-//          }
-//        ]
+        isSearching: false,
+        items: [],
+        keyWord: ''
+
       }
     },
     created(){
@@ -178,14 +186,30 @@
         URL.revokeObjectURL(blob);
       },
       search:function () {
-        console.log(this.$refs.input1.value);
-        this.$api({method: 'searchShareRawLog', query: {keyWord:this.$refs.input1.value}}).then((res)=>{
-          this.items=[];
-          res.data.logGroups.map((log)=>{
-            this.items.push(log);
-          })
+        this.$api({method: 'searchShareRawLog', query: {keyWord: this.keyWord}}).then(res => {
+          console.log(res)
+          this.items = res.data.logGroups
+          this.isSearching = true
         })
       },
+
+      close_search(){
+        this.isSearching = false
+        this.items = this.getTotalItems()
+        this.keyWord = ''
+      },
+
+      getTotalItems(){
+        let totalItems = []
+        this.$api({method: 'getShareRawLog'}).then((res) => {
+          console.log(res)
+          res.data.logGroups.map((log) => {
+            totalItems.push(log)
+          })
+        })
+        return totalItems
+      },
+
       currClick:function(item,index){
         var _this = this;
         if(typeof item.checked == 'undefined'){

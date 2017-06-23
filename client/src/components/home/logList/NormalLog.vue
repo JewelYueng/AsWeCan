@@ -4,8 +4,11 @@
       <a style="cursor:pointer" class="button" @click="upload"><img src="static/img/upload.png">上传</a>
       <a style="cursor:pointer" class="button" @click="shareSome"><img src="static/img/share_white.png">分享</a>
       <a style="cursor:pointer" class="button" @click="deleteSome"><img src="static/img/Delete.png" style="padding-top: 2px">删除</a>
-      <input type="text" id="searchBox" placeholder="请输入关键字">
-      <img id="search_button" src="static/img/search.png" @click="search">
+      <input type="text" id="searchBox" placeholder="请输入关键字"  v-model="keyWord">
+      <div v-show="isSearching" class="img-button close-btn" @click="close_search">
+        <i class="el-icon-circle-cross"></i>
+      </div>
+      <img id="search_button" src="static/img/search.png" @click="search" >
     </div>
     <div class="head-2"><span>全部文件，共{{amount}}个</span><span>关联文件</span></div>
     <div id="log-list">
@@ -51,6 +54,17 @@
   @import '~assets/colors.less';
   @import "~assets/layout.less";
 
+  .img-button {
+    cursor: pointer;
+  }
+  .close-btn {
+    position: absolute;
+    right: 70px;
+    top: 4px;
+    i {
+      color: #5c8aac;
+    }
+  }
   .normal-log {
     padding-top: 20px;
   }
@@ -59,6 +73,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    position: relative;
   }
 
   .head-2 {
@@ -141,7 +156,9 @@
         totalAmount: [],
         /*  checkAll:false,*/
         /* amount: 0,*/
-        items: []
+        items: [],
+        isSearching: false,
+        keyWord: ''
       }
     },
     created(){
@@ -307,9 +324,26 @@
       },
 
       search: function () {
-        this.$api({method: 'searchNormalLog', body: {keyWord: document.getElementById("searchBox")}}).then((res) => {
+        this.$api({method: 'searchNormalLog', query: {keyWord: this.keyWord}}).then(res => {
           console.log(res)
+          this.items = res.data.logGroups
+          this.isSearching = true
         })
+      },
+      close_search(){
+        this.isSearching = false
+        this.items = this.getTotalItems()
+        this.keyWord = ''
+      },
+      getTotalItems(){
+        let totalItems = []
+        this.$api({method: 'getNormalLog'}).then((res) => {
+          console.log(res)
+          res.data.logGroups.map((log) => {
+            totalItems.push(log)
+          })
+        })
+        return totalItems
       }
     },
     watch: {
