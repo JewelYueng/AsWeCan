@@ -12,7 +12,9 @@
              <span>{{item.log_name}}</span></div>
         <div>{{item.creater}}</div><div>{{item.create_date}}</div><div>{{item.rawLog_name}}</div>
         <div>{{item.normalLog_name}}</div><div>{{item.mergeSource}}</div>
+        <div @clcik="download(index)">
         <img class="download_button" title="下载" src="static/img/download_color.png">
+        </div>
       </div>
     </div>
   </div>
@@ -96,39 +98,22 @@
         totalAmount:[],
         /*  checkAll:false,*/
         /* amount: 0,*/
-        items:[
-          {
-            id:1,
-            creater: '李四',
-            log_name:'first-log',
-            create_date:'2017-1-1',
-            rawLog_name:'first-raw-log',
-            normalLog_name:'first-normal-log',
-            mergeSource:'无'
-          },
-          {
-            id:2,
-            creater: '张三',
-            log_name:'second-log',
-            create_date:'2017-2-1',
-            rawLog_name:'second-raw-log',
-            normalLog_name:'second-normal-log',
-            mergeSource:'无'
-          }
-        ]
+        items:[]
       }
+    },
+    created(){
+
     },
     computed:{
       amount:function(item,index){
-        let sum = this.totalAmount.length;
-        return sum;
+        return this.totalAmount.length;
       },
       checkAll: {
         get: function() {
-          return this.checkedCount == this.items.length;
+          return this.checkedCount === this.items.length;
         },
         set: function(value){
-          var _this = this;
+          let _this = this;
           if (value) {
             this.totalAmount = [];
             this.checked = this.items.map(function(item) {
@@ -153,9 +138,23 @@
       }
     },
     methods:{
+      download(index){
+        this.$api({method: 'downLoadEventLog', query: {id: this.items[index].eventLog.id}}).then((res) => {
+          console.log(res.data)
+          this.createAndDownloadFile(this.items[index].eventLog.logName, res.data)
+        })
+      },
+      createAndDownloadFile(fileName, content) {
+        let aTag = document.createElement('a');
+        let blob = new Blob([content]);
+        aTag.download = fileName;
+        aTag.href = URL.createObjectURL(blob);
+        aTag.click();
+        URL.revokeObjectURL(blob);
+      },
       currClick:function(item,index){
-        var _this = this;
-        if(typeof item.checked == 'undefined'){
+        let _this = this;
+        if(typeof item.checked === 'undefined'){
           this.$set(item,'checked',true);
           let total = item.id;
           this.totalAmount.push(total);
@@ -180,9 +179,6 @@
             });
           }
         }
-      },
-      tranferToEvent: function(index){
-        console.log(index)
       }
     },
     watch:{
