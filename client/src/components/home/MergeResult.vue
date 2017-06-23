@@ -132,6 +132,10 @@
         }
       }
     },
+    created(){
+      console.log(this.$route.params.log)
+      this.result = this.$route.params.log
+    },
     methods: {
       ...mapActions(['jumpView']),
       backToMerge: function(){

@@ -12,7 +12,7 @@ export default {
   __base_url__: base_url,
 // 日志文件管理
   // 原始日志
-  "searchShareRawLog":[GET,"/rawLog/search"],
+  "searchShareRawLog":[GET,"/rawLog/sharedLogs/search"],
   "searchRawLog": [GET, "/rawLog/search"],
   "getShareRawLog": [GET, "/rawLog/sharedLogs"],
   "getRawLog": [GET, "/rawLog"],
@@ -23,6 +23,7 @@ export default {
   "deleteRawLog": [DELETE, "/rawLog/delete"],
   // 规范化日志
   "searchNormalLog": [GET, "/normalLog/search"],
+  "searchSharedNormalLog": [GET, '/normalLog/sharedLogs/search'],
   "getShareNormalLog": [GET, "/normalLog/sharedLogs"],
   "getNormalLog": [GET, "/normalLog"],
   "shareNormalLog": [POST, "/normalLog/share"],
@@ -32,6 +33,7 @@ export default {
   "deleteNormalLog": [DELETE, "/normalLog/delete"],
   // 事件日志
   "searchEventLog": [GET, "/eventLog/search"],
+  "searchSharedEventLog": [GET, '/eventLog/sharedLogs/search'],
   "getShareEventLog": [GET, "/eventLog/sharedLogs"],
   "getEventLog": [GET, "/eventLog"],
   "shareEventLog": [POST, "/eventLog/share"],

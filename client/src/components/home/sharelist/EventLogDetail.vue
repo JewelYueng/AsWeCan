@@ -1,13 +1,21 @@
 <template>
   <div class="event-log">
-    <input type="text" class="search" placeholder="请输入关键字"><img id="search_button" src="static/img/search.png">
     <div class="head">
+      <input type="text" class="search" placeholder="请输入关键字" v-model="keyWord">
+      <div v-show="isSearching" class="img-button close-btn" @click="close_search">
+        <i class="el-icon-circle-cross"></i>
+      </div>
+      <img id="search_button" src="static/img/search.png" @click="searchLog">
+    </div>
+    <div class="title">
       <span>全部文件，共{{amount}}个</span>
       <span>关联文件</span>
     </div>
     <div id="log-list">
       <div class="list">
-        <div><input type="checkbox" v-model="checkAll" id="文件名" value="文件名"><span>文件名</span></div>
+        <div>
+          <input type="checkbox" v-model="checkAll" id="文件名" value="文件名"><span>文件名</span>
+        </div>
         <div>上传者</div>
         <div>日期</div>
         <div>原始日志</div>
@@ -15,7 +23,8 @@
         <div>融合来源</div>
       </div>
       <div class="list" v-for="(item,index) in items">
-        <div><input type="checkbox" v-model="checked" :value="item.eventLog.id" @click="currClick(item,index)">
+        <div>
+          <input type="checkbox" v-model="checked" :value="item.eventLog.id" @click="currClick(item,index)">
           <span class="img-button" @click="showDetail(index)">{{item.eventLog.logName}}</span>
         </div>
         <div>{{item.eventLog.userId}}</div>
@@ -44,6 +53,15 @@
   .head {
     display: flex;
     flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding-right: 40px;
+  }
+
+  .title {
+    text-align: left;
+    display: flex;
+    flex-direction: row;
     justify-content: space-between;
     margin-left: 20px;
     margin-right: 210px;
@@ -51,7 +69,6 @@
   }
 
   .search {
-    margin-left: 400px;
     background-color: @light_theme;
     color: @dark_theme;
     text-align: center;
@@ -60,14 +77,25 @@
     border-radius: @search_border-radius;
     border: 1px solid @dark_theme;
     outline-style: none;
+
+  }
+
+  .close-btn {
+    position: absolute;
+    right: -134px;
+    top: 120px;
+    i {
+      color: #5c8aac;
+    }
   }
 
   #search_button {
     width: 20px;
     height: 20px;
-    position: absolute;
-    right: 400px;
-    padding-top: 5px;
+    position: relative;
+    right: 28px;
+    top: -5px;
+    cursor: pointer;
   }
 
   .button {
@@ -86,9 +114,10 @@
     }
   }
 
-  .download_button, .img-button{
+  .download_button, .img-button {
     cursor: pointer;
   }
+
   .list:hover {
     background-color: @logList_Choose;
   }
@@ -121,18 +150,13 @@
       return {
         checked: [],
         totalAmount: [],
-        /*  checkAll:false,*/
-        /* amount: 0,*/
+        isSearching: false,
+        keyWord: '',
         items: []
       }
     },
     created(){
-      this.$api({method: 'getShareEventLog'}).then((res) => {
-        console.log(res)
-        res.data.logGroups.map((log) => {
-          this.items.push(log)
-        })
-      })
+      this.items = this.getTotalItems()
     },
     computed: {
       amount: function (item, index) {
@@ -168,6 +192,21 @@
       }
     },
     methods: {
+      searchLog(){
+        this.totalAmount = []
+        this.checkedAll = false
+        this.checked = []
+        this.$api({method: 'searchSharedEventLog', query: {keyWord: this.keyWord}}).then(res => {
+          console.log(res)
+          this.items = res.data.logGroups
+          this.isSearching = true
+        })
+      },
+      close_search(){
+        this.isSearching = false
+        this.items = this.getTotalItems()
+        this.keyWord = ''
+      },
       download(index){
         this.$api({method: 'downLoadEventLog', query: {id: this.items[index].eventLog.id}}).then((res) => {
           console.log(res.data)
@@ -187,6 +226,16 @@
         aTag.href = URL.createObjectURL(blob);
         aTag.click();
         URL.revokeObjectURL(blob);
+      },
+      getTotalItems(){
+        let totalItems = []
+        this.$api({method: 'getShareEventLog'}).then((res) => {
+          console.log(res)
+          res.data.logGroups.map((log) => {
+            totalItems.push(log)
+          })
+        })
+        return totalItems
       },
       currClick: function (item, index) {
         let _this = this;

@@ -78,13 +78,15 @@
   import LogDetail from './boxes/LogDetail.vue'
   import { register } from './modal'
   import Upload from './boxes/Upload.vue'
+  import ShowLogs from './boxes/ShowLogs.vue'
 
   export default {
     components: {
       Alert,
       NormalInfo,
       LogDetail,
-      Upload
+      Upload,
+      ShowLogs
     },
     data(){
       return {

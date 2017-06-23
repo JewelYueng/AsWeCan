@@ -19,27 +19,37 @@ export default new Router({
     {
       path: "/",
       name: "files",
-      component: FilesManager
+      components: {
+        home: FilesManager
+      }
     },
     {
       path: "/merge",
       name: "merge",
-      component: LogMerge
+      components: {
+        home: LogMerge
+      }
     },
     {
       path: "/mergeResult",
       name: "mergeResult",
-      component: MergeResult
+      components: {
+        home: MergeResult
+      }
     },
     {
       path: "/mining",
       name: "mining",
-      component: ProcessMining
+      components: {
+        home: ProcessMining
+      }
     },
     {
       path: "/miningResult",
       name: "miningResult",
-      component: ProcessMining
+      components: {
+        home: ProcessMining
+      }
     }
   
   ]
