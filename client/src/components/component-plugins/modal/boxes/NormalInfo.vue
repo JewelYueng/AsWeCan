@@ -60,7 +60,7 @@
     </div>
     </template>
     <div style="position:absolute;bottom: 15px;margin: auto;right: 0;left: 0;">
-    <el-button type="primary" style="width: 80px;margin-top: 30px">规范化</el-button>
+    <el-button type="primary" style="width: 80px;margin-top: 30px" @click="Normalizing()">规范化</el-button>
     <el-button type="primary" @click="back" style="width: 80px;margin-top: 30px">取消</el-button></div>
 
   </div>
@@ -125,6 +125,45 @@
 
     },
     methods: {
+      Normalizing(){
+      this.$api({method:'normalize',body:{"rawLogId" : "a77b05d7-298d-45dd-bf15-4d3c756ab02c",
+        "formats" :
+          [
+            {"dataItem":"[QC]",
+              "placeholder":"ABCD",
+              "identifyItem":"[Method]",
+              "oriFormat":
+                {
+                  "Incident":"A-B-C-D",
+                  "Plan":"C/B/ATD",
+                  "Task":"A/B/CTD",
+                  "DEFAULT":"A-B-CTD"
+                },
+              "goalFormat":"A-BCTD"},
+          ],
+        "timeNames":"[QC]",
+        "renameOrMergeItems" :
+          {
+            "EventName":["[Method]", "[Status]"],
+            "FKPlanID":["[FKPlanID]"],
+            "PKIncidentId":["[PKIncidentId]"],
+            "PKTaskID":["[PKTaskID]"],
+            "PKPlanID":["[PKPlanID]"],
+            "FKIncidentID":["[FKIncidentID]"]
+          },
+        "oriItemSeparator":"\t",
+        "oriNameValSeparator":" ",
+        "oriNulVal":""}}).then((res)=>{
+        console.log(res);
+        if(res.data.code===1){
+          this.$hint('规范化成功', 'success');
+        }
+        else{
+          this.$hint('规范化失败', 'warn');
+        }
+
+      })
+      },
       handleSelect(key, keyPath) {
         this.selectedTab= parseInt(key)
       },
