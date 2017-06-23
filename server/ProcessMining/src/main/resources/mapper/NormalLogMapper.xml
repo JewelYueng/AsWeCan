@@ -44,6 +44,12 @@
         </include>
     </update>
 
+    <update id="updateIsShared">
+        <include refid="org.k2.processmining.mapper.RawLogMapper.updateIsSharedSQL">
+            <property name="table" value="normal_log"/>
+        </include>
+    </update>
+
     <insert id="save" parameterType="NormalLog">
         INSERT INTO normal_log(id,log_name,create_date,userid,format, isshared, state, raw_log_id)
         VALUES(#{id}, #{logName}, #{createDate}, #{userId}, #{format}, #{isShared}, #{state}, #{rawLogId})

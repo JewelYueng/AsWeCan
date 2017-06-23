@@ -120,10 +120,10 @@ public class NormalLogController {
     public void download(@RequestParam("id") String id, HttpServletResponse response) {
         NormalLog normalLog = normalLogService.getNormalLogById(id);
         User user = getUser();
-        if (!Util.isActiveAndBelongTo(normalLog, user) || !Util.isActiveAndShared(normalLog)) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
+//        if (!Util.isActiveAndBelongTo(normalLog, user) || !Util.isActiveAndShared(normalLog)) {
+//            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//            return;
+//        }
         String fileName = normalLog.getLogName();
         response.setHeader("Content-Disposition", "attachment;filename=" + Util.encodeForURL(fileName));
         try (OutputStream outputStream = response.getOutputStream()) {

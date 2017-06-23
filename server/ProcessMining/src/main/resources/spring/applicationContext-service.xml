@@ -15,9 +15,12 @@
 		http://www.springframework.org/schema/tx
 		http://www.springframework.org/schema/tx/spring-tx-4.3.xsd ">
 
-    <!--扫描标注@Service注解的service-->
-    <!--<context:component-scan base-package="org.k2.processmining.service">-->
-        <!--<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>-->
-    <!--</context:component-scan>-->
-    <!--<aop:aspectj-autoproxy proxy-target-class="true"/>-->
+
+    <context:property-placeholder location="classpath*:algorithm.properties" order="0" ignore-unresolvable="true"/>
+    <!--扫描标注除Controller外的所有注解-->
+    <context:component-scan base-package="org.k2.processmining">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
 </beans>

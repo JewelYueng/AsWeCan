@@ -3,9 +3,11 @@ package org.k2.processmining.controller;
 import org.k2.processmining.model.testPojo;
 import org.k2.processmining.security.MyUserDetails;
 import org.k2.processmining.service.MyTestService;
+import org.k2.processmining.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,7 +50,7 @@ public class TestController {
             return;
         }
         try {
-         request.getRequestDispatcher("/html/admin.html").forward(request,response);
+         request.getRequestDispatcher("/html/login.html").forward(request,response);
         } catch (ServletException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -57,19 +59,27 @@ public class TestController {
     }
 
     @RequestMapping(value={"/welcome","/"},method=RequestMethod.GET)
-    public String welcome(){
+    public String welcome(HttpServletRequest request,HttpServletResponse response){
+
+        try {
+            request.getRequestDispatcher("/html/home.html").forward(request,response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return "index";
     }
 
 
     @RequestMapping(value = "/myHome")
-    public String home(HttpServletRequest request, HttpServletResponse response, Model model){
+    public String home(HttpServletRequest request, HttpServletResponse response){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserDetails){
+        if (principal instanceof MyUserDetails){
             String name = ((UserDetails)principal).getUsername();
             System.out.println(name);
-        }else {
-            System.out.println("none");
+        }else if (principal instanceof UserDetails){
+            System.out.println("userDetails");
         }
         return "login";
     }

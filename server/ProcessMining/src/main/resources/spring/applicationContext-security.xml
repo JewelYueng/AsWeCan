@@ -9,22 +9,25 @@
 
     <security:http pattern="/loginPage" security="none"/>
     <security:http pattern="/js/**" security="none"/>
+    <security:http pattern="/home/login" security="none"/>
+    <security:http pattern="/html/login.html" security="none"/>
 
     <security:http>
-        <security:intercept-url pattern="/**" access="permitAll"/>
-        <security:form-login login-page="/loginPage" login-processing-url="/login" always-use-default-target="true"
-                             default-target-url="/welcome" authentication-failure-url="/loginPage?error=error"/>
+        <security:intercept-url pattern="/**" access="hasRole('ROLE_USER,ROLE_ADMIN')"/>
+        <security:form-login login-page="/home/login" login-processing-url="/login" always-use-default-target="true"
+                             default-target-url="/home" authentication-failure-url="/loginPage?error=error"/>
         <security:csrf disabled="true"/>
     </security:http>
-
-
 
     <security:authentication-manager>
         <security:authentication-provider user-service-ref="myUserDetailsService">
         </security:authentication-provider>
     </security:authentication-manager>
 
+
     <bean id="myUserDetailsService" class="org.k2.processmining.security.MyUserDetailService"/>
+
+    <bean id="adminDetailService" class="org.k2.processmining.security.AdminDetailService"/>
 
 </beans>
 
