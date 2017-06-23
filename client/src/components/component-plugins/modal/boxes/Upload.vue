@@ -15,6 +15,7 @@
       <el-button type="primary" v-on:click="upload">上传</el-button>
       <el-button v-on:click="cancel">取消</el-button>
     </div>
+    <el-progress :percentage="progress" v-show="progress !== 0"></el-progress>
   </div>
 </template>
 
@@ -30,7 +31,7 @@
 
 <script>
   import BaseBox from './BaseBox'
-  const base_url = 'http://192.168.0.104:8080'
+  const base_url = 'http://192.168.0.101:8080'
   const type_map = {
     'raw': base_url + '/rawLog/upload',
     'normal': base_url + '/normalLog/upload',
@@ -41,6 +42,7 @@
       return {
         share_status: false,
         file: new FormData(),
+        progress: 0
       }
     },
     mixins: [BaseBox],
@@ -51,8 +53,15 @@
         file_info.append('file', this.$refs.file.files[0])
         file_info.append('format', this.$refs.file.files[0].name.split('.').pop())
         console.log(file_info.get('format'))
+        const _this = this
         this.$http.post(type_map[this.data.type], file_info, {
-          contentType: 'multipart/form-data'
+          contentType: 'multipart/form-data',
+          progress(e) {
+            if (e.lengthComputable) {
+              _this.progress = e.loaded / e.total  * 100;
+            }
+          }
+
         }).then(res => {
           console.log('success', res)
           if (res.body.code === 1){
