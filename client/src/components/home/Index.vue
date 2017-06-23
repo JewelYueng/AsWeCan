@@ -10,7 +10,7 @@
         <el-menu-item index="/mining">流程挖掘</el-menu-item>
       </el-menu>
     </div>
-    <router-view></router-view>
+    <router-view name="home"></router-view>
   </div>
 </template>
 

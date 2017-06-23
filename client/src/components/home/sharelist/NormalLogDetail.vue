@@ -15,7 +15,7 @@
         </div>
         <div>{{item.rawLog ? item.rawLog.logName: '无'}}</div>
         <div>{{item.eventLog ?item.eventLog.logName : '无'}}</div>
-        <img class="download_button" title="下载" src="static/img/download_color.png">
+        <img class="download_button" title="下载" src="static/img/download_color.png"  @click="download(index)">
       </div>
     </div>
   </div>
@@ -36,13 +36,14 @@
     font-size: 20px;
   }
   #searchBox{
-    background-color: @tab_separator;
-    color: @main_font_color;
+    background-color: @light_theme;
+    color: @dark_theme;
     text-align: center;
     width: @search_width;
     height: @search_height;
     border-radius: @search_border-radius;
-    border: 1px solid @tab_color;
+    border: 1px solid @dark_theme;
+    outline-style: none;
   }
   #search_button{
     width: 20px;
@@ -97,9 +98,9 @@
       return {
         checked:[],
         totalAmount:[],
-        /*  checkAll:false,*/
-        /* amount: 0,*/
-        items:[]
+        items: [],
+        isSearching: false,
+        keyWord: ''
       }
     },
     created(){
@@ -144,6 +145,8 @@
       }
     },
     methods:{
+
+
       currClick: function (item, index) {
         const _this = this;
         if (typeof item.checked === 'undefined') {
@@ -173,12 +176,46 @@
         }
       },
       search: function () {
-        this.$api({method: 'searchNormalLog', body: {keyWord: document.getElementById("searchBox")}}).then((res) => {
+        this.totalAmount=[]
+        this.checkedAll=false
+        this.checked=[]
+        this.$api({method: 'searchNormalLog', body: {keyWord: this.keyWord}}).then((res) => {
           console.log(res)
+          this.items = res.data.logGroups
+          this.isSearching = true
         })
+      },
+      close_search(){
+        this.isSearching = false
+        this.items = this.getTotalItems()
+        this.keyWord = ''
+      },
+      getTotalItems(){
+        let totalItems = []
+        this.$api({method: 'getShareNormalLog'}).then((res) => {
+          console.log(res)
+          res.data.logGroups.map((log) => {
+            totalItems.push(log)
+          })
+        })
+        return totalItems
       },
       tranferToEvent: function(index){
         console.log(index)
+      },
+      download(index){
+        this.$api({method: 'downLoadNormalLog', query: {id: this.items[index].normalLog.id}}).then((res) => {
+          console.log(res.data)
+          this.createAndDownloadFile(this.items[index].normalLog.logName, res.data)
+        })
+      },
+      createAndDownloadFile(fileName, content) {
+        let aTag = document.createElement('a');
+        let blob = new Blob([content]);
+        aTag.download = fileName;
+        aTag.href = URL.createObjectURL(blob);
+        aTag.click();
+        URL.revokeObjectURL(blob);
       }
     },
     watch:{

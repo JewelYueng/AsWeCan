@@ -7,7 +7,11 @@
       <a class="btn bgbtn02 btn_share btn_common img-button" @click="shareSome()">
         <img src="static/img/share_white.png"/>分享
       </a>
-      <input type="text" class='search' placeholder='请输入关键字'><img id="search_button" src="static/img/search.png">
+      <input type="text" class='search' placeholder='请输入关键字' v-model="keyWord">
+      <div v-show="isSearching" class="img-button close-btn" @click="close_search">
+        <i class="el-icon-circle-cross"></i>
+      </div>
+      <img id="search_button" src="static/img/search.png" @click="searchLog">
     </div>
     <div class='title'>
       <span class='title_left'>全部文件，共{{amount}}个</span>
@@ -29,14 +33,16 @@
           <span @click="showDetail(index)"
                 class="log-name">{{item.eventLog.logName}}</span>
         </div>
-        <div><img class="process_button img-button" title="开始流程挖掘" v-on:click="processMining(index)"
-                  src="static/img/process_color.png">
+        <div>
+          <img class="process_button img-button" title="开始流程挖掘" v-on:click="processMining(index)"
+               src="static/img/process_color.png">
           <img class="download_button img-button" title="下载" src="static/img/download_color.png"
                @click="download(index)">
           <img class="share_button img-button" title="分享"
                :src="item.eventLog.isShared === 0 ? 'static/img/share_color.png' : 'static/img/forbidden_color.png'"
                @click="share(index)">
-          <img class="share_button img-button" src="static/img/Delete_color.png" alt="删除" title="删除" @click="deleteLog(index)">
+          <img class="share_button img-button" src="static/img/Delete_color.png" alt="删除" title="删除"
+               @click="deleteLog(index)">
         </div>
         <div>
           {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()}`}}
@@ -58,6 +64,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    position: relative;
   }
 
   .event-log-details {
@@ -66,14 +73,25 @@
 
   .search {
     margin-left: 400px;
-    background-color: @tab_separator;
-    color: @main_font_color;
-    text-align: center;
+    background-color: @light_theme;
+    color: @dark_theme;
+    text-align: left;
+    padding-left: 7px;
+    line-height: @search_height;
     width: @search_width;
     height: @search_height;
     border-radius: @search_border-radius;
-    border: 1px solid @tab_color;
+    border: 1px solid @dark_theme;
     outline-style: none;
+  }
+
+  .close-btn {
+    position: absolute;
+    right: 70px;
+    top: 4px;
+    i {
+      color: #5c8aac;
+    }
   }
 
   #search_button {
@@ -82,6 +100,7 @@
     position: relative;
     left: -40px;
     top: 5px;
+    cursor: pointer;
   }
 
   .btn_common {
@@ -121,8 +140,8 @@
     margin-right: 10px;
     .list {
       img {
-        width: 30px;
-        height: 30px;
+        width: 20px;
+        height: 20px;
         margin-right: 10px;
       }
       display: flex;
@@ -150,16 +169,13 @@
       return {
         checked: [],
         totalAmount: [],
-        items: []
+        isSearching: false,
+        items: [],
+        keyWord: ''
       }
     },
     created(){
-      this.$api({method: 'getEventLog'}).then((res) => {
-        console.log(res)
-        res.data.logGroups.map((log) => {
-          this.items.push(log)
-        })
-      })
+      this.items = this.getTotalItems()
     },
     computed: {
       amount: function (item, index) {
@@ -195,6 +211,21 @@
       }
     },
     methods: {
+      searchLog(){
+        this.totalAmount=[]
+        this.checkedAll=false
+        this.checked=[]
+        this.$api({method: 'searchEventLog', query: {keyWord: this.keyWord}}).then(res => {
+          console.log(res)
+          this.items = res.data.logGroups
+          this.isSearching = true
+        })
+      },
+      close_search(){
+        this.isSearching = false
+        this.items = this.getTotalItems()
+        this.keyWord = ''
+      },
       upload(){
         this.$modal({type: 'upload', data: {type: 'event'}}).then((res) => {
           console.log(res)
@@ -243,9 +274,16 @@
             this.$hint('删除失败', 'error')
           }
         })
-//        this.$http.delete('http://192.168.0.104:8080/eventLog/delete', {body: {idList: [this.items[index].eventLog.id]}}).then( res => {
-//          console.log(res)
-//        })
+      },
+      getTotalItems(){
+        let totalItems = []
+        this.$api({method: 'getEventLog'}).then((res) => {
+          console.log(res)
+          res.data.logGroups.map((log) => {
+            totalItems.push(log)
+          })
+        })
+        return totalItems
       },
       createAndDownloadFile(fileName, content) {
         let aTag = document.createElement('a');
