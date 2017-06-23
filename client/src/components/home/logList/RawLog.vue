@@ -3,7 +3,12 @@
     <div id="head">
       <a class=" btn bgbtn02 btn_upload btn_common" @click="upload()"><img src="static/img/upload.png"/>上传</a>
       <a class="btn bgbtn02 btn_share btn_common" @click="shareSome()"><img src="static/img/share_white.png"/>分享</a>
-      <input type="text" class='search' placeholder='请输入关键字' ref="input1">
+      <a style="cursor:pointer" class="button" @click="deleteSome"><img src="static/img/Delete.png" style="padding-top: 2px">删除</a>
+
+      <input type="text" class='search' placeholder='请输入关键字' v-model="keyWord">
+      <div v-show="isSearching" class="img-button close-btn" @click="close_search">
+        <i class="el-icon-circle-cross"></i>
+      </div>
       <img id="search_button"
            src="static/img/search.png"
            @click="searchRawLog()">
@@ -32,9 +37,9 @@
           <img class="share_button" title="分享" src="static/img/share_color.png" @click="share(index)">
           <img class="delete_button" title="删除" src="static/img/Delete_color.png" @click="deleteRawLog(index)">
         </div>
-        <div>{{new Date(item.rawLog.createDate).toString()}}</div>
-        <div>{{item.normalLog ? `${item.normalLog.logName}.${item.normalLog.format}` : '无'}}</div>
-        <div>{{item.eventLog ? `${item.eventLog.logName}.${item.eventLog.format}` : '无'}}</div>
+        <div>
+          {{`${new Date(item.rawLog.createDate).getFullYear()}-${new Date(item.rawLog.createDate).getMonth() + 1}-${new Date(item.rawLog.createDate).getDate()}`}}
+        </div><div>{{item.normalLog ? `${item.normalLog.logName}.${item.normalLog.format}` : '无'}}</div><div>{{item.eventLog ? `${item.eventLog.logName}.${item.eventLog.format}` : '无'}}</div>
       </div>
     </div>
   </div>
@@ -44,17 +49,42 @@
   @import '~assets/colors.less';
   @import "~assets/layout.less";
 
+  .button{
+    color: white;
+    font-size: 24px;
+    text-decoration: none;
+    height: @log_button_height;
+    width: @log_button_width;
+    border-radius: @log_button_border-radius;
+    background-color: @main_green;
+    img{
+      width: 30px;
+      height: 30px;
+      vertical-align: text-top;
+    }
+  }
+
   .log-name, .download_button, .share_button, .delete_button, .process_button {
     cursor: pointer;
   }
-
-  #head {
+  .img-button {
+    cursor: pointer;
+  }
+  .close-btn {
+    position: absolute;
+    right: 70px;
+    top: 4px;
+    i {
+      color: #5c8aac;
+    }
+  }
+  .head {
+    position:relative;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
   }
-
-  .raw-log-details {
+  .raw-log-details{
     padding-top: 20px;
   }
 
@@ -130,9 +160,13 @@
 </style>
 
 <script>
+  import ElButton from "../../../../node_modules/element-ui/packages/button/src/button"
   export default{
+    components: {ElButton},
     data(){
       return {
+        isSearching: false,
+        keyWord: '',
         checked: [],
         totalAmount: [],
         items: []
@@ -243,13 +277,29 @@
         URL.revokeObjectURL(blob);
       },
       searchRawLog: function () {
-        console.log(this.$refs.input1.value);
-        this.$api({method: 'searchRawLog', query: {keyWord: this.$refs.input1.value}}).then((res) => {
-          this.items = [];
+        this.totalAmount=[]
+        this.checkedAll=false
+        this.checked=[]
+        this.$api({method: 'searchRawLog', query: {keyWord: this.keyWord}}).then(res => {
+          console.log(res)
+          this.items = res.data.logGroups
+          this.isSearching = true
+        })
+      },
+      getTotalItems(){
+        let totalItems = []
+        this.$api({method: 'getRawLog'}).then((res) => {
+          console.log(res)
           res.data.logGroups.map((log) => {
-            this.items.push(log);
+            totalItems.push(log)
           })
         })
+        return totalItems
+      },
+      close_search(){
+        this.isSearching = false
+        this.items = this.getTotalItems()
+        this.keyWord = ''
       },
       currClick: function (item, index) {
         var _this = this;
