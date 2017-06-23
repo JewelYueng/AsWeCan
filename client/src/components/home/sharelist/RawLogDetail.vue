@@ -10,7 +10,7 @@
           <span>{{`${item.rawLog.logName}.${item.rawLog.format}`}}</span></div>
         <div>{{item.user.name}}</div><div>{{new Date(item.rawLog.createDate).toString()}}</div>
         <div>{{item.normalLog ? `${item.normalLog.logName}.${item.normalLog.format}` : '无'}}</div><div>{{item.eventLog ? `${item.eventLog.logName}.${item.eventLog.format}` : '无'}}</div>
-        <img class="download_button" title="下载" src="static/img/download_color.png">
+        <img class="download_button" title="下载" src="static/img/download_color.png" @click="download(index)">
       </div>
     </div>
   </div>
@@ -158,6 +158,20 @@
       }
     },
     methods:{
+      download(index){
+        this.$api({method: 'downLoadRawLog', query: {id: this.items[index].rawLog.id}}).then((res) => {
+          console.log(res.data)
+          this.createAndDownloadFile(this.items[index].rawLog.logName, res.data)
+        })
+      },
+      createAndDownloadFile(fileName, content) {
+        let aTag = document.createElement('a');
+        let blob = new Blob([content]);
+        aTag.download = fileName;
+        aTag.href = URL.createObjectURL(blob);
+        aTag.click();
+        URL.revokeObjectURL(blob);
+      },
       search:function () {
         console.log(this.$refs.input1.value);
         this.$api({method: 'searchShareRawLog', query: {keyWord:this.$refs.input1.value}}).then((res)=>{
