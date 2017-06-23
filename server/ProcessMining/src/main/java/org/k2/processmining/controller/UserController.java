@@ -1,5 +1,6 @@
 package org.k2.processmining.controller;
 
+import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.UserState;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.UserService;
@@ -8,7 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,14 +46,6 @@ public class UserController {
         return map;
     }
 
-    @RequestMapping(value = "/activeAccount",method = RequestMethod.POST)
-    public @ResponseBody
-    Object activeAccount(@RequestBody EmailForm emailForm){
-        Map map = new HashMap();
-
-        return map;
-    }
-
     @RequestMapping(value = "/freeze",method = RequestMethod.POST)
     public @ResponseBody
     Object freezeUser(@Valid @RequestBody IdListForm idListForm){
@@ -60,9 +58,26 @@ public class UserController {
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public @ResponseBody
     Object register(@RequestBody User user){
-        Map map = new HashMap();
-        userService.addUser(user);
-        return map;
+        Map result = new HashMap();
+            //注册操作
+            result.put("code",userService.addUser(user));
+        return result;
+    }
+
+    @RequestMapping(value = "/register/activate",method = RequestMethod.GET)
+    public String activateAccount(HttpServletRequest request,HttpServletResponse response){
+        String email = request.getParameter("email");
+        List<String> emailList = new ArrayList<>();
+        emailList.add(email);
+        userService.updateStateByUserEmail(emailList,UserState.ACTIVE.getValue());
+        try {
+            request.getRequestDispatcher("/html/activateSuccess.html").forward(request,response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
@@ -90,8 +105,6 @@ public class UserController {
         map.put("code",userService.checkoutUserByEmailAndPwd(user.getEmail(),user.getPassword()));
         return map;
     }
-
-
 
     public User getUser(){
         User user = new User();

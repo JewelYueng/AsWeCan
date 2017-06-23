@@ -13,6 +13,15 @@
         </foreach>
     </update>
 
+    <update id="updateStateByEmail">
+        UPDATE user SET state = #{state}
+        WHERE
+        email IN
+        <foreach collection="emailList" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
     <insert id="save">
         INSERT INTO user(id,username,password,email,state)
         VALUE (#{id},#{name},#{password},#{email},#{state})
