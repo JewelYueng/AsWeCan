@@ -18,9 +18,13 @@
         <div><img class="process_button" title="生成规范化日志" v-on:click="transferToNormal(index)" src="static/img/process_color.png">
           <img class="download_button" title="下载" src="static/img/download_color.png" @click="download(index)" v-model="item.rawLog.id">
           <img class="share_button" title="分享" src="static/img/share_color.png" @click="share(index)">
-          <img class="delete_button" title="删除" src="static/img/Delete_color.png" @click="deleteRawLog(index)" >
+
+          <img  title="删除" src="static/img/Delete_color.png" @click="deleteRawLog(index)" >
+
         </div>
-        <div>{{new Date(item.rawLog.createDate).toString()}}</div><div>{{item.normalLog ? `${item.normalLog.logName}.${item.normalLog.format}` : '无'}}</div><div>{{item.eventLog ? `${item.eventLog.logName}.${item.eventLog.format}` : '无'}}</div>
+        <div>
+          {{`${new Date(item.rawLog.createDate).getFullYear()}-${new Date(item.rawLog.createDate).getMonth() + 1}-${new Date(item.rawLog.createDate).getDate()}`}}
+        </div><div>{{item.normalLog ? `${item.normalLog.logName}.${item.normalLog.format}` : '无'}}</div><div>{{item.eventLog ? `${item.eventLog.logName}.${item.eventLog.format}` : '无'}}</div>
       </div>
     </div>
   </div>
@@ -32,6 +36,7 @@
   .log-name ,.download_button, .share_button,.delete_button,.process_button{
     cursor: pointer;
   }
+
 
   #head{
     display: flex;
@@ -111,6 +116,7 @@
   export default{
     data(){
       return {
+        active: 0,
         checked:[],
         totalAmount:[],
       /*  checkAll:false,*/
@@ -190,6 +196,7 @@
      }
    },
     methods:{
+
       showDetail: function (index) {
         this.$modal({
           type: 'log-detail',
