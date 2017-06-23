@@ -3,6 +3,7 @@
     <div class="head">
       <a href="" class="button" @click="upload"><img src="static/img/upload.png">上传</a>
       <a href="" class="button" @click="shareSome"><img src="static/img/share_white.png">分享</a>
+      <a href="" class="button" @click="deleteSome"><img src="static/img/Delete.png" style="padding-top: 2px">删除</a>
       <input type="text" class="search" placeholder="请输入关键字"><img id="search_button" src="static/img/search.png">
     </div>
     <div class="head-2"><span>全部文件，共{{amount}}个</span><span>关联文件</span></div>
@@ -26,7 +27,8 @@
           <img @click="download(index)" style="cursor:pointer"
                class="download_button" title="下载" src="static/img/download_color.png">
           <img @click="share(index)" style="cursor:pointer"
-               class="share_button" title="分享" src="static/img/share_color.png">
+               class="share_button" title="分享"
+               :src="item.normalLog.isShared === 0 ? 'static/img/share_color.png' : 'static/img/forbidden_color.png'">
           <img @click="deleteLog(index)" style="cursor:pointer"
                class="delete_button" title="删除" src="static/img/delete_color.png">
         </div>
@@ -36,13 +38,6 @@
         <div><a href="">
           {{item.eventLog ? `${item.eventLog.logName}.${item.eventLog.format}` : '无'}}</a>
         </div>
-        <div>
-          <img class="download_button" title="下载" src="static/img/download_color.png">
-          <img class="share_button" title="分享" src="static/img/share_color.png">
-        </div>
-        <div>{{new Date(item.normalLog.createDate).toString()}}</div>
-        <div>{{item.rawLog ? `${item.rawLog.logName}.${item.rawLog.format}` : '无'}}</div>
-        <div>{{item.eventLog ? `${item.eventLog.logName}.${item.eventLog.format}` : '无'}}</div>
       </div>
     </div>
   </div>
@@ -72,11 +67,25 @@
     font-size: 20px;
   }
 
+  .button{
+    color: white;
+    font-size: 24px;
+    text-decoration: none;
+    height: @log_button_height;
+    width: @log_button_width;
+    border-radius: @log_button_border-radius;
+    background-color: @main_green;
+    img{
+      width: 30px;
+      height: 30px;
+      vertical-align: text-top;
+    }
+  }
+
   .search {
-    margin-left: 400px;
+    margin-left: 300px;
     background-color: @tab_separator;
     color: @main_font_color;
-
     text-align: center;
     width: @search_width;
     height: @search_height;
@@ -234,15 +243,22 @@
       deleteLog: function (index) {
         this.$api({
           method: 'deleteNormalLog',
-          options: {body: {idList: [this.items[index].normalLog.id]}}
+          opts: {body: {idList: [this.items[index].normalLog.id]}}
         }).then((res) => {
           console.log(res.data)
-
+        })
+      },
+      deleteSome: function () {
+        this.$api({
+          method: 'deleteNormalLog',
+          ops: {body: {idList: [this.checked]}}
+        }).then((res) => {
+          console.log(res.data)
         })
       },
 
       shareSome(){
-        this.$api({method: 'shareEventLog', body: {idList: this.checked}}).then(res => {
+        this.$api({method: 'shareNormalLog', body: {idList: this.checked}}).then(res => {
           if (res.data.code === 1) {
             this.$hint('分享成功', 'success')
           } else {
@@ -251,10 +267,9 @@
 
         })
       },
-
       share(index){
-        if (this.items[index].eventLog.isShared === 0) {
-          this.$api({method: 'shareEventLog', body: {idList: [this.items[index].eventLog.id]}}).then(res => {
+        if (this.items[index].normalLog.isShared === 0) {
+          this.$api({method: 'shareNormalLog', body: {idList: [this.items[index].normalLog.id]}}).then(res => {
             if (res.data.code === 1) {
               this.$hint('分享成功', 'success')
             } else {
@@ -262,7 +277,7 @@
             }
           })
         } else {
-          this.$api({method: 'unShareEventLog', body: {idList: [this.items[index].eventLog.id]}}).then(res => {
+          this.$api({method: 'unShareNormalLog', body: {idList: [this.items[index].normalLog.id]}}).then(res => {
             if (res.data.code === 1) {
               this.$hint('取消分享成功', 'success')
             } else {
