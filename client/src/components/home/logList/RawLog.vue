@@ -277,20 +277,12 @@
         URL.revokeObjectURL(blob);
       },
       searchRawLog: function () {
+        this.totalAmount=[]
+        this.checkedAll=false
+        this.checked=[]
         this.$api({method: 'searchRawLog', query: {keyWord: this.keyWord}}).then(res => {
           console.log(res)
-          //this.items = res.data.logGroups
-          this.totalAmount=[],
-            this.items.forEach(function (item, index) {
-              if (item.checked) {
-                item.checked=false;
-              }
-            });
           this.items = res.data.logGroups
-          res.data.logGroups.map((log) => {
-            this.totalAmount.push(log)
-          }),
-
           this.isSearching = true
         })
       },

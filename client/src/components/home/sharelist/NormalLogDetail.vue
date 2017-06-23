@@ -176,6 +176,9 @@
         }
       },
       search: function () {
+        this.totalAmount=[]
+        this.checkedAll=false
+        this.checked=[]
         this.$api({method: 'searchNormalLog', body: {keyWord: this.keyWord}}).then((res) => {
           console.log(res)
           this.items = res.data.logGroups

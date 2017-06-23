@@ -212,6 +212,9 @@
     },
     methods: {
       searchLog(){
+        this.totalAmount=[]
+        this.checkedAll=false
+        this.checked=[]
         this.$api({method: 'searchEventLog', query: {keyWord: this.keyWord}}).then(res => {
           console.log(res)
           this.items = res.data.logGroups

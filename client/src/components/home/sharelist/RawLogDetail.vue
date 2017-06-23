@@ -186,6 +186,9 @@
         URL.revokeObjectURL(blob);
       },
       search:function () {
+        this.totalAmount=[]
+        this.checkedAll=false
+        this.checked=[]
         this.$api({method: 'searchShareRawLog', query: {keyWord: this.keyWord}}).then(res => {
           console.log(res)
           this.items = res.data.logGroups
