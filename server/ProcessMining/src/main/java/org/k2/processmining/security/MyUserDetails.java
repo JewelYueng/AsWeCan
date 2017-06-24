@@ -1,12 +1,13 @@
 package org.k2.processmining.security;
 
+import org.k2.processmining.model.UserState;
+import org.k2.processmining.model.user.User;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -14,32 +15,19 @@ import java.util.HashSet;
 /**
  * Created by Aria on 2017/6/21.
  */
+
 public class MyUserDetails implements UserDetails{
-    private String id;
-    private String username;
-    private String password;
-    private boolean enabled;
+
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String ROLE_USER = "ROLE_USER";
+    private User user;
     private Collection<SimpleGrantedAuthority> authorities;
 
-    public MyUserDetails(String id, String username, String password, boolean enabled){
-        super();
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.enabled = enabled;
-        authorities = new ArrayList<>();
-        SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_USER");
-        authorities.add(grantedAuthority);
-    }
 
-    public MyUserDetails(String id, String username, String password, boolean enabled,
-                         Collection<SimpleGrantedAuthority> authorities) {
+    public MyUserDetails(User user){
         super();
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.enabled = enabled;
-        this.authorities = authorities;
+        this.user = user;
+        authorities = new ArrayList<>();
     }
 
     @Override
@@ -48,17 +36,17 @@ public class MyUserDetails implements UserDetails{
     }
 
     public String getId() {
-        return id;
+        return user.getId();
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return username;
+        return user.getName();
     }
 
     @Override
@@ -78,6 +66,15 @@ public class MyUserDetails implements UserDetails{
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return user.getState() == UserState.ACTIVE.getValue() ||
+                user.getState() == UserState.FREEZE.getValue();
+    }
+
+    public void setAuthorities(Collection<SimpleGrantedAuthority> authorities) {
+        this.authorities = authorities;
+    }
+
+    public void addAuthority(String Role){
+        this.authorities.add(new SimpleGrantedAuthority(Role));
     }
 }

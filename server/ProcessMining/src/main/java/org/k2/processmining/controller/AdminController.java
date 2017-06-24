@@ -30,4 +30,12 @@ public class AdminController {
         map.put("code",adminService.checkoutAdminByWorkIdAndPwd(administrator.getWorkId(),administrator.getPassword()));
         return map;
     }
+
+    @RequestMapping(value = "")
+    public @ResponseBody
+    Object listAllAdmins(){
+        Map map = new HashMap();
+//        map.put("");
+        return map;
+    }
 }

@@ -1,10 +1,13 @@
 package org.k2.processmining.service.impl;
 
 import org.k2.processmining.mapper.AdminMapper;
+import org.k2.processmining.model.user.Administrator;
 import org.k2.processmining.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by Aria on 2017/6/22.
@@ -26,5 +29,10 @@ public class AdminServiceImpl implements AdminService{
             return 1;
         }
         return 2;
+    }
+
+    @Override
+    public List<Administrator> getAllAdmins() {
+        return adminMapper.listAllAdmins();
     }
 }

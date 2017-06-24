@@ -5,11 +5,11 @@ import org.k2.processmining.model.UserState;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.UserService;
 import org.k2.processmining.util.Util;
+import org.k2.processmining.utils.SendEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by Aria on 2017/6/14.
@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserService{
         user.setId(Util.getUUIDString());
         user.setState(UserState.FREEZE.getValue());
         userMapper.save(user);
+        userService.activateAccount(user.getEmail());
         return 3;
     }
 
@@ -49,6 +50,11 @@ public class UserServiceImpl implements UserService{
     @Override
     public void updateStateByUserId(List<String> ids, int state) {
         userMapper.updateStateByUserId(ids,state);
+    }
+
+    @Override
+    public void updateStateByUserEmail(List<String> emailList, int state) {
+        userMapper.updateStateByEmail(emailList,state);
     }
 
     @Override
@@ -72,7 +78,6 @@ public class UserServiceImpl implements UserService{
         if (userMapper.getUserByEmail(email) == null){
             return 0;
         }
-        System.out.println("111111");
         if (userMapper.getUserByEmailAndPwd(email,password) == null){
             return 1;
         }
@@ -80,11 +85,15 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public int activeAccount(String email) {
-        StringBuffer buffer = new StringBuffer("点击下面链接激活账号，48小时生效，否则重新注册账号，链接只能使用一次，请尽快激活！</br>");
-        buffer.append("<a href=\"http://localhost:8080/springmvc/user/register?action=activate&email=");
-        buffer.append(email);
+    public int activateAccount(String email) {
 
+        StringBuffer buffer = new StringBuffer("点击下面链接激活账号，48小时生效，否则重新注册账号，链接只能使用一次，请尽快激活！</br>");
+        buffer.append("<a href=\"http://localhost:8080/user/register/activate?email=");
+        buffer.append(email);
+        buffer.append("\">http://localhost:8080/springmvc/user/register/activate?email=");
+        buffer.append(email);
+        buffer.append("</a>");
+        SendEmail.send(email,buffer.toString());
         return 0;
     }
 }

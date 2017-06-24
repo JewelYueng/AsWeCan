@@ -12,10 +12,11 @@ public interface UserService {
     int addUser(User user);
     User getUserById(String id);
     void updateStateByUserId(List<String>ids,int state);
+    void updateStateByUserEmail(List<String> emailList,int state);
     List<User> getAllUsers();
     void updatePwdById(String userId,String password);
     User getUserByEmail(String email);
     int checkoutUserByEmailAndPwd(String email,String password);
-    int activeAccount(String email);
+    int activateAccount(String email);
 
 }

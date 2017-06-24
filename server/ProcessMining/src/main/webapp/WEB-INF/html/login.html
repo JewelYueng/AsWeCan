@@ -3,12 +3,27 @@
 <script src="/js/jquery-3.2.1.min.js"></script>
 <head>
     <meta charset="UTF-8">
-    <title>login</title>
+    <title>用户登录</title>
 </head>
 <body>
-    <h1>
-        登录页面
-    </h1>
+<form name='f'
+      action='/login'
+      method='POST'>
+    <table class="formtable">
+        <tr>
+            <td class="title">输入登录邮箱:</td>
+            <td><input  class="control" type='text' name='username'    value=''></td>
+        </tr>
+        <tr>
+            <td class="title">输入登录密码:</td>
+            <td><input class="control" type='password' name='password' /></td>
+        </tr>
+        <tr>
+            <td colspan='2'><input name="submit" type="submit"
+                                   value="aaa" /></td>
+        </tr>
+    </table>
+</form>
 
 </body>
 </html>

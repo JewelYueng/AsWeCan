@@ -12,6 +12,10 @@
         SELECT * FROM administrator WHERE work_id = #{workId} AND password = #{password}
     </select>
 
+    <select id="listAllAdmins" resultMap="admin">
+        SELECT * FROM administrator;
+    </select>
+
     <resultMap id="admin" type="Administrator">
         <id column="id" property="id"/>
         <result column="work_id" property="workId"/>
