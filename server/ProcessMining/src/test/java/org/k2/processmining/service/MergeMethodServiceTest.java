@@ -1,5 +1,7 @@
 package org.k2.processmining.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -11,13 +13,12 @@ import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.log.RawLog;
 import org.k2.processmining.model.mergemethod.MergeMethod;
+import org.k2.processmining.service.impl.MergeMethodServiceImpl;
 import org.k2.processmining.support.spring.SaveExceptionThrowsAdvice;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by nyq on 2017/6/20.
@@ -26,6 +27,7 @@ public class MergeMethodServiceTest {
 
     private static ApplicationContext applicationContext;
     private static MergeMethodService mergeMethodService;
+    private static EventLogService eventLogService;
     private static MergeMethod activeMethod;
     private static MergeMethod inactiveMethod;
 
@@ -34,6 +36,7 @@ public class MergeMethodServiceTest {
         applicationContext = new ClassPathXmlApplicationContext("classpath:spring/spring-service-test.xml",
                 "classpath:spring/applicationContext-dao.xml");
         mergeMethodService = applicationContext.getBean(MergeMethodService.class);
+        eventLogService = applicationContext.getBean(EventLogService.class);
 
         String activeId = "1";
         activeMethod = new MergeMethod();
@@ -47,25 +50,6 @@ public class MergeMethodServiceTest {
     }
 
     @Test
-    public void d() {
-        RawLog rawLog = new RawLog();
-        rawLog.setId("e4c4e1e1-eb5a-49ac-8839-9d09f30690bf");
-        rawLog.setLogName("fuck");
-        rawLog.setUserId("1");
-        rawLog.setCreateDate(new Date());
-        rawLog.setFormat("txt");
-        RawLogService rawLogService = applicationContext.getBean(RawLogService.class);
-
-        NormalLog normalLog = new NormalLog();
-        normalLog.setId("a0289f21-ecab-4486-b96f-039121cc86c4");
-        normalLog.setLogName("123");
-        normalLog.setUserId("1");
-        NormalLogService service = applicationContext.getBean(NormalLogService.class);
-        service.transToEventLog(normalLog);
-//        applicationContext.getBean(RawLogService.class).save(null, null);
-    }
-
-    @Test
     public void isActiveTest() {
         Assert.assertTrue(mergeMethodService.isActive(activeMethod.getId()));
         Assert.assertFalse(mergeMethodService.isActive(inactiveMethod.getId()));
@@ -75,24 +59,42 @@ public class MergeMethodServiceTest {
     }
 
     @Test
-    public void getMethodByIdTest() {
-        Assert.assertNotNull(mergeMethodService.getMethodById(activeMethod.getId()));
+    public void getMethodByIdTest() throws Exception {
+        MergeMethod mergeMethod = mergeMethodService.getMethodById(activeMethod.getId());
+        Assert.assertNotNull(mergeMethod);
+        System.out.println("getMethodByIdTest: mergeMethod: " + toJSON(mergeMethod));
+
         Assert.assertNull(mergeMethodService.getMethodById(inactiveMethod.getId()));
     }
 
     @Test
-    public void getMethodConfig() {
+    public void getMethodConfigTest() throws Exception {
         Map<String, Object> activeMethodConfig = mergeMethodService.getMethodConfig(activeMethod);
         Assert.assertNotNull(activeMethodConfig);
-        System.out.println(activeMethodConfig);
+        System.out.println("getMethodConfigTest: activeMethodConfig: " + toJSON(activeMethodConfig));
 
         Map<String, Object> inactiveMethodConfig = mergeMethodService.getMethodConfig(inactiveMethod);
         Assert.assertEquals(0, inactiveMethodConfig.size());
-        System.out.println(inactiveMethodConfig);
     }
 
     @Test
-    public void mergeTest() {
+    public void getActiveMethodsTest() throws Exception {
+        List<MergeMethod> activeMethods = mergeMethodService.getActiveMethods();
+        Assert.assertFalse(activeMethods.isEmpty());
+        System.out.println("getActiveMethodsTest: activeMethods: " + toJSON(activeMethods));
+    }
 
+    @Test
+    public void mergeTest() throws Exception {
+        EventLog eventLog1 = eventLogService.getEventLogById("1");
+        EventLog eventLog2 = eventLogService.getEventLogById("2");
+        String methodId = activeMethod.getId();
+        Map<String,Object> params = new HashMap<>();
+        MergeMethodServiceImpl.MergeResult result= mergeMethodService.merge(eventLog1, eventLog2, methodId, params);
+        System.out.println("mergeTest: result: " + toJSON(result));
+    }
+
+    private String toJSON(Object o) throws JsonProcessingException {
+        return new ObjectMapper().writeValueAsString(o);
     }
 }

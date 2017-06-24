@@ -47,6 +47,7 @@ public class MethodManage {
 
     public void init() {
         rootPath = this.getClass().getResource("/").getPath().replaceAll("/classes", "");
+//        rootPath = "E:/IdeaProjects/AsWeCan/server/ProcessMining/src/main/webapp/WEB-INF";
     }
 
     public String getMinerDir(String miningMethodId) {
@@ -69,7 +70,6 @@ public class MethodManage {
 
     private void saveJar(String outputPath, InputStream inputStream) throws IOException {
         File file = new File(outputPath);
-        System.out.println(file.getParent());
         if ((!file.getParentFile().isDirectory() && !file.getParentFile().mkdir())) {
             throw new IOException("fail to make dirs to save jars");
         }

@@ -138,7 +138,7 @@ public class MiningMethodServiceImpl implements MiningMethodService {
         }
         XLog xLog = logStorage.download(eventLog, inputStream -> eventLogParse.eventLogParse(inputStream));
         if (xLog != null) {
-            return algorithm.getAlgorithm().mining(xLog, params);
+            return algorithm.getAlgorithm().mining(xLog, params).toString();
         }
         return "";
     }

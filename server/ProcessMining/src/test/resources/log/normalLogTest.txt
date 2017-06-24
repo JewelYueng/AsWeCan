@@ -1,0 +1,1563 @@
+Time	EventName	FKPlanID	PkIncidentID	PkTaskID	PKPlanID;[FKIncidentID]
+2016-02-24T17:05:48	IncidentRegister	 	 	 	 
+2016-02-24T17:09:18	IncidentAssign	 	 	 	 
+2016-02-24T17:15:43	IncidentHandle	 	 	 	 
+2016-02-24T17:22:06	IncidentHangOn	 	 	 	 
+2016-02-24T17:28:41	IncidentHandle	 	 	 	 
+2016-02-24T17:40:06	PlanDraft	 	 	 	plan-1
+2016-02-24T17:46:25	TaskCreate	plan-1	 	 	 
+2016-02-24T17:49:05	PlanStart	 	 	 	plan-1
+2016-02-24T17:54:34	TaskAssign	plan-1	 	 	 
+2016-02-24T18:01:47	TaskExecute	plan-1	 	 	 
+2016-02-24T18:05:32	TaskComplete	plan-1	 	 	 
+2016-02-24T18:13:26	TaskEvaluate	plan-1	 	 	 
+2016-02-24T18:19:21	TaskClose	plan-1	 	 	 
+2016-02-24T18:22:38	PlanFinish	 	 	 	plan-1
+2016-02-24T18:28:12	PlanClose	 	 	 	plan-1
+2016-02-24T18:40:37	IncidentSolve	 	 	 	 
+2016-02-24T18:45:09	IncidentConfirm	 	 	 	 
+2016-02-24T18:48:39	IncidentClose	 	 	 	 
+2016-02-24T18:55:26	IncidentRegister	 	 	 	 
+2016-02-24T18:57:44	IncidentAssign	 	 	 	 
+2016-02-24T19:01:33	IncidentHandle	 	 	 	 
+2016-02-24T19:04:11	PlanDraft	 	 	 	plan-2
+2016-02-24T19:10:12	TaskCreate	plan-2	 	 	 
+2016-02-24T19:17:37	PlanStart	 	 	 	plan-2
+2016-02-24T19:22:43	TaskAssign	plan-2	 	 	 
+2016-02-24T19:29:34	TaskExecute	plan-2	 	 	 
+2016-02-24T19:33:23	TaskComplete	plan-2	 	 	 
+2016-02-24T19:35:10	TaskEvaluate	plan-2	 	 	 
+2016-02-24T19:38:40	TaskClose	plan-2	 	 	 
+2016-02-24T19:43:07	PlanFinish	 	 	 	plan-2
+2016-02-24T19:49:27	PlanClose	 	 	 	plan-2
+2016-02-24T19:55:58	IncidentSolve	 	 	 	 
+2016-02-24T20:03:27	IncidentConfirm	 	 	 	 
+2016-02-24T20:07:23	IncidentClose	 	 	 	 
+2016-02-24T20:09:32	IncidentRegister	 	 	 	 
+2016-02-24T20:14:17	IncidentAssign	 	 	 	 
+2016-02-24T20:17:13	IncidentHandle	 	 	 	 
+2016-02-24T20:25:14	PlanDraft	 	 	 	plan-3
+2016-02-24T20:35:01	TaskCreate	plan-3	 	 	 
+2016-02-24T20:44:57	PlanStart	 	 	 	plan-3
+2016-02-24T20:49:12	TaskAssign	plan-3	 	 	 
+2016-02-24T20:54:50	TaskExecute	plan-3	 	 	 
+2016-02-24T21:01:37	TaskComplete	plan-3	 	 	 
+2016-02-24T21:05:20	TaskEvaluate	plan-3	 	 	 
+2016-02-24T21:11:05	TaskClose	plan-3	 	 	 
+2016-02-24T21:14:48	PlanFinish	 	 	 	plan-3
+2016-02-24T21:20:07	PlanClose	 	 	 	plan-3
+2016-02-24T21:30:29	IncidentSolve	 	 	 	 
+2016-02-24T21:35:21	IncidentConfirm	 	 	 	 
+2016-02-24T21:38:55	IncidentClose	 	 	 	 
+2016-02-24T21:48:37	IncidentRegister	 	 	 	 
+2016-02-24T21:52:41	IncidentAssign	 	 	 	 
+2016-02-24T21:59:30	IncidentHandle	 	 	 	 
+2016-02-24T22:01:33	PlanDraft	 	 	 	plan-4
+2016-02-24T22:05:35	TaskCreate	plan-4	 	 	 
+2016-02-24T22:08:37	PlanStart	 	 	 	plan-4
+2016-02-24T22:11:44	TaskAssign	plan-4	 	 	 
+2016-02-24T22:17:57	TaskExecute	plan-4	 	 	 
+2016-02-24T22:27:11	TaskComplete	plan-4	 	 	 
+2016-02-24T22:31:13	TaskEvaluate	plan-4	 	 	 
+2016-02-24T22:39:33	TaskClose	plan-4	 	 	 
+2016-02-24T22:46:37	PlanFinish	 	 	 	plan-4
+2016-02-24T22:53:25	PlanClose	 	 	 	plan-4
+2016-02-24T23:00:24	IncidentSolve	 	 	 	 
+2016-02-24T23:10:18	IncidentConfirm	 	 	 	 
+2016-02-24T23:17:44	IncidentClose	 	 	 	 
+2016-02-24T23:24:14	IncidentRegister	 	 	 	 
+2016-02-24T23:30:24	IncidentAssign	 	 	 	 
+2016-02-24T23:35:49	IncidentHandle	 	 	 	 
+2016-02-24T23:43:25	PlanDraft	 	 	 	plan-5
+2016-02-24T23:49:18	TaskCreate	plan-5	 	 	 
+2016-02-24T23:53:38	PlanStart	 	 	 	plan-5
+2016-02-24T23:58:50	TaskAssign	plan-5	 	 	 
+2016-02-25T00:05:29	TaskHangOn	plan-5	 	 	 
+2016-02-25T00:12:46	TaskAssign	plan-5	 	 	 
+2016-02-25T00:17:11	TaskExecute	plan-5	 	 	 
+2016-02-25T00:24:16	TaskDispatch	plan-5	 	 	 
+2016-02-25T00:31:41	TaskExecute	plan-5	 	 	 
+2016-02-25T00:38:03	PlanFinish	 	 	 	plan-5
+2016-02-25T00:42:01	PlanClose	 	 	 	plan-5
+2016-02-25T00:49:23	IncidentSolve	 	 	 	 
+2016-02-25T00:58:52	IncidentConfirm	 	 	 	 
+2016-02-25T01:03:52	IncidentClose	 	 	 	 
+2016-02-25T01:09:42	IncidentRegister	 	 	 	 
+2016-02-25T01:13:44	IncidentAssign	 	 	 	 
+2016-02-25T01:19:22	IncidentHandle	 	 	 	 
+2016-02-25T01:27:39	PlanDraft	 	 	 	plan-6
+2016-02-25T01:33:21	TaskCreate	plan-6	 	 	 
+2016-02-25T01:39:37	PlanStart	 	 	 	plan-6
+2016-02-25T01:45:00	TaskAssign	plan-6	 	 	 
+2016-02-25T01:51:23	TaskHangOn	plan-6	 	 	 
+2016-02-25T01:58:26	TaskAssign	plan-6	 	 	 
+2016-02-25T02:10:41	TaskExecute	plan-6	 	 	 
+2016-02-25T02:12:50	TaskComplete	plan-6	 	 	 
+2016-02-25T02:21:42	TaskEvaluate	plan-6	 	 	 
+2016-02-25T02:30:39	TaskClose	plan-6	 	 	 
+2016-02-25T02:36:17	PlanFinish	 	 	 	plan-6
+2016-02-25T02:40:25	PlanClose	 	 	 	plan-6
+2016-02-25T02:45:04	IncidentSolve	 	 	 	 
+2016-02-25T02:48:51	IncidentConfirm	 	 	 	 
+2016-02-25T02:56:13	IncidentClose	 	 	 	 
+2016-02-25T02:59:19	IncidentRegister	 	 	 	 
+2016-02-25T03:03:38	IncidentAssign	 	 	 	 
+2016-02-25T03:08:45	IncidentHandle	 	 	 	 
+2016-02-25T03:15:23	PlanDraft	 	 	 	plan-7
+2016-02-25T03:19:50	TaskCreate	plan-7	 	 	 
+2016-02-25T03:21:57	PlanStart	 	 	 	plan-7
+2016-02-25T03:26:08	TaskAssign	plan-7	 	 	 
+2016-02-25T03:34:43	TaskHangOn	plan-7	 	 	 
+2016-02-25T03:38:39	TaskAssign	plan-7	 	 	 
+2016-02-25T03:42:15	TaskExecute	plan-7	 	 	 
+2016-02-25T03:46:46	TaskComplete	plan-7	 	 	 
+2016-02-25T03:55:04	TaskEvaluate	plan-7	 	 	 
+2016-02-25T04:00:52	TaskClose	plan-7	 	 	 
+2016-02-25T04:07:33	PlanFinish	 	 	 	plan-7
+2016-02-25T04:13:35	PlanClose	 	 	 	plan-7
+2016-02-25T04:20:49	IncidentSolve	 	 	 	 
+2016-02-25T04:24:13	IncidentConfirm	 	 	 	 
+2016-02-25T04:30:18	IncidentClose	 	 	 	 
+2016-02-25T04:32:26	IncidentRegister	 	 	 	 
+2016-02-25T04:42:39	IncidentAssign	 	 	 	 
+2016-02-25T04:50:05	IncidentHandle	 	 	 	 
+2016-02-25T04:58:21	PlanDraft	 	 	 	plan-8
+2016-02-25T05:04:36	TaskCreate	plan-8	 	 	 
+2016-02-25T05:11:21	PlanStart	 	 	 	plan-8
+2016-02-25T05:17:45	TaskAssign	plan-8	 	 	 
+2016-02-25T05:24:27	TaskExecute	plan-8	 	 	 
+2016-02-25T05:28:20	TaskComplete	plan-8	 	 	 
+2016-02-25T05:39:17	TaskEvaluate	plan-8	 	 	 
+2016-02-25T05:46:21	TaskClose	plan-8	 	 	 
+2016-02-25T05:51:41	PlanFinish	 	 	 	plan-8
+2016-02-25T05:57:57	PlanClose	 	 	 	plan-8
+2016-02-25T06:05:06	IncidentSolve	 	 	 	 
+2016-02-25T06:12:17	IncidentConfirm	 	 	 	 
+2016-02-25T06:18:35	IncidentClose	 	 	 	 
+2016-02-25T06:27:57	IncidentRegister	 	 	 	 
+2016-02-25T06:33:20	IncidentAssign	 	 	 	 
+2016-02-25T06:38:50	IncidentHandle	 	 	 	 
+2016-02-25T06:47:14	PlanDraft	 	 	 	plan-9
+2016-02-25T06:54:14	TaskCreate	plan-9	 	 	 
+2016-02-25T07:01:36	PlanStart	 	 	 	plan-9
+2016-02-25T07:07:53	PlanCancel	 	 	 	plan-9
+2016-02-25T07:13:10	PlanClose	 	 	 	plan-9
+2016-02-25T07:16:19	IncidentSolve	 	 	 	 
+2016-02-25T07:18:39	IncidentConfirm	 	 	 	 
+2016-02-25T07:27:52	IncidentClose	 	 	 	 
+2016-02-25T07:33:42	IncidentRegister	 	 	 	 
+2016-02-25T07:38:51	IncidentAssign	 	 	 	 
+2016-02-25T07:52:35	IncidentHandle	 	 	 	 
+2016-02-25T07:55:00	PlanDraft	 	 	 	plan-10
+2016-02-25T08:01:12	TaskCreate	plan-10	 	 	 
+2016-02-25T08:11:55	PlanStart	 	 	 	plan-10
+2016-02-25T08:18:25	TaskAssign	plan-10	 	 	 
+2016-02-25T08:22:30	TaskExecute	plan-10	 	 	 
+2016-02-25T08:28:24	TaskComplete	plan-10	 	 	 
+2016-02-25T08:33:16	TaskEvaluate	plan-10	 	 	 
+2016-02-25T08:41:37	TaskClose	plan-10	 	 	 
+2016-02-25T08:46:40	PlanFinish	 	 	 	plan-10
+2016-02-25T08:52:43	PlanClose	 	 	 	plan-10
+2016-02-25T08:57:07	IncidentSolve	 	 	 	 
+2016-02-25T09:02:30	IncidentConfirm	 	 	 	 
+2016-02-25T09:08:16	IncidentClose	 	 	 	 
+2016-02-25T09:09:43	IncidentRegister	 	 	 	 
+2016-02-25T09:12:39	IncidentAssign	 	 	 	 
+2016-02-25T09:14:21	IncidentHandle	 	 	 	 
+2016-02-25T09:24:11	PlanDraft	 	 	 	plan-11
+2016-02-25T09:28:27	TaskCreate	plan-11	 	 	 
+2016-02-25T09:37:14	PlanStart	 	 	 	plan-11
+2016-02-25T09:44:59	TaskAssign	plan-11	 	 	 
+2016-02-25T09:49:40	TaskExecute	plan-11	 	 	 
+2016-02-25T09:53:37	TaskCancel	plan-11	 	 	 
+2016-02-25T10:01:04	TaskClose	plan-11	 	 	 
+2016-02-25T10:09:19	PlanFinish	 	 	 	plan-11
+2016-02-25T10:16:07	PlanClose	 	 	 	plan-11
+2016-02-25T10:24:33	IncidentSolve	 	 	 	 
+2016-02-25T10:31:49	IncidentConfirm	 	 	 	 
+2016-02-25T10:41:45	IncidentClose	 	 	 	 
+2016-02-25T10:47:23	IncidentRegister	 	 	 	 
+2016-02-25T10:55:52	IncidentAssign	 	 	 	 
+2016-02-25T10:59:38	IncidentHandle	 	 	 	 
+2016-02-25T11:03:23	PlanDraft	 	 	 	plan-12
+2016-02-25T11:07:33	TaskCreate	plan-12	 	 	 
+2016-02-25T11:11:50	PlanStart	 	 	 	plan-12
+2016-02-25T11:15:51	TaskAssign	plan-12	 	 	 
+2016-02-25T11:20:06	TaskExecute	plan-12	 	 	 
+2016-02-25T11:28:17	TaskCancel	plan-12	 	 	 
+2016-02-25T11:32:20	TaskClose	plan-12	 	 	 
+2016-02-25T11:39:44	PlanFinish	 	 	 	plan-12
+2016-02-25T11:43:44	PlanClose	 	 	 	plan-12
+2016-02-25T11:47:53	IncidentSolve	 	 	 	 
+2016-02-25T11:56:21	IncidentConfirm	 	 	 	 
+2016-02-25T11:58:18	IncidentClose	 	 	 	 
+2016-02-25T12:06:38	IncidentRegister	 	 	 	 
+2016-02-25T12:13:39	IncidentAssign	 	 	 	 
+2016-02-25T12:21:04	IncidentHandle	 	 	 	 
+2016-02-25T12:32:13	PlanDraft	 	 	 	plan-13
+2016-02-25T12:40:13	TaskCreate	plan-13	 	 	 
+2016-02-25T12:42:51	PlanStart	 	 	 	plan-13
+2016-02-25T12:46:49	TaskAssign	plan-13	 	 	 
+2016-02-25T12:55:01	TaskExecute	plan-13	 	 	 
+2016-02-25T13:03:36	TaskComplete	plan-13	 	 	 
+2016-02-25T13:07:49	TaskEvaluate	plan-13	 	 	 
+2016-02-25T13:10:20	TaskClose	plan-13	 	 	 
+2016-02-25T13:15:04	PlanFinish	 	 	 	plan-13
+2016-02-25T13:23:41	PlanClose	 	 	 	plan-13
+2016-02-25T13:29:57	IncidentSolve	 	 	 	 
+2016-02-25T13:34:16	IncidentConfirm	 	 	 	 
+2016-02-25T13:40:07	IncidentClose	 	 	 	 
+2016-02-25T13:46:56	IncidentRegister	 	 	 	 
+2016-02-25T13:57:17	IncidentAssign	 	 	 	 
+2016-02-25T14:02:29	IncidentHandle	 	 	 	 
+2016-02-25T14:05:41	PlanDraft	 	 	 	plan-14
+2016-02-25T14:09:13	TaskCreate	plan-14	 	 	 
+2016-02-25T14:11:18	PlanStart	 	 	 	plan-14
+2016-02-25T14:16:35	TaskAssign	plan-14	 	 	 
+2016-02-25T14:25:53	TaskExecute	plan-14	 	 	 
+2016-02-25T14:36:35	TaskComplete	plan-14	 	 	 
+2016-02-25T14:45:04	TaskEvaluate	plan-14	 	 	 
+2016-02-25T14:52:52	TaskClose	plan-14	 	 	 
+2016-02-25T14:54:38	PlanFinish	 	 	 	plan-14
+2016-02-25T15:04:18	PlanClose	 	 	 	plan-14
+2016-02-25T15:15:42	IncidentSolve	 	 	 	 
+2016-02-25T15:19:23	IncidentConfirm	 	 	 	 
+2016-02-25T15:29:12	IncidentClose	 	 	 	 
+2016-02-25T15:33:57	IncidentRegister	 	 	 	 
+2016-02-25T15:41:06	IncidentAssign	 	 	 	 
+2016-02-25T15:44:53	IncidentHandle	 	 	 	 
+2016-02-25T15:47:36	PlanDraft	 	 	 	plan-15
+2016-02-25T15:54:30	TaskCreate	plan-15	 	 	 
+2016-02-25T15:57:41	PlanStart	 	 	 	plan-15
+2016-02-25T16:07:32	PlanCancel	 	 	 	plan-15
+2016-02-25T16:10:29	PlanClose	 	 	 	plan-15
+2016-02-25T16:17:17	IncidentSolve	 	 	 	 
+2016-02-25T16:25:49	IncidentConfirm	 	 	 	 
+2016-02-25T16:27:33	IncidentClose	 	 	 	 
+2016-02-25T16:35:46	IncidentRegister	 	 	 	 
+2016-02-25T16:40:27	IncidentAssign	 	 	 	 
+2016-02-25T16:48:53	IncidentHandle	 	 	 	 
+2016-02-25T16:56:15	PlanDraft	 	 	 	plan-16
+2016-02-25T17:02:22	TaskCreate	plan-16	 	 	 
+2016-02-25T17:05:12	PlanStart	 	 	 	plan-16
+2016-02-25T17:08:11	TaskAssign	plan-16	 	 	 
+2016-02-25T17:13:55	TaskExecute	plan-16	 	 	 
+2016-02-25T17:22:39	TaskComplete	plan-16	 	 	 
+2016-02-25T17:30:38	TaskEvaluate	plan-16	 	 	 
+2016-02-25T17:32:03	TaskClose	plan-16	 	 	 
+2016-02-25T17:33:18	PlanFinish	 	 	 	plan-16
+2016-02-25T17:39:16	PlanClose	 	 	 	plan-16
+2016-02-25T17:43:06	IncidentSolve	 	 	 	 
+2016-02-25T17:50:28	IncidentConfirm	 	 	 	 
+2016-02-25T17:55:43	IncidentClose	 	 	 	 
+2016-02-25T18:04:54	IncidentRegister	 	 	 	 
+2016-02-25T18:08:32	IncidentAssign	 	 	 	 
+2016-02-25T18:15:29	IncidentHandle	 	 	 	 
+2016-02-25T18:18:31	PlanDraft	 	 	 	plan-17
+2016-02-25T18:26:07	TaskCreate	plan-17	 	 	 
+2016-02-25T18:34:27	PlanStart	 	 	 	plan-17
+2016-02-25T18:41:13	PlanCancel	 	 	 	plan-17
+2016-02-25T18:47:52	PlanClose	 	 	 	plan-17
+2016-02-25T18:53:30	IncidentSolve	 	 	 	 
+2016-02-25T18:57:53	IncidentConfirm	 	 	 	 
+2016-02-25T19:05:52	IncidentClose	 	 	 	 
+2016-02-25T19:16:03	IncidentRegister	 	 	 	 
+2016-02-25T19:21:29	IncidentAssign	 	 	 	 
+2016-02-25T19:26:44	IncidentHandle	 	 	 	 
+2016-02-25T19:32:34	PlanDraft	 	 	 	plan-18
+2016-02-25T19:41:17	TaskCreate	plan-18	 	 	 
+2016-02-25T19:45:31	PlanStart	 	 	 	plan-18
+2016-02-25T19:51:23	TaskAssign	plan-18	 	 	 
+2016-02-25T19:53:34	TaskExecute	plan-18	 	 	 
+2016-02-25T19:59:52	TaskComplete	plan-18	 	 	 
+2016-02-25T20:05:28	TaskEvaluate	plan-18	 	 	 
+2016-02-25T20:08:55	TaskClose	plan-18	 	 	 
+2016-02-25T20:16:48	PlanFinish	 	 	 	plan-18
+2016-02-25T20:22:15	PlanClose	 	 	 	plan-18
+2016-02-25T20:28:22	IncidentSolve	 	 	 	 
+2016-02-25T20:37:29	IncidentConfirm	 	 	 	 
+2016-02-25T20:41:29	IncidentClose	 	 	 	 
+2016-02-25T20:50:40	IncidentRegister	 	 	 	 
+2016-02-25T20:57:33	IncidentAssign	 	 	 	 
+2016-02-25T21:02:46	IncidentHandle	 	 	 	 
+2016-02-25T21:09:44	PlanDraft	 	 	 	plan-19
+2016-02-25T21:16:31	TaskCreate	plan-19	 	 	 
+2016-02-25T21:19:20	PlanStart	 	 	 	plan-19
+2016-02-25T21:27:03	TaskAssign	plan-19	 	 	 
+2016-02-25T21:31:12	TaskExecute	plan-19	 	 	 
+2016-02-25T21:42:07	TaskCancel	plan-19	 	 	 
+2016-02-25T21:51:54	TaskClose	plan-19	 	 	 
+2016-02-25T21:57:46	PlanFinish	 	 	 	plan-19
+2016-02-25T22:07:48	PlanClose	 	 	 	plan-19
+2016-02-25T22:16:28	IncidentSolve	 	 	 	 
+2016-02-25T22:21:52	IncidentConfirm	 	 	 	 
+2016-02-25T22:24:43	IncidentClose	 	 	 	 
+2016-02-25T22:30:18	IncidentRegister	 	 	 	 
+2016-02-25T22:42:12	IncidentAssign	 	 	 	 
+2016-02-25T22:48:14	IncidentHandle	 	 	 	 
+2016-02-25T22:55:26	IncidentHangOn	 	 	 	 
+2016-02-25T22:57:06	IncidentHandle	 	 	 	 
+2016-02-25T23:03:33	PlanDraft	 	 	 	plan-20
+2016-02-25T23:06:59	TaskCreate	plan-20	 	 	 
+2016-02-25T23:10:54	PlanStart	 	 	 	plan-20
+2016-02-25T23:16:09	TaskAssign	plan-20	 	 	 
+2016-02-25T23:21:05	TaskExecute	plan-20	 	 	 
+2016-02-25T23:25:48	TaskComplete	plan-20	 	 	 
+2016-02-25T23:30:25	TaskEvaluate	plan-20	 	 	 
+2016-02-25T23:38:00	TaskClose	plan-20	 	 	 
+2016-02-25T23:42:35	PlanFinish	 	 	 	plan-20
+2016-02-25T23:48:01	PlanClose	 	 	 	plan-20
+2016-02-25T23:52:10	IncidentSolve	 	 	 	 
+2016-02-26T00:01:39	IncidentConfirm	 	 	 	 
+2016-02-26T00:12:11	IncidentClose	 	 	 	 
+2016-02-26T00:21:48	IncidentRegister	 	 	 	 
+2016-02-26T00:30:13	IncidentAssign	 	 	 	 
+2016-02-26T00:34:28	IncidentHandle	 	 	 	 
+2016-02-26T00:42:22	PlanDraft	 	 	 	plan-21
+2016-02-26T00:45:17	TaskCreate	plan-21	 	 	 
+2016-02-26T00:56:57	PlanStart	 	 	 	plan-21
+2016-02-26T00:58:41	TaskAssign	plan-21	 	 	 
+2016-02-26T01:00:55	TaskExecute	plan-21	 	 	 
+2016-02-26T01:07:34	TaskComplete	plan-21	 	 	 
+2016-02-26T01:11:03	TaskEvaluate	plan-21	 	 	 
+2016-02-26T01:19:02	TaskClose	plan-21	 	 	 
+2016-02-26T01:26:33	PlanFinish	 	 	 	plan-21
+2016-02-26T01:35:25	PlanClose	 	 	 	plan-21
+2016-02-26T01:40:46	IncidentSolve	 	 	 	 
+2016-02-26T01:45:44	IncidentConfirm	 	 	 	 
+2016-02-26T01:53:32	IncidentClose	 	 	 	 
+2016-02-26T01:59:13	IncidentRegister	 	 	 	 
+2016-02-26T02:01:10	IncidentAssign	 	 	 	 
+2016-02-26T02:07:14	IncidentHandle	 	 	 	 
+2016-02-26T02:15:42	PlanDraft	 	 	 	plan-22
+2016-02-26T02:22:28	TaskCreate	plan-22	 	 	 
+2016-02-26T02:28:15	PlanStart	 	 	 	plan-22
+2016-02-26T02:34:47	PlanCancel	 	 	 	plan-22
+2016-02-26T02:39:43	PlanClose	 	 	 	plan-22
+2016-02-26T02:50:31	IncidentSolve	 	 	 	 
+2016-02-26T02:53:39	IncidentConfirm	 	 	 	 
+2016-02-26T02:58:27	IncidentClose	 	 	 	 
+2016-02-26T03:02:54	IncidentRegister	 	 	 	 
+2016-02-26T03:11:48	IncidentAssign	 	 	 	 
+2016-02-26T03:15:53	IncidentHandle	 	 	 	 
+2016-02-26T03:18:42	PlanDraft	 	 	 	plan-23
+2016-02-26T03:22:17	TaskCreate	plan-23	 	 	 
+2016-02-26T03:25:25	PlanStart	 	 	 	plan-23
+2016-02-26T03:32:47	TaskAssign	plan-23	 	 	 
+2016-02-26T03:37:23	TaskExecute	plan-23	 	 	 
+2016-02-26T03:41:21	TaskComplete	plan-23	 	 	 
+2016-02-26T03:42:48	TaskEvaluate	plan-23	 	 	 
+2016-02-26T03:46:26	TaskClose	plan-23	 	 	 
+2016-02-26T03:52:51	PlanFinish	 	 	 	plan-23
+2016-02-26T04:00:52	PlanClose	 	 	 	plan-23
+2016-02-26T04:04:57	IncidentSolve	 	 	 	 
+2016-02-26T04:12:08	IncidentConfirm	 	 	 	 
+2016-02-26T04:14:37	IncidentClose	 	 	 	 
+2016-02-26T04:15:53	IncidentRegister	 	 	 	 
+2016-02-26T04:17:54	IncidentAssign	 	 	 	 
+2016-02-26T04:23:20	IncidentHandle	 	 	 	 
+2016-02-26T04:29:52	PlanDraft	 	 	 	plan-24
+2016-02-26T04:36:50	TaskCreate	plan-24	 	 	 
+2016-02-26T04:41:54	PlanStart	 	 	 	plan-24
+2016-02-26T04:47:05	PlanCancel	 	 	 	plan-24
+2016-02-26T04:52:14	PlanClose	 	 	 	plan-24
+2016-02-26T05:00:34	IncidentSolve	 	 	 	 
+2016-02-26T05:08:48	IncidentConfirm	 	 	 	 
+2016-02-26T05:14:45	IncidentClose	 	 	 	 
+2016-02-26T05:19:08	IncidentRegister	 	 	 	 
+2016-02-26T05:25:44	IncidentAssign	 	 	 	 
+2016-02-26T05:28:23	IncidentHandle	 	 	 	 
+2016-02-26T05:33:45	PlanDraft	 	 	 	plan-25
+2016-02-26T05:43:46	TaskCreate	plan-25	 	 	 
+2016-02-26T05:51:45	PlanStart	 	 	 	plan-25
+2016-02-26T06:00:46	TaskAssign	plan-25	 	 	 
+2016-02-26T06:05:14	TaskHangOn	plan-25	 	 	 
+2016-02-26T06:12:02	TaskAssign	plan-25	 	 	 
+2016-02-26T06:18:55	TaskExecute	plan-25	 	 	 
+2016-02-26T06:21:56	TaskCancel	plan-25	 	 	 
+2016-02-26T06:25:39	TaskClose	plan-25	 	 	 
+2016-02-26T06:33:10	PlanFinish	 	 	 	plan-25
+2016-02-26T06:40:47	PlanClose	 	 	 	plan-25
+2016-02-26T06:42:46	IncidentSolve	 	 	 	 
+2016-02-26T06:49:01	IncidentConfirm	 	 	 	 
+2016-02-26T06:54:25	IncidentClose	 	 	 	 
+2016-02-26T06:57:20	IncidentRegister	 	 	 	 
+2016-02-26T07:02:32	IncidentAssign	 	 	 	 
+2016-02-26T07:11:10	IncidentHandle	 	 	 	 
+2016-02-26T07:20:43	PlanDraft	 	 	 	plan-26
+2016-02-26T07:28:14	TaskCreate	plan-26	 	 	 
+2016-02-26T07:33:19	PlanStart	 	 	 	plan-26
+2016-02-26T07:40:51	TaskAssign	plan-26	 	 	 
+2016-02-26T07:45:06	TaskExecute	plan-26	 	 	 
+2016-02-26T07:46:57	TaskComplete	plan-26	 	 	 
+2016-02-26T07:54:14	TaskEvaluate	plan-26	 	 	 
+2016-02-26T07:58:53	TaskClose	plan-26	 	 	 
+2016-02-26T08:05:03	PlanFinish	 	 	 	plan-26
+2016-02-26T08:06:58	PlanClose	 	 	 	plan-26
+2016-02-26T08:13:16	IncidentSolve	 	 	 	 
+2016-02-26T08:19:01	IncidentConfirm	 	 	 	 
+2016-02-26T08:21:31	IncidentClose	 	 	 	 
+2016-02-26T08:29:50	IncidentRegister	 	 	 	 
+2016-02-26T08:32:53	IncidentAssign	 	 	 	 
+2016-02-26T08:37:40	IncidentHandle	 	 	 	 
+2016-02-26T08:45:09	PlanDraft	 	 	 	plan-27
+2016-02-26T08:53:17	TaskCreate	plan-27	 	 	 
+2016-02-26T08:58:54	PlanStart	 	 	 	plan-27
+2016-02-26T09:11:03	TaskAssign	plan-27	 	 	 
+2016-02-26T09:16:15	TaskExecute	plan-27	 	 	 
+2016-02-26T09:23:30	TaskCancel	plan-27	 	 	 
+2016-02-26T09:27:46	TaskClose	plan-27	 	 	 
+2016-02-26T09:31:52	PlanFinish	 	 	 	plan-27
+2016-02-26T09:43:30	PlanClose	 	 	 	plan-27
+2016-02-26T09:47:50	IncidentSolve	 	 	 	 
+2016-02-26T09:53:01	IncidentConfirm	 	 	 	 
+2016-02-26T09:57:40	IncidentClose	 	 	 	 
+2016-02-26T10:06:35	IncidentRegister	 	 	 	 
+2016-02-26T10:12:34	IncidentAssign	 	 	 	 
+2016-02-26T10:21:01	IncidentHandle	 	 	 	 
+2016-02-26T10:27:15	PlanDraft	 	 	 	plan-28
+2016-02-26T10:32:41	TaskCreate	plan-28	 	 	 
+2016-02-26T10:38:09	PlanStart	 	 	 	plan-28
+2016-02-26T10:42:55	TaskAssign	plan-28	 	 	 
+2016-02-26T10:47:05	TaskExecute	plan-28	 	 	 
+2016-02-26T10:52:25	TaskCancel	plan-28	 	 	 
+2016-02-26T10:57:39	TaskClose	plan-28	 	 	 
+2016-02-26T11:05:29	PlanFinish	 	 	 	plan-28
+2016-02-26T11:13:30	PlanClose	 	 	 	plan-28
+2016-02-26T11:17:44	IncidentSolve	 	 	 	 
+2016-02-26T11:23:43	IncidentConfirm	 	 	 	 
+2016-02-26T11:27:39	IncidentClose	 	 	 	 
+2016-02-26T11:34:50	IncidentRegister	 	 	 	 
+2016-02-26T11:39:59	IncidentAssign	 	 	 	 
+2016-02-26T11:50:15	IncidentHandle	 	 	 	 
+2016-02-26T11:53:11	PlanDraft	 	 	 	plan-29
+2016-02-26T11:58:27	TaskCreate	plan-29	 	 	 
+2016-02-26T12:01:58	PlanStart	 	 	 	plan-29
+2016-02-26T12:04:58	TaskAssign	plan-29	 	 	 
+2016-02-26T12:08:51	TaskExecute	plan-29	 	 	 
+2016-02-26T12:16:20	TaskComplete	plan-29	 	 	 
+2016-02-26T12:21:33	TaskEvaluate	plan-29	 	 	 
+2016-02-26T12:28:58	TaskClose	plan-29	 	 	 
+2016-02-26T12:36:09	PlanFinish	 	 	 	plan-29
+2016-02-26T12:48:42	PlanClose	 	 	 	plan-29
+2016-02-26T12:54:40	IncidentSolve	 	 	 	 
+2016-02-26T12:59:02	IncidentConfirm	 	 	 	 
+2016-02-26T13:01:00	IncidentClose	 	 	 	 
+2016-02-26T13:08:11	IncidentRegister	 	 	 	 
+2016-02-26T13:13:42	IncidentAssign	 	 	 	 
+2016-02-26T13:19:17	IncidentHandle	 	 	 	 
+2016-02-26T13:27:14	PlanDraft	 	 	 	plan-30
+2016-02-26T13:36:09	TaskCreate	plan-30	 	 	 
+2016-02-26T13:39:55	PlanStart	 	 	 	plan-30
+2016-02-26T13:46:38	PlanCancel	 	 	 	plan-30
+2016-02-26T13:48:20	PlanClose	 	 	 	plan-30
+2016-02-26T13:54:21	IncidentSolve	 	 	 	 
+2016-02-26T13:59:45	IncidentConfirm	 	 	 	 
+2016-02-26T14:06:51	IncidentClose	 	 	 	 
+2016-02-26T14:12:40	IncidentRegister	 	 	 	 
+2016-02-26T14:20:40	IncidentAssign	 	 	 	 
+2016-02-26T14:22:31	IncidentHandle	 	 	 	 
+2016-02-26T14:30:06	PlanDraft	 	 	 	plan-31
+2016-02-26T14:34:18	TaskCreate	plan-31	 	 	 
+2016-02-26T14:43:04	PlanStart	 	 	 	plan-31
+2016-02-26T14:47:25	TaskAssign	plan-31	 	 	 
+2016-02-26T14:51:52	TaskExecute	plan-31	 	 	 
+2016-02-26T14:56:35	TaskComplete	plan-31	 	 	 
+2016-02-26T15:04:21	TaskEvaluate	plan-31	 	 	 
+2016-02-26T15:11:30	TaskClose	plan-31	 	 	 
+2016-02-26T15:18:22	PlanFinish	 	 	 	plan-31
+2016-02-26T15:26:26	PlanClose	 	 	 	plan-31
+2016-02-26T15:35:36	IncidentSolve	 	 	 	 
+2016-02-26T15:41:41	IncidentConfirm	 	 	 	 
+2016-02-26T15:44:09	IncidentClose	 	 	 	 
+2016-02-26T15:52:10	IncidentRegister	 	 	 	 
+2016-02-26T15:58:03	IncidentAssign	 	 	 	 
+2016-02-26T16:03:57	IncidentHandle	 	 	 	 
+2016-02-26T16:08:39	PlanDraft	 	 	 	plan-32
+2016-02-26T16:11:17	TaskCreate	plan-32	 	 	 
+2016-02-26T16:18:10	PlanStart	 	 	 	plan-32
+2016-02-26T16:26:39	TaskAssign	plan-32	 	 	 
+2016-02-26T16:33:59	TaskExecute	plan-32	 	 	 
+2016-02-26T16:41:05	TaskComplete	plan-32	 	 	 
+2016-02-26T16:46:12	TaskEvaluate	plan-32	 	 	 
+2016-02-26T16:51:47	TaskClose	plan-32	 	 	 
+2016-02-26T16:58:24	PlanFinish	 	 	 	plan-32
+2016-02-26T17:01:45	PlanClose	 	 	 	plan-32
+2016-02-26T17:06:25	IncidentSolve	 	 	 	 
+2016-02-26T17:08:25	IncidentConfirm	 	 	 	 
+2016-02-26T17:11:52	IncidentClose	 	 	 	 
+2016-02-26T17:18:31	IncidentRegister	 	 	 	 
+2016-02-26T17:26:19	IncidentAssign	 	 	 	 
+2016-02-26T17:36:36	IncidentHandle	 	 	 	 
+2016-02-26T17:40:23	IncidentHangOn	 	 	 	 
+2016-02-26T17:49:28	IncidentHandle	 	 	 	 
+2016-02-26T17:53:33	PlanDraft	 	 	 	plan-33
+2016-02-26T17:57:51	TaskCreate	plan-33	 	 	 
+2016-02-26T18:00:39	PlanStart	 	 	 	plan-33
+2016-02-26T18:11:36	TaskAssign	plan-33	 	 	 
+2016-02-26T18:18:48	TaskExecute	plan-33	 	 	 
+2016-02-26T18:24:55	TaskCancel	plan-33	 	 	 
+2016-02-26T18:34:16	TaskClose	plan-33	 	 	 
+2016-02-26T18:40:46	PlanFinish	 	 	 	plan-33
+2016-02-26T18:46:51	PlanClose	 	 	 	plan-33
+2016-02-26T18:52:04	IncidentSolve	 	 	 	 
+2016-02-26T19:00:39	IncidentConfirm	 	 	 	 
+2016-02-26T19:05:37	IncidentClose	 	 	 	 
+2016-02-26T19:10:44	IncidentRegister	 	 	 	 
+2016-02-26T19:17:48	IncidentAssign	 	 	 	 
+2016-02-26T19:23:20	IncidentHandle	 	 	 	 
+2016-02-26T19:26:01	PlanDraft	 	 	 	plan-34
+2016-02-26T19:33:39	TaskCreate	plan-34	 	 	 
+2016-02-26T19:42:53	PlanStart	 	 	 	plan-34
+2016-02-26T19:45:40	TaskAssign	plan-34	 	 	 
+2016-02-26T19:51:10	TaskExecute	plan-34	 	 	 
+2016-02-26T19:57:27	TaskComplete	plan-34	 	 	 
+2016-02-26T20:03:21	TaskEvaluate	plan-34	 	 	 
+2016-02-26T20:11:06	TaskClose	plan-34	 	 	 
+2016-02-26T20:14:02	PlanFinish	 	 	 	plan-34
+2016-02-26T20:20:16	PlanClose	 	 	 	plan-34
+2016-02-26T20:26:35	IncidentSolve	 	 	 	 
+2016-02-26T20:33:31	IncidentConfirm	 	 	 	 
+2016-02-26T20:41:47	IncidentClose	 	 	 	 
+2016-02-26T20:47:03	IncidentRegister	 	 	 	 
+2016-02-26T20:48:46	IncidentAssign	 	 	 	 
+2016-02-26T20:57:08	IncidentHandle	 	 	 	 
+2016-02-26T21:06:29	PlanDraft	 	 	 	plan-35
+2016-02-26T21:13:35	TaskCreate	plan-35	 	 	 
+2016-02-26T21:15:56	PlanStart	 	 	 	plan-35
+2016-02-26T21:20:22	TaskAssign	plan-35	 	 	 
+2016-02-26T21:22:10	TaskExecute	plan-35	 	 	 
+2016-02-26T21:30:14	TaskComplete	plan-35	 	 	 
+2016-02-26T21:36:24	TaskEvaluate	plan-35	 	 	 
+2016-02-26T21:43:29	TaskClose	plan-35	 	 	 
+2016-02-26T21:49:26	PlanFinish	 	 	 	plan-35
+2016-02-26T21:59:21	PlanClose	 	 	 	plan-35
+2016-02-26T22:05:09	IncidentSolve	 	 	 	 
+2016-02-26T22:09:07	IncidentConfirm	 	 	 	 
+2016-02-26T22:12:18	IncidentClose	 	 	 	 
+2016-02-26T22:15:15	IncidentRegister	 	 	 	 
+2016-02-26T22:19:31	IncidentAssign	 	 	 	 
+2016-02-26T22:26:43	IncidentHandle	 	 	 	 
+2016-02-26T22:33:54	PlanDraft	 	 	 	plan-36
+2016-02-26T22:40:15	TaskCreate	plan-36	 	 	 
+2016-02-26T22:45:55	PlanStart	 	 	 	plan-36
+2016-02-26T22:49:21	TaskAssign	plan-36	 	 	 
+2016-02-26T22:55:34	TaskHangOn	plan-36	 	 	 
+2016-02-26T23:05:05	TaskAssign	plan-36	 	 	 
+2016-02-26T23:12:13	TaskExecute	plan-36	 	 	 
+2016-02-26T23:19:50	TaskComplete	plan-36	 	 	 
+2016-02-26T23:30:05	TaskEvaluate	plan-36	 	 	 
+2016-02-26T23:37:25	TaskClose	plan-36	 	 	 
+2016-02-26T23:44:34	PlanFinish	 	 	 	plan-36
+2016-02-26T23:51:15	PlanClose	 	 	 	plan-36
+2016-02-26T23:55:30	IncidentSolve	 	 	 	 
+2016-02-27T00:06:03	IncidentConfirm	 	 	 	 
+2016-02-27T00:13:00	IncidentClose	 	 	 	 
+2016-02-27T00:20:07	IncidentRegister	 	 	 	 
+2016-02-27T00:27:29	IncidentAssign	 	 	 	 
+2016-02-27T00:30:18	IncidentHandle	 	 	 	 
+2016-02-27T00:36:47	PlanDraft	 	 	 	plan-37
+2016-02-27T00:47:24	TaskCreate	plan-37	 	 	 
+2016-02-27T00:53:42	PlanStart	 	 	 	plan-37
+2016-02-27T01:04:03	TaskAssign	plan-37	 	 	 
+2016-02-27T01:06:54	TaskExecute	plan-37	 	 	 
+2016-02-27T01:12:53	TaskDispatch	plan-37	 	 	 
+2016-02-27T01:17:57	TaskExecute	plan-37	 	 	 
+2016-02-27T01:26:51	PlanFinish	 	 	 	plan-37
+2016-02-27T01:29:50	PlanClose	 	 	 	plan-37
+2016-02-27T01:33:00	IncidentSolve	 	 	 	 
+2016-02-27T01:39:32	IncidentConfirm	 	 	 	 
+2016-02-27T01:42:26	IncidentClose	 	 	 	 
+2016-02-27T01:49:47	IncidentRegister	 	 	 	 
+2016-02-27T01:52:53	IncidentAssign	 	 	 	 
+2016-02-27T02:01:07	IncidentHandle	 	 	 	 
+2016-02-27T02:08:18	PlanDraft	 	 	 	plan-38
+2016-02-27T02:13:04	TaskCreate	plan-38	 	 	 
+2016-02-27T02:22:26	PlanStart	 	 	 	plan-38
+2016-02-27T02:32:19	TaskAssign	plan-38	 	 	 
+2016-02-27T02:35:02	TaskExecute	plan-38	 	 	 
+2016-02-27T02:39:45	TaskComplete	plan-38	 	 	 
+2016-02-27T02:51:31	TaskEvaluate	plan-38	 	 	 
+2016-02-27T02:56:42	TaskClose	plan-38	 	 	 
+2016-02-27T02:58:14	PlanFinish	 	 	 	plan-38
+2016-02-27T03:06:10	PlanClose	 	 	 	plan-38
+2016-02-27T03:10:40	IncidentSolve	 	 	 	 
+2016-02-27T03:15:35	IncidentConfirm	 	 	 	 
+2016-02-27T03:22:40	IncidentClose	 	 	 	 
+2016-02-27T03:30:28	IncidentRegister	 	 	 	 
+2016-02-27T03:34:58	IncidentAssign	 	 	 	 
+2016-02-27T03:41:21	IncidentHandle	 	 	 	 
+2016-02-27T03:46:07	PlanDraft	 	 	 	plan-39
+2016-02-27T03:56:51	TaskCreate	plan-39	 	 	 
+2016-02-27T03:58:29	PlanStart	 	 	 	plan-39
+2016-02-27T04:02:20	TaskAssign	plan-39	 	 	 
+2016-02-27T04:06:55	TaskHangOn	plan-39	 	 	 
+2016-02-27T04:12:28	TaskAssign	plan-39	 	 	 
+2016-02-27T04:19:14	TaskExecute	plan-39	 	 	 
+2016-02-27T04:21:52	TaskComplete	plan-39	 	 	 
+2016-02-27T04:24:39	TaskEvaluate	plan-39	 	 	 
+2016-02-27T04:29:09	TaskClose	plan-39	 	 	 
+2016-02-27T04:32:31	PlanFinish	 	 	 	plan-39
+2016-02-27T04:38:28	PlanClose	 	 	 	plan-39
+2016-02-27T04:42:53	IncidentSolve	 	 	 	 
+2016-02-27T04:46:53	IncidentConfirm	 	 	 	 
+2016-02-27T04:54:19	IncidentClose	 	 	 	 
+2016-02-27T05:00:25	IncidentRegister	 	 	 	 
+2016-02-27T05:07:58	IncidentAssign	 	 	 	 
+2016-02-27T05:15:55	IncidentHandle	 	 	 	 
+2016-02-27T05:22:30	IncidentHangOn	 	 	 	 
+2016-02-27T05:30:09	IncidentHandle	 	 	 	 
+2016-02-27T05:37:22	PlanDraft	 	 	 	plan-40
+2016-02-27T05:45:08	TaskCreate	plan-40	 	 	 
+2016-02-27T05:48:02	PlanStart	 	 	 	plan-40
+2016-02-27T05:49:49	TaskAssign	plan-40	 	 	 
+2016-02-27T05:55:56	TaskExecute	plan-40	 	 	 
+2016-02-27T06:05:04	TaskComplete	plan-40	 	 	 
+2016-02-27T06:09:18	TaskEvaluate	plan-40	 	 	 
+2016-02-27T06:13:55	TaskClose	plan-40	 	 	 
+2016-02-27T06:24:54	PlanFinish	 	 	 	plan-40
+2016-02-27T06:29:34	PlanClose	 	 	 	plan-40
+2016-02-27T06:36:18	IncidentSolve	 	 	 	 
+2016-02-27T06:42:02	IncidentConfirm	 	 	 	 
+2016-02-27T06:50:40	IncidentClose	 	 	 	 
+2016-02-27T06:57:47	IncidentRegister	 	 	 	 
+2016-02-27T07:07:03	IncidentAssign	 	 	 	 
+2016-02-27T07:10:43	IncidentHandle	 	 	 	 
+2016-02-27T07:16:19	PlanDraft	 	 	 	plan-41
+2016-02-27T07:27:22	TaskCreate	plan-41	 	 	 
+2016-02-27T07:38:03	PlanStart	 	 	 	plan-41
+2016-02-27T07:43:09	TaskAssign	plan-41	 	 	 
+2016-02-27T07:47:39	TaskHangOn	plan-41	 	 	 
+2016-02-27T07:56:35	TaskAssign	plan-41	 	 	 
+2016-02-27T08:03:38	TaskExecute	plan-41	 	 	 
+2016-02-27T08:08:33	TaskComplete	plan-41	 	 	 
+2016-02-27T08:13:48	TaskEvaluate	plan-41	 	 	 
+2016-02-27T08:18:40	TaskClose	plan-41	 	 	 
+2016-02-27T08:31:19	PlanFinish	 	 	 	plan-41
+2016-02-27T08:38:30	PlanClose	 	 	 	plan-41
+2016-02-27T08:47:34	IncidentSolve	 	 	 	 
+2016-02-27T08:51:02	IncidentConfirm	 	 	 	 
+2016-02-27T08:53:22	IncidentClose	 	 	 	 
+2016-02-27T09:01:50	IncidentRegister	 	 	 	 
+2016-02-27T09:07:40	IncidentAssign	 	 	 	 
+2016-02-27T09:10:59	IncidentHandle	 	 	 	 
+2016-02-27T09:16:41	PlanDraft	 	 	 	plan-42
+2016-02-27T09:18:37	TaskCreate	plan-42	 	 	 
+2016-02-27T09:29:47	PlanStart	 	 	 	plan-42
+2016-02-27T09:34:21	TaskAssign	plan-42	 	 	 
+2016-02-27T09:46:38	TaskExecute	plan-42	 	 	 
+2016-02-27T09:50:55	TaskDispatch	plan-42	 	 	 
+2016-02-27T09:59:08	TaskExecute	plan-42	 	 	 
+2016-02-27T10:06:21	PlanFinish	 	 	 	plan-42
+2016-02-27T10:14:13	PlanClose	 	 	 	plan-42
+2016-02-27T10:19:00	IncidentSolve	 	 	 	 
+2016-02-27T10:25:59	IncidentConfirm	 	 	 	 
+2016-02-27T10:31:11	IncidentClose	 	 	 	 
+2016-02-27T10:37:41	IncidentRegister	 	 	 	 
+2016-02-27T10:43:32	IncidentAssign	 	 	 	 
+2016-02-27T10:45:15	IncidentHandle	 	 	 	 
+2016-02-27T10:51:14	PlanDraft	 	 	 	plan-43
+2016-02-27T10:55:41	TaskCreate	plan-43	 	 	 
+2016-02-27T11:05:30	PlanStart	 	 	 	plan-43
+2016-02-27T11:07:10	TaskAssign	plan-43	 	 	 
+2016-02-27T11:12:45	TaskExecute	plan-43	 	 	 
+2016-02-27T11:19:20	TaskComplete	plan-43	 	 	 
+2016-02-27T11:21:14	TaskEvaluate	plan-43	 	 	 
+2016-02-27T11:24:04	TaskClose	plan-43	 	 	 
+2016-02-27T11:31:25	PlanFinish	 	 	 	plan-43
+2016-02-27T11:34:45	PlanClose	 	 	 	plan-43
+2016-02-27T11:39:38	IncidentSolve	 	 	 	 
+2016-02-27T11:47:33	IncidentConfirm	 	 	 	 
+2016-02-27T11:59:28	IncidentClose	 	 	 	 
+2016-02-27T12:05:16	IncidentRegister	 	 	 	 
+2016-02-27T12:14:43	IncidentAssign	 	 	 	 
+2016-02-27T12:18:54	IncidentHandle	 	 	 	 
+2016-02-27T12:21:53	PlanDraft	 	 	 	plan-44
+2016-02-27T12:29:46	TaskCreate	plan-44	 	 	 
+2016-02-27T12:34:41	PlanStart	 	 	 	plan-44
+2016-02-27T12:40:46	TaskAssign	plan-44	 	 	 
+2016-02-27T12:43:48	TaskExecute	plan-44	 	 	 
+2016-02-27T12:48:16	TaskComplete	plan-44	 	 	 
+2016-02-27T12:56:07	TaskEvaluate	plan-44	 	 	 
+2016-02-27T13:05:32	TaskClose	plan-44	 	 	 
+2016-02-27T13:11:41	PlanFinish	 	 	 	plan-44
+2016-02-27T13:15:45	PlanClose	 	 	 	plan-44
+2016-02-27T13:20:17	IncidentSolve	 	 	 	 
+2016-02-27T13:25:53	IncidentConfirm	 	 	 	 
+2016-02-27T13:29:46	IncidentClose	 	 	 	 
+2016-02-27T13:33:13	IncidentRegister	 	 	 	 
+2016-02-27T13:39:45	IncidentAssign	 	 	 	 
+2016-02-27T13:46:37	IncidentHandle	 	 	 	 
+2016-02-27T13:52:11	PlanDraft	 	 	 	plan-45
+2016-02-27T13:56:27	TaskCreate	plan-45	 	 	 
+2016-02-27T14:02:43	PlanStart	 	 	 	plan-45
+2016-02-27T14:09:30	TaskAssign	plan-45	 	 	 
+2016-02-27T14:16:40	TaskExecute	plan-45	 	 	 
+2016-02-27T14:21:54	TaskComplete	plan-45	 	 	 
+2016-02-27T14:28:17	TaskEvaluate	plan-45	 	 	 
+2016-02-27T14:34:50	TaskClose	plan-45	 	 	 
+2016-02-27T14:40:23	PlanFinish	 	 	 	plan-45
+2016-02-27T14:47:33	PlanClose	 	 	 	plan-45
+2016-02-27T14:55:39	IncidentSolve	 	 	 	 
+2016-02-27T15:01:07	IncidentConfirm	 	 	 	 
+2016-02-27T15:05:14	IncidentClose	 	 	 	 
+2016-02-27T15:06:54	IncidentRegister	 	 	 	 
+2016-02-27T15:11:09	IncidentAssign	 	 	 	 
+2016-02-27T15:20:59	IncidentHandle	 	 	 	 
+2016-02-27T15:28:26	PlanDraft	 	 	 	plan-46
+2016-02-27T15:35:38	TaskCreate	plan-46	 	 	 
+2016-02-27T15:40:43	PlanStart	 	 	 	plan-46
+2016-02-27T15:44:46	TaskAssign	plan-46	 	 	 
+2016-02-27T15:53:48	TaskExecute	plan-46	 	 	 
+2016-02-27T15:59:28	TaskComplete	plan-46	 	 	 
+2016-02-27T16:02:39	TaskEvaluate	plan-46	 	 	 
+2016-02-27T16:08:38	TaskClose	plan-46	 	 	 
+2016-02-27T16:13:23	PlanFinish	 	 	 	plan-46
+2016-02-27T16:17:37	PlanClose	 	 	 	plan-46
+2016-02-27T16:21:49	IncidentSolve	 	 	 	 
+2016-02-27T16:32:05	IncidentConfirm	 	 	 	 
+2016-02-27T16:41:12	IncidentClose	 	 	 	 
+2016-02-27T16:48:41	IncidentRegister	 	 	 	 
+2016-02-27T16:53:20	IncidentAssign	 	 	 	 
+2016-02-27T16:58:14	IncidentHandle	 	 	 	 
+2016-02-27T17:05:46	IncidentHangOn	 	 	 	 
+2016-02-27T17:14:22	IncidentHandle	 	 	 	 
+2016-02-27T17:17:00	PlanDraft	 	 	 	plan-47
+2016-02-27T17:19:40	TaskCreate	plan-47	 	 	 
+2016-02-27T17:27:22	PlanStart	 	 	 	plan-47
+2016-02-27T17:30:54	TaskAssign	plan-47	 	 	 
+2016-02-27T17:35:55	TaskExecute	plan-47	 	 	 
+2016-02-27T17:40:15	TaskDispatch	plan-47	 	 	 
+2016-02-27T17:44:10	TaskExecute	plan-47	 	 	 
+2016-02-27T17:49:17	PlanFinish	 	 	 	plan-47
+2016-02-27T17:50:34	PlanClose	 	 	 	plan-47
+2016-02-27T17:54:45	IncidentSolve	 	 	 	 
+2016-02-27T18:01:18	IncidentConfirm	 	 	 	 
+2016-02-27T18:10:19	IncidentClose	 	 	 	 
+2016-02-27T18:12:05	IncidentRegister	 	 	 	 
+2016-02-27T18:14:46	IncidentAssign	 	 	 	 
+2016-02-27T18:16:36	IncidentHandle	 	 	 	 
+2016-02-27T18:20:15	PlanDraft	 	 	 	plan-48
+2016-02-27T18:25:33	TaskCreate	plan-48	 	 	 
+2016-02-27T18:29:21	PlanStart	 	 	 	plan-48
+2016-02-27T18:32:14	TaskAssign	plan-48	 	 	 
+2016-02-27T18:35:41	TaskExecute	plan-48	 	 	 
+2016-02-27T18:45:11	TaskCancel	plan-48	 	 	 
+2016-02-27T18:52:28	TaskClose	plan-48	 	 	 
+2016-02-27T19:02:27	PlanFinish	 	 	 	plan-48
+2016-02-27T19:05:15	PlanClose	 	 	 	plan-48
+2016-02-27T19:13:12	IncidentSolve	 	 	 	 
+2016-02-27T19:25:11	IncidentConfirm	 	 	 	 
+2016-02-27T19:34:56	IncidentClose	 	 	 	 
+2016-02-27T19:43:32	IncidentRegister	 	 	 	 
+2016-02-27T19:49:34	IncidentAssign	 	 	 	 
+2016-02-27T19:58:36	IncidentHandle	 	 	 	 
+2016-02-27T20:02:32	PlanDraft	 	 	 	plan-49
+2016-02-27T20:10:04	TaskCreate	plan-49	 	 	 
+2016-02-27T20:16:20	PlanStart	 	 	 	plan-49
+2016-02-27T20:23:28	TaskAssign	plan-49	 	 	 
+2016-02-27T20:25:36	TaskHangOn	plan-49	 	 	 
+2016-02-27T20:32:56	TaskAssign	plan-49	 	 	 
+2016-02-27T20:37:36	TaskExecute	plan-49	 	 	 
+2016-02-27T20:46:03	TaskDispatch	plan-49	 	 	 
+2016-02-27T20:54:54	TaskExecute	plan-49	 	 	 
+2016-02-27T21:04:34	PlanFinish	 	 	 	plan-49
+2016-02-27T21:14:15	PlanClose	 	 	 	plan-49
+2016-02-27T21:21:29	IncidentSolve	 	 	 	 
+2016-02-27T21:29:06	IncidentConfirm	 	 	 	 
+2016-02-27T21:32:07	IncidentClose	 	 	 	 
+2016-02-27T21:33:42	IncidentRegister	 	 	 	 
+2016-02-27T21:44:05	IncidentAssign	 	 	 	 
+2016-02-27T21:53:11	IncidentHandle	 	 	 	 
+2016-02-27T22:00:09	PlanDraft	 	 	 	plan-50
+2016-02-27T22:04:31	TaskCreate	plan-50	 	 	 
+2016-02-27T22:07:24	PlanStart	 	 	 	plan-50
+2016-02-27T22:11:38	TaskAssign	plan-50	 	 	 
+2016-02-27T22:19:58	TaskExecute	plan-50	 	 	 
+2016-02-27T22:30:50	TaskComplete	plan-50	 	 	 
+2016-02-27T22:33:18	TaskEvaluate	plan-50	 	 	 
+2016-02-27T22:42:04	TaskClose	plan-50	 	 	 
+2016-02-27T22:47:52	PlanFinish	 	 	 	plan-50
+2016-02-27T22:56:12	PlanClose	 	 	 	plan-50
+2016-02-27T23:04:16	IncidentSolve	 	 	 	 
+2016-02-27T23:10:41	IncidentConfirm	 	 	 	 
+2016-02-27T23:14:47	IncidentClose	 	 	 	 
+2016-02-27T23:16:37	IncidentRegister	 	 	 	 
+2016-02-27T23:22:40	IncidentAssign	 	 	 	 
+2016-02-27T23:29:59	IncidentHandle	 	 	 	 
+2016-02-27T23:35:14	IncidentHangOn	 	 	 	 
+2016-02-27T23:36:40	IncidentHandle	 	 	 	 
+2016-02-27T23:40:35	PlanDraft	 	 	 	plan-51
+2016-02-27T23:47:18	TaskCreate	plan-51	 	 	 
+2016-02-27T23:59:06	PlanStart	 	 	 	plan-51
+2016-02-28T00:03:15	TaskAssign	plan-51	 	 	 
+2016-02-28T00:11:29	TaskExecute	plan-51	 	 	 
+2016-02-28T00:18:54	TaskComplete	plan-51	 	 	 
+2016-02-28T00:24:18	TaskEvaluate	plan-51	 	 	 
+2016-02-28T00:32:42	TaskClose	plan-51	 	 	 
+2016-02-28T00:38:11	PlanFinish	 	 	 	plan-51
+2016-02-28T00:43:13	PlanClose	 	 	 	plan-51
+2016-02-28T00:45:37	IncidentSolve	 	 	 	 
+2016-02-28T00:52:51	IncidentConfirm	 	 	 	 
+2016-02-28T00:58:02	IncidentClose	 	 	 	 
+2016-02-28T01:06:12	IncidentRegister	 	 	 	 
+2016-02-28T01:11:04	IncidentAssign	 	 	 	 
+2016-02-28T01:18:20	IncidentHandle	 	 	 	 
+2016-02-28T01:24:40	PlanDraft	 	 	 	plan-52
+2016-02-28T01:30:13	TaskCreate	plan-52	 	 	 
+2016-02-28T01:37:06	PlanStart	 	 	 	plan-52
+2016-02-28T01:44:24	PlanCancel	 	 	 	plan-52
+2016-02-28T01:49:59	PlanClose	 	 	 	plan-52
+2016-02-28T01:57:11	IncidentSolve	 	 	 	 
+2016-02-28T02:03:56	IncidentConfirm	 	 	 	 
+2016-02-28T02:06:29	IncidentClose	 	 	 	 
+2016-02-28T02:13:09	IncidentRegister	 	 	 	 
+2016-02-28T02:15:52	IncidentAssign	 	 	 	 
+2016-02-28T02:20:15	IncidentHandle	 	 	 	 
+2016-02-28T02:25:26	IncidentHangOn	 	 	 	 
+2016-02-28T02:29:59	IncidentHandle	 	 	 	 
+2016-02-28T02:36:51	PlanDraft	 	 	 	plan-53
+2016-02-28T02:42:24	TaskCreate	plan-53	 	 	 
+2016-02-28T02:48:39	PlanStart	 	 	 	plan-53
+2016-02-28T02:55:59	TaskAssign	plan-53	 	 	 
+2016-02-28T02:58:10	TaskExecute	plan-53	 	 	 
+2016-02-28T03:08:01	TaskComplete	plan-53	 	 	 
+2016-02-28T03:11:20	TaskEvaluate	plan-53	 	 	 
+2016-02-28T03:17:34	TaskClose	plan-53	 	 	 
+2016-02-28T03:23:30	PlanFinish	 	 	 	plan-53
+2016-02-28T03:35:23	PlanClose	 	 	 	plan-53
+2016-02-28T03:36:51	IncidentSolve	 	 	 	 
+2016-02-28T03:44:44	IncidentConfirm	 	 	 	 
+2016-02-28T03:48:22	IncidentClose	 	 	 	 
+2016-02-28T03:50:00	IncidentRegister	 	 	 	 
+2016-02-28T03:58:53	IncidentAssign	 	 	 	 
+2016-02-28T04:03:57	IncidentHandle	 	 	 	 
+2016-02-28T04:06:29	PlanDraft	 	 	 	plan-54
+2016-02-28T04:14:11	TaskCreate	plan-54	 	 	 
+2016-02-28T04:20:46	PlanStart	 	 	 	plan-54
+2016-02-28T04:26:34	TaskAssign	plan-54	 	 	 
+2016-02-28T04:29:47	TaskHangOn	plan-54	 	 	 
+2016-02-28T04:33:49	TaskAssign	plan-54	 	 	 
+2016-02-28T04:37:42	TaskExecute	plan-54	 	 	 
+2016-02-28T04:40:49	TaskComplete	plan-54	 	 	 
+2016-02-28T04:51:49	TaskEvaluate	plan-54	 	 	 
+2016-02-28T04:55:02	TaskClose	plan-54	 	 	 
+2016-02-28T04:57:37	PlanFinish	 	 	 	plan-54
+2016-02-28T05:00:30	PlanClose	 	 	 	plan-54
+2016-02-28T05:05:30	IncidentSolve	 	 	 	 
+2016-02-28T05:08:51	IncidentConfirm	 	 	 	 
+2016-02-28T05:14:02	IncidentClose	 	 	 	 
+2016-02-28T05:18:07	IncidentRegister	 	 	 	 
+2016-02-28T05:26:12	IncidentAssign	 	 	 	 
+2016-02-28T05:34:19	IncidentHandle	 	 	 	 
+2016-02-28T05:41:11	PlanDraft	 	 	 	plan-55
+2016-02-28T05:44:50	TaskCreate	plan-55	 	 	 
+2016-02-28T05:54:44	PlanStart	 	 	 	plan-55
+2016-02-28T06:01:18	TaskAssign	plan-55	 	 	 
+2016-02-28T06:12:46	TaskExecute	plan-55	 	 	 
+2016-02-28T06:16:48	TaskCancel	plan-55	 	 	 
+2016-02-28T06:26:46	TaskClose	plan-55	 	 	 
+2016-02-28T06:36:07	PlanFinish	 	 	 	plan-55
+2016-02-28T06:44:08	PlanClose	 	 	 	plan-55
+2016-02-28T06:50:26	IncidentSolve	 	 	 	 
+2016-02-28T06:57:02	IncidentConfirm	 	 	 	 
+2016-02-28T07:07:11	IncidentClose	 	 	 	 
+2016-02-28T07:11:00	IncidentRegister	 	 	 	 
+2016-02-28T07:19:08	IncidentAssign	 	 	 	 
+2016-02-28T07:27:45	IncidentHandle	 	 	 	 
+2016-02-28T07:33:13	PlanDraft	 	 	 	plan-56
+2016-02-28T07:36:29	TaskCreate	plan-56	 	 	 
+2016-02-28T07:40:44	PlanStart	 	 	 	plan-56
+2016-02-28T07:46:19	TaskAssign	plan-56	 	 	 
+2016-02-28T07:50:17	TaskExecute	plan-56	 	 	 
+2016-02-28T07:53:38	TaskCancel	plan-56	 	 	 
+2016-02-28T07:57:19	TaskClose	plan-56	 	 	 
+2016-02-28T08:02:14	PlanFinish	 	 	 	plan-56
+2016-02-28T08:04:11	PlanClose	 	 	 	plan-56
+2016-02-28T08:10:42	IncidentSolve	 	 	 	 
+2016-02-28T08:17:56	IncidentConfirm	 	 	 	 
+2016-02-28T08:22:36	IncidentClose	 	 	 	 
+2016-02-28T08:30:34	IncidentRegister	 	 	 	 
+2016-02-28T08:39:58	IncidentAssign	 	 	 	 
+2016-02-28T08:44:54	IncidentHandle	 	 	 	 
+2016-02-28T08:51:11	PlanDraft	 	 	 	plan-57
+2016-02-28T08:58:04	TaskCreate	plan-57	 	 	 
+2016-02-28T09:05:02	PlanStart	 	 	 	plan-57
+2016-02-28T09:12:56	TaskAssign	plan-57	 	 	 
+2016-02-28T09:16:30	TaskExecute	plan-57	 	 	 
+2016-02-28T09:19:28	TaskCancel	plan-57	 	 	 
+2016-02-28T09:25:18	TaskClose	plan-57	 	 	 
+2016-02-28T09:34:50	PlanFinish	 	 	 	plan-57
+2016-02-28T09:38:35	PlanClose	 	 	 	plan-57
+2016-02-28T09:44:54	IncidentSolve	 	 	 	 
+2016-02-28T09:56:13	IncidentConfirm	 	 	 	 
+2016-02-28T10:02:12	IncidentClose	 	 	 	 
+2016-02-28T10:11:45	IncidentRegister	 	 	 	 
+2016-02-28T10:19:45	IncidentAssign	 	 	 	 
+2016-02-28T10:21:51	IncidentHandle	 	 	 	 
+2016-02-28T10:27:26	PlanDraft	 	 	 	plan-58
+2016-02-28T10:30:54	TaskCreate	plan-58	 	 	 
+2016-02-28T10:36:27	PlanStart	 	 	 	plan-58
+2016-02-28T10:43:36	PlanCancel	 	 	 	plan-58
+2016-02-28T10:50:06	PlanClose	 	 	 	plan-58
+2016-02-28T11:00:49	IncidentSolve	 	 	 	 
+2016-02-28T11:09:46	IncidentConfirm	 	 	 	 
+2016-02-28T11:12:54	IncidentClose	 	 	 	 
+2016-02-28T11:19:59	IncidentRegister	 	 	 	 
+2016-02-28T11:24:04	IncidentAssign	 	 	 	 
+2016-02-28T11:27:33	IncidentHandle	 	 	 	 
+2016-02-28T11:29:31	PlanDraft	 	 	 	plan-59
+2016-02-28T11:34:48	TaskCreate	plan-59	 	 	 
+2016-02-28T11:38:09	PlanStart	 	 	 	plan-59
+2016-02-28T11:44:51	TaskAssign	plan-59	 	 	 
+2016-02-28T11:48:23	TaskHangOn	plan-59	 	 	 
+2016-02-28T11:53:49	TaskAssign	plan-59	 	 	 
+2016-02-28T12:03:22	TaskExecute	plan-59	 	 	 
+2016-02-28T12:07:52	TaskComplete	plan-59	 	 	 
+2016-02-28T12:12:56	TaskEvaluate	plan-59	 	 	 
+2016-02-28T12:17:43	TaskClose	plan-59	 	 	 
+2016-02-28T12:24:26	PlanFinish	 	 	 	plan-59
+2016-02-28T12:28:18	PlanClose	 	 	 	plan-59
+2016-02-28T12:34:57	IncidentSolve	 	 	 	 
+2016-02-28T12:39:04	IncidentConfirm	 	 	 	 
+2016-02-28T12:47:13	IncidentClose	 	 	 	 
+2016-02-28T12:56:24	IncidentRegister	 	 	 	 
+2016-02-28T13:04:31	IncidentAssign	 	 	 	 
+2016-02-28T13:14:26	IncidentHandle	 	 	 	 
+2016-02-28T13:20:39	PlanDraft	 	 	 	plan-60
+2016-02-28T13:29:34	TaskCreate	plan-60	 	 	 
+2016-02-28T13:33:43	PlanStart	 	 	 	plan-60
+2016-02-28T13:36:59	TaskAssign	plan-60	 	 	 
+2016-02-28T13:41:18	TaskExecute	plan-60	 	 	 
+2016-02-28T13:45:33	TaskComplete	plan-60	 	 	 
+2016-02-28T13:53:39	TaskEvaluate	plan-60	 	 	 
+2016-02-28T14:03:44	TaskClose	plan-60	 	 	 
+2016-02-28T14:10:52	PlanFinish	 	 	 	plan-60
+2016-02-28T14:16:04	PlanClose	 	 	 	plan-60
+2016-02-28T14:26:19	IncidentSolve	 	 	 	 
+2016-02-28T14:35:16	IncidentConfirm	 	 	 	 
+2016-02-28T14:42:41	IncidentClose	 	 	 	 
+2016-02-28T14:49:30	IncidentRegister	 	 	 	 
+2016-02-28T14:56:17	IncidentAssign	 	 	 	 
+2016-02-28T14:59:33	IncidentHandle	 	 	 	 
+2016-02-28T15:03:21	PlanDraft	 	 	 	plan-61
+2016-02-28T15:07:17	TaskCreate	plan-61	 	 	 
+2016-02-28T15:16:37	PlanStart	 	 	 	plan-61
+2016-02-28T15:22:29	TaskAssign	plan-61	 	 	 
+2016-02-28T15:27:41	TaskExecute	plan-61	 	 	 
+2016-02-28T15:31:28	TaskDispatch	plan-61	 	 	 
+2016-02-28T15:38:14	TaskExecute	plan-61	 	 	 
+2016-02-28T15:42:18	PlanFinish	 	 	 	plan-61
+2016-02-28T15:49:21	PlanClose	 	 	 	plan-61
+2016-02-28T15:54:01	IncidentSolve	 	 	 	 
+2016-02-28T15:57:45	IncidentConfirm	 	 	 	 
+2016-02-28T16:06:23	IncidentClose	 	 	 	 
+2016-02-28T16:15:03	IncidentRegister	 	 	 	 
+2016-02-28T16:23:12	IncidentAssign	 	 	 	 
+2016-02-28T16:29:42	IncidentHandle	 	 	 	 
+2016-02-28T16:36:32	PlanDraft	 	 	 	plan-62
+2016-02-28T16:43:24	TaskCreate	plan-62	 	 	 
+2016-02-28T16:47:44	PlanStart	 	 	 	plan-62
+2016-02-28T16:52:37	PlanCancel	 	 	 	plan-62
+2016-02-28T16:56:51	PlanClose	 	 	 	plan-62
+2016-02-28T17:00:41	IncidentSolve	 	 	 	 
+2016-02-28T17:03:52	IncidentConfirm	 	 	 	 
+2016-02-28T17:08:44	IncidentClose	 	 	 	 
+2016-02-28T17:11:24	IncidentRegister	 	 	 	 
+2016-02-28T17:20:01	IncidentAssign	 	 	 	 
+2016-02-28T17:25:23	IncidentHandle	 	 	 	 
+2016-02-28T17:32:00	IncidentHangOn	 	 	 	 
+2016-02-28T17:43:04	IncidentHandle	 	 	 	 
+2016-02-28T17:49:13	PlanDraft	 	 	 	plan-63
+2016-02-28T17:54:01	TaskCreate	plan-63	 	 	 
+2016-02-28T18:01:08	PlanStart	 	 	 	plan-63
+2016-02-28T18:09:33	TaskAssign	plan-63	 	 	 
+2016-02-28T18:15:03	TaskExecute	plan-63	 	 	 
+2016-02-28T18:23:43	TaskDispatch	plan-63	 	 	 
+2016-02-28T18:31:31	TaskExecute	plan-63	 	 	 
+2016-02-28T18:35:19	PlanFinish	 	 	 	plan-63
+2016-02-28T18:42:40	PlanClose	 	 	 	plan-63
+2016-02-28T18:52:08	IncidentSolve	 	 	 	 
+2016-02-28T18:59:18	IncidentConfirm	 	 	 	 
+2016-02-28T19:05:30	IncidentClose	 	 	 	 
+2016-02-28T19:12:57	IncidentRegister	 	 	 	 
+2016-02-28T19:19:42	IncidentAssign	 	 	 	 
+2016-02-28T19:22:54	IncidentHandle	 	 	 	 
+2016-02-28T19:28:45	PlanDraft	 	 	 	plan-64
+2016-02-28T19:34:20	TaskCreate	plan-64	 	 	 
+2016-02-28T19:42:02	PlanStart	 	 	 	plan-64
+2016-02-28T19:44:12	TaskAssign	plan-64	 	 	 
+2016-02-28T19:49:56	TaskExecute	plan-64	 	 	 
+2016-02-28T19:57:05	TaskComplete	plan-64	 	 	 
+2016-02-28T19:58:35	TaskEvaluate	plan-64	 	 	 
+2016-02-28T20:03:58	TaskClose	plan-64	 	 	 
+2016-02-28T20:06:44	PlanFinish	 	 	 	plan-64
+2016-02-28T20:13:49	PlanClose	 	 	 	plan-64
+2016-02-28T20:16:40	IncidentSolve	 	 	 	 
+2016-02-28T20:23:19	IncidentConfirm	 	 	 	 
+2016-02-28T20:26:04	IncidentClose	 	 	 	 
+2016-02-28T20:34:03	IncidentRegister	 	 	 	 
+2016-02-28T20:38:22	IncidentAssign	 	 	 	 
+2016-02-28T20:43:57	IncidentHandle	 	 	 	 
+2016-02-28T20:51:19	PlanDraft	 	 	 	plan-65
+2016-02-28T20:58:11	TaskCreate	plan-65	 	 	 
+2016-02-28T21:10:44	PlanStart	 	 	 	plan-65
+2016-02-28T21:14:00	TaskAssign	plan-65	 	 	 
+2016-02-28T21:19:09	TaskHangOn	plan-65	 	 	 
+2016-02-28T21:21:44	TaskAssign	plan-65	 	 	 
+2016-02-28T21:31:27	TaskExecute	plan-65	 	 	 
+2016-02-28T21:36:00	TaskComplete	plan-65	 	 	 
+2016-02-28T21:38:39	TaskEvaluate	plan-65	 	 	 
+2016-02-28T21:47:09	TaskClose	plan-65	 	 	 
+2016-02-28T21:52:04	PlanFinish	 	 	 	plan-65
+2016-02-28T21:56:11	PlanClose	 	 	 	plan-65
+2016-02-28T22:03:15	IncidentSolve	 	 	 	 
+2016-02-28T22:07:13	IncidentConfirm	 	 	 	 
+2016-02-28T22:13:34	IncidentClose	 	 	 	 
+2016-02-28T22:19:21	IncidentRegister	 	 	 	 
+2016-02-28T22:26:09	IncidentAssign	 	 	 	 
+2016-02-28T22:30:17	IncidentHandle	 	 	 	 
+2016-02-28T22:32:57	PlanDraft	 	 	 	plan-66
+2016-02-28T22:45:29	TaskCreate	plan-66	 	 	 
+2016-02-28T22:48:27	PlanStart	 	 	 	plan-66
+2016-02-28T22:55:35	TaskAssign	plan-66	 	 	 
+2016-02-28T23:01:43	TaskExecute	plan-66	 	 	 
+2016-02-28T23:06:16	TaskComplete	plan-66	 	 	 
+2016-02-28T23:08:34	TaskEvaluate	plan-66	 	 	 
+2016-02-28T23:12:52	TaskClose	plan-66	 	 	 
+2016-02-28T23:20:35	PlanFinish	 	 	 	plan-66
+2016-02-28T23:23:44	PlanClose	 	 	 	plan-66
+2016-02-28T23:29:11	IncidentSolve	 	 	 	 
+2016-02-28T23:32:07	IncidentConfirm	 	 	 	 
+2016-02-28T23:37:43	IncidentClose	 	 	 	 
+2016-02-28T23:44:59	IncidentRegister	 	 	 	 
+2016-02-28T23:56:19	IncidentAssign	 	 	 	 
+2016-02-29T00:06:50	IncidentHandle	 	 	 	 
+2016-02-29T00:18:14	PlanDraft	 	 	 	plan-67
+2016-02-29T00:27:07	TaskCreate	plan-67	 	 	 
+2016-02-29T00:33:03	PlanStart	 	 	 	plan-67
+2016-02-29T00:40:01	TaskAssign	plan-67	 	 	 
+2016-02-29T00:48:34	TaskExecute	plan-67	 	 	 
+2016-02-29T00:54:32	TaskComplete	plan-67	 	 	 
+2016-02-29T00:57:12	TaskEvaluate	plan-67	 	 	 
+2016-02-29T01:02:56	TaskClose	plan-67	 	 	 
+2016-02-29T01:09:48	PlanFinish	 	 	 	plan-67
+2016-02-29T01:15:58	PlanClose	 	 	 	plan-67
+2016-02-29T01:21:54	IncidentSolve	 	 	 	 
+2016-02-29T01:24:34	IncidentConfirm	 	 	 	 
+2016-02-29T01:32:06	IncidentClose	 	 	 	 
+2016-02-29T01:37:48	IncidentRegister	 	 	 	 
+2016-02-29T01:44:06	IncidentAssign	 	 	 	 
+2016-02-29T01:54:14	IncidentHandle	 	 	 	 
+2016-02-29T02:00:25	PlanDraft	 	 	 	plan-68
+2016-02-29T02:05:09	TaskCreate	plan-68	 	 	 
+2016-02-29T02:11:42	PlanStart	 	 	 	plan-68
+2016-02-29T02:16:04	TaskAssign	plan-68	 	 	 
+2016-02-29T02:22:14	TaskExecute	plan-68	 	 	 
+2016-02-29T02:28:54	TaskComplete	plan-68	 	 	 
+2016-02-29T02:37:40	TaskEvaluate	plan-68	 	 	 
+2016-02-29T02:44:07	TaskClose	plan-68	 	 	 
+2016-02-29T02:54:12	PlanFinish	 	 	 	plan-68
+2016-02-29T02:58:36	PlanClose	 	 	 	plan-68
+2016-02-29T03:07:46	IncidentSolve	 	 	 	 
+2016-02-29T03:09:25	IncidentConfirm	 	 	 	 
+2016-02-29T03:17:05	IncidentClose	 	 	 	 
+2016-02-29T03:22:08	IncidentRegister	 	 	 	 
+2016-02-29T03:25:23	IncidentAssign	 	 	 	 
+2016-02-29T03:31:53	IncidentHandle	 	 	 	 
+2016-02-29T03:36:40	PlanDraft	 	 	 	plan-69
+2016-02-29T03:40:42	TaskCreate	plan-69	 	 	 
+2016-02-29T03:50:50	PlanStart	 	 	 	plan-69
+2016-02-29T03:59:14	TaskAssign	plan-69	 	 	 
+2016-02-29T04:04:13	TaskExecute	plan-69	 	 	 
+2016-02-29T04:09:55	TaskDispatch	plan-69	 	 	 
+2016-02-29T04:16:50	TaskExecute	plan-69	 	 	 
+2016-02-29T04:19:54	PlanFinish	 	 	 	plan-69
+2016-02-29T04:27:01	PlanClose	 	 	 	plan-69
+2016-02-29T04:31:26	IncidentSolve	 	 	 	 
+2016-02-29T04:36:28	IncidentConfirm	 	 	 	 
+2016-02-29T04:44:05	IncidentClose	 	 	 	 
+2016-02-29T04:51:31	IncidentRegister	 	 	 	 
+2016-02-29T05:01:07	IncidentAssign	 	 	 	 
+2016-02-29T05:07:11	IncidentHandle	 	 	 	 
+2016-02-29T05:10:46	PlanDraft	 	 	 	plan-70
+2016-02-29T05:21:07	TaskCreate	plan-70	 	 	 
+2016-02-29T05:24:11	PlanStart	 	 	 	plan-70
+2016-02-29T05:29:44	TaskAssign	plan-70	 	 	 
+2016-02-29T05:35:06	TaskExecute	plan-70	 	 	 
+2016-02-29T05:44:04	TaskComplete	plan-70	 	 	 
+2016-02-29T05:47:21	TaskEvaluate	plan-70	 	 	 
+2016-02-29T05:57:57	TaskClose	plan-70	 	 	 
+2016-02-29T06:00:17	PlanFinish	 	 	 	plan-70
+2016-02-29T06:08:27	PlanClose	 	 	 	plan-70
+2016-02-29T06:11:15	IncidentSolve	 	 	 	 
+2016-02-29T06:16:11	IncidentConfirm	 	 	 	 
+2016-02-29T06:23:10	IncidentClose	 	 	 	 
+2016-02-29T06:32:14	IncidentRegister	 	 	 	 
+2016-02-29T06:39:12	IncidentAssign	 	 	 	 
+2016-02-29T06:43:49	IncidentHandle	 	 	 	 
+2016-02-29T06:47:34	PlanDraft	 	 	 	plan-71
+2016-02-29T06:55:10	TaskCreate	plan-71	 	 	 
+2016-02-29T06:57:07	PlanStart	 	 	 	plan-71
+2016-02-29T07:02:16	TaskAssign	plan-71	 	 	 
+2016-02-29T07:04:50	TaskExecute	plan-71	 	 	 
+2016-02-29T07:12:39	TaskComplete	plan-71	 	 	 
+2016-02-29T07:18:40	TaskEvaluate	plan-71	 	 	 
+2016-02-29T07:21:54	TaskClose	plan-71	 	 	 
+2016-02-29T07:24:53	PlanFinish	 	 	 	plan-71
+2016-02-29T07:35:58	PlanClose	 	 	 	plan-71
+2016-02-29T07:39:19	IncidentSolve	 	 	 	 
+2016-02-29T07:51:39	IncidentConfirm	 	 	 	 
+2016-02-29T07:58:53	IncidentClose	 	 	 	 
+2016-02-29T08:04:54	IncidentRegister	 	 	 	 
+2016-02-29T08:08:50	IncidentAssign	 	 	 	 
+2016-02-29T08:12:31	IncidentHandle	 	 	 	 
+2016-02-29T08:16:24	IncidentHangOn	 	 	 	 
+2016-02-29T08:19:49	IncidentHandle	 	 	 	 
+2016-02-29T08:24:53	PlanDraft	 	 	 	plan-72
+2016-02-29T08:34:37	TaskCreate	plan-72	 	 	 
+2016-02-29T08:36:50	PlanStart	 	 	 	plan-72
+2016-02-29T08:44:46	TaskAssign	plan-72	 	 	 
+2016-02-29T08:49:54	TaskExecute	plan-72	 	 	 
+2016-02-29T08:51:45	TaskComplete	plan-72	 	 	 
+2016-02-29T08:57:28	TaskEvaluate	plan-72	 	 	 
+2016-02-29T09:05:30	TaskClose	plan-72	 	 	 
+2016-02-29T09:10:06	PlanFinish	 	 	 	plan-72
+2016-02-29T09:12:59	PlanClose	 	 	 	plan-72
+2016-02-29T09:14:36	IncidentSolve	 	 	 	 
+2016-02-29T09:21:17	IncidentConfirm	 	 	 	 
+2016-02-29T09:33:18	IncidentClose	 	 	 	 
+2016-02-29T09:37:00	IncidentRegister	 	 	 	 
+2016-02-29T09:43:40	IncidentAssign	 	 	 	 
+2016-02-29T09:52:30	IncidentHandle	 	 	 	 
+2016-02-29T09:59:10	PlanDraft	 	 	 	plan-73
+2016-02-29T10:04:00	TaskCreate	plan-73	 	 	 
+2016-02-29T10:12:08	PlanStart	 	 	 	plan-73
+2016-02-29T10:16:52	TaskAssign	plan-73	 	 	 
+2016-02-29T10:19:57	TaskExecute	plan-73	 	 	 
+2016-02-29T10:24:49	TaskComplete	plan-73	 	 	 
+2016-02-29T10:28:58	TaskEvaluate	plan-73	 	 	 
+2016-02-29T10:35:51	TaskClose	plan-73	 	 	 
+2016-02-29T10:43:55	PlanFinish	 	 	 	plan-73
+2016-02-29T10:54:25	PlanClose	 	 	 	plan-73
+2016-02-29T11:00:53	IncidentSolve	 	 	 	 
+2016-02-29T11:06:50	IncidentConfirm	 	 	 	 
+2016-02-29T11:09:39	IncidentClose	 	 	 	 
+2016-02-29T11:11:06	IncidentRegister	 	 	 	 
+2016-02-29T11:19:48	IncidentAssign	 	 	 	 
+2016-02-29T11:26:44	IncidentHandle	 	 	 	 
+2016-02-29T11:31:47	PlanDraft	 	 	 	plan-74
+2016-02-29T11:39:29	TaskCreate	plan-74	 	 	 
+2016-02-29T11:45:58	PlanStart	 	 	 	plan-74
+2016-02-29T11:48:26	TaskAssign	plan-74	 	 	 
+2016-02-29T11:52:39	TaskExecute	plan-74	 	 	 
+2016-02-29T12:01:54	TaskComplete	plan-74	 	 	 
+2016-02-29T12:03:10	TaskEvaluate	plan-74	 	 	 
+2016-02-29T12:10:15	TaskClose	plan-74	 	 	 
+2016-02-29T12:17:06	PlanFinish	 	 	 	plan-74
+2016-02-29T12:23:32	PlanClose	 	 	 	plan-74
+2016-02-29T12:32:18	IncidentSolve	 	 	 	 
+2016-02-29T12:34:54	IncidentConfirm	 	 	 	 
+2016-02-29T12:43:59	IncidentClose	 	 	 	 
+2016-02-29T12:53:22	IncidentRegister	 	 	 	 
+2016-02-29T13:05:39	IncidentAssign	 	 	 	 
+2016-02-29T13:11:56	IncidentHandle	 	 	 	 
+2016-02-29T13:18:05	PlanDraft	 	 	 	plan-75
+2016-02-29T13:21:27	TaskCreate	plan-75	 	 	 
+2016-02-29T13:28:25	PlanStart	 	 	 	plan-75
+2016-02-29T13:31:29	TaskAssign	plan-75	 	 	 
+2016-02-29T13:35:48	TaskExecute	plan-75	 	 	 
+2016-02-29T13:37:55	TaskDispatch	plan-75	 	 	 
+2016-02-29T13:46:00	TaskExecute	plan-75	 	 	 
+2016-02-29T13:49:51	PlanFinish	 	 	 	plan-75
+2016-02-29T13:57:15	PlanClose	 	 	 	plan-75
+2016-02-29T14:01:24	IncidentSolve	 	 	 	 
+2016-02-29T14:07:45	IncidentConfirm	 	 	 	 
+2016-02-29T14:15:31	IncidentClose	 	 	 	 
+2016-02-29T14:19:45	IncidentRegister	 	 	 	 
+2016-02-29T14:26:51	IncidentAssign	 	 	 	 
+2016-02-29T14:28:06	IncidentHandle	 	 	 	 
+2016-02-29T14:30:20	PlanDraft	 	 	 	plan-76
+2016-02-29T14:39:38	TaskCreate	plan-76	 	 	 
+2016-02-29T14:42:44	PlanStart	 	 	 	plan-76
+2016-02-29T14:50:33	TaskAssign	plan-76	 	 	 
+2016-02-29T14:58:42	TaskHangOn	plan-76	 	 	 
+2016-02-29T15:07:24	TaskAssign	plan-76	 	 	 
+2016-02-29T15:10:20	TaskExecute	plan-76	 	 	 
+2016-02-29T15:16:27	TaskDispatch	plan-76	 	 	 
+2016-02-29T15:24:04	TaskExecute	plan-76	 	 	 
+2016-02-29T15:30:17	PlanFinish	 	 	 	plan-76
+2016-02-29T15:33:54	PlanClose	 	 	 	plan-76
+2016-02-29T15:37:57	IncidentSolve	 	 	 	 
+2016-02-29T15:43:45	IncidentConfirm	 	 	 	 
+2016-02-29T15:45:42	IncidentClose	 	 	 	 
+2016-02-29T15:51:45	IncidentRegister	 	 	 	 
+2016-02-29T16:00:40	IncidentAssign	 	 	 	 
+2016-02-29T16:04:46	IncidentHandle	 	 	 	 
+2016-02-29T16:07:59	PlanDraft	 	 	 	plan-77
+2016-02-29T16:11:45	TaskCreate	plan-77	 	 	 
+2016-02-29T16:17:16	PlanStart	 	 	 	plan-77
+2016-02-29T16:19:02	TaskAssign	plan-77	 	 	 
+2016-02-29T16:27:30	TaskExecute	plan-77	 	 	 
+2016-02-29T16:35:12	TaskComplete	plan-77	 	 	 
+2016-02-29T16:43:01	TaskEvaluate	plan-77	 	 	 
+2016-02-29T16:48:39	TaskClose	plan-77	 	 	 
+2016-02-29T16:56:59	PlanFinish	 	 	 	plan-77
+2016-02-29T17:03:12	PlanClose	 	 	 	plan-77
+2016-02-29T17:07:39	IncidentSolve	 	 	 	 
+2016-02-29T17:13:22	IncidentConfirm	 	 	 	 
+2016-02-29T17:24:36	IncidentClose	 	 	 	 
+2016-02-29T17:26:55	IncidentRegister	 	 	 	 
+2016-02-29T17:36:03	IncidentAssign	 	 	 	 
+2016-02-29T17:44:55	IncidentHandle	 	 	 	 
+2016-02-29T17:50:26	IncidentHangOn	 	 	 	 
+2016-02-29T17:55:53	IncidentHandle	 	 	 	 
+2016-02-29T17:59:11	PlanDraft	 	 	 	plan-78
+2016-02-29T18:06:16	TaskCreate	plan-78	 	 	 
+2016-02-29T18:09:46	PlanStart	 	 	 	plan-78
+2016-02-29T18:20:37	TaskAssign	plan-78	 	 	 
+2016-02-29T18:28:39	TaskExecute	plan-78	 	 	 
+2016-02-29T18:33:53	TaskCancel	plan-78	 	 	 
+2016-02-29T18:40:10	TaskClose	plan-78	 	 	 
+2016-02-29T18:47:40	PlanFinish	 	 	 	plan-78
+2016-02-29T18:54:19	PlanClose	 	 	 	plan-78
+2016-02-29T18:58:08	IncidentSolve	 	 	 	 
+2016-02-29T18:59:18	IncidentConfirm	 	 	 	 
+2016-02-29T19:05:39	IncidentClose	 	 	 	 
+2016-02-29T19:10:17	IncidentRegister	 	 	 	 
+2016-02-29T19:16:15	IncidentAssign	 	 	 	 
+2016-02-29T19:20:41	IncidentHandle	 	 	 	 
+2016-02-29T19:27:02	PlanDraft	 	 	 	plan-79
+2016-02-29T19:35:09	TaskCreate	plan-79	 	 	 
+2016-02-29T19:44:11	PlanStart	 	 	 	plan-79
+2016-02-29T19:53:28	TaskAssign	plan-79	 	 	 
+2016-02-29T19:56:42	TaskExecute	plan-79	 	 	 
+2016-02-29T20:00:01	TaskDispatch	plan-79	 	 	 
+2016-02-29T20:02:42	TaskExecute	plan-79	 	 	 
+2016-02-29T20:10:02	PlanFinish	 	 	 	plan-79
+2016-02-29T20:15:51	PlanClose	 	 	 	plan-79
+2016-02-29T20:18:55	IncidentSolve	 	 	 	 
+2016-02-29T20:21:53	IncidentConfirm	 	 	 	 
+2016-02-29T20:26:14	IncidentClose	 	 	 	 
+2016-02-29T20:28:50	IncidentRegister	 	 	 	 
+2016-02-29T20:36:31	IncidentAssign	 	 	 	 
+2016-02-29T20:40:13	IncidentHandle	 	 	 	 
+2016-02-29T20:42:45	IncidentHangOn	 	 	 	 
+2016-02-29T20:48:52	IncidentHandle	 	 	 	 
+2016-02-29T20:52:27	PlanDraft	 	 	 	plan-80
+2016-02-29T20:57:45	TaskCreate	plan-80	 	 	 
+2016-02-29T21:06:35	PlanStart	 	 	 	plan-80
+2016-02-29T21:13:16	TaskAssign	plan-80	 	 	 
+2016-02-29T21:17:47	TaskExecute	plan-80	 	 	 
+2016-02-29T21:25:44	TaskComplete	plan-80	 	 	 
+2016-02-29T21:33:40	TaskEvaluate	plan-80	 	 	 
+2016-02-29T21:36:49	TaskClose	plan-80	 	 	 
+2016-02-29T21:43:14	PlanFinish	 	 	 	plan-80
+2016-02-29T21:47:53	PlanClose	 	 	 	plan-80
+2016-02-29T21:50:48	IncidentSolve	 	 	 	 
+2016-02-29T21:55:59	IncidentConfirm	 	 	 	 
+2016-02-29T22:01:23	IncidentClose	 	 	 	 
+2016-02-29T22:08:31	IncidentRegister	 	 	 	 
+2016-02-29T22:16:41	IncidentAssign	 	 	 	 
+2016-02-29T22:24:20	IncidentHandle	 	 	 	 
+2016-02-29T22:27:03	PlanDraft	 	 	 	plan-81
+2016-02-29T22:32:31	TaskCreate	plan-81	 	 	 
+2016-02-29T22:37:43	PlanStart	 	 	 	plan-81
+2016-02-29T22:43:12	PlanCancel	 	 	 	plan-81
+2016-02-29T22:49:26	PlanClose	 	 	 	plan-81
+2016-02-29T22:54:43	IncidentSolve	 	 	 	 
+2016-02-29T23:04:19	IncidentConfirm	 	 	 	 
+2016-02-29T23:08:25	IncidentClose	 	 	 	 
+2016-02-29T23:15:09	IncidentRegister	 	 	 	 
+2016-02-29T23:21:56	IncidentAssign	 	 	 	 
+2016-02-29T23:26:24	IncidentHandle	 	 	 	 
+2016-02-29T23:32:37	PlanDraft	 	 	 	plan-82
+2016-02-29T23:34:59	TaskCreate	plan-82	 	 	 
+2016-02-29T23:41:04	PlanStart	 	 	 	plan-82
+2016-02-29T23:47:50	TaskAssign	plan-82	 	 	 
+2016-02-29T23:54:57	TaskHangOn	plan-82	 	 	 
+2016-02-29T23:59:44	TaskAssign	plan-82	 	 	 
+2016-03-01T00:07:26	TaskExecute	plan-82	 	 	 
+2016-03-01T00:11:54	TaskDispatch	plan-82	 	 	 
+2016-03-01T00:16:44	TaskExecute	plan-82	 	 	 
+2016-03-01T00:25:17	PlanFinish	 	 	 	plan-82
+2016-03-01T00:29:23	PlanClose	 	 	 	plan-82
+2016-03-01T00:34:30	IncidentSolve	 	 	 	 
+2016-03-01T00:38:36	IncidentConfirm	 	 	 	 
+2016-03-01T00:45:59	IncidentClose	 	 	 	 
+2016-03-01T00:48:26	IncidentRegister	 	 	 	 
+2016-03-01T00:55:32	IncidentAssign	 	 	 	 
+2016-03-01T01:03:59	IncidentHandle	 	 	 	 
+2016-03-01T01:10:21	PlanDraft	 	 	 	plan-83
+2016-03-01T01:16:54	TaskCreate	plan-83	 	 	 
+2016-03-01T01:23:56	PlanStart	 	 	 	plan-83
+2016-03-01T01:31:27	PlanCancel	 	 	 	plan-83
+2016-03-01T01:34:05	PlanClose	 	 	 	plan-83
+2016-03-01T01:38:58	IncidentSolve	 	 	 	 
+2016-03-01T01:45:26	IncidentConfirm	 	 	 	 
+2016-03-01T01:51:16	IncidentClose	 	 	 	 
+2016-03-01T01:56:22	IncidentRegister	 	 	 	 
+2016-03-01T02:03:24	IncidentAssign	 	 	 	 
+2016-03-01T02:12:52	IncidentHandle	 	 	 	 
+2016-03-01T02:19:12	PlanDraft	 	 	 	plan-84
+2016-03-01T02:27:50	TaskCreate	plan-84	 	 	 
+2016-03-01T02:29:33	PlanStart	 	 	 	plan-84
+2016-03-01T02:33:20	TaskAssign	plan-84	 	 	 
+2016-03-01T02:39:36	TaskExecute	plan-84	 	 	 
+2016-03-01T02:44:42	TaskComplete	plan-84	 	 	 
+2016-03-01T02:50:43	TaskEvaluate	plan-84	 	 	 
+2016-03-01T02:55:01	TaskClose	plan-84	 	 	 
+2016-03-01T03:00:36	PlanFinish	 	 	 	plan-84
+2016-03-01T03:07:14	PlanClose	 	 	 	plan-84
+2016-03-01T03:09:41	IncidentSolve	 	 	 	 
+2016-03-01T03:11:54	IncidentConfirm	 	 	 	 
+2016-03-01T03:19:47	IncidentClose	 	 	 	 
+2016-03-01T03:26:32	IncidentRegister	 	 	 	 
+2016-03-01T03:37:45	IncidentAssign	 	 	 	 
+2016-03-01T03:41:34	IncidentHandle	 	 	 	 
+2016-03-01T03:51:34	PlanDraft	 	 	 	plan-85
+2016-03-01T03:59:00	TaskCreate	plan-85	 	 	 
+2016-03-01T04:03:30	PlanStart	 	 	 	plan-85
+2016-03-01T04:09:08	TaskAssign	plan-85	 	 	 
+2016-03-01T04:12:23	TaskExecute	plan-85	 	 	 
+2016-03-01T04:21:28	TaskComplete	plan-85	 	 	 
+2016-03-01T04:29:24	TaskEvaluate	plan-85	 	 	 
+2016-03-01T04:31:59	TaskClose	plan-85	 	 	 
+2016-03-01T04:42:11	PlanFinish	 	 	 	plan-85
+2016-03-01T04:48:51	PlanClose	 	 	 	plan-85
+2016-03-01T04:56:24	IncidentSolve	 	 	 	 
+2016-03-01T05:04:07	IncidentConfirm	 	 	 	 
+2016-03-01T05:16:04	IncidentClose	 	 	 	 
+2016-03-01T05:23:47	IncidentRegister	 	 	 	 
+2016-03-01T05:26:57	IncidentAssign	 	 	 	 
+2016-03-01T05:35:39	IncidentHandle	 	 	 	 
+2016-03-01T05:42:28	PlanDraft	 	 	 	plan-86
+2016-03-01T05:51:26	TaskCreate	plan-86	 	 	 
+2016-03-01T05:58:09	PlanStart	 	 	 	plan-86
+2016-03-01T06:05:21	TaskAssign	plan-86	 	 	 
+2016-03-01T06:10:09	TaskExecute	plan-86	 	 	 
+2016-03-01T06:15:41	TaskComplete	plan-86	 	 	 
+2016-03-01T06:24:03	TaskEvaluate	plan-86	 	 	 
+2016-03-01T06:27:43	TaskClose	plan-86	 	 	 
+2016-03-01T06:34:31	PlanFinish	 	 	 	plan-86
+2016-03-01T06:44:12	PlanClose	 	 	 	plan-86
+2016-03-01T06:47:05	IncidentSolve	 	 	 	 
+2016-03-01T06:50:03	IncidentConfirm	 	 	 	 
+2016-03-01T06:52:14	IncidentClose	 	 	 	 
+2016-03-01T06:58:27	IncidentRegister	 	 	 	 
+2016-03-01T07:04:26	IncidentAssign	 	 	 	 
+2016-03-01T07:11:24	IncidentHandle	 	 	 	 
+2016-03-01T07:17:26	IncidentHangOn	 	 	 	 
+2016-03-01T07:21:21	IncidentHandle	 	 	 	 
+2016-03-01T07:28:08	PlanDraft	 	 	 	plan-87
+2016-03-01T07:31:37	TaskCreate	plan-87	 	 	 
+2016-03-01T07:37:24	PlanStart	 	 	 	plan-87
+2016-03-01T07:41:48	TaskAssign	plan-87	 	 	 
+2016-03-01T07:47:51	TaskExecute	plan-87	 	 	 
+2016-03-01T07:55:21	TaskComplete	plan-87	 	 	 
+2016-03-01T07:59:27	TaskEvaluate	plan-87	 	 	 
+2016-03-01T08:08:50	TaskClose	plan-87	 	 	 
+2016-03-01T08:11:28	PlanFinish	 	 	 	plan-87
+2016-03-01T08:18:59	PlanClose	 	 	 	plan-87
+2016-03-01T08:27:21	IncidentSolve	 	 	 	 
+2016-03-01T08:28:36	IncidentConfirm	 	 	 	 
+2016-03-01T08:31:12	IncidentClose	 	 	 	 
+2016-03-01T08:39:20	IncidentRegister	 	 	 	 
+2016-03-01T08:44:44	IncidentAssign	 	 	 	 
+2016-03-01T08:51:28	IncidentHandle	 	 	 	 
+2016-03-01T08:58:02	PlanDraft	 	 	 	plan-88
+2016-03-01T09:05:05	TaskCreate	plan-88	 	 	 
+2016-03-01T09:09:07	PlanStart	 	 	 	plan-88
+2016-03-01T09:17:45	TaskAssign	plan-88	 	 	 
+2016-03-01T09:25:24	TaskExecute	plan-88	 	 	 
+2016-03-01T09:30:37	TaskComplete	plan-88	 	 	 
+2016-03-01T09:35:28	TaskEvaluate	plan-88	 	 	 
+2016-03-01T09:40:52	TaskClose	plan-88	 	 	 
+2016-03-01T09:43:21	PlanFinish	 	 	 	plan-88
+2016-03-01T09:51:51	PlanClose	 	 	 	plan-88
+2016-03-01T09:53:25	IncidentSolve	 	 	 	 
+2016-03-01T10:00:18	IncidentConfirm	 	 	 	 
+2016-03-01T10:06:45	IncidentClose	 	 	 	 
+2016-03-01T10:09:46	IncidentRegister	 	 	 	 
+2016-03-01T10:16:38	IncidentAssign	 	 	 	 
+2016-03-01T10:22:48	IncidentHandle	 	 	 	 
+2016-03-01T10:29:26	PlanDraft	 	 	 	plan-89
+2016-03-01T10:37:16	TaskCreate	plan-89	 	 	 
+2016-03-01T10:40:36	PlanStart	 	 	 	plan-89
+2016-03-01T10:45:32	PlanCancel	 	 	 	plan-89
+2016-03-01T10:48:24	PlanClose	 	 	 	plan-89
+2016-03-01T10:53:14	IncidentSolve	 	 	 	 
+2016-03-01T11:06:05	IncidentConfirm	 	 	 	 
+2016-03-01T11:13:00	IncidentClose	 	 	 	 
+2016-03-01T11:23:10	IncidentRegister	 	 	 	 
+2016-03-01T11:29:57	IncidentAssign	 	 	 	 
+2016-03-01T11:34:04	IncidentHandle	 	 	 	 
+2016-03-01T11:40:42	IncidentHangOn	 	 	 	 
+2016-03-01T11:45:38	IncidentHandle	 	 	 	 
+2016-03-01T11:53:49	PlanDraft	 	 	 	plan-90
+2016-03-01T11:59:10	TaskCreate	plan-90	 	 	 
+2016-03-01T12:04:49	PlanStart	 	 	 	plan-90
+2016-03-01T12:12:21	TaskAssign	plan-90	 	 	 
+2016-03-01T12:16:54	TaskExecute	plan-90	 	 	 
+2016-03-01T12:20:42	TaskComplete	plan-90	 	 	 
+2016-03-01T12:26:02	TaskEvaluate	plan-90	 	 	 
+2016-03-01T12:33:04	TaskClose	plan-90	 	 	 
+2016-03-01T12:34:39	PlanFinish	 	 	 	plan-90
+2016-03-01T12:44:11	PlanClose	 	 	 	plan-90
+2016-03-01T12:48:08	IncidentSolve	 	 	 	 
+2016-03-01T12:57:00	IncidentConfirm	 	 	 	 
+2016-03-01T13:03:28	IncidentClose	 	 	 	 
+2016-03-01T13:09:43	IncidentRegister	 	 	 	 
+2016-03-01T13:16:22	IncidentAssign	 	 	 	 
+2016-03-01T13:23:09	IncidentHandle	 	 	 	 
+2016-03-01T13:25:35	PlanDraft	 	 	 	plan-91
+2016-03-01T13:32:11	TaskCreate	plan-91	 	 	 
+2016-03-01T13:36:19	PlanStart	 	 	 	plan-91
+2016-03-01T13:38:55	TaskAssign	plan-91	 	 	 
+2016-03-01T13:42:34	TaskExecute	plan-91	 	 	 
+2016-03-01T13:44:16	TaskComplete	plan-91	 	 	 
+2016-03-01T13:52:34	TaskEvaluate	plan-91	 	 	 
+2016-03-01T14:04:52	TaskClose	plan-91	 	 	 
+2016-03-01T14:07:52	PlanFinish	 	 	 	plan-91
+2016-03-01T14:17:23	PlanClose	 	 	 	plan-91
+2016-03-01T14:24:19	IncidentSolve	 	 	 	 
+2016-03-01T14:30:24	IncidentConfirm	 	 	 	 
+2016-03-01T14:39:27	IncidentClose	 	 	 	 
+2016-03-01T14:45:49	IncidentRegister	 	 	 	 
+2016-03-01T14:50:44	IncidentAssign	 	 	 	 
+2016-03-01T14:56:56	IncidentHandle	 	 	 	 
+2016-03-01T15:04:15	PlanDraft	 	 	 	plan-92
+2016-03-01T15:07:55	TaskCreate	plan-92	 	 	 
+2016-03-01T15:15:18	PlanStart	 	 	 	plan-92
+2016-03-01T15:21:55	TaskAssign	plan-92	 	 	 
+2016-03-01T15:31:24	TaskHangOn	plan-92	 	 	 
+2016-03-01T15:33:57	TaskAssign	plan-92	 	 	 
+2016-03-01T15:39:38	TaskExecute	plan-92	 	 	 
+2016-03-01T15:47:48	TaskComplete	plan-92	 	 	 
+2016-03-01T15:49:29	TaskEvaluate	plan-92	 	 	 
+2016-03-01T15:57:27	TaskClose	plan-92	 	 	 
+2016-03-01T16:09:03	PlanFinish	 	 	 	plan-92
+2016-03-01T16:15:13	PlanClose	 	 	 	plan-92
+2016-03-01T16:20:16	IncidentSolve	 	 	 	 
+2016-03-01T16:28:17	IncidentConfirm	 	 	 	 
+2016-03-01T16:31:44	IncidentClose	 	 	 	 
+2016-03-01T16:38:13	IncidentRegister	 	 	 	 
+2016-03-01T16:42:57	IncidentAssign	 	 	 	 
+2016-03-01T16:46:39	IncidentHandle	 	 	 	 
+2016-03-01T16:50:31	PlanDraft	 	 	 	plan-93
+2016-03-01T16:55:34	TaskCreate	plan-93	 	 	 
+2016-03-01T16:56:50	PlanStart	 	 	 	plan-93
+2016-03-01T17:04:22	TaskAssign	plan-93	 	 	 
+2016-03-01T17:15:13	TaskExecute	plan-93	 	 	 
+2016-03-01T17:18:35	TaskComplete	plan-93	 	 	 
+2016-03-01T17:22:35	TaskEvaluate	plan-93	 	 	 
+2016-03-01T17:30:59	TaskClose	plan-93	 	 	 
+2016-03-01T17:37:51	PlanFinish	 	 	 	plan-93
+2016-03-01T17:40:30	PlanClose	 	 	 	plan-93
+2016-03-01T17:44:15	IncidentSolve	 	 	 	 
+2016-03-01T17:52:27	IncidentConfirm	 	 	 	 
+2016-03-01T17:57:28	IncidentClose	 	 	 	 
+2016-03-01T18:03:27	IncidentRegister	 	 	 	 
+2016-03-01T18:08:40	IncidentAssign	 	 	 	 
+2016-03-01T18:10:32	IncidentHandle	 	 	 	 
+2016-03-01T18:11:53	PlanDraft	 	 	 	plan-94
+2016-03-01T18:13:16	TaskCreate	plan-94	 	 	 
+2016-03-01T18:19:12	PlanStart	 	 	 	plan-94
+2016-03-01T18:27:13	PlanCancel	 	 	 	plan-94
+2016-03-01T18:31:24	PlanClose	 	 	 	plan-94
+2016-03-01T18:35:54	IncidentSolve	 	 	 	 
+2016-03-01T18:41:01	IncidentConfirm	 	 	 	 
+2016-03-01T18:44:15	IncidentClose	 	 	 	 
+2016-03-01T18:49:07	IncidentRegister	 	 	 	 
+2016-03-01T18:52:38	IncidentAssign	 	 	 	 
+2016-03-01T19:00:07	IncidentHandle	 	 	 	 
+2016-03-01T19:06:54	PlanDraft	 	 	 	plan-95
+2016-03-01T19:13:49	TaskCreate	plan-95	 	 	 
+2016-03-01T19:17:01	PlanStart	 	 	 	plan-95
+2016-03-01T19:22:04	TaskAssign	plan-95	 	 	 
+2016-03-01T19:26:12	TaskExecute	plan-95	 	 	 
+2016-03-01T19:29:34	TaskDispatch	plan-95	 	 	 
+2016-03-01T19:37:20	TaskExecute	plan-95	 	 	 
+2016-03-01T19:41:16	PlanFinish	 	 	 	plan-95
+2016-03-01T19:50:49	PlanClose	 	 	 	plan-95
+2016-03-01T20:02:44	IncidentSolve	 	 	 	 
+2016-03-01T20:10:05	IncidentConfirm	 	 	 	 
+2016-03-01T20:15:02	IncidentClose	 	 	 	 
+2016-03-01T20:23:03	IncidentRegister	 	 	 	 
+2016-03-01T20:30:21	IncidentAssign	 	 	 	 
+2016-03-01T20:33:46	IncidentHandle	 	 	 	 
+2016-03-01T20:40:21	PlanDraft	 	 	 	plan-96
+2016-03-01T20:42:33	TaskCreate	plan-96	 	 	 
+2016-03-01T20:52:47	PlanStart	 	 	 	plan-96
+2016-03-01T20:55:12	TaskAssign	plan-96	 	 	 
+2016-03-01T20:59:45	TaskExecute	plan-96	 	 	 
+2016-03-01T21:02:00	TaskCancel	plan-96	 	 	 
+2016-03-01T21:08:03	TaskClose	plan-96	 	 	 
+2016-03-01T21:15:42	PlanFinish	 	 	 	plan-96
+2016-03-01T21:22:08	PlanClose	 	 	 	plan-96
+2016-03-01T21:27:36	IncidentSolve	 	 	 	 
+2016-03-01T21:34:34	IncidentConfirm	 	 	 	 
+2016-03-01T21:42:25	IncidentClose	 	 	 	 
+2016-03-01T21:44:49	IncidentRegister	 	 	 	 
+2016-03-01T21:47:51	IncidentAssign	 	 	 	 
+2016-03-01T21:58:47	IncidentHandle	 	 	 	 
+2016-03-01T22:05:58	PlanDraft	 	 	 	plan-97
+2016-03-01T22:16:28	TaskCreate	plan-97	 	 	 
+2016-03-01T22:20:04	PlanStart	 	 	 	plan-97
+2016-03-01T22:26:35	TaskAssign	plan-97	 	 	 
+2016-03-01T22:37:36	TaskExecute	plan-97	 	 	 
+2016-03-01T22:42:04	TaskDispatch	plan-97	 	 	 
+2016-03-01T22:47:02	TaskExecute	plan-97	 	 	 
+2016-03-01T22:54:20	PlanFinish	 	 	 	plan-97
+2016-03-01T23:00:40	PlanClose	 	 	 	plan-97
+2016-03-01T23:05:51	IncidentSolve	 	 	 	 
+2016-03-01T23:14:28	IncidentConfirm	 	 	 	 
+2016-03-01T23:22:38	IncidentClose	 	 	 	 
+2016-03-01T23:27:22	IncidentRegister	 	 	 	 
+2016-03-01T23:34:07	IncidentAssign	 	 	 	 
+2016-03-01T23:37:08	IncidentHandle	 	 	 	 
+2016-03-01T23:43:27	PlanDraft	 	 	 	plan-98
+2016-03-01T23:50:35	TaskCreate	plan-98	 	 	 
+2016-03-01T23:55:58	PlanStart	 	 	 	plan-98
+2016-03-01T23:58:38	TaskAssign	plan-98	 	 	 
+2016-03-02T00:07:57	TaskExecute	plan-98	 	 	 
+2016-03-02T00:12:50	TaskComplete	plan-98	 	 	 
+2016-03-02T00:22:48	TaskEvaluate	plan-98	 	 	 
+2016-03-02T00:26:47	TaskClose	plan-98	 	 	 
+2016-03-02T00:32:04	PlanFinish	 	 	 	plan-98
+2016-03-02T00:41:44	PlanClose	 	 	 	plan-98
+2016-03-02T00:47:25	IncidentSolve	 	 	 	 
+2016-03-02T00:53:59	IncidentConfirm	 	 	 	 
+2016-03-02T00:59:52	IncidentClose	 	 	 	 
+2016-03-02T01:08:13	IncidentRegister	 	 	 	 
+2016-03-02T01:13:40	IncidentAssign	 	 	 	 
+2016-03-02T01:23:25	IncidentHandle	 	 	 	 
+2016-03-02T01:26:55	PlanDraft	 	 	 	plan-99
+2016-03-02T01:30:39	TaskCreate	plan-99	 	 	 
+2016-03-02T01:41:05	PlanStart	 	 	 	plan-99
+2016-03-02T01:43:38	TaskAssign	plan-99	 	 	 
+2016-03-02T01:48:06	TaskExecute	plan-99	 	 	 
+2016-03-02T01:51:42	TaskComplete	plan-99	 	 	 
+2016-03-02T01:54:17	TaskEvaluate	plan-99	 	 	 
+2016-03-02T02:00:18	TaskClose	plan-99	 	 	 
+2016-03-02T02:04:04	PlanFinish	 	 	 	plan-99
+2016-03-02T02:11:29	PlanClose	 	 	 	plan-99
+2016-03-02T02:17:20	IncidentSolve	 	 	 	 
+2016-03-02T02:19:29	IncidentConfirm	 	 	 	 
+2016-03-02T02:28:30	IncidentClose	 	 	 	 
+2016-03-02T02:38:14	IncidentRegister	 	 	 	 
+2016-03-02T02:44:07	IncidentAssign	 	 	 	 
+2016-03-02T02:50:40	IncidentHandle	 	 	 	 
+2016-03-02T02:57:04	PlanDraft	 	 	 	plan-100
+2016-03-02T03:00:32	TaskCreate	plan-100	 	 	 
+2016-03-02T03:02:45	PlanStart	 	 	 	plan-100
+2016-03-02T03:06:26	TaskAssign	plan-100	 	 	 
+2016-03-02T03:09:32	TaskExecute	plan-100	 	 	 
+2016-03-02T03:12:32	TaskComplete	plan-100	 	 	 
+2016-03-02T03:15:48	TaskEvaluate	plan-100	 	 	 
+2016-03-02T03:21:44	TaskClose	plan-100	 	 	 
+2016-03-02T03:24:15	PlanFinish	 	 	 	plan-100
+2016-03-02T03:31:42	PlanClose	 	 	 	plan-100
+2016-03-02T03:39:40	IncidentSolve	 	 	 	 
+2016-03-02T03:50:51	IncidentConfirm	 	 	 	 
+2016-03-02T03:58:10	IncidentClose	 	 	 	 
