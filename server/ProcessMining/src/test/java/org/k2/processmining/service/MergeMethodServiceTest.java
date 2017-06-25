@@ -90,7 +90,7 @@ public class MergeMethodServiceTest {
         EventLog eventLog2 = eventLogService.getEventLogById("2");
         String methodId = activeMethod.getId();
         Map<String,Object> params = new HashMap<>();
-        MergeMethodServiceImpl.MergeResult result= mergeMethodService.merge(eventLog1, eventLog2, methodId, params);
+        TimeResult<EventLog> result= mergeMethodService.merge(eventLog1, eventLog2, methodId, params);
         System.out.println("mergeTest: result: " + toJSON(result));
     }
 

@@ -13,7 +13,7 @@
     <security:http pattern="/html/login.html" security="none"/>
 
     <security:http>
-        <security:intercept-url pattern="/**" access="hasRole('ROLE_USER,ROLE_ADMIN')"/>
+        <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
         <security:form-login login-page="/home/login" login-processing-url="/login" always-use-default-target="true"
                              default-target-url="/home" authentication-failure-url="/loginPage?error=error"/>
         <security:csrf disabled="true"/>

@@ -35,7 +35,7 @@
         SELECT * FROM user WHERE id = #{id}
     </select>
 
-    <select id="getUserByEmail" resultType="user">
+    <select id="getUserByEmail" resultMap="user">
         SELECT * FROM user WHERE email = #{email}
     </select>
 

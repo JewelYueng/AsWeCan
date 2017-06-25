@@ -3,6 +3,7 @@ package org.k2.processmining.storage;
 
 import org.k2.processmining.model.log.AbstractLog;
 import org.k2.processmining.model.user.User;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.io.*;
 
@@ -23,7 +24,10 @@ public interface LogStorage {
         }
         return false;
     }
+    @PreAuthorize("hasPermission(#log, 'download') or hasRole('ROLE_ADMIN')")
     boolean download(AbstractLog log, OutputStream outputStream);
+
+    @PreAuthorize("hasPermission(#log, 'download') or hasRole('ROLE_ADMIN') or T(org.k2.processmining.model.LogShareState).isShared(#log.isShared)")
     <T> T download(AbstractLog log, ProcessInputStream<T> processInputStream);
     default boolean download(AbstractLog log, File outputFile) {
         try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile))){
