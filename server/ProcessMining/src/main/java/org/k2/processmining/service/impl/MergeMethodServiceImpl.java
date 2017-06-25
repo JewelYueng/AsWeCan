@@ -9,6 +9,7 @@ import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.mergemethod.MergeMethod;
 import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.service.MergeMethodService;
+import org.k2.processmining.service.TimeResult;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.algorithm.Algorithm;
 import org.k2.processmining.support.algorithm.LoadMethodException;
@@ -101,22 +102,23 @@ public class MergeMethodServiceImpl implements MergeMethodService{
 
 
     @Override
-    public MergeResult merge(EventLog eventLog1, EventLog eventLog2, String methodId, Map<String, Object> params) {
+    public TimeResult<EventLog> merge(EventLog eventLog1, EventLog eventLog2, String methodId, Map<String, Object> params) {
         Algorithm<Merger> algorithm = MergerFactory.getInstance().getAlgorithm(methodId);
         if (algorithm == null || algorithm.getAlgorithm() == null) {
             return null;
         }
-        XLog xLog1 = logStorage.download(eventLog1, inputStream -> eventLogParse.eventLogParse(inputStream));
+        XLog xLog1 = eventLogParse.eventLogParse(eventLog1);
         if (xLog1 == null) {
             return null;
         }
-        XLog xLog2 = logStorage.download(eventLog2, inputStream -> eventLogParse.eventLogParse(inputStream));
+        XLog xLog2 = eventLogParse.eventLogParse(eventLog2);
         if (xLog2 == null) {
             return null;
         }
-        long cost = System.currentTimeMillis();
+        TimeResult<EventLog> timeResult = new TimeResult<>();
+        timeResult.start();
         XLog resultXLog =  algorithm.getAlgorithm().merge(xLog1, xLog2, params);
-        cost = System.currentTimeMillis() - cost;
+        timeResult.stop();
         if (resultXLog == null) {
             return null;
         }
@@ -131,7 +133,8 @@ public class MergeMethodServiceImpl implements MergeMethodService{
             return null;
         }
         mergeMethodService.afterSaveInLogStorage(resultEventLog, resultXLog);
-        return new MergeResult(resultEventLog, cost);
+        timeResult.setResult(resultEventLog);
+        return timeResult;
     }
 
     @Override
@@ -182,17 +185,5 @@ public class MergeMethodServiceImpl implements MergeMethodService{
         resultEventLog.setEventNumber(eventLogSummary.getEvents());
         resultEventLog.setOperatorNames(eventLogSummary.getOperatorNames());
         eventLogMapper.save(resultEventLog);
-    }
-
-    // a little ugly
-    public static class MergeResult {
-        private EventLog eventLog;
-        private long cost;
-        public MergeResult() {}
-        public MergeResult(EventLog eventLog, long cost) { this.eventLog = eventLog; this.cost = cost; }
-        public EventLog getEventLog() {return eventLog;}
-        public void setEventLog(EventLog eventLog) {this.eventLog = eventLog;}
-        public long getCost() {return cost;}
-        public void setCost(long cost) {this.cost = cost;}
     }
 }

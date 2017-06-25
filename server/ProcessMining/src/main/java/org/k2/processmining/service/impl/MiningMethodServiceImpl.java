@@ -7,6 +7,7 @@ import org.k2.processmining.model.MethodState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.miningmethod.MiningMethod;
 import org.k2.processmining.service.MiningMethodService;
+import org.k2.processmining.service.TimeResult;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.algorithm.Algorithm;
 import org.k2.processmining.support.algorithm.LoadMethodException;
@@ -136,7 +137,7 @@ public class MiningMethodServiceImpl implements MiningMethodService {
         if (algorithm == null || algorithm.getAlgorithm() == null) {
             return "";
         }
-        XLog xLog = logStorage.download(eventLog, inputStream -> eventLogParse.eventLogParse(inputStream));
+        XLog xLog = eventLogParse.eventLogParse(eventLog);
         if (xLog != null) {
             return algorithm.getAlgorithm().mining(xLog, params).toString();
         }

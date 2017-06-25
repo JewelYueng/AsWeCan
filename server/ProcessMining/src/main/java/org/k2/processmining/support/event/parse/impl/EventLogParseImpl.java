@@ -2,7 +2,10 @@ package org.k2.processmining.support.event.parse.impl;
 
 import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XLog;
+import org.k2.processmining.model.log.EventLog;
+import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.event.parse.EventLogParse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedInputStream;
@@ -17,6 +20,14 @@ import java.util.List;
  */
 @Component
 public class EventLogParseImpl implements EventLogParse {
+
+	@Autowired
+	private LogStorage logStorage;
+
+	@Override
+	public XLog eventLogParse(EventLog eventLog) {
+		return logStorage.download(eventLog, this::eventLogParse);
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
