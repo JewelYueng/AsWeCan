@@ -1,17 +1,14 @@
 <template>
   <div class="raw-log-details">
-    <div id="head">
-      <a class=" btn bgbtn02 btn_upload btn_common" @click="upload()"><img src="static/img/upload.png"/>上传</a>
-      <a class="btn bgbtn02 btn_share btn_common" @click="shareSome()"><img src="static/img/share_white.png"/>分享</a>
-      <a style="cursor:pointer" class="button" @click="deleteSome"><img src="static/img/Delete.png" style="padding-top: 2px">删除</a>
-
-      <input type="text" class='search' placeholder='请输入关键字' v-model="keyWord">
+    <div class="head">
+      <div class="button" @click="upload"><img src="static/img/upload.png">上传</div>
+      <div class="button" @click="shareSome"><img src="static/img/share_white.png">分享</div>
+      <div class="button" @click="deleteSome"><img src="static/img/Delete.png" style="padding-top: 2px">删除</div>
+      <input type="text" id="search" placeholder="请输入关键字"  v-model="keyWord">
       <div v-show="isSearching" class="img-button close-btn" @click="close_search">
         <i class="el-icon-circle-cross"></i>
       </div>
-      <img id="search_button"
-           src="static/img/search.png"
-           @click="searchRawLog()">
+      <img id="search_button" src="static/img/search.png" @click="searchRawLog()" >
     </div>
     <div class='title'>
       <span class='title_left'>全部文件，共{{amount}}个</span>
@@ -34,7 +31,9 @@
                   src="static/img/process_color.png">
           <img class="download_button" title="下载" src="static/img/download_color.png" @click="download(index)"
                v-model="item.rawLog.id">
-          <img class="share_button" title="分享" src="static/img/share_color.png" @click="share(index)">
+          <img @click="share(index)"
+               class="img-button share_button" title="分享"
+               :src="item.rawLog.isShared === 0 ? 'static/img/share_color.png' : 'static/img/forbidden_color.png'">
           <img class="delete_button" title="删除" src="static/img/Delete_color.png" @click="deleteRawLog(index)">
         </div>
         <div>
@@ -49,22 +48,8 @@
   @import '~assets/colors.less';
   @import "~assets/layout.less";
 
-  .button{
-    color: white;
-    font-size: 24px;
-    text-decoration: none;
-    height: @log_button_height;
-    width: @log_button_width;
-    border-radius: @log_button_border-radius;
-    background-color: @main_green;
-    img{
-      width: 30px;
-      height: 30px;
-      vertical-align: text-top;
-    }
-  }
 
-  .log-name, .download_button, .share_button, .delete_button, .process_button {
+  .log-name, .btn_common, .download_button, .share_button, .delete_button, .process_button {
     cursor: pointer;
   }
   .img-button {
@@ -79,17 +64,17 @@
     }
   }
   .head {
-    position:relative;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    position: relative;
   }
   .raw-log-details{
     padding-top: 20px;
   }
 
-  .search {
-    margin-left: 400px;
+  #search {
+    margin-left: 300px;
     background-color: @light_theme;
     color: @dark_theme;
     text-align: center;
@@ -106,12 +91,14 @@
     position: relative;
     left: -40px;
     top: 5px;
+    cursor: pointer;
   }
 
-  .btn_common {
+  .button {
+    cursor: pointer;
+    display: inline-block;
     color: white;
     font-size: 24px;
-    text-decoration: none;
     height: @log_button_height;
     width: @log_button_width;
     border-radius: @log_button_border-radius;
@@ -169,7 +156,8 @@
         keyWord: '',
         checked: [],
         totalAmount: [],
-        items: []
+        items: [],
+
       }
     },
     created(){
@@ -190,7 +178,7 @@
           return this.checkedCount == this.items.length;
         },
         set: function (value) {
-          var _this = this;
+          let _this = this;
           if (value) {
             this.totalAmount = [];
             this.checked = this.items.map(function (item) {
@@ -215,39 +203,51 @@
       }
     },
     methods: {
-      showDetail: function (index) {
-        this.$modal({
-          type: 'log-detail',
-          data: this.items[index].eventLog
-        })
-      },
       shareSome(){
         this.$api({method: 'shareRawLog', body: {idList: this.checked}}).then(res => {
           if (res.data.code === 1) {
             this.$hint('分享成功', 'success')
+            this.items = this.getTotalItems()
           } else {
             this.$hint('分享失败', 'warn')
           }
-
         })
       },
       upload: function () {
         this.$modal({type: 'upload', data: {type: 'raw'}}).then((res) => {
           console.log(res)
+          this.items = this.getTotalItems()
         })
       },
       deleteRawLog: function (index) {
         this.$api({method: 'deleteRawLog', opts: {body: {idList: [this.items[index].rawLog.id]}}}).then((res) => {
           if (parseInt(res.data.code) == 1) {
             this.$hint('删除成功', 'success');
+            this.items = this.getTotalItems()
           }
         })
+      },
+      deleteSome: function () {
+        this.$api({
+          method: 'deleteRawLog',
+          opts: {body: {idList: this.checked}}
+        }).then((res) => {
+          console.log(res.data)
+          if (res.data.code === 1) {
+            this.$hint('删除成功', 'success')
+            this.items = this.getTotalItems()
+          } else {
+            this.$hint('删除失败', 'error')
+          }
+        })
+
       },
       share(index){
         if (this.items[index].rawLog.isShared === 0) {
           this.$api({method: 'shareRawLog', body: {idList: [this.items[index].rawLog.id]}}).then(res => {
             if (res.data.code === 1) {
               this.$hint('分享成功', 'success')
+              this.items = this.getTotalItems()
             } else {
               this.$hint('分享失败', 'warn')
             }
@@ -256,6 +256,7 @@
           this.$api({method: 'unShareRawLog', body: {idList: [this.items[index].rawLog.id]}}).then(res => {
             if (res.data.code === 1) {
               this.$hint('取消分享成功', 'success')
+              this.items = this.getTotalItems()
             } else {
               this.$hint('取消分享失败', 'warn')
             }

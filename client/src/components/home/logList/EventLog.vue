@@ -1,18 +1,15 @@
 <template>
   <div class="event-log-details">
-    <div id="head">
-      <a class=" btn bgbtn02 btn_upload btn_common img-button" @click="upload">
-        <img src="static/img/upload.png"/>上传
-      </a>
-      <a class="btn bgbtn02 btn_share btn_common img-button" @click="shareSome()">
-        <img src="static/img/share_white.png"/>分享
-      </a>
-      <input type="text" class='search' placeholder='请输入关键字' v-model="keyWord">
-      <div v-show="isSearching" class="img-button close-btn" @click="close_search">
-        <i class="el-icon-circle-cross"></i>
+      <div class="head">
+        <div class="button" @click="upload"><img src="static/img/upload.png">上传</div>
+        <div class="button" @click="shareSome"><img src="static/img/share_white.png">分享</div>
+        <div class="button" @click="deleteSome"><img src="static/img/Delete.png" style="padding-top: 2px">删除</div>
+        <input type="text" id="search" placeholder="请输入关键字"  v-model="keyWord">
+        <div v-show="isSearching" class="img-button close-btn" @click="close_search">
+          <i class="el-icon-circle-cross"></i>
+        </div>
+        <img id="search_button" src="static/img/search.png" @click="searchLog" >
       </div>
-      <img id="search_button" src="static/img/search.png" @click="searchLog">
-    </div>
     <div class='title'>
       <span class='title_left'>全部文件，共{{amount}}个</span>
       <span class='title_right'>关联文件</span>
@@ -41,7 +38,7 @@
           <img class="share_button img-button" title="分享"
                :src="item.eventLog.isShared === 0 ? 'static/img/share_color.png' : 'static/img/forbidden_color.png'"
                @click="share(index)">
-          <img class="share_button img-button" src="static/img/Delete_color.png" alt="删除" title="删除"
+          <img class="delete_button img-button" src="static/img/Delete_color.png" alt="删除" title="删除"
                @click="deleteLog(index)">
         </div>
         <div>
@@ -60,7 +57,7 @@
   @import '~assets/colors.less';
   @import "~assets/layout.less";
 
-  #head {
+  .head {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -71,13 +68,11 @@
     padding-top: 20px;
   }
 
-  .search {
-    margin-left: 400px;
+  #search {
+    margin-left: 300px;
     background-color: @light_theme;
     color: @dark_theme;
-    text-align: left;
-    padding-left: 7px;
-    line-height: @search_height;
+    text-align: center;
     width: @search_width;
     height: @search_height;
     border-radius: @search_border-radius;
@@ -103,15 +98,16 @@
     cursor: pointer;
   }
 
-  .btn_common {
+  .button{
+    cursor:pointer;
+    display: inline-block;
     color: white;
     font-size: 24px;
-    text-decoration: none;
     height: @log_button_height;
     width: @log_button_width;
     border-radius: @log_button_border-radius;
     background-color: @main_green;
-    img {
+    img{
       width: 30px;
       height: 30px;
       vertical-align: text-top;
@@ -229,6 +225,7 @@
       upload(){
         this.$modal({type: 'upload', data: {type: 'event'}}).then((res) => {
           console.log(res)
+          this.items = this.getTotalItems()
         })
       },
       download(index){
@@ -241,6 +238,7 @@
         this.$api({method: 'shareEventLog', body: {idList: this.checked}}).then(res => {
           if (res.data.code === 1) {
             this.$hint('分享成功', 'success')
+            this.items = this.getTotalItems()
           } else {
             this.$hint('分享失败', 'warn')
           }
@@ -252,6 +250,7 @@
           this.$api({method: 'shareEventLog', body: {idList: [this.items[index].eventLog.id]}}).then(res => {
             if (res.data.code === 1) {
               this.$hint('分享成功', 'success')
+              this.items = this.getTotalItems()
             } else {
               this.$hint('分享失败', 'error')
             }
@@ -260,6 +259,7 @@
           this.$api({method: 'unShareEventLog', body: {idList: [this.items[index].eventLog.id]}}).then(res => {
             if (res.data.code === 1) {
               this.$hint('取消分享成功', 'success')
+              this.items = this.getTotalItems()
             } else {
               this.$hint('取消分享失败', 'error')
             }
@@ -270,10 +270,26 @@
         this.$api({method: 'deleteEventLog', opts: {body: {idList: [this.items[index].eventLog.id]}}}).then(res => {
           if (res.data.code === 1) {
             this.$hint('删除成功', 'success')
+            this.items = this.getTotalItems()
           } else {
             this.$hint('删除失败', 'error')
           }
         })
+      },
+      deleteSome: function () {
+        this.$api({
+          method: 'deleteNormalLog',
+          opts: {body: {idList: this.checked}}
+        }).then((res) => {
+          console.log(res.data)
+          if (res.data.code === 1) {
+            this.$hint('删除成功', 'success')
+            this.items = this.getTotalItems()
+          } else {
+            this.$hint('删除失败', 'error')
+          }
+        })
+
       },
       getTotalItems(){
         let totalItems = []
