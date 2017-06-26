@@ -96,6 +96,7 @@
       },
       handleDelete(index, row){
         this.format.splice(index, 1)
+        this.$emit('SAVE_FORMAT', this.format)
       },
       isEditing(index){
         return index === this.editingRow
