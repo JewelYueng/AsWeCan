@@ -11,23 +11,38 @@
     <security:http pattern="/js/**" security="none"/>
     <security:http pattern="/home/login" security="none"/>
     <security:http pattern="/html/login.html" security="none"/>
+    <security:http pattern="/home/handleLogin" security="none"/>
+    <security:http pattern="/admin/login" security="none"/>
 
-    <security:http>
-        <security:intercept-url pattern="/**" access="hasRole('ROLE_USER,ROLE_ADMIN')"/>
-        <security:form-login login-page="/home/login" login-processing-url="/login" always-use-default-target="true"
-                             default-target-url="/home" authentication-failure-url="/loginPage?error=error"/>
+
+    <security:http pattern="/admin/**" authentication-manager-ref="AdminAuthentication">
+        <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+        <security:form-login login-page="/admin/login" login-processing-url="/admin/adminLogin"/>
         <security:csrf disabled="true"/>
     </security:http>
 
-    <security:authentication-manager>
+    <security:http pattern="/**" authentication-manager-ref="UserAuthentication">
+        <security:intercept-url pattern="/**" access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')"/>
+        <security:form-login login-page="/home/login" login-processing-url="/login" always-use-default-target="true"/>
+        <security:csrf disabled="true"/>
+    </security:http>
+
+    <security:authentication-manager alias="UserAuthentication">
         <security:authentication-provider user-service-ref="myUserDetailsService">
         </security:authentication-provider>
     </security:authentication-manager>
+
+    <security:authentication-manager alias="AdminAuthentication">
+        <security:authentication-provider user-service-ref="adminDetailService"/>
+    </security:authentication-manager>
+
+
 
 
     <bean id="myUserDetailsService" class="org.k2.processmining.security.MyUserDetailService"/>
 
     <bean id="adminDetailService" class="org.k2.processmining.security.AdminDetailService"/>
 
-</beans>
+    <bean id="CustomSuccessHandler" class="org.k2.processmining.security.CustomSuccessHandler"/>
 
+</beans>

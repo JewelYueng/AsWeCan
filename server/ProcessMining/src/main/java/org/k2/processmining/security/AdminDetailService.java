@@ -1,5 +1,6 @@
 package org.k2.processmining.security;
 
+import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.AdminService;
 import org.k2.processmining.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,14 @@ public class AdminDetailService implements UserDetailsService{
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
 
-        System.out.println("AdminDetailService");
+        System.out.println("AdminDetailService:"+s);
 
-
-
-        return null;
+        User user  = new User();
+        user.setName(s);
+        user.setPassword("123456");
+        MyUserDetails myUserDetails = new MyUserDetails(user);
+        myUserDetails.addAuthority("ROLE_ADMIN");
+        myUserDetails.addAuthority("ROLE_USER");
+        return myUserDetails;
     }
 }

@@ -31,12 +31,17 @@ public class MyUserDetailService implements UserDetailsService{
         //这里完成从数据库中查询对应的username
         User user = userService.getUserByEmail(email);
         if (user != null){
+            System.out.println("user!= null");
             MyUserDetails myUserDetails = new MyUserDetails(user);
             myUserDetails.addAuthority(MyUserDetails.ROLE_USER);
+            System.out.println("userPassword:"+myUserDetails.getPassword());
             return myUserDetails;
         }
+        System.out.println("user == null");
         return null;
     }
+
+
 
 
 }

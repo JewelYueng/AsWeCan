@@ -65,4 +65,22 @@ public class HomeController {
             e.printStackTrace();
         }
     }
+
+    @RequestMapping(value = "/handleLogin",method = RequestMethod.POST)
+    public String handleLogin(HttpServletRequest request,HttpServletResponse response){
+
+        System.out.println("handleLogin");
+        System.out.println("request.email:"+request.getParameter("username"));
+        System.out.println("request.password:"+request.getParameter("password"));
+        System.out.println("request.type:"+request.getParameter("type"));
+//        try {
+//            request.getRequestDispatcher("/login").forward(request,response);
+//        } catch (ServletException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        return "login";
+    }
 }
