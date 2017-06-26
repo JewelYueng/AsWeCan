@@ -64,6 +64,9 @@
           }
 
         }).then(res => {
+//          this.totalAmount=[]
+//          this.checkedAll=false
+//          this.checked=[]
           console.log('success', res)
           if (res.body.code === 1){
             this.commit(true)

@@ -2,23 +2,50 @@
   <div>
     <div style="text-align: left;margin-left: 10px;">时间项整合</div>
     <el-table :data="dataTime" border style=
-      "margin-top: 20px;width: 90%;margin: auto;">
+      "margin-top: 20px;width: 90%;margin: auto;" >
       <el-table-column prop="sourceItem" label="源数据项"></el-table-column>
       <el-table-column prop="targetItem" label="目标数据项"></el-table-column>
     </el-table>
     <br/>
     <div style="text-align: left;margin-left: 10px;">数据项整合（不含时间项）</div>
     <div style="text-align: left;margin-left: 10px;">
-      <el-button size="small" style="width: 80px;font-size:15px">添加</el-button>
-      <el-button size="small" style="width: 80px;font-size:15px">删除</el-button>
-      <el-button size="small" style="width: 80px;font-size:15px">上移</el-button>
-      <el-button size="small" style="width: 80px;font-size:15px">下移</el-button>
+      <el-button size="small" style="width: 80px;font-size:15px" @click="addBlankRow">添加</el-button>
+
     </div>
 
     <el-table :data="integration" border style=
-      "margin-top: 20px;width: 90%;margin: auto;">
-      <el-table-column prop="oriName" label="源数据项"></el-table-column>
-      <el-table-column prop="target" label="目标数据项"></el-table-column>
+      "margin-top: 20px;width: 90%;margin: auto;" max-height="200">
+      <el-table-column prop="oriName" label="源数据项">
+        <template scope="scope">
+        <el-input v-model="editing.oriName" v-show="isEditing(scope.$index)"></el-input>
+        <div v-show="!isEditing(scope.$index)">{{scope.row.oriName}}</div>
+      </template>
+      </el-table-column>
+      <el-table-column prop="target" label="目标数据项">
+        <template scope="scope">
+          <el-input v-model="editing.target" v-show="isEditing(scope.$index)"></el-input>
+          <div v-show="!isEditing(scope.$index)">{{scope.row.target}}</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="140">
+        <template scope="scope" class="btn-column">
+          <el-button
+            size="small"
+            @click="saveEdit(scope.$index, scope.row)"
+            v-show="isEditing(scope.$index)">保存
+          </el-button>
+          <el-button
+            size="small"
+            @click="handleEdit(scope.$index, scope.row)"
+            v-show="!isEditing(scope.$index)">编辑
+          </el-button>
+          <el-button
+            size="small"
+            type="danger"
+            @click="handleDelete(scope.$index, scope.row)">删除
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -31,13 +58,14 @@
   export default{
     data(){
       return {
+        editingRow: -1,
         integration: [
           {target: "EventName", oriName: ["[Method]", "[Status]"]},
           {target: "FKPlanID", oriName: ["[FKPlanID]"]},
           {target: "PKIncidentId", oriName: ["[PKIncidentId]"]},
           {target: "PKTaskID", oriName: ["[PKTaskID]"]},
           {target: "PKPlanID", oriName: ["[PKPlanID]"]},
-          {target: "FKIncidentID", oriName: ["[FKIncidentID]"]}
+          {target: "FKIncidentID", oriName: ["[FKIncidentID]"]},
         ],
         dataTime: [
           {
@@ -56,7 +84,7 @@
         return item
       },
       addBlankRow(){
-        this.format.push({})
+        this.integration.push({})
       },
       handleEdit(index, row){
         this.editingRow = index
@@ -67,11 +95,17 @@
         this.$emit('SAVE_INTEGRATION', this.resolveData(this.integration))
       },
       handleDelete(index, row){
-        this.format.splice(index, 1)
+        this.integration.splice(index, 1)
+        this.$emit('SAVE_INTEGRATION', this.resolveData(this.integration))
       },
       isEditing(index){
         return index === this.editingRow
       },
+    },
+    computed: {
+      editing(){
+        return this.editingRow === -1 ? {} : this.integration[this.editingRow]
+      }
     }
   }
 </script>
