@@ -1,5 +1,6 @@
 package org.k2.processmining.controller;
 
+import org.k2.processmining.security.UserLoginFailureHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,41 +25,26 @@ public class HomeController {
      * @param response
      */
     @RequestMapping(value = "/login",method = RequestMethod.GET)
-    public void homeForUser(@RequestParam(value = "error",required = false) String error, HttpServletRequest request, HttpServletResponse response){
+    public void homeForUser(@RequestParam(value = "error",required = false) String error,HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        try {
-            if (error != null){
-                System.out.println("这里是error不等于null时候的:"+error);
-                request.getRequestDispatcher("/html/login_failure.html").forward(request,response);
-            }
-            else{
-                System.out.println("error:"+error);
-                request.getRequestDispatcher("/html/login.html").forward(request,response);
-            }
-
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (UserLoginFailureHandler.USER_NOT_FOUND.equals(error)){
+            System.out.println("Controller:用户不存在");
+            request.getRequestDispatcher("/html/user_notfound.html").forward(request,response);
         }
+        if (UserLoginFailureHandler.USER_PWD_ERROR.equals(error)){
+            System.out.println("Controller:用户密码错误");
+            request.getRequestDispatcher("/html/login_failure.html").forward(request,response);
+        }
+
+        request.getRequestDispatcher("/html/login.html").forward(request,response);
+
     }
 
-    @RequestMapping(value = "/admin",method = RequestMethod.GET)
-    public void homeForAdmin(HttpServletRequest request,HttpServletResponse response){
-        System.out.println("admin");
-        try {
-            request.getRequestDispatcher("/html/admin.html").forward(request,response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }//管理员的主页
 
     @RequestMapping(value = "",method = RequestMethod.GET)
     public void homePage(HttpServletRequest request,HttpServletResponse response){
         try {
-            request.getRequestDispatcher("/html/home.html").forward(request,response);
+            request.getRequestDispatcher("/html/index.html").forward(request,response);
         } catch (ServletException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -66,21 +52,4 @@ public class HomeController {
         }
     }
 
-    @RequestMapping(value = "/handleLogin",method = RequestMethod.POST)
-    public String handleLogin(HttpServletRequest request,HttpServletResponse response){
-
-        System.out.println("handleLogin");
-        System.out.println("request.email:"+request.getParameter("username"));
-        System.out.println("request.password:"+request.getParameter("password"));
-        System.out.println("request.type:"+request.getParameter("type"));
-//        try {
-//            request.getRequestDispatcher("/login").forward(request,response);
-//        } catch (ServletException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-        return "login";
-    }
 }

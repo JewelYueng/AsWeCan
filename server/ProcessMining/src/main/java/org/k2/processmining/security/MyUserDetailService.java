@@ -20,25 +20,23 @@ import java.util.List;
 
 public class MyUserDetailService implements UserDetailsService{
 
+    public static final String USER_NOT_FOUND = "user not found";
+
     @Autowired
     UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        System.out.println("userName:"+ email);
-        //TODO
-        //这里完成从数据库中查询对应的username
         User user = userService.getUserByEmail(email);
-        if (user != null){
-            System.out.println("user!= null");
+
+        if (user == null){
+            //查无此账号
+            throw new UsernameNotFoundException(USER_NOT_FOUND);
+        }
             MyUserDetails myUserDetails = new MyUserDetails(user);
             myUserDetails.addAuthority(MyUserDetails.ROLE_USER);
-            System.out.println("userPassword:"+myUserDetails.getPassword());
             return myUserDetails;
-        }
-        System.out.println("user == null");
-        return null;
     }
 
 

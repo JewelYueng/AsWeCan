@@ -18,11 +18,9 @@ import java.util.HashSet;
 
 public class MyUserDetails implements UserDetails{
 
-    public static final String ROLE_ADMIN = "ROLE_ADMIN";
     public static final String ROLE_USER = "ROLE_USER";
     private User user;
     private Collection<SimpleGrantedAuthority> authorities;
-
 
     public MyUserDetails(User user){
         super();
@@ -76,5 +74,9 @@ public class MyUserDetails implements UserDetails{
 
     public void addAuthority(String Role){
         this.authorities.add(new SimpleGrantedAuthority(Role));
+    }
+
+    public User getUser() {
+        return user;
     }
 }

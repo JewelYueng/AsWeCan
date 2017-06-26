@@ -1,6 +1,7 @@
 package org.k2.processmining.storage;
 
 
+import org.apache.commons.io.IOUtils;
 import org.k2.processmining.model.log.AbstractLog;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.util.Util;
@@ -138,20 +139,8 @@ public class HDFS implements LogStorage {
             conn.setDoOutput(true);
 //           conn.setConnectTimeout(5000);
 //	         conn.setReadTimeout(30000);
-
-            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(conn.getOutputStream());
-            try (BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)){
-                byte[] content = new byte[1024];
-                int byteRead = 0;
-                while ((byteRead = bufferedInputStream.read(content)) != -1) {
-                    bufferedOutputStream.write(content, 0, byteRead);
-                }
-                bufferedOutputStream.flush();
-                return isSuccess(conn.getResponseCode());
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
+            IOUtils.copyLarge(inputStream, conn.getOutputStream());
+            return isSuccess(conn.getResponseCode());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -202,19 +191,8 @@ public class HDFS implements LogStorage {
             conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
             conn.connect();
-            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
-            try (BufferedInputStream inputStream = new BufferedInputStream(conn.getInputStream())){
-                byte[] content = new byte[1024];
-                int byteRead = 0;
-                while ((byteRead = inputStream.read(content)) != -1) {
-                    bufferedOutputStream.write(content, 0, byteRead);
-                }
-                bufferedOutputStream.flush();
-                return isSuccess(conn.getResponseCode());
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
+            IOUtils.copyLarge(conn.getInputStream(), outputStream);
+            return isSuccess(conn.getResponseCode());
 //            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
 //            try (BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(),"utf-8"))) {
 //                String line="";

@@ -7,42 +7,54 @@
 		http://www.springframework.org/schema/security
 		http://www.springframework.org/schema/security/spring-security.xsd">
 
+    <security:http pattern="/static/**" security="none"/>
     <security:http pattern="/loginPage" security="none"/>
     <security:http pattern="/js/**" security="none"/>
     <security:http pattern="/home/login" security="none"/>
-    <security:http pattern="/html/login.html" security="none"/>
-    <security:http pattern="/home/handleLogin" security="none"/>
     <security:http pattern="/admin/login" security="none"/>
+
 
 
     <security:http pattern="/admin/**" authentication-manager-ref="AdminAuthentication">
         <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
-        <security:form-login login-page="/admin/login" login-processing-url="/admin/adminLogin"/>
+        <security:form-login login-page="/admin/login" login-processing-url="/admin/adminLogin" always-use-default-target="true"
+        authentication-success-handler-ref="adminLoginSuccessHandler"
+        authentication-failure-handler-ref="adminLoginFailureHandler"/>
         <security:csrf disabled="true"/>
     </security:http>
 
     <security:http pattern="/**" authentication-manager-ref="UserAuthentication">
-        <security:intercept-url pattern="/**" access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')"/>
-        <security:form-login login-page="/home/login" login-processing-url="/login" always-use-default-target="true"/>
+        <!--<security:intercept-url pattern="/rawLog/**" access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')"/>-->
+        <!--<security:intercept-url pattern="/normalLog/**" access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')"/>-->
+        <!--<security:intercept-url pattern="/eventLog/**" access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')"/>-->
+        <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
+        <security:form-login login-page="/home/login" login-processing-url="/login" always-use-default-target="true"
+        authentication-success-handler-ref="userLoginSuccessHandler"
+        authentication-failure-handler-ref="userLoginFailureHandler"/>
         <security:csrf disabled="true"/>
     </security:http>
 
-    <security:authentication-manager alias="UserAuthentication">
-        <security:authentication-provider user-service-ref="myUserDetailsService">
-        </security:authentication-provider>
+    <security:authentication-manager id="UserAuthentication">
+        <security:authentication-provider ref="userAuthenticationProvider"/>
     </security:authentication-manager>
 
-    <security:authentication-manager alias="AdminAuthentication">
-        <security:authentication-provider user-service-ref="adminDetailService"/>
+    <security:authentication-manager id="AdminAuthentication">
+        <security:authentication-provider ref="adminAuthenticationProvider"/>
     </security:authentication-manager>
 
-
-
-
+    <bean id="adminAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <property name="userDetailsService" ref="adminDetailService"/>
+        <property name="hideUserNotFoundExceptions" value="false"/>
+    </bean>
+    <bean id="userAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <property name="hideUserNotFoundExceptions" value="false"/>
+        <property name="userDetailsService" ref="myUserDetailsService"/>
+    </bean>
+    <bean id="adminLoginFailureHandler" class="org.k2.processmining.security.AdminLoginFailureHandler"/>
+    <bean id="adminLoginSuccessHandler" class="org.k2.processmining.security.AdminLoginSuccessHandler"/>
     <bean id="myUserDetailsService" class="org.k2.processmining.security.MyUserDetailService"/>
-
     <bean id="adminDetailService" class="org.k2.processmining.security.AdminDetailService"/>
-
-    <bean id="CustomSuccessHandler" class="org.k2.processmining.security.CustomSuccessHandler"/>
+    <bean id="userLoginSuccessHandler" class="org.k2.processmining.security.UserLoginSuccessHandler"/>
+    <bean id="userLoginFailureHandler" class="org.k2.processmining.security.UserLoginFailureHandler"/>
 
 </beans>

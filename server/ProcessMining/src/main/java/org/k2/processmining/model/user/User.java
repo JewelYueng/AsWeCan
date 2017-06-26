@@ -1,10 +1,12 @@
 package org.k2.processmining.model.user;
 
+import java.io.Serializable;
+
 /**
  * 补充了state状态
  * Created by Aria on 2017/6/9.
  */
-public class User {
+public class User implements Serializable{
     private String id;
     private String name;
     private String email;

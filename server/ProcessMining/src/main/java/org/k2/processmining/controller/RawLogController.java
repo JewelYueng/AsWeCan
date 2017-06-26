@@ -1,17 +1,21 @@
 package org.k2.processmining.controller;
 
+import org.apache.commons.io.IOUtils;
+import org.k2.processmining.exception.JSONBadRequestException;
 import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.LogShareState;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.log.RawLog;
 import org.k2.processmining.model.user.User;
+import org.k2.processmining.security.config.IUserDetail;
 import org.k2.processmining.service.RawLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.util.Util;
 import org.k2.processmining.utils.GsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -76,34 +80,24 @@ public class RawLogController {
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public void download(@RequestParam("id") String id, HttpServletResponse response) {
         RawLog rawLog = rawLogService.getRawLogById(id);
-        User user = getUser();
-        if (!Util.isActiveAndBelongTo(rawLog, user) && !Util.isActiveAndShared(rawLog)) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
-        String fileName = rawLog.getLogName();
-        response.setHeader("Content-Disposition","attachment;filename=" + Util.encodeForURL(fileName));
-        try (OutputStream outputStream = response.getOutputStream()){
-            logStorage.download(rawLog, outputStream);
-            outputStream.flush();
-        }
-        catch (IOException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
+        logStorage.download(rawLog, inputStream -> {
+            String fileName = rawLog.getLogName();
+            response.setHeader("Content-Disposition","attachment;filename=" + Util.encodeForURL(fileName));
+            try {
+                IOUtils.copyLarge(inputStream, response.getOutputStream());
+            }
+            catch (IOException e) {
+                return false;
+            }
+            return true;
+        });
     }
 
     @RequestMapping(value = "/normalize", method = RequestMethod.POST)
     public @ResponseBody
     Object normalize(@Valid @RequestBody NormalizeRawLogConfigForm form) {
         RawLog rawLog = rawLogService.getRawLogById(form.getRawLogId());
-        User user = getUser();
         Map<String, Object> res = new HashMap<>();
-        if (rawLog == null || rawLog.getUserId() == null
-                || !rawLog.getUserId().equals(user.getId()) || !LogState.isActive(rawLog.getState())) {
-            res.put("code", 0);
-            res.put("msg", "The log is not exist!");
-            return ResponseEntity.badRequest().body(res);
-        }
         NormalLog normalLog = rawLogService.normalize(rawLog, form.toLogConfiguration());
         if (normalLog == null) {
             res.put("code", 0);
@@ -196,5 +190,6 @@ public class RawLogController {
         user.setId("1");
         user.setName("y2k");
         return user;
+//        return ((IUserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
     }
 }

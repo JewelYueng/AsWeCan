@@ -23,7 +23,7 @@ public interface MergeMethodService {
     Map<String, Object> getMethodConfig(String methodId);
     boolean isActive(String id);
     boolean isActive(MergeMethod mergeMethod);
-    MergeMethodServiceImpl.MergeResult merge(EventLog eventLog1, EventLog eventLog2, String methodId, Map<String, Object> params);
+    TimeResult<EventLog> merge(EventLog eventLog1, EventLog eventLog2, String methodId, Map<String, Object> params);
     void afterSaveInLogStorage(EventLog resultEventLog, XLog resultXLog);
     MergeMethod addMethod(MultipartFile[] multipartFiles) throws IOException, LoadMethodException;
     void afterSaveMethod(MergeMethod mergeMethod);

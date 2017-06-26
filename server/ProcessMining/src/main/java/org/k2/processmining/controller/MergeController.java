@@ -8,6 +8,7 @@ import org.k2.processmining.model.mergemethod.MergeMethod;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.service.MergeMethodService;
+import org.k2.processmining.service.TimeResult;
 import org.k2.processmining.service.impl.MergeMethodServiceImpl;
 import org.k2.processmining.support.algorithm.LoadMethodException;
 import org.k2.processmining.util.Util;
@@ -73,13 +74,13 @@ public class MergeController {
             res.put("msg", "The event logs are not exist!");
             return ResponseEntity.badRequest().body(res);
         }
-        MergeMethodServiceImpl.MergeResult result = mergeMethodService.merge(eventLog1, eventLog2, form.methodId, form.parameters);
+        TimeResult<EventLog> result = mergeMethodService.merge(eventLog1, eventLog2, form.methodId, form.parameters);
         if (result == null) {
             res.put("msg", "Fail to merge the logs. Please check the input content and try again!");
             return ResponseEntity.status(HttpServletResponse.SC_BAD_REQUEST).body(res);
         }
-        res.put("timeCost", result.getCost());
-        res.put("eventLog", result.getEventLog());
+        res.put("timeCost", result.getTime());
+        res.put("eventLog", result.getResult());
         return res;
     }
 

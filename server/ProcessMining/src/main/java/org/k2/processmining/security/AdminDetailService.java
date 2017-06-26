@@ -1,5 +1,6 @@
 package org.k2.processmining.security;
 
+import org.k2.processmining.model.user.Administrator;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.AdminService;
 import org.k2.processmining.service.UserService;
@@ -12,7 +13,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
  * Created by Aria on 2017/6/23.
  */
 public class AdminDetailService implements UserDetailsService{
-//
+
+    public static String ADMIN_NOT_FOUND = "admin not found";
+
     @Autowired
     AdminService adminService;
 
@@ -21,12 +24,12 @@ public class AdminDetailService implements UserDetailsService{
 
         System.out.println("AdminDetailService:"+s);
 
-        User user  = new User();
-        user.setName(s);
-        user.setPassword("123456");
-        MyUserDetails myUserDetails = new MyUserDetails(user);
-        myUserDetails.addAuthority("ROLE_ADMIN");
-        myUserDetails.addAuthority("ROLE_USER");
-        return myUserDetails;
+        Administrator administrator = adminService.getAdminByWorkId(s);
+        if (administrator == null){
+            throw new UsernameNotFoundException(ADMIN_NOT_FOUND);
+        }
+        AdminDetails adminDetails = new AdminDetails(administrator);
+        adminDetails.addAuthority(AdminDetails.ROLE_ADMIN);
+        return adminDetails;
     }
 }
