@@ -133,8 +133,8 @@
     margin-right: 10px;
     .list {
       img {
-        width: 30px;
-        height: 30px;
+        width: 20px;
+        height: 20px;
         margin-right: 10px;
       }
       display: flex;
