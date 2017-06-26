@@ -213,7 +213,7 @@
     methods: {
       ...mapActions(['selectLog', 'changeFilePath']),
       isSelected(index){
-        return this.$store.getters.selectedLog.type === 2 && this.items[index].id === this.$store.getters.selectedLog.id
+        return this.$store.getters.selectedLog.type === 2 && this.items[index].eventLog.id === this.$store.getters.selectedLog.id
 
       },
       jumpToNormal(index){
