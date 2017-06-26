@@ -28,12 +28,8 @@
     position: relative;
   }
 
-  .fade-transition {
-    transition: opacity 0.2s ease;
-  }
-
-  .fade-enter, .fade-leave {
-    opacity: 0;
+  .el-button+.el-button{
+    margin-left: 0;
   }
 
 
@@ -44,6 +40,7 @@
   import Format from './Format.vue'
   import Integration from './Integration.vue'
   import Record from './Record.vue'
+  import _ from 'lodash'
   export default{
     mixins: [BaseBox],
     data() {
@@ -77,6 +74,7 @@
           "oriNameValSeparator": " ",
           "oriNulVal": ""
         },
+        send_data: {},
         view_dict: [Format, Integration, Record],
 //        editingRow: -1,
 //        data1: [
@@ -136,23 +134,46 @@
 //        return index === this.editingRow
 //      },
       Normalizing(){
+//        this.$api({
+//          method: 'normalize', body: {
+//            "rawLogId": this.data.id,
+//            "formats": this.format,
+//            "timeNames": "[QC]",
+//            "renameOrMergeItems": this.integration,
+//            "oriItemSeparator": "\t",
+//            "oriNameValSeparator": " ",
+//            "oriNulVal": ""
+//          }
+//        }).then((res) => {
+//          console.log(res);
+//          if (res.data.code === 1) {
+//            this.$hint('规范化成功', 'success');
+//          }
+//          else if(res.status === 500){
+//            this.$hint('参数设置不当', 'warn');
+//          }
+//          else{
+//            this.$hint('网络连接失败', 'erorr');
+//          }
+//
+//        })
         this.$api({
-          method: 'normalize', body: {
+          method: 'normalize', body: _.extend({
             "rawLogId": this.data.id,
             "formats": this.format,
             "timeNames": "[QC]",
             "renameOrMergeItems": this.integration,
-            "oriItemSeparator": "\t",
-            "oriNameValSeparator": " ",
-            "oriNulVal": ""
-          }
+          }, this.record[0])
         }).then((res) => {
           console.log(res);
           if (res.data.code === 1) {
             this.$hint('规范化成功', 'success');
           }
-          else {
-            this.$hint('规范化失败', 'warn');
+          else if(res.status === 500){
+            this.$hint('参数设置不当', 'warn');
+          }
+          else{
+            this.$hint('网络连接失败', 'erorr');
           }
 
         })

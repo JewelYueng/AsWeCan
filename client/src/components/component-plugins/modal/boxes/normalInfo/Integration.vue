@@ -2,7 +2,7 @@
   <div>
     <div style="text-align: left;margin-left: 10px;">时间项整合</div>
     <el-table :data="dataTime" border style=
-      "margin-top: 20px;width: 90%;margin: auto;" >
+      "margin-top: 20px;width: 90%;margin: auto;">
       <el-table-column prop="sourceItem" label="源数据项"></el-table-column>
       <el-table-column prop="targetItem" label="目标数据项"></el-table-column>
     </el-table>
@@ -13,13 +13,13 @@
 
     </div>
 
-    <el-table :data="integration" border style=
+    <el-table :data="ui_item" border style=
       "margin-top: 20px;width: 90%;margin: auto;" max-height="200">
       <el-table-column prop="oriName" label="源数据项">
         <template scope="scope">
-        <el-input v-model="editing.oriName" v-show="isEditing(scope.$index)"></el-input>
-        <div v-show="!isEditing(scope.$index)">{{scope.row.oriName}}</div>
-      </template>
+          <el-input v-model="editing.oriName" v-show="isEditing(scope.$index)"></el-input>
+          <div v-show="!isEditing(scope.$index)">{{scope.row.oriName}}</div>
+        </template>
       </el-table-column>
       <el-table-column prop="target" label="目标数据项">
         <template scope="scope">
@@ -78,7 +78,7 @@
     methods: {
       resolveData(items_arr){
         let item = {}
-        items_arr.map( i => {
+        items_arr.map(i => {
           item[i.target] = i.oriName
         })
         return item
@@ -90,7 +90,10 @@
         this.editingRow = index
       },
       saveEdit(index, row){
-        this.integration[index] = this.editing
+
+        this.integration[index].target = this.editing.target
+        this.integration[index].oriName = this.editing.oriName.split(',')
+//        this.integration[index] = this.editing
         this.editingRow = -1
         this.$emit('SAVE_INTEGRATION', this.resolveData(this.integration))
       },
@@ -104,7 +107,21 @@
     },
     computed: {
       editing(){
-        return this.editingRow === -1 ? {} : this.integration[this.editingRow]
+        return this.editingRow === -1 ? {} : this.ui_item[this.editingRow]
+      },
+      ui_item(){
+        let items = []
+        this.integration.map(item => {
+          if(item.oriName !== undefined) {
+            let resolved_item = {}
+            resolved_item.target = item.target
+            resolved_item.oriName = item.oriName.join(', ')
+            items.push(resolved_item)
+          }else{
+            items.push(item)
+          }
+        })
+        return items
       }
     }
   }

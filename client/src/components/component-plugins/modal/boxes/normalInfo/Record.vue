@@ -4,22 +4,22 @@
       <el-button size="small" style="width: 80px;font-size:15px" @click="addBlankRow">添加</el-button>
     </div>
     <el-table :data="record" border style="top: 90px;width: 90%;margin: auto;">
-      <el-table-column prop="item" label="原数据项分隔符">
+      <el-table-column prop="oriItemSeparator" label="原数据项分隔符">
         <template scope="scope">
-          <el-input v-model="editing.item" v-show="isEditing(scope.$index)"></el-input>
-          <div v-show="!isEditing(scope.$index)">{{scope.row.item}}</div>
+          <el-input v-model="editing.oriItemSeparator" v-show="isEditing(scope.$index)"></el-input>
+          <div v-show="!isEditing(scope.$index)">{{scope.row.oriItemSeparator}}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="原名称值分隔符">
+      <el-table-column prop="oriNameValSeparator" label="原名称值分隔符">
         <template scope="scope">
-          <el-input v-model="editing.name" v-show="isEditing(scope.$index)"></el-input>
-          <div v-show="!isEditing(scope.$index)">{{scope.row.name}}</div>
+          <el-input v-model="editing.oriNameValSeparator" v-show="isEditing(scope.$index)"></el-input>
+          <div v-show="!isEditing(scope.$index)">{{scope.row.oriNameValSeparator}}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="null" label="原空值分隔符">
+      <el-table-column prop="oriNameValSeparator" label="原空值分隔符">
         <template scope="scope">
-          <el-input v-model="editing.null" v-show="isEditing(scope.$index)"></el-input>
-          <div v-show="!isEditing(scope.$index)">{{scope.row.null}}</div>
+          <el-input v-model="editing.oriNameValSeparator" v-show="isEditing(scope.$index)"></el-input>
+          <div v-show="!isEditing(scope.$index)">{{scope.row.oriNameValSeparator}}</div>
         </template>
       </el-table-column>
       <el-table-column>
@@ -50,14 +50,15 @@
         editingRow: -1,
         record: [
           {
-            item: '/t',
-            name: ' ',
-            null: ' '
+            oriItemSeparator: '/t',
+            oriNameValSeparator: ' ',
+            oriNulVal: ' '
           }
         ]
       }
     },
     methods: {
+
       //      表格的操作函数
       addBlankRow(){
         this.record.push({})
@@ -73,6 +74,7 @@
       isEditing(index){
         return index === this.editingRow
       },
+
     },
     computed: {
       editing(){
