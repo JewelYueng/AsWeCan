@@ -48,15 +48,14 @@
 </style>
 
 <script>
-//  import LeftSide from 'components/home/LeftSide.vue'
-//  import LogList from 'components/home/logList/Index'
-//  import ShareList from 'components/home/sharelist/Index'
   import MyRawLog from 'components/home/logList/RawLog'
   import MyNormalLog from 'components/home/logList/NormalLog'
   import MyEventLog from 'components/home/logList/EventLog'
   import ShareRawLog from 'components/home/shareList/RawLogDetail'
   import ShareNormalLog from 'components/home/shareList/NormalLogDetail'
   import ShareEventLog from 'components/home/shareList/EventLogDetail'
+
+  import {mapActions} from 'vuex'
 
   export default{
     data(){
@@ -81,7 +80,11 @@
       ShareNormalLog,
       ShareEventLog
     },
+    created(){
+      this.changeHomePath('/')
+    },
     methods: {
+      ...mapActions(['changeHomePath' ]),
       handleSelect(key, keyPath) {
         this.active_index = key
       }
@@ -89,7 +92,7 @@
     computed: {
       current_view() {
         return this.view_dict[this.active_index || '1-1']
-      }
+      },
     }
   }
 </script>

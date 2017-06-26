@@ -74,7 +74,7 @@
 
 <script>
   import Alert from './boxes/Alert.vue'
-  import NormalInfo from './boxes/NormalInfo.vue'
+  import NormalInfo from './boxes/normalInfo/Index.vue'
   import LogDetail from './boxes/LogDetail.vue'
   import { register } from './modal'
   import Upload from './boxes/Upload.vue'

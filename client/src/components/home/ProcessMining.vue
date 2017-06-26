@@ -7,14 +7,22 @@
 
 </style>
 <script>
-    export default{
-        data(){
-            return{
-                msg:'hello vue'
-            }
-        },
-        components:{
-        }
+  import {mapActions} from 'vuex'
+  export default{
+    data(){
+      return {
+        msg: 'hello vue'
+      }
+    },
+    methods: {
+      ...mapActions(['changeHomePath'])
+    },
+    components: {},
+    created(){
+      this.changeHomePath('/mining')
     }
+
+
+  }
 
 </script>

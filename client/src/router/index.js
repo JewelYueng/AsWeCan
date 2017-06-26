@@ -20,11 +20,11 @@ export default new Router({
     // },
     {
       path: "/",
-      name: "home",
       component: Home,
       children: [
         {
           path: "",
+          name: 'home',
           component: FilesManager
         },
         {
@@ -44,7 +44,7 @@ export default new Router({
         },
         {
           path: "/mining",
-          name: 'name',
+          name: 'mining',
           component: ProcessMining
           
         },
@@ -66,30 +66,5 @@ export default new Router({
       name: "register",
       component: Register
     },
-    {
-      path: "/merge",
-      name: "merge",
-      component: LogMerge
-      
-    },
-    {
-      path: "/mergeResult",
-      name: "mergeResult",
-      component: MergeResult
-      
-    },
-    {
-      path: "/mining",
-      name: "mining",
-      component: ProcessMining
-      
-    },
-    {
-      path: "/miningResult",
-      name: "miningResult",
-      component: ProcessMining
-      
-    }
-  
   ]
 })

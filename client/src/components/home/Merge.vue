@@ -232,6 +232,7 @@
       }
     },
     created(){
+      this.changeHomePath('/merge')
       this.methods.map((method) => {
         let param = {}
         method.parameters.map((params) => {
@@ -243,9 +244,10 @@
         console.log(res)
         this.methods = res.data.methods
       })
+
     },
     methods: {
-      ...mapActions(['jumpView']),
+      ...mapActions(['jumpView','changeHomePath']),
       change: function (m_index, p_key, min, max) {
 //  console.log(event.target.value);
         let send_data = this.send_params_arr[m_index][p_key]

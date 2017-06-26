@@ -1,23 +1,25 @@
-import VUe from "vue"
-
-const state = {
-  normal_log: [],
-  raw_log: [],
-  event_log: []
+export default {
+  state: {
+    selected: {
+    
+    }
+    // type: 日志类型
+    // id: 日志id
+  },
+  mutations:{
+    SET_SELECTED(state, {item}) {
+      if(typeof item !== 'object'){
+        throw new TypeError(JSON.stringify(item))
+      }
+      state.selected = item
+    }
+  },
+  actions: {
+    selectLog({commit}, item) {
+      commit('SET_SELECTED', { item })
+    }
+  },
+  getters: {
+    selectedLog: state => state.selected
+  }
 }
-
-const getters = {
-
-  normal_log: state => state.normal_log,
-  raw_log: state => state.raw_log,
-  event_log: state =>state.event_log
-}
-
-const actions = {
-
-}
-
-const mutations = {
-
-}
-export default {state, getters, actions, mutations}
