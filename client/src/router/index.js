@@ -7,7 +7,7 @@ import MergeResult from "components/home/MergeResult"
 import ProcessMining from "components/home/ProcessMining"
 import Login from "components/login/index"
 import Register from "components/register/index"
-
+import Home from "components/home/index"
 
 Vue.use(Router)
 
@@ -20,10 +20,41 @@ export default new Router({
     // },
     {
       path: "/",
-      name: "files",
-      components: {
-        home: FilesManager
-      }
+      name: "home",
+      component: Home,
+      children: [
+        {
+          path: "",
+          component: FilesManager
+        },
+        {
+          path: "files",
+          name: 'files',
+          component: FilesManager
+        },
+        {
+          path: "merge",
+          name: 'merge',
+          component: LogMerge
+        },
+        {
+          path: "mergeResult",
+          name: 'mergeResult',
+          component: MergeResult
+        },
+        {
+          path: "/mining",
+          name: 'name',
+          component: ProcessMining
+          
+        },
+        {
+          path: "/miningResult",
+          name: 'result',
+          component: ProcessMining
+          
+        }
+      ]
     },
     {
       path: "/login",
@@ -38,31 +69,27 @@ export default new Router({
     {
       path: "/merge",
       name: "merge",
-      components: {
-        home: LogMerge
-      }
+      component: LogMerge
+      
     },
     {
       path: "/mergeResult",
       name: "mergeResult",
-      components: {
-        home: MergeResult
-      }
+      component: MergeResult
+      
     },
     {
       path: "/mining",
       name: "mining",
-      components: {
-        home: ProcessMining
-      }
+      component: ProcessMining
+      
     },
     {
       path: "/miningResult",
       name: "miningResult",
-      components: {
-        home: ProcessMining
-      }
+      component: ProcessMining
+      
     }
-
+  
   ]
 })
