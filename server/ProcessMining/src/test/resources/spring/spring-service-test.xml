@@ -15,7 +15,9 @@
 		http://www.springframework.org/schema/tx
 		http://www.springframework.org/schema/tx/spring-tx-4.3.xsd ">
 
-    <context:component-scan base-package="org.k2.processmining"/>
+    <context:component-scan base-package="org.k2.processmining">
+        <context:exclude-filter type="regex" expression="org\.k2\.processmining\.security\.config\..*"/>
+    </context:component-scan>
     <!--配置注解的映射器和适配器以及其他配置-->
     <mvc:annotation-driven/>
     <aop:aspectj-autoproxy />

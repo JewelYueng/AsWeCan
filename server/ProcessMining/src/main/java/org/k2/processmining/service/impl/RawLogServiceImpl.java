@@ -118,9 +118,10 @@ public class RawLogServiceImpl implements RawLogService {
         normalLog.setRawLogId(rawLog.getId());
         normalLog.setCreateDate(new Date());
         normalLog.setFormat("txt");
-        if(! logStorage.upload(normalLog,
+        Boolean b = logStorage.upload(normalLog,
                 outputStream -> logStorage.download(rawLog,
-                        inputStream -> Normalize.normalize(lc, inputStream, outputStream)))) {
+                        inputStream -> Normalize.normalize(lc, inputStream, outputStream)));
+        if(b == null || !b ) {
             return null;
         }
         rawLogService.afterSaveInLogStorageForNormalize(normalLog, rawLog);

@@ -2,6 +2,7 @@ package org.k2.processmining.controller;
 
 import org.apache.commons.io.IOUtils;
 import org.k2.processmining.exception.JSONBadRequestException;
+import org.k2.processmining.exception.JSONInternalServerErrorException;
 import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.LogShareState;
 import org.k2.processmining.model.LogState;
@@ -87,7 +88,8 @@ public class RawLogController {
                 IOUtils.copyLarge(inputStream, response.getOutputStream());
             }
             catch (IOException e) {
-                return false;
+                e.printStackTrace();
+                throw new JSONInternalServerErrorException("Internal Server Error!");
             }
             return true;
         });
@@ -104,6 +106,7 @@ public class RawLogController {
             return res;
         }
         res.put("code", 1);
+        res.put("normalLog", normalLog);
         return res;
     }
 

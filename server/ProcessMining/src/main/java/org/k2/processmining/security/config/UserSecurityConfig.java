@@ -25,6 +25,7 @@ public class UserSecurityConfig extends WebSecurityConfigurerAdapter {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(iUserDetailService);
         auth.authenticationProvider(authenticationProvider);
+
     }
 
 
