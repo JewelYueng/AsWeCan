@@ -110,7 +110,6 @@ public class RawLogServiceTest {
     @Test
     public void normalizeTest() throws Exception {
         RawLog rawLog = rawLogService.getRawLogById("1");
-        rawLog.setId("123");
         String formats = "[QC],ABCD,A-B-CTD,A-B-CTD";
         String timeNames = "[QC]";
         String dataNames = "[Method];[Status]:EventName,[FKPlanID]:FKPlanID,[PkIncidentID]:PkIncidentID,[PkTaskID]:PkTaskID,[PKPlanID]:PKPlanID;[FKIncidentID]:FKIncidentID";
@@ -119,8 +118,8 @@ public class RawLogServiceTest {
         String oriNulVal = "";
         LogConfiguration lc = new LogConfiguration(formats, timeNames, dataNames, oriItemSeparator, oriNameValSeparator, oriNulVal);
         NormalLog normalLog = rawLogService.normalize(rawLog, lc);
-        Assert.assertNull(normalLog);
-//        System.out.println("normalizeTest: normalLog: " + toJSON(normalLog));
+        Assert.assertNotNull(normalLog);
+        System.out.println("normalizeTest: normalLog: " + toJSON(normalLog));
     }
 
     private String toJSON(Object o) throws JsonProcessingException {

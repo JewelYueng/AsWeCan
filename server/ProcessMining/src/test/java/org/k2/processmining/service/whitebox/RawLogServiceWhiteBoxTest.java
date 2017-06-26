@@ -48,7 +48,7 @@ public class RawLogServiceWhiteBoxTest {
         rawLog.setUserId("1");
         rawLog.setCreateDate(new Date());
         rawLog.setFormat("txt");
-        InputStream inputStream = RawLogServiceTest.class.getClassLoader().getResourceAsStream("log/rawLogTest.txt");
+        InputStream inputStream = RawLogServiceWhiteBoxTest.class.getClassLoader().getResourceAsStream("log/rawLogTest.txt");
         Assert.assertTrue(rawLogService.save(rawLog, inputStream));
 
 
@@ -80,22 +80,42 @@ public class RawLogServiceWhiteBoxTest {
     }
 
     @Test
-    public void verifyTest() throws Exception {
+    public void verifyIsActive() throws Exception {
         RawLogServiceImpl rawLogService = new RawLogServiceImpl();
         Class<?> clazz = rawLogService.getClass();
         Method verifyLogGroupsIsActive  = clazz.getDeclaredMethod("verifyLogGroupsIsActive", List.class);
-        Method verifyLogGroupsIsShared = clazz.getDeclaredMethod("verifyLogGroupsIsShared", List.class);
         verifyLogGroupsIsActive.setAccessible(true);
+
+        List<LogGroup> logGroups = getLogGroups();
+        verifyLogGroupsIsActive.invoke(rawLogService, logGroups);
+
+        Assert.assertEquals(2, logGroups.size());
+    }
+
+    @Test
+    public void verifyIsShared() throws Exception {
+        RawLogServiceImpl rawLogService = new RawLogServiceImpl();
+        Class<?> clazz = rawLogService.getClass();
+        Method verifyLogGroupsIsShared = clazz.getDeclaredMethod("verifyLogGroupsIsShared", List.class);
         verifyLogGroupsIsShared.setAccessible(true);
+
+        List<LogGroup> logGroups = getLogGroups();
+
+        verifyLogGroupsIsShared.invoke(rawLogService, logGroups);
+
+        Assert.assertEquals(2, logGroups.size());
+    }
+
+    public List<LogGroup> getLogGroups() {
         List<LogGroup> logGroups = new LinkedList<>();
 
-        // 判定情况 3:true, 4:false, 5:true, 6:true, 7:true, 8:false, 9:true, 10:true
+        // 判定情况 3:true, 7:true
         RawLog rawLogNull = null;
         NormalLog normalLogNull = null;
         EventLog eventLogNull = null;
         logGroups.add(getLogGroup(rawLogNull, normalLogNull, eventLogNull));
 
-        // 判定情况 3:false, 4:true, 5:false, 6:false, 7:false, 8:true, 9:false, 10:false;
+        // 判定情况 3:false, 4:false, 5:false, 6:false, 7:false, 8:false, 9:false, 10:false;
         RawLog rawLog = new RawLog();
         rawLog.setId("1");
         NormalLog normalLog = new NormalLog();
@@ -106,13 +126,16 @@ public class RawLogServiceWhiteBoxTest {
         eventLog.setIsShared(LogShareState.SHARED.getValue());
         logGroups.add(getLogGroup(rawLog, normalLog, eventLog));
 
+        // 判定情况 3:false, 4:true, 7:false, 8:true
         logGroups.add(getLogGroup(rawLog, normalLog, eventLog));
 
-        verifyLogGroupsIsActive.invoke(rawLogService, logGroups);
-        verifyLogGroupsIsShared.invoke(rawLogService, logGroups);
+        // 判定情况 5:true, 6:true, 9:true, 10:true
+        RawLog rawLog1 = new RawLog();
+        rawLog1.setId("2");
+        logGroups.add(getLogGroup(rawLog1, null, null));
 
-        Assert.assertEquals(1, logGroups.size());
-        Assert.assertEquals("1", logGroups.get(0).getRawLog().getId());
+
+        return logGroups;
     }
 
     private String toJSON(Object o) throws JsonProcessingException {

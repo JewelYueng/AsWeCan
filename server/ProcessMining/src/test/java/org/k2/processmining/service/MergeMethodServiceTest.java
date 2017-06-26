@@ -64,7 +64,8 @@ public class MergeMethodServiceTest {
         Assert.assertNotNull(mergeMethod);
         System.out.println("getMethodByIdTest: mergeMethod: " + toJSON(mergeMethod));
 
-        Assert.assertNull(mergeMethodService.getMethodById(inactiveMethod.getId()));
+        MergeMethod m = mergeMethodService.getMethodById(inactiveMethod.getId());
+        Assert.assertTrue( m == null || !MethodState.isActive(m.getState()) );
     }
 
     @Test

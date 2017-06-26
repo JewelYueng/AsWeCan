@@ -129,7 +129,8 @@ public class MergeMethodServiceImpl implements MergeMethodService{
         resultEventLog.setCreateDate(new Date());
         resultEventLog.setFormat("xes");
         resultEventLog.setMergeRelation(eventLog1.getId() + "," + eventLog2.getId());
-        if (! logStorage.upload(resultEventLog, outputStream -> eventLogExport.convertXLog(resultXLog, outputStream))) {
+        Boolean b = logStorage.upload(resultEventLog, outputStream -> eventLogExport.convertXLog(resultXLog, outputStream));
+        if (b == null || !b) {
             return null;
         }
         mergeMethodService.afterSaveInLogStorage(resultEventLog, resultXLog);
