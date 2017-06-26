@@ -8,11 +8,12 @@
     <div id="log-list">
       <div class="list"><div>文件名</div><div>上传者</div><div>日期</div><div>规范化日志</div><div>事件日志</div></div>
       <div class="list" v-for="(item,index) in items">
-        <div>{{`${item.rawLog.logName}.${item.rawLog.format}`}}</div>
+        <div>{{item.rawLog.logName}}</div>
         <div>{{item.user.name}}</div><div>
         {{`${new Date(item.rawLog.createDate).getFullYear()}-${new Date(item.rawLog.createDate).getMonth() + 1}-${new Date(item.rawLog.createDate).getDate()}`}}
       </div>
-        <div>{{item.normalLog ? `${item.normalLog.logName}.${item.normalLog.format}` : '无'}}</div><div>{{item.eventLog ? `${item.eventLog.logName}.${item.eventLog.format}` : '无'}}</div>
+        <div>{{item.normalLog ? item.normalLog.logName : '无'}}</div>
+        <div>{{item.eventLog ? item.eventLog.logName : '无'}}</div>
         <img class="download_button" title="下载" src="static/img/download_color.png" @click="download(index)">
       </div>
     </div>

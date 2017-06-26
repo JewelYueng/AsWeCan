@@ -1,7 +1,7 @@
 <template>
   <div class="files-list">
     <div class="left-side">
-      <el-menu default-active="1-1" class="el-menu-vertical-demo" @select="handleSelect">
+      <el-menu :default-active="current_index" class="el-menu-vertical-demo" @select="handleSelect">
         <el-submenu index="1">
           <template slot="title"><i class="el-icon-message"></i>我的日志</template>
           <el-menu-item index="1-1">原始日志</el-menu-item>
@@ -45,6 +45,9 @@
     padding: 30px 30px 0 30px;
     overflow: auto;
   }
+  .relation-logs{
+    cursor: pointer;
+  }
 </style>
 
 <script>
@@ -84,15 +87,19 @@
       this.changeHomePath('/')
     },
     methods: {
-      ...mapActions(['changeHomePath' ]),
+      ...mapActions(['changeHomePath','changeFilePath', 'selectLog']),
       handleSelect(key, keyPath) {
         this.active_index = key
+        this.changeFilePath(key)
       }
     },
     computed: {
       current_view() {
-        return this.view_dict[this.active_index || '1-1']
+        return this.view_dict[this.$store.getters.file_path || '1-1']
       },
+      current_index(){
+        return this.$store.getters.file_path
+      }
     }
   }
 </script>

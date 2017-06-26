@@ -1,3 +1,4 @@
+// const base_url = ""
 const base_url = "http://192.168.0.100:8080"
 
 const

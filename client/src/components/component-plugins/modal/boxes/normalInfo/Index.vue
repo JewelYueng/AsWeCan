@@ -8,10 +8,7 @@
       <el-menu-item index="1">数据项整合配置</el-menu-item>
       <el-menu-item index="2">记录格式配置</el-menu-item>
     </el-menu>
-    <component :is="current_view" @SAVE_FORMAT="changeFormat"
-                                   @SAVE_RECORD="changeRecord"></component>
-    <component :is="current_view" @SAVE_FORMAT="changeFormat" @SAVE_INTEGRATION="changeIntegration"></component>
-
+    <component :is="current_view" @SAVE_FORMAT="changeFormat" @SAVE_RECORD="changeRecord" @SAVE_INTEGRATION="changeIntegration"></component>
     <div style="position:absolute;bottom: 15px;margin: auto;right: 0;left: 0;">
       <el-button type="primary" style="width: 80px;margin-top: 30px" @click="Normalizing()">规范化</el-button>
       <el-button type="primary" @click="back" style="width: 80px;margin-top: 30px">取消</el-button>
@@ -67,6 +64,19 @@
             "goalFormat": "A-BCTD"
           },
         ],
+        integration: {
+          "EventName": ["[Method]", "[Status]"],
+          "FKPlanID": ["[FKPlanID]"],
+          "PKIncidentId": ["[PKIncidentId]"],
+          "PKTaskID": ["[PKTaskID]"],
+          "PKPlanID": ["[PKPlanID]"],
+          "FKIncidentID": ["[FKIncidentID]"]
+        },
+        record: {
+          "oriItemSeparator": "\t",
+          "oriNameValSeparator": " ",
+          "oriNulVal": ""
+        },
         view_dict: [Format, Integration, Record],
 //        editingRow: -1,
 //        data1: [
@@ -129,29 +139,9 @@
         this.$api({
           method: 'normalize', body: {
             "rawLogId": this.data.id,
-            "formats": [
-              {
-                "dataItem": "[QC]",
-                "placeholder": "ABCD",
-                "identifyItem": "[Method]",
-                "oriFormat": {
-                  "Incident": "A-B-C-D",
-                  "Plan": "C/B/ATD",
-                  "Task": "A/B/CTD",
-                  "DEFAULT": "A-B-CTD"
-                },
-                "goalFormat": "A-BCTD"
-              },
-            ],
+            "formats": this.format,
             "timeNames": "[QC]",
-            "renameOrMergeItems": {
-              "EventName": ["[Method]", "[Status]"],
-              "FKPlanID": ["[FKPlanID]"],
-              "PKIncidentId": ["[PKIncidentId]"],
-              "PKTaskID": ["[PKTaskID]"],
-              "PKPlanID": ["[PKPlanID]"],
-              "FKIncidentID": ["[FKIncidentID]"]
-            },
+            "renameOrMergeItems": this.integration,
             "oriItemSeparator": "\t",
             "oriNameValSeparator": " ",
             "oriNulVal": ""
@@ -170,11 +160,11 @@
       changeFormat(format){
         this.format = format
       },
-      changeIntegration(integration){
-        this.integration = integration
-      },
       changeRecord(record){
         this.record = record
+      },
+      changeIntegration(integration){
+        this.integration = integration
       },
       handleSelect(key, keyPath) {
         this.selectedTab = parseInt(key)
