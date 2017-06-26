@@ -27,8 +27,8 @@
         <div>
           {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()}`}}
         </div>
-        <div>{{item.rawLog ? `${item.rawLog.logName}.${item.rawLog.format}` : '无'}}</div>
-        <div>{{item.normalLog ? `${item.normalLog.logName}.${item.normalLog.format}` : '无'}}</div>
+        <div>{{item.rawLog ? item.rawLog.logName : '无'}}</div>
+        <div>{{item.normalLog ? item.normalLog.logName: '无'}}</div>
         <div>{{item.eventLog.mergeRelation ? `` : '无'}}</div>
         <div>
           <img class="download_button" title="下载" src="static/img/download_color.png" @click="download(index)">

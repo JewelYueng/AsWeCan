@@ -4,11 +4,11 @@
       <div class="button" @click="upload"><img src="static/img/upload.png">上传</div>
       <div class="button" @click="shareSome"><img src="static/img/share_white.png">分享</div>
       <div class="button" @click="deleteSome"><img src="static/img/Delete.png" style="padding-top: 2px">删除</div>
-      <input type="text" id="search" placeholder="请输入关键字"  v-model="keyWord">
+      <input type="text" id="search" placeholder="请输入关键字" v-model="keyWord">
       <div v-show="isSearching" class="img-button close-btn" @click="close_search">
         <i class="el-icon-circle-cross"></i>
       </div>
-      <img id="search_button" src="static/img/search.png" @click="searchRawLog()" >
+      <img id="search_button" src="static/img/search.png" @click="searchRawLog()">
     </div>
     <div class='title'>
       <span class='title_left'>全部文件，共{{amount}}个</span>
@@ -23,9 +23,9 @@
         <div>规范化日志</div>
         <div>事件日志</div>
       </div>
-      <div class="list" v-for="(item,index) in items">
+      <div class="list" v-for="(item,index) in items" :class="{selectedItem: isSelected(index)}">
         <div><input type="checkbox" v-model="checked" :value="item.rawLog.id" @click="currClick(item,index)">
-          <span @click="showDetail(index)" class="log-name">{{`${item.rawLog.logName}.${item.rawLog.format}`}}</span>
+          <span @click="showDetail(index)" class="log-name">{{item.rawLog.logName}}</span>
         </div>
         <div><img class="process_button" title="生成规范化日志" v-on:click="transferToNormal(index)"
                   src="static/img/process_color.png">
@@ -38,7 +38,9 @@
         </div>
         <div>
           {{`${new Date(item.rawLog.createDate).getFullYear()}-${new Date(item.rawLog.createDate).getMonth() + 1}-${new Date(item.rawLog.createDate).getDate()}`}}
-        </div><div>{{item.normalLog ? `${item.normalLog.logName}.${item.normalLog.format}` : '无'}}</div><div>{{item.eventLog ? `${item.eventLog.logName}.${item.eventLog.format}` : '无'}}</div>
+        </div>
+        <div @click="jumpToNormal(index)" class="relation-logs">{{item.normalLog ? item.normalLog.logName : '无'}}</div>
+        <div @click="jumpToEvent(index)" class="relation-logs">{{item.eventLog ? item.eventLog.logName : '无'}}</div>
       </div>
     </div>
   </div>
@@ -48,13 +50,14 @@
   @import '~assets/colors.less';
   @import "~assets/layout.less";
 
-
   .log-name, .btn_common, .download_button, .share_button, .delete_button, .process_button {
     cursor: pointer;
   }
+
   .img-button {
     cursor: pointer;
   }
+
   .close-btn {
     position: absolute;
     right: 70px;
@@ -63,13 +66,15 @@
       color: #5c8aac;
     }
   }
+
   .head {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     position: relative;
   }
-  .raw-log-details{
+
+  .raw-log-details {
     padding-top: 20px;
   }
 
@@ -142,12 +147,16 @@
         text-align: left;
       }
     }
+    .selectedItem {
+      background-color: #cbd7ea;
+    }
   }
 
 </style>
 
 <script>
   import ElButton from "../../../../node_modules/element-ui/packages/button/src/button"
+  import {mapActions} from 'vuex'
   export default{
     components: {ElButton},
     data(){
@@ -161,12 +170,7 @@
       }
     },
     created(){
-      this.$api({method: 'getRawLog'}).then((res) => {
-        console.log(res);
-        res.data.logGroups.map((log) => {
-          this.items.push(log);
-        })
-      })
+      this.getTotalItems()
     },
     computed: {
       amount: function (item, index) {
@@ -203,11 +207,27 @@
       }
     },
     methods: {
+      ...mapActions(['selectLog', 'changeFilePath']),
+      isSelected(index){
+        return this.$store.getters.selectedLog.type === 0 && this.items[index].rawLog.id === this.$store.getters.selectedLog.id
+      },
+      jumpToNormal(index){
+        if (this.items[index].normalLog) {
+          this.selectLog({type: 1, id: this.items[index].normalLog.id})
+          this.changeFilePath('1-2')
+        }
+      },
+      jumpToEvent(index){
+        if (this.items[index].eventLog) {
+          this.selectLog({type: 2, id: this.items[index].eventLog.id})
+          this.changeFilePath('1-3')
+        }
+      },
       shareSome(){
         this.$api({method: 'shareRawLog', body: {idList: this.checked}}).then(res => {
           if (res.data.code === 1) {
             this.$hint('分享成功', 'success')
-            this.items = this.getTotalItems()
+            this.getTotalItems()
           } else {
             this.$hint('分享失败', 'warn')
           }
@@ -216,14 +236,14 @@
       upload: function () {
         this.$modal({type: 'upload', data: {type: 'raw'}}).then((res) => {
           console.log(res)
-          this.items = this.getTotalItems()
+          this.getTotalItems()
         })
       },
       deleteRawLog: function (index) {
         this.$api({method: 'deleteRawLog', opts: {body: {idList: [this.items[index].rawLog.id]}}}).then((res) => {
-          if (parseInt(res.data.code) == 1) {
+          if (parseInt(res.data.code) === 1) {
             this.$hint('删除成功', 'success');
-            this.items = this.getTotalItems()
+            this.getTotalItems()
           }
         })
       },
@@ -235,7 +255,7 @@
           console.log(res.data)
           if (res.data.code === 1) {
             this.$hint('删除成功', 'success')
-            this.items = this.getTotalItems()
+            this.getTotalItems()
           } else {
             this.$hint('删除失败', 'error')
           }
@@ -247,7 +267,7 @@
           this.$api({method: 'shareRawLog', body: {idList: [this.items[index].rawLog.id]}}).then(res => {
             if (res.data.code === 1) {
               this.$hint('分享成功', 'success')
-              this.items = this.getTotalItems()
+              this.getTotalItems()
             } else {
               this.$hint('分享失败', 'warn')
             }
@@ -256,7 +276,7 @@
           this.$api({method: 'unShareRawLog', body: {idList: [this.items[index].rawLog.id]}}).then(res => {
             if (res.data.code === 1) {
               this.$hint('取消分享成功', 'success')
-              this.items = this.getTotalItems()
+              this.getTotalItems()
             } else {
               this.$hint('取消分享失败', 'warn')
             }
@@ -278,9 +298,9 @@
         URL.revokeObjectURL(blob);
       },
       searchRawLog: function () {
-        this.totalAmount=[]
-        this.checkedAll=false
-        this.checked=[]
+        this.totalAmount = []
+        this.checkedAll = false
+        this.checked = []
         this.$api({method: 'searchRawLog', query: {keyWord: this.keyWord}}).then(res => {
           console.log(res)
           this.items = res.data.logGroups
@@ -288,23 +308,20 @@
         })
       },
       getTotalItems(){
-        let totalItems = []
+        const _this = this
         this.$api({method: 'getRawLog'}).then((res) => {
           console.log(res)
-          res.data.logGroups.map((log) => {
-            totalItems.push(log)
-          })
+          _this.items = res.data.logGroups
         })
-        return totalItems
       },
       close_search(){
         this.isSearching = false
-        this.items = this.getTotalItems()
+        this.getTotalItems()
         this.keyWord = ''
       },
       currClick: function (item, index) {
-        var _this = this;
-        if (typeof item.checked == 'undefined') {
+        let _this = this;
+        if (typeof item.checked === 'undefined') {
           this.$set(item, 'checked', true);
           let total = item.id;
           this.totalAmount.push(total);

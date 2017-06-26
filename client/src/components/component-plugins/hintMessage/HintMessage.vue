@@ -11,7 +11,7 @@
   @import "~assets/layout.less";
   #hint-msg{
     cursor: pointer;
-    position: absolute;
+    position: fixed;
     top: 0;
     text-align: center;
     left: @major_width * 0.33;;

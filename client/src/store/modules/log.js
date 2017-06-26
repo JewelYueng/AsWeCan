@@ -1,9 +1,10 @@
 export default {
   state: {
     selected: {
-    
+      type: -1,
+      id: null
     }
-    // type: 日志类型
+    // type: 日志类型 0原始日志 1规范化日志 2事件日志
     // id: 日志id
   },
   mutations:{
