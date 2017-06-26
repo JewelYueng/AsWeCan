@@ -126,7 +126,7 @@
     },
     computed:{
       amount:function(item,index){
-        let sum = this.totalAmount.length;
+        let sum = this.items.length;
         return sum;
       }
 

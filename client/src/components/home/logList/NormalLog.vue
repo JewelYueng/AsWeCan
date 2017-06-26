@@ -10,7 +10,7 @@
       </div>
       <img id="search_button" src="static/img/search.png" @click="searchLog" >
     </div>
-    <div class="title"><span>全部文件，共{{amount}}个</span><span>关联文件</span></div>
+    <div class="title"><span>全部文件，共{{count}}个，已选{{amount}}个</span><span>关联文件</span></div>
     <div id="log-list">
       <div class="list">
         <div><input type="checkbox" v-model="checkAll" id="文件名" value="文件名">
@@ -164,6 +164,10 @@
         this.items = this.getTotalItems()
     },
     computed: {
+      count: function (item, index) {
+        let sum = this.items.length;
+        return sum;
+      },
       amount: function (item, index) {
         let sum = this.totalAmount.length;
         return sum;
