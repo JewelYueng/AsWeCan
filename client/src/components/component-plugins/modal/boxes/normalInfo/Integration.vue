@@ -46,6 +46,32 @@
           }
         ]
       }
+    },
+    methods: {
+      resolveData(items_arr){
+        let item = {}
+        items_arr.map( i => {
+          item[i.target] = i.oriName
+        })
+        return item
+      },
+      addBlankRow(){
+        this.format.push({})
+      },
+      handleEdit(index, row){
+        this.editingRow = index
+      },
+      saveEdit(index, row){
+        this.integration[index] = this.editing
+        this.editingRow = -1
+        this.$emit('SAVE_INTEGRATION', this.resolveData(this.integration))
+      },
+      handleDelete(index, row){
+        this.format.splice(index, 1)
+      },
+      isEditing(index){
+        return index === this.editingRow
+      },
     }
   }
 </script>

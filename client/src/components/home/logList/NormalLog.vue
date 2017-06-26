@@ -34,7 +34,7 @@
                class="img-button share_button" title="分享"
                :src="item.normalLog.isShared === 0 ? 'static/img/share_color.png' : 'static/img/forbidden_color.png'">
           <img @click="deleteLog(index)"
-               class="delete_button img-button" title="删除" src="static/img/delete_color.png">
+               class="delete_button img-button" title="删除" src="static/img/Delete_color.png">
         </div>
         <div>
           {{`${new Date(item.normalLog.createDate).getFullYear()}-${new Date(item.normalLog.createDate).getMonth() + 1}-${new Date(item.normalLog.createDate).getDate()}`}}
