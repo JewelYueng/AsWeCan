@@ -1,9 +1,9 @@
 <template id="table3" >
   <div>
-    <div style="text-align: left;margin-top: 10px;margin-left: 10px;">
+    <div class="add-btn">
       <el-button size="small" style="width: 80px;font-size:15px" @click="addBlankRow">添加</el-button>
     </div>
-    <el-table :data="record" border style="top: 90px;width: 90%;margin: auto;">
+    <el-table :data="record" border style="width: 90%;margin: auto;">
       <el-table-column prop="oriItemSeparator" label="原数据项分隔符">
         <template scope="scope">
           <el-input v-model="editing.oriItemSeparator" v-show="isEditing(scope.$index)"></el-input>

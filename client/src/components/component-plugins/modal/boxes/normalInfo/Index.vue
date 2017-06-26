@@ -17,7 +17,7 @@
 
 </template>
 
-<style lang="less" rel="stylesheet/less" scoped>
+<style lang="less" rel="stylesheet/less">
   @import "~assets/colors.less";
   @import "~assets/layout.less";
 
@@ -30,6 +30,11 @@
 
   .el-button+.el-button{
     margin-left: 0;
+  }
+
+  .add-btn{
+    text-align: left;
+    margin: 20px 35px;
   }
 
 

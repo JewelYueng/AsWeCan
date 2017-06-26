@@ -1,7 +1,7 @@
 <template id="table1">
   <div>
     <br/>
-    <div style="text-align: left;margin-left: 10px;">
+    <div class="add-btn">
       <el-button size="small" style="width: 80px;font-size:15px" @click="addBlankRow">添加</el-button>
     </div>
     <el-table :data="format" border style="margin-top: 30px;width: 90%;margin: auto;" max-height="400">

@@ -8,7 +8,7 @@
     </el-table>
     <br/>
     <div style="text-align: left;margin-left: 10px;">数据项整合（不含时间项）</div>
-    <div style="text-align: left;margin-left: 10px;">
+    <div class="add-btn">
       <el-button size="small" style="width: 80px;font-size:15px" @click="addBlankRow">添加</el-button>
 
     </div>
