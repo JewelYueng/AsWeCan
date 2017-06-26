@@ -110,7 +110,6 @@ public class RawLogServiceTest {
     @Test
     public void normalizeTest() throws Exception {
         RawLog rawLog = rawLogService.getRawLogById("1");
-
         String formats = "[QC],ABCD,A-B-CTD,A-B-CTD";
         String timeNames = "[QC]";
         String dataNames = "[Method];[Status]:EventName,[FKPlanID]:FKPlanID,[PkIncidentID]:PkIncidentID,[PkTaskID]:PkTaskID,[PKPlanID]:PKPlanID;[FKIncidentID]:FKIncidentID";

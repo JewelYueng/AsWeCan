@@ -26,7 +26,7 @@ public class EventLogParseImpl implements EventLogParse {
 
 	@Override
 	public XLog eventLogParse(EventLog eventLog) {
-		return logStorage.download(eventLog, this::eventLogParse);
+		return eventLog == null ? null : logStorage.download(eventLog, this::eventLogParse);
 	}
 
 	@SuppressWarnings("unchecked")

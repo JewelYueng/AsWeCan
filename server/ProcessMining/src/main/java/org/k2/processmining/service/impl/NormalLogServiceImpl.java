@@ -88,7 +88,7 @@ public class NormalLogServiceImpl implements NormalLogService {
             return Collections.emptyList();
         }
         List<LogGroup> logGroups = normalLogMapper.listLogGroups(userId, LogState.ACTIVE.getValue(),-1, null);
-        verifyLogGroupsIsActive(logGroups);
+//        verifyLogGroupsIsActive(logGroups);
         return logGroups;
     }
 
@@ -100,7 +100,7 @@ public class NormalLogServiceImpl implements NormalLogService {
     @Override
     public List<LogGroup> getSharedLogGroups() {
         List<LogGroup> logGroups = normalLogMapper.listLogGroups(null, LogState.ACTIVE.getValue(), LogShareState.SHARED.getValue(), null);
-        verifyLogGroupsIsShared(logGroups);
+//        verifyLogGroupsIsShared(logGroups);
         return logGroups ;
     }
 
@@ -112,7 +112,7 @@ public class NormalLogServiceImpl implements NormalLogService {
     @Override
     public List<LogGroup> getLogByFuzzyName(String keyWord, User user) {
         List<LogGroup> logGroups = normalLogMapper.listLogGroups(user.getId(), LogState.ACTIVE.getValue(), -1, keyWord);
-        verifyLogGroupsIsActive(logGroups);
+//        verifyLogGroupsIsActive(logGroups);
         return logGroups;
     }
 
@@ -122,7 +122,7 @@ public class NormalLogServiceImpl implements NormalLogService {
                                                                     LogState.ACTIVE.getValue(),
                                                                     LogShareState.SHARED.getValue(),
                                                                     keyWord);
-        verifyLogGroupsIsShared(logGroups);
+//        verifyLogGroupsIsShared(logGroups);
         return logGroups;
     }
 
