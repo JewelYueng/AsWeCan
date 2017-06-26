@@ -139,7 +139,7 @@
     },
     computed: {
       amount: function (item, index) {
-        return this.totalAmount.length;
+        return this.items.length;
       }
     },
     methods: {

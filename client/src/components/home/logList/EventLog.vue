@@ -11,7 +11,7 @@
       <img id="search_button" src="static/img/search.png" @click="searchLog">
     </div>
     <div class='title'>
-      <span class='title_left'>全部文件，共{{amount}}个</span>
+      <span class='title_left'>全部文件，共{{count}}个，已选{{amount}}个</span>
       <span class='title_right'>关联文件</span>
     </div>
     <div id="log-list">
@@ -178,6 +178,10 @@
       this.getTotalItems()
     },
     computed: {
+      count: function (item, index) {
+        let sum = this.items.length;
+        return sum;
+      },
       amount: function (item, index) {
         return this.totalAmount.length;
       },
