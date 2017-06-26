@@ -13,20 +13,16 @@
     </div>
     <div id="log-list">
       <div class="list">
-        <div>
-          <input type="checkbox" v-model="checkAll" id="文件名" value="文件名"><span>文件名</span>
-        </div>
+        <div>文件名</div>
         <div>上传者</div>
         <div>日期</div>
         <div>原始日志</div>
         <div>规范化日志</div>
         <div>融合来源</div>
+        <div></div>
       </div>
       <div class="list" v-for="(item,index) in items">
-        <div>
-          <input type="checkbox" v-model="checked" :value="item.eventLog.id" @click="currClick(item,index)">
-          <span class="img-button" @click="showDetail(index)">{{item.eventLog.logName}}</span>
-        </div>
+        <div class="img-button" @click="showDetail(index)">{{item.eventLog.logName}}</div>
         <div>{{item.eventLog.userId}}</div>
         <div>
           {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()}`}}
@@ -77,12 +73,11 @@
     border-radius: @search_border-radius;
     border: 1px solid @dark_theme;
     outline-style: none;
-
   }
 
   .close-btn {
     position: absolute;
-    right: -134px;
+    right: 135px;
     top: 120px;
     i {
       color: #5c8aac;
@@ -98,23 +93,7 @@
     cursor: pointer;
   }
 
-  .button {
-    color: white;
-    font-size: 24px;
-    text-decoration: none;
-    height: @log_button_height;
-    width: @log_button_width;
-    border-radius: @log_button_border-radius;
-    background-color: @main_green;
-    cursor: pointer;
-    img {
-      width: 30px;
-      height: 30px;
-      vertical-align: text-top;
-    }
-  }
-
-  .download_button, .img-button {
+  .download_button{
     cursor: pointer;
   }
 
@@ -161,34 +140,6 @@
     computed: {
       amount: function (item, index) {
         return this.totalAmount.length;
-      },
-      checkAll: {
-        get: function () {
-          return this.checkedCount === this.items.length;
-        },
-        set: function (value) {
-          let _this = this;
-          if (value) {
-            this.totalAmount = [];
-            this.checked = this.items.map(function (item) {
-              item.checked = true;
-              let total = item.id;
-              _this.totalAmount.push(total);
-              return item.id;
-            })
-          } else {
-            this.checked = [];
-            this.totalAmount = [];
-            this.items.forEach(function (item, index) {
-              item.checked = false;
-            });
-          }
-        }
-      },
-      checkedCount: {
-        get: function () {
-          return this.checked.length;
-        }
       }
     },
     methods: {
@@ -237,34 +188,7 @@
         })
         return totalItems
       },
-      currClick: function (item, index) {
-        let _this = this;
-        if (typeof item.checked === 'undefined') {
-          this.$set(item, 'checked', true);
-          let total = item.eventLog.id;
-          this.totalAmount.push(total);
-          console.log(this.totalAmount);
-        } else {
-          item.checked = !item.checked;
-          if (item.checked) {
-            this.totalAmount = [];
-            this.items.map(function (item, index) {
-              if (item.checked) {
-                let total = item.id;
-                _this.totalAmount.push(total);
-              }
-            });
-          } else {
-            this.totalAmount = [];
-            this.items.forEach(function (item, index) {
-              if (item.checked) {
-                let total = item.id;
-                _this.totalAmount.push(total);
-              }
-            });
-          }
-        }
-      }
+
     },
     watch: {
       checked: function () {

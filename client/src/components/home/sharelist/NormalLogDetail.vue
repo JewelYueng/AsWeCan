@@ -1,21 +1,24 @@
 <template>
   <div class="normal-log">
-    <input type="text" id="searchBox" placeholder="请输入关键字">
-    <img id="search_button" src="static/img/search.png" @click="search">
+    <div class="head">
+      <input type="text" class="search" placeholder="请输入关键字" v-model="keyWord">
+      <div v-show="isSearching" class="img-button close-btn" @click="close_search">
+        <i class="el-icon-circle-cross"></i>
+      </div>
+      <img id="search_button" src="static/img/search.png" @click="searchLog">
+    </div>
     <div class="head-2"><span>全部文件，共{{amount}}个</span><span>关联文件</span></div>
     <div id="log-list">
-      <div class="list"><div><input type="checkbox" v-model="checkAll" id="文件名" value="文件名">
-        <span>文件名</span></div><div>上传者</div><div>日期</div><div>原始日志</div><div>事件日志</div></div>
+      <div class="list"><div>文件名</div><div>上传者</div><div>日期</div><div>原始日志</div><div>事件日志</div></div>
       <div class="list" v-for="(item,index) in items">
-        <div><input type="checkbox" v-model="checked" :value="item.id"  @click="currClick(item,index)">
-          <span>{{item.normalLog.logName}}</span></div>
+        <div>{{item.normalLog.logName}}</div>
         <div>{{item.normalLog.userId}}</div>
         <div>
         {{`${new Date(item.normalLog.createDate).getFullYear()}-${new Date(item.normalLog.createDate).getMonth() + 1}-${new Date(item.normalLog.createDate).getDate()}`}}
         </div>
         <div>{{item.rawLog ? item.rawLog.logName: '无'}}</div>
         <div>{{item.eventLog ?item.eventLog.logName : '无'}}</div>
-        <img class="download_button" title="下载" src="static/img/download_color.png"  @click="download(index)">
+        <img class="download_button img-button" title="下载" src="static/img/download_color.png"  @click="download(index)">
       </div>
     </div>
   </div>
@@ -27,7 +30,15 @@
   .normal-log{
     padding-top: 20px;
   }
+  .head {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding-right: 40px;
+  }
   .head-2{
+    text-align: left;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -35,7 +46,10 @@
     margin-right: 210px;
     font-size: 20px;
   }
-  #searchBox{
+  .img-button {
+    cursor: pointer;
+  }
+  .search{
     background-color: @light_theme;
     color: @dark_theme;
     text-align: center;
@@ -48,9 +62,18 @@
   #search_button{
     width: 20px;
     height: 20px;
+    position: relative;
+    right: 28px;
+    top: -5px;
+    cursor: pointer;
+  }
+  .close-btn {
     position: absolute;
-    right: 400px;
-    padding-top: 5px;
+    right: 135px;
+    top: 120px;
+    i {
+      color: #5c8aac;
+    }
   }
   .button{
     color: white;
@@ -114,72 +137,16 @@
     computed: {
       amount: function (item, index) {
         return this.totalAmount.length;
-      },
-      checkAll: {
-        get: function () {
-          return this.checkedCount === this.items.length;
-        },
-        set: function (value) {
-          const _this = this;
-          if (value) {
-            this.totalAmount = [];
-            this.checked = this.items.map(function (item) {
-              item.checked = true;
-              let total = item.id;
-              _this.totalAmount.push(total);
-              return item.id;
-            })
-          } else {
-            this.checked = [];
-            this.totalAmount = [];
-            this.items.forEach(function (item, index) {
-              item.checked = false;
-            });
-          }
-        }
-      },
-      checkedCount: {
-        get: function () {
-          return this.checked.length;
-        }
       }
-    },
+      },
+
     methods:{
 
-
-      currClick: function (item, index) {
-        const _this = this;
-        if (typeof item.checked === 'undefined') {
-          this.$set(item, 'checked', true);
-          let total = item.id;
-          this.totalAmount.push(total);
-          console.log(this.totalAmount);
-        } else {
-          item.checked = !item.checked;
-          if (item.checked) {
-            this.totalAmount = [];
-            this.items.map(function (item, index) {
-              if (item.checked) {
-                let total = item.id;
-                _this.totalAmount.push(total);
-              }
-            });
-          } else {
-            this.totalAmount = [];
-            this.items.forEach(function (item, index) {
-              if (item.checked) {
-                let total = item.id;
-                _this.totalAmount.push(total);
-              }
-            });
-          }
-        }
-      },
-      search: function () {
-        this.totalAmount=[]
-        this.checkedAll=false
-        this.checked=[]
-        this.$api({method: 'searchNormalLog', body: {keyWord: this.keyWord}}).then((res) => {
+      searchLog(){
+        this.totalAmount = []
+        this.checkedAll = false
+        this.checked = []
+        this.$api({method: 'searchSharedEventLog', query: {keyWord: this.keyWord}}).then(res => {
           console.log(res)
           this.items = res.data.logGroups
           this.isSearching = true
@@ -200,9 +167,7 @@
         })
         return totalItems
       },
-      tranferToEvent: function(index){
-        console.log(index)
-      },
+
       download(index){
         this.$api({method: 'downLoadNormalLog', query: {id: this.items[index].normalLog.id}}).then((res) => {
           console.log(res.data)
