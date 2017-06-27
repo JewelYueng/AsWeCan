@@ -182,8 +182,7 @@
         return sum;
       },
       amount: function (item, index) {
-        let sum = this.totalAmount.length;
-        return sum;
+        return this.checked.length;
       },
       checkAll: {
         get: function () {
