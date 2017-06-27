@@ -146,7 +146,7 @@
         this.totalAmount = []
         this.checkedAll = false
         this.checked = []
-        this.$api({method: 'searchSharedEventLog', query: {keyWord: this.keyWord}}).then(res => {
+        this.$api({method: 'searchSharedNormalLog', query: {keyWord: this.keyWord}}).then(res => {
           console.log(res)
           this.items = res.data.logGroups
           this.isSearching = true
