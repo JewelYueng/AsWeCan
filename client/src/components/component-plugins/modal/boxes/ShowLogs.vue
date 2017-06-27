@@ -40,7 +40,7 @@
   </div>
 </template>
 
-<style lang="less" scoped rel="stylesheet/less">
+<style lang="less"  rel="stylesheet/less">
   @import '~assets/colors.less';
 
   .logs {
@@ -50,6 +50,9 @@
 
   .btn-group{
     margin-top: 10px;
+  }
+  .el-table__body tr.current-row>td{
+    background-color: @light_silver;
   }
 </style>
 

@@ -5,7 +5,7 @@
       <div v-show="isSearching" class="img-button close-btn" @click="close_search">
         <i class="el-icon-circle-cross"></i>
       </div>
-      <img id="search_button" src="static/img/search.png" @click="searchLog">
+      <img v-show="!isSearching" id="search_button" src="static/img/search.png" @click="searchLog">
     </div>
     <div class="head-2"><span>全部文件，共{{amount}}个</span><span>关联文件</span></div>
     <div id="log-list">
@@ -68,9 +68,9 @@
     cursor: pointer;
   }
   .close-btn {
-    position: absolute;
-    right: 135px;
-    top: 120px;
+    position: relative;
+    right: 28px;
+    top: -5px;
     i {
       color: #5c8aac;
     }

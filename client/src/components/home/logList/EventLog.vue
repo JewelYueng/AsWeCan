@@ -8,7 +8,7 @@
       <div v-show="isSearching" class="img-button close-btn" @click="close_search">
         <i class="el-icon-circle-cross"></i>
       </div>
-      <img id="search_button" src="static/img/search.png" @click="searchLog">
+      <img v-show="!isSearching" id="search_button" src="static/img/search.png" @click="searchLog">
     </div>
     <div class='title'>
       <span class='title_left'>全部文件，共{{count}}个，已选{{amount}}个</span>
@@ -81,9 +81,9 @@
   }
 
   .close-btn {
-    position: absolute;
-    right: 70px;
-    top: 4px;
+    position: relative;
+    left: -40px;
+    top: 5px;
     i {
       color: #5c8aac;
     }
@@ -151,6 +151,7 @@
       border-bottom: 1px solid #afbfb8;
       div {
         flex: 1;
+        max-width: 300px;
         text-align: left;
       }
     }

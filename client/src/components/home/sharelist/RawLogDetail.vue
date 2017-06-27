@@ -3,7 +3,7 @@
     <div class="head"><input type="text" class="search" placeholder="请输入关键字" v-model="keyWord">
     <div v-show="isSearching" class="img-button close-btn" @click="close_search">
       <i class="el-icon-circle-cross"></i>
-    </div><img id="search_button" src="static/img/search.png" @click="search()"></div>
+    </div><img v-show="!isSearching" id="search_button" src="static/img/search.png" @click="search()"></div>
     <div class="head-2"><span>全部文件，共{{amount}}个</span><span>关联文件</span></div>
     <div id="log-list">
       <div class="list"><div>文件名</div><div>上传者</div><div>日期</div><div>规范化日志</div><div>事件日志</div></div>
@@ -28,9 +28,9 @@
     cursor: pointer;
   }
   .close-btn {
-    position: absolute;
-    right: 135px;
-    top: 120px;
+    position: relative;
+    right: 28px;
+    top: -5px;
     i {
       color: #5c8aac;
     }
