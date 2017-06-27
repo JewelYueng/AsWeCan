@@ -13,24 +13,24 @@
     </div>
     <div id="log-list">
       <div class="list">
-        <div>文件名</div>
-        <div>上传者</div>
-        <div>日期</div>
-        <div>原始日志</div>
-        <div>规范化日志</div>
-        <div>融合来源</div>
-        <div></div>
+        <div class="log-name">文件名</div>
+        <div class="uploader">上传者</div>
+        <div class="date">日期</div>
+        <div class="raw-log">原始日志</div>
+        <div class="normal-log">规范化日志</div>
+        <div class="merge-relation">融合来源</div>
+        <div class="operations"></div>
       </div>
       <div class="list" v-for="(item,index) in items">
-        <div class="img-button" @click="showDetail(index)">{{item.eventLog.logName}}</div>
-        <div>{{item.eventLog.userId}}</div>
-        <div>
+        <div class="img-button log-name" @click="showDetail(index)">{{item.eventLog.logName}}</div>
+        <div class="uploader">{{item.eventLog.userId}}</div>
+        <div class="date">
           {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()}`}}
         </div>
-        <div>{{item.rawLog ? item.rawLog.logName : '无'}}</div>
-        <div>{{item.normalLog ? item.normalLog.logName: '无'}}</div>
-        <div>{{item.eventLog.mergeRelation ? `` : '无'}}</div>
-        <div>
+        <div class="raw-log">{{item.rawLog ? item.rawLog.logName : '无'}}</div>
+        <div class="normal-log">{{item.normalLog ? item.normalLog.logName : '无'}}</div>
+        <div class="merge-relation">{{item.eventLog.mergeRelation ? `` : '无'}}</div>
+        <div class="operations">
           <img class="download_button" title="下载" src="static/img/download_color.png" @click="download(index)">
         </div>
       </div>
@@ -93,7 +93,7 @@
     cursor: pointer;
   }
 
-  .download_button{
+  .download_button {
     cursor: pointer;
   }
 
@@ -101,22 +101,57 @@
     background-color: @logList_Choose;
   }
 
+  .too-long-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   #log-list {
     margin-left: 10px;
     margin-right: 10px;
     .list {
       img {
-        width: 30px;
-        height: 30px;
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
       }
       display: flex;
       flex-direction: row;
       width: 100%;
       padding: 10px 0px 10px 0px;
       border-bottom: 1px solid #afbfb8;
-      div {
-        flex: 1;
+      .log-name {
+        cursor: pointer;
+        max-width: 200px;
+        flex:0 0 170px;
+        .too-long-text;
         text-align: left;
+      }
+      .operations {
+        flex: 0 0 40px;
+      }
+      .uploader{
+        flex: 0 0 90px
+      }
+      .date {
+        flex: 0 0 120px;
+        .too-long-text;
+      }
+      .raw-log {
+        flex: 0 0 150px;
+        .too-long-text;
+      }
+      .normal-log {
+        flex: 0 0 150px;
+        .too-long-text;
+      }
+      .event-log {
+        flex: 0 0 200px;
+        .too-long-text;
+      }
+      .merge-relation {
+        flex: 0 0 200px;
       }
     }
   }

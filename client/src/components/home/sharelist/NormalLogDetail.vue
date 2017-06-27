@@ -9,16 +9,25 @@
     </div>
     <div class="head-2"><span>全部文件，共{{amount}}个</span><span>关联文件</span></div>
     <div id="log-list">
-      <div class="list"><div>文件名</div><div>上传者</div><div>日期</div><div>原始日志</div><div>事件日志</div></div>
+      <div class="list">
+        <div class="log-name">文件名</div>
+        <div class="uploader">上传者</div>
+        <div class="date">日期</div>
+        <div class="raw-log">原始日志</div>
+        <div class="event-log">事件日志</div>
+      </div>
       <div class="list" v-for="(item,index) in items">
-        <div>{{item.normalLog.logName}}</div>
-        <div>{{item.normalLog.userId}}</div>
-        <div>
-        {{`${new Date(item.normalLog.createDate).getFullYear()}-${new Date(item.normalLog.createDate).getMonth() + 1}-${new Date(item.normalLog.createDate).getDate()}`}}
+        <div class="log-name">{{item.normalLog.logName}}</div>
+        <div class="uploader">{{item.normalLog.userId}}</div>
+        <div class="date">
+          {{`${new Date(item.normalLog.createDate).getFullYear()}-${new Date(item.normalLog.createDate).getMonth() + 1}-${new Date(item.normalLog.createDate).getDate()}`}}
         </div>
-        <div>{{item.rawLog ? item.rawLog.logName: '无'}}</div>
-        <div>{{item.eventLog ?item.eventLog.logName : '无'}}</div>
-        <img class="download_button img-button" title="下载" src="static/img/download_color.png"  @click="download(index)">
+        <div class="raw-log">{{item.rawLog ? item.rawLog.logName : '无'}}</div>
+        <div class="event-log">{{item.eventLog ? item.eventLog.logName : '无'}}</div>
+        <div class="operations">
+          <img class="download_button img-button" title="下载" src="static/img/download_color.png"
+               @click="download(index)">
+        </div>
       </div>
     </div>
   </div>
@@ -27,9 +36,11 @@
 <style lang="less" scoped rel="stylesheet/less">
   @import '~assets/colors.less';
   @import "~assets/layout.less";
-  .normal-log{
+
+  .normal-log {
     padding-top: 20px;
   }
+
   .head {
     display: flex;
     flex-direction: row;
@@ -37,7 +48,8 @@
     justify-content: flex-end;
     padding-right: 40px;
   }
-  .head-2{
+
+  .head-2 {
     text-align: left;
     display: flex;
     flex-direction: row;
@@ -46,10 +58,12 @@
     margin-right: 210px;
     font-size: 20px;
   }
+
   .img-button {
     cursor: pointer;
   }
-  .search{
+
+  .search {
     background-color: @light_theme;
     color: @dark_theme;
     text-align: center;
@@ -59,7 +73,8 @@
     border: 1px solid @dark_theme;
     outline-style: none;
   }
-  #search_button{
+
+  #search_button {
     width: 20px;
     height: 20px;
     position: relative;
@@ -67,6 +82,7 @@
     top: -5px;
     cursor: pointer;
   }
+
   .close-btn {
     position: relative;
     right: 28px;
@@ -75,7 +91,8 @@
       color: #5c8aac;
     }
   }
-  .button{
+
+  .button {
     color: white;
     font-size: 24px;
     text-decoration: none;
@@ -83,32 +100,61 @@
     width: @log_button_width;
     border-radius: @log_button_border-radius;
     background-color: @main_green;
-    img{
+    img {
       width: 30px;
       height: 30px;
       vertical-align: text-top;
     }
   }
-  .list:hover{
+
+  .list:hover {
     background-color: @logList_Choose;
   }
-  #log-list{
+
+  .too-long-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #log-list {
     margin-left: 10px;
     margin-right: 10px;
-    .list{
-      img{
-        width: 30px;
-        height: 30px;
-        margin-left: 20px;
+    .list {
+      img {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
       }
       display: flex;
       flex-direction: row;
       width: 100%;
       padding: 10px 0px 10px 0px;
       border-bottom: 1px solid #afbfb8;
-      div{
-        flex: 1;
+      .log-name {
+        cursor: pointer;
+        max-width: 200px;
+        flex: 0 0 200px;
+        .too-long-text;
         text-align: left;
+      }
+      .operations {
+        flex: 0 0 40px;
+      }
+      .uploader {
+        flex: 0 0 90px
+      }
+      .date {
+        flex: 0 0 120px;
+        .too-long-text;
+      }
+      .raw-log {
+        flex: 0 0 200px;
+        .too-long-text;
+      }
+      .event-log {
+        flex: 0 0 200px;
+        .too-long-text;
       }
     }
   }
@@ -119,8 +165,8 @@
   export default{
     data(){
       return {
-        checked:[],
-        totalAmount:[],
+        checked: [],
+        totalAmount: [],
         items: [],
         isSearching: false,
         keyWord: ''
@@ -138,9 +184,9 @@
       amount: function (item, index) {
         return this.items.length;
       }
-      },
+    },
 
-    methods:{
+    methods: {
 
       searchLog(){
         this.totalAmount = []
@@ -183,9 +229,9 @@
         URL.revokeObjectURL(blob);
       }
     },
-    watch:{
-      checked:function(){
-        this.amount=this.items.length;
+    watch: {
+      checked: function () {
+        this.amount = this.items.length;
       }
     }
   }
