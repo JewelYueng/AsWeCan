@@ -8,6 +8,7 @@ import ProcessMining from "components/home/processMining/ProcessMining"
 import Login from "components/login/index"
 import Register from "components/register/index"
 import Home from "components/home/index"
+import Sankey from "components/home/processMining/sankey"
 
 Vue.use(Router)
 
@@ -66,5 +67,10 @@ export default new Router({
       name: "register",
       component: Register
     },
+    {
+      path: "/sankey",
+      name: "sankey",
+      component: Sankey
+    }
   ]
 })
