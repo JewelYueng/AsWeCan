@@ -8,7 +8,8 @@
       <el-switch
         v-model="share_status"
         on-color="#13ce66"
-        off-color="#ff4949">
+        off-color="#ff4949"
+        :disabled="is_uploading">
       </el-switch>
     </div>
     <div>
@@ -43,7 +44,8 @@
       return {
         share_status: false,
         file: new FormData(),
-        progress: 0
+        progress: 0,
+        is_uploading: false
       }
     },
     mixins: [BaseBox],
@@ -55,6 +57,7 @@
         file_info.append('format', this.$refs.file.files[0].name.split('.').pop())
         console.log(file_info.get('format'))
         const _this = this
+        this.is_uploading = true
         this.$http.post(type_map[this.data.type], file_info, {
           contentType: 'multipart/form-data',
           progress(e) {
@@ -75,6 +78,7 @@
           if(err.status === 500){
             this.$hint('请上传格式正确的事件日志', 'warn')
             this.progress = 0
+            this.is_uploading = false
           }
         })
       },
