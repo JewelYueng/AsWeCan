@@ -396,7 +396,7 @@
     },
     watch: {
       checked: function () {
-        this.amount = this.totalAmount.length;
+        this.amount = this.checked.length;
       }
     }
   }
