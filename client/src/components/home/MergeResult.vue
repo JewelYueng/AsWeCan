@@ -37,8 +37,8 @@
         </div>
       </div>
       <div class="btn-group">
-        <button class="mining" @click="jumpToMining">流程挖掘</button>
-        <button class="back" @click="backToMerge">返回</button>
+        <el-button type="primary" @click="jumpToMining">流程挖掘</el-button>
+        <el-button type="primary" @click="backToMerge">返回</el-button>
       </div>
     </div>
     <div v-if="!$route.params.log">
@@ -51,14 +51,13 @@
   @import "~assets/colors.less";
   @import "~assets/layout.less";
 
-  #merge-result {
-    border-radius: 20px 20px 0 0;
-    background-color: #f1f1f1;
+  #merge-result{
+    background-color: @light_theme;
     height: 100%;
     .header {
       text-align: left;
       font-size: 24px;
-      color: @main_green;
+      color: @dark_theme;
       font-weight: bold;
       padding: 10px 10px 5px 10px;
       border-bottom: @tab_separator 1px solid;
@@ -73,38 +72,23 @@
       width: @right_side_width - 80px;
       padding: 10px;
       box-sizing: border-box;
-      .result-item {
+      .result-item{
         display: flex;
         flex-direction: row;
         width: @right_side_width - 130px;
-        border-bottom: @main_green 1px solid;
-        padding: 20px;
-        .key {
+        border-bottom: @dark_theme 1px solid;
+        padding: 20px  ;
+        .key{
           text-align: left;
           flex: 0 0 20%;
         }
-        .value {
+        .value{
           text-align: left;
           flex: 0 0 80%;
         }
       }
     }
-    .btn-group {
-      button {
-        border-radius: 8px;
-        background-color: @main_green;
-        color: white;
-        border: none;
-        font-size: 16px;
-        width: 100px;
-        height: 40px;
-        margin: 0 20px;
-        cursor: pointer;
-      }
-      button:hover {
-        background-color: #92cbb4;
-      }
-    }
+
   }
 </style>
 

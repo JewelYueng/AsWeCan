@@ -296,15 +296,15 @@
         }
       },
       deleteLog(index){
-        this.checked = [];
-        this.totalAmount = [];
-        this.items.forEach(function (item, index) {
-          item.checked = false;
-        });
         this.$api({method: 'deleteEventLog', opts: {body: {idList: [this.items[index].eventLog.id]}}}).then(res => {
           if (res.data.code === 1) {
             this.$hint('删除成功', 'success')
             this.getTotalItems()
+            this.checked = [];
+            this.totalAmount = [];
+            this.items.forEach(function (item, index) {
+              item.checked = false;
+            });
           } else {
             this.$hint('删除失败', 'error')
           }
@@ -383,7 +383,7 @@
     ,
     watch: {
       checked: function () {
-        this.amount = this.totalAmount.length;
+        this.amount = this.checked.length;
       }
     }
   }
