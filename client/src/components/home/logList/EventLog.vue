@@ -296,7 +296,6 @@
         }
       },
       deleteLog(index){
-
         this.$api({method: 'deleteEventLog', opts: {body: {idList: [this.items[index].eventLog.id]}}}).then(res => {
           if (res.data.code === 1) {
             this.$hint('删除成功', 'success')
@@ -322,9 +321,9 @@
             this.getTotalItems()
             this.checked = [];
             this.totalAmount = [];
-        this.items.forEach(function (item, index) {
-          item.checked = false;
-        });
+            this.items.forEach(function (item, index) {
+              item.checked = false;
+            });
           } else {
             this.$hint('删除失败', 'error')
           }
