@@ -174,6 +174,7 @@
           console.log(res);
           if (res.data.code === 1) {
             this.$hint('规范化成功', 'success');
+            this.commit(true)
           }
           else {
             this.$hint('规范化失败', 'erorr');
