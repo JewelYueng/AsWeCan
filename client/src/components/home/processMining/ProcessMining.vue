@@ -1,6 +1,7 @@
 <template>
   <div>
     <div>我是流程挖掘界面</div>
+    <p></p>
   </div>
 </template>
 <style>

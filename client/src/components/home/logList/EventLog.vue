@@ -16,21 +16,22 @@
     </div>
     <div id="log-list">
       <div class="list">
-        <div><input type="checkbox" v-model="checkAll" id="文件名" value="文件名">
-          <span>文件名</span></div>
-        <div></div>
-        <div>日期</div>
-        <div>原始日志</div>
-        <div>规范化日志</div>
-        <div>融合来源</div>
+        <div class="log-head">
+          <input type="checkbox" v-model="checkAll" id="文件名" value="文件名">
+          <span class="log-name">文件名</span>
+        </div>
+        <div class="operations"></div>
+        <div class="date">日期</div>
+        <div class="raw-log">原始日志</div>
+        <div class="normal-log">规范化日志</div>
+        <div class="merge-relation">融合来源</div>
       </div>
       <div class="list" v-for="(item,index) in items" :class="{selectedItem: isSelected(index)}">
-        <div class="input-box"><input type="checkbox" v-model="checked" :value="item.eventLog.id"
-                                      @click="currClick(item,index)">
-          <span @click="showDetail(index)"
-                class="log-name">{{item.eventLog.logName}}</span>
+        <div class="input-box log-head">
+          <input type="checkbox" v-model="checked" :value="item.eventLog.id" @click="currClick(item,index)">
+          <span @click="showDetail(index)" class="log-name">{{item.eventLog.logName}}</span>
         </div>
-        <div>
+        <div class="operations">
           <img class="process_button img-button" title="开始流程挖掘" v-on:click="processMining(index)"
                src="static/img/process_color.png">
           <img class="download_button img-button" title="下载" src="static/img/download_color.png"
@@ -41,12 +42,15 @@
           <img class="delete_button img-button" src="static/img/Delete_color.png" alt="删除" title="删除"
                @click="deleteLog(index)">
         </div>
-        <div>
+        <div class="date">
           {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()}`}}
         </div>
-        <div @click="jumpToRaw(index)" class="relation-logs">{{item.rawLog ? item.rawLog.logName : '无'}}</div>
-        <div @click="jumpToNormal(index)" class="relation-logs">{{item.normalLog ? item.normalLog.logName : '无'}}</div>
-        <div>{{item.eventLog.mergeRelation ? `` : '无'}}</div>
+        <div @click="jumpToRaw(index)" class="relation-logs raw-log">
+          {{item.rawLog ? item.rawLog.logName : '无'}}
+        </div>
+        <div @click="jumpToNormal(index)" class="relation-logs normal-log">{{item.normalLog ? item.normalLog.logName : '无'}}
+        </div>
+        <div class="merge-relation">{{item.eventLog.mergeRelation ? `` : '无'}}</div>
       </div>
     </div>
   </div>
@@ -135,6 +139,11 @@
     background-color: @logList_Choose;
   }
 
+  .too-long-text{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   #log-list {
     margin-left: 10px;
     margin-right: 10px;
@@ -149,10 +158,38 @@
       width: 100%;
       padding: 10px 0px 10px 0px;
       border-bottom: 1px solid #afbfb8;
-      div {
-        flex: 1;
-        max-width: 300px;
+      .log-head {
+        flex:  0 0 200px;
+        display: flex;
+        flex-direction: row;
         text-align: left;
+        .log-name{
+          cursor: pointer;
+          max-width: 180px;
+          .too-long-text;
+        }
+      }
+      .operations {
+        flex: 0 0 150px;
+      }
+      .date{
+        flex:0 0 120px;
+      }
+      .raw-log{
+        flex: 0 0 150px;
+        .too-long-text;
+      }
+      .normal-log{
+        flex: 0 0 150px;
+        .too-long-text;
+      }
+      .event-log{
+        flex: 0 0 150px;
+        .too-long-text;
+      }
+      .merge-relation{
+        flex: 0 0 150px;
+        .too-long-text;
       }
     }
     .selectedItem {

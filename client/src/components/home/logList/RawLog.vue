@@ -16,31 +16,32 @@
     </div>
     <div id="log-list">
       <div class="list">
-        <div><input type="checkbox" v-model="checkAll" id="文件名" value="文件名">
-          <span>文件名</span></div>
-        <div></div>
-        <div>日期</div>
-        <div>规范化日志</div>
-        <div>事件日志</div>
+        <div class="log-head">
+          <input type="checkbox" v-model="checkAll" id="文件名" value="文件名">
+          <span class="log-name">文件名</span></div>
+        <div class="operations"></div>
+        <div class="date">日期</div>
+        <div class="normal-log">规范化日志</div>
+        <div class="event-log">事件日志</div>
       </div>
       <div class="list" v-for="(item,index) in items" :class="{selectedItem: isSelected(index)}">
-        <div><input type="checkbox" v-model="checked" :value="item.rawLog.id" @click="currClick(item,index)">
+        <div class="log-head">
+          <input type="checkbox" v-model="checked" :value="item.rawLog.id" @click="currClick(item,index)">
           <span @click="showDetail(index)" class="log-name">{{item.rawLog.logName}}</span>
         </div>
-        <div><img class="process_button" title="生成规范化日志" v-on:click="transferToNormal(index)"
-                  src="static/img/process_color.png">
-          <img class="download_button" title="下载" src="static/img/download_color.png" @click="download(index)"
-               v-model="item.rawLog.id">
+        <div class="operations">
+          <img class="process_button" title="生成规范化日志" v-on:click="transferToNormal(index)" src="static/img/process_color.png">
+          <img class="download_button" title="下载" src="static/img/download_color.png" @click="download(index)" v-model="item.rawLog.id">
           <img @click="share(index)"
                class="img-button share_button" title="分享"
                :src="item.rawLog.isShared === 0 ? 'static/img/share_color.png' : 'static/img/forbidden_color.png'">
           <img class="delete_button" title="删除" src="static/img/Delete_color.png" @click="deleteRawLog(index)">
         </div>
-        <div>
+        <div class="data">
           {{`${new Date(item.rawLog.createDate).getFullYear()}-${new Date(item.rawLog.createDate).getMonth() + 1}-${new Date(item.rawLog.createDate).getDate()}`}}
         </div>
-        <div @click="jumpToNormal(index)" class="relation-logs">{{item.normalLog ? item.normalLog.logName : '无'}}</div>
-        <div @click="jumpToEvent(index)" class="relation-logs">{{item.eventLog ? item.eventLog.logName : '无'}}</div>
+        <div @click="jumpToNormal(index)" class="relation-logs normal-log">{{item.normalLog ? item.normalLog.logName : '无'}}</div>
+        <div @click="jumpToEvent(index)" class="relation-logs event-log">{{item.eventLog ? item.eventLog.logName : '无'}}</div>
       </div>
     </div>
   </div>
@@ -131,6 +132,11 @@
   .list:hover {
     background-color: @logList_Choose;
   }
+  .too-long-text{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
   #log-list {
     margin-left: 10px;
@@ -146,9 +152,35 @@
       width: 100%;
       padding: 10px 0px 10px 0px;
       border-bottom: 1px solid #afbfb8;
-      div {
-        flex: 1;
+      .log-head {
+        flex:  0 0 200px;
         text-align: left;
+        display: flex;
+        flex-direction: row;
+        .log-name{
+          cursor: pointer;
+          max-width: 180px;
+          .too-long-text;
+        }
+      }
+      .operations {
+        flex: 0 0 150px;
+      }
+      .date{
+        flex:0 0 120px;
+        .too-long-text;
+      }
+      .raw-log{
+        flex: 0 0 200px;
+        .too-long-text;
+      }
+      .normal-log{
+        flex: 0 0 200px;
+        .too-long-text;
+      }
+      .event-log{
+        flex: 0 0 200px;
+        .too-long-text;
       }
     }
     .selectedItem {
@@ -186,7 +218,7 @@
       },
       checkAll: {
         get: function () {
-          return this.checkedCount == this.items.length;
+          return this.checkedCount === this.items.length;
         },
         set: function (value) {
           let _this = this;

@@ -13,18 +13,21 @@
     <div class="title"><span>全部文件，共{{count}}个，已选{{amount}}个</span><span>关联文件</span></div>
     <div id="log-list">
       <div class="list">
-        <div><input type="checkbox" v-model="checkAll" id="文件名" value="文件名">
-          <span>文件名</span></div>
-        <div></div>
-        <div>日期</div>
-        <div>原始日志</div>
-        <div>事件日志</div>
+        <div class="log-head"><input type="checkbox" v-model="checkAll" id="文件名" value="文件名">
+          <span class="log-name">文件名</span>
+        </div>
+        <div class="operations"></div>
+        <div class="date">日期</div>
+        <div class="raw-log">原始日志</div>
+        <div class="event-log">事件日志</div>
       </div>
       <div class="list" v-for="(item, index) in items" :class="{selectedItem: isSelected(index)}">
-        <div><input type="checkbox" v-model="checked" :value="item.normalLog.id" @click="currClick(item,index)">
-          <span style="cursor:pointer">
-            {{item.normalLog.logName}}</span></div>
-        <div>
+        <div class="log-head">
+          <input type="checkbox" v-model="checked" :value="item.normalLog.id" @click="currClick(item,index)">
+          <span class="log-name">
+            {{item.normalLog.logName}}</span>
+        </div>
+        <div class="operations">
           <img style="cursor:pointer" class="process_button" title="生成事件日志"
                v-on:click="transferToEvent(index)"
                src="static/img/process_color.png">
@@ -36,13 +39,13 @@
           <img @click="deleteLog(index)"
                class="delete_button img-button" title="删除" src="static/img/Delete_color.png">
         </div>
-        <div>
+        <div class="date">
           {{`${new Date(item.normalLog.createDate).getFullYear()}-${new Date(item.normalLog.createDate).getMonth() + 1}-${new Date(item.normalLog.createDate).getDate()}`}}
         </div>
-        <div class="relation-logs" @click="jumpToRaw(index)">
+        <div class="relation-logs raw-log" @click="jumpToRaw(index)">
           {{item.rawLog ? item.rawLog.logName : '无'}}
         </div>
-        <div class="relation-logs" @click="jumpToEvent(index)">
+        <div class="relation-logs event-log" @click="jumpToEvent(index)">
           {{item.eventLog ? item.eventLog.logName : '无'}}
         </div>
       </div>
@@ -132,6 +135,11 @@
     background-color: @logList_Choose;
   }
 
+  .too-long-text{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   #log-list {
     margin-left: 10px;
     margin-right: 10px;
@@ -146,9 +154,35 @@
       width: 100%;
       padding: 10px 0px 10px 0px;
       border-bottom: 1px solid #afbfb8;
-      div {
-        flex: 1;
+      .log-head {
+        flex:  0 0 200px;
         text-align: left;
+        display: flex;
+        flex-direction: row;
+        .log-name{
+          cursor: pointer;
+          max-width: 180px;
+          .too-long-text;
+        }
+      }
+      .operations {
+        flex: 0 0 150px;
+      }
+      .date{
+        flex:0 0 120px;
+        .too-long-text;
+      }
+      .raw-log{
+        flex: 0 0 200px;
+        .too-long-text;
+      }
+      .normal-log{
+        flex: 0 0 200px;
+        .too-long-text;
+      }
+      .event-log{
+        flex: 0 0 200px;
+        .too-long-text;
       }
     }
     .selectedItem {
