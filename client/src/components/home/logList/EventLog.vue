@@ -187,7 +187,7 @@
         return sum;
       },
       amount: function (item, index) {
-        return this.totalAmount.length;
+        return this.checked.length;
       },
       checkAll: {
         get: function () {
@@ -296,10 +296,16 @@
         }
       },
       deleteLog(index){
+
         this.$api({method: 'deleteEventLog', opts: {body: {idList: [this.items[index].eventLog.id]}}}).then(res => {
           if (res.data.code === 1) {
             this.$hint('删除成功', 'success')
             this.getTotalItems()
+            this.checked = [];
+            this.totalAmount = [];
+            this.items.forEach(function (item, index) {
+              item.checked = false;
+            });
           } else {
             this.$hint('删除失败', 'error')
           }
@@ -307,13 +313,18 @@
       },
       deleteSome: function () {
         this.$api({
-          method: 'deleteNormalLog',
+          method: 'deleteEventLog',
           opts: {body: {idList: this.checked}}
         }).then((res) => {
           console.log(res.data)
           if (res.data.code === 1) {
             this.$hint('删除成功', 'success')
             this.getTotalItems()
+            this.checked = [];
+            this.totalAmount = [];
+        this.items.forEach(function (item, index) {
+          item.checked = false;
+        });
           } else {
             this.$hint('删除失败', 'error')
           }
