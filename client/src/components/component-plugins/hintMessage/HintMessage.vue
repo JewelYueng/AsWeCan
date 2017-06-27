@@ -14,8 +14,7 @@
     position: fixed;
     top: 0;
     text-align: center;
-    left: @major_width * 0.33;;
-    width: @major_width * 0.33;
+    width: 100%;
     opacity: .95;
     z-index: 999;
   }
@@ -23,8 +22,10 @@
   .hint-container {
     position: relative;
     top: 0;
-    height: 30px;
-    line-height: 30px;
+    height: 40px;
+    line-height: 40px;
+    width: 400px;
+    min-width: 400px;
     margin: 0 auto;
     border-radius: 5px;
     background: #337ab7;
@@ -48,7 +49,7 @@
   }
 
   .slide-enter, .slide-leave-active {
-    transform: translateY(-30px);
+    transform: translateY(-40px);
   }
 </style>
 <script>
@@ -76,7 +77,7 @@
         }
         this.timeout_id = setTimeout(() => {
           this.is_showing = false
-        }, 1500)
+        }, 2000)
       },
       hide(){
         this.is_showing = false

@@ -22,7 +22,7 @@
   }
 </script>
 
-<style lang="less" scoped rel="stylesheet/less">
+<style lang="less" rel="stylesheet/less">
   @import './assets/layout.less';
 
   .border {
@@ -32,9 +32,12 @@
   #app {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    width: @major_width;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
 
+  }
+  * {
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
   }
 </style>

@@ -70,11 +70,12 @@
           console.log('success', res)
           if (res.body.code === 1){
             this.commit(true)
-          }else if(res.status === 400){
-            this.$hint('请上传格式正确的事件日志', 'warn')
           }
         }, err => {
-          console.log('err:', err)
+          if(err.status === 500){
+            this.$hint('请上传格式正确的事件日志', 'warn')
+            this.progress = 0
+          }
         })
       },
       cancel(){

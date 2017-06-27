@@ -8,7 +8,8 @@
       <el-menu-item index="1">数据项整合配置</el-menu-item>
       <el-menu-item index="2">记录格式配置</el-menu-item>
     </el-menu>
-    <component :is="current_view" @SAVE_FORMAT="changeFormat" @SAVE_RECORD="changeRecord" @SAVE_INTEGRATION="changeIntegration"></component>
+    <component :is="current_view" @SAVE_FORMAT="changeFormat" @SAVE_RECORD="changeRecord"
+               @SAVE_INTEGRATION="changeIntegration"></component>
     <div style="position:absolute;bottom: 15px;margin: auto;right: 0;left: 0;">
       <el-button type="primary" style="width: 80px;margin-top: 30px" @click="Normalizing()">规范化</el-button>
       <el-button type="primary" @click="back" style="width: 80px;margin-top: 30px">取消</el-button>
@@ -28,11 +29,11 @@
     position: relative;
   }
 
-  .el-button+.el-button{
+  .el-button + .el-button {
     margin-left: 0;
   }
 
-  .add-btn{
+  .add-btn {
     text-align: left;
     margin: 20px 35px;
   }
@@ -168,19 +169,20 @@
             "formats": this.format,
             "timeNames": "[QC]",
             "renameOrMergeItems": this.integration,
-          }, this.record[0])
+          }, this.record)
         }).then((res) => {
           console.log(res);
           if (res.data.code === 1) {
             this.$hint('规范化成功', 'success');
           }
-          else if(res.status === 500){
-            this.$hint('参数设置不当', 'warn');
-          }
-          else{
-            this.$hint('网络连接失败', 'erorr');
+          else {
+            this.$hint('规范化失败', 'erorr');
           }
 
+        }, res => {
+          if (res.status === 500) {
+            this.$hint('参数设置不当或文件不是原始日志', 'warn');
+          }
         })
       },
       changeFormat(format){

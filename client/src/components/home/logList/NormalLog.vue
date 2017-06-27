@@ -274,7 +274,7 @@
             this.$hint('生成成功', 'success')
             this.getTotalItems()
           } else {
-            this.$hint('生成失败', 'warn')
+            this.$hint('请使用格式正确的规范化日志进行转换', 'warn')
           }
         })
       },

@@ -18,6 +18,10 @@
   @import "~assets/layout.less";
   @import "~assets/colors.less";
 
+  #home{
+    width: @major_width;
+    margin: 0 auto;
+  }
   .header {
     background-color: @dark_theme;
     width: 100%;
