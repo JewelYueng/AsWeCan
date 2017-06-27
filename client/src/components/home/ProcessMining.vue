@@ -1,6 +1,6 @@
 <template>
   <div>
-    我是流程挖掘界面
+    <div>我是流程挖掘界面</div>
   </div>
 </template>
 <style>
@@ -20,6 +20,7 @@
     components: {},
     created(){
       this.changeHomePath('/mining')
+      this.$d3.selectAll('p').style('color', 'white');
     }
 
 

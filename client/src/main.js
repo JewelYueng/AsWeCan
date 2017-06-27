@@ -7,6 +7,9 @@ import router from './router'
 import  Vuex from 'vuex'
 Vue.use(Vuex)
 
+import VueD3 from 'vue-d3'
+Vue.use(VueD3)
+
 import VueResource from 'vue-resource'
 Vue.use(VueResource)
 
