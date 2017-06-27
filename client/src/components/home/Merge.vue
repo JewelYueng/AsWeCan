@@ -39,7 +39,7 @@
         </el-select>
       </div>
       <br>
-      <el-button type="success" @click="merge()">开始融合</el-button>
+      <el-button type="primary" @click="merge()">开始融合</el-button>
     </div>
 
 
@@ -71,16 +71,12 @@
     width: @log_button_width;
     border-radius: @log_button_border-radius;
     background-color: white;
-    border: 2px solid green;
+    border: 2px solid @dark_theme;
   }
 
   .merge-list {
     height: @main_height;
-    background-color: #f1f1f1;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 0px;
-    border-bottom-left-radius: 0px;
+    background-color: @light_theme;
     overflow: hidden;
   }
 
@@ -88,7 +84,7 @@
     width: auto;
     font-size: 20px;
     font-weight: bold;
-    color: green;
+    color: @dark_theme;
     margin-left: 30px;
     margin-top: 5px;
     text-align: left;
@@ -105,7 +101,7 @@
   hr {
     height: 2px;
     border: none;
-    border-top: 2px solid green;
+    border-top: 2px solid @dark_theme;
   }
 
 
