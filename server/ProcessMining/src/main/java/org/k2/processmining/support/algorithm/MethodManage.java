@@ -115,7 +115,7 @@ public class MethodManage {
             LOGGER.error("fail to reflect for MinerImpl: {}", methodDir, e);
             throw new LoadMethodException("fail to reflect for interface implement: " + methodDir);
         }
-        return new Algorithm<>(method, configs);
+        return new Algorithm<>(id, method, configs);
     }
 
 

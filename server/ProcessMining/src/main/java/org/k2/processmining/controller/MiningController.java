@@ -7,7 +7,10 @@ import org.k2.processmining.model.miningmethod.MiningMethod;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.service.MiningMethodService;
+import org.k2.processmining.service.TimeResult;
+import org.k2.processmining.support.algorithm.Algorithm;
 import org.k2.processmining.support.algorithm.LoadMethodException;
+import org.k2.processmining.support.mining.Miner;
 import org.k2.processmining.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -56,20 +59,12 @@ public class MiningController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public@ResponseBody Object mining(@Valid @RequestBody MiningForm form) {
         Map<String, Object> res = new HashMap<>();
-        MiningMethod miningMethod = miningMethodService.getMethodById(form.getMethodId());
-        if (miningMethod == null || !miningMethodService.isActive(miningMethod)) {
-            res.put("code", 0);
-            res.put("msg", "The merge algorithm is not exist!");
-            return res;
-        }
         EventLog eventLog = eventLogService.getEventLogById(form.getId());
-        User user = getUser();
-        if (!Util.isActiveAndBelongTo(eventLog, user)) {
-            res.put("code", 0);
-            res.put("msg", "The event log is not exist!");
-            return res;
-        }
-        return miningMethodService.mining(eventLog, form.methodId, form.parameters);
+        Algorithm<Miner> algorithm = miningMethodService.getAlgorithmById(form.getMethodId());
+        TimeResult timeResult =  miningMethodService.mining(eventLog, algorithm, form.parameters, Util.toDiagramType(form.diagramType));
+        res.put("timeCost", timeResult.getTime());
+        res.put("diagram", timeResult.getResult());
+        return res;
     }
 
     private User getUser() {
@@ -79,54 +74,10 @@ public class MiningController {
         return user;
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public @ResponseBody
-    Object addMiningMethod(@Param("files") MultipartFile[] files) {
-        if (files == null || files.length == 0) {
-            return ResponseEntity.badRequest().body("at least one file!");
-        }
-        Map<String,Object> res = new HashMap<>();
-        try {
-            MiningMethod miningMethod = miningMethodService.addMethod(files);
-            res.put("state", miningMethod.getState());
-            res.put("id", miningMethod.getId());
-            res.put("configs", miningMethodService.getMethodConfig(miningMethod));
-            return res;
-        }
-        catch (IOException | LoadMethodException e) {
-            return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
-
-    @RequestMapping(value = "/active", method = RequestMethod.POST)
-    public @ResponseBody
-    Object active(@RequestBody IdListForm form) {
-        return setMethodState(form.getIdList(), MethodState.ACTIVE.getValue());
-    }
-
-    @RequestMapping(value = "/freeze", method = RequestMethod.POST)
-    public @ResponseBody
-    Object freeze(@RequestBody IdListForm form) {
-        return setMethodState(form.getIdList(), MethodState.FREEZE.getValue());
-    }
-
-    private Map<String,Object> setMethodState(List<String> ids, int state) {
-        miningMethodService.setMethodState(ids, state);
-        Map<String,Object> res = new HashMap<>();
-        res.put("code", 1);
-        return res;
-    }
-
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    public @ResponseBody
-    Object delete(@RequestBody IdListForm form) {
-        miningMethodService.delete(form.getIdList());
-        return new HashMap<String,Object>(){{put("code", 1);}};
-    }
-
     public static class MiningForm {
         private String id;
         private String methodId;
+        private String diagramType;
         private Map<String, Object> parameters;
 
         public String getId() {
@@ -143,6 +94,14 @@ public class MiningController {
 
         public void setMethodId(String methodId) {
             this.methodId = methodId;
+        }
+
+        public String getDiagramType() {
+            return diagramType;
+        }
+
+        public void setDiagramType(String diagramType) {
+            this.diagramType = diagramType;
         }
 
         public Map<String, Object> getParameters() {

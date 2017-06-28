@@ -60,4 +60,14 @@
     <bean id="userLoginFailureHandler" class="org.k2.processmining.security.UserLoginFailureHandler"/>
     <!--<bean id="verficationFilter" class="org.k2.processmining.security.VerficationFilter"/>-->
 
+
+    <bean id="logPermissionEvaluator" class="org.k2.processmining.security.LogPermissionEvaluator"/>
+
+    <bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
+        <property name="permissionEvaluator" ref="logPermissionEvaluator"/>
+    </bean>
+
+    <security:global-method-security pre-post-annotations="enabled">
+        <security:expression-handler ref="expressionHandler"/>
+    </security:global-method-security>
 </beans>

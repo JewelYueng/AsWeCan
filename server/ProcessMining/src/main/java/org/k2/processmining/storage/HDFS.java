@@ -2,6 +2,7 @@ package org.k2.processmining.storage;
 
 
 import org.apache.commons.io.IOUtils;
+import org.k2.processmining.exception.JSONBadRequestException;
 import org.k2.processmining.model.log.AbstractLog;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.util.Util;
@@ -55,6 +56,9 @@ public class HDFS implements LogStorage {
 
     @Override
     public String getLogLocation(AbstractLog log) {
+        if (log == null || log.getUserId() == null || log.getId() == null) {
+            throw new JSONBadRequestException("日志不存在！");
+        }
         return HDFS_URL + "/" + log.getUserId() + "/" + log.getType() + "/" + log.getId();
     }
 

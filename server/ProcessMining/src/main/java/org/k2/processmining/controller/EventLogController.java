@@ -1,5 +1,7 @@
 package org.k2.processmining.controller;
 
+import org.apache.commons.io.IOUtils;
+import org.k2.processmining.exception.JSONInternalServerErrorException;
 import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.LogShareState;
 import org.k2.processmining.model.LogState;
@@ -9,6 +11,8 @@ import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.util.Util;
 import org.k2.processmining.utils.GsonParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,6 +31,8 @@ import java.util.*;
 @Controller
 @RequestMapping("/eventLog")
 public class EventLogController {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(EventLogController.class);
 
     @Autowired
     private EventLogService eventLogService;
@@ -58,14 +64,14 @@ public class EventLogController {
         int code = 1;
         try (InputStream inputForRemote = file.getInputStream(); InputStream inputForSummarize = file.getInputStream()){
             if (! eventLogService.save(eventLog, inputForRemote, inputForSummarize)) {
-                code = 0;
+                throw new JSONInternalServerErrorException("上传失败，请稍后尝试！");
             }
         }
         catch (IOException e) {
-            e.printStackTrace();
-            code = 0;
+            LOGGER.error("Fail to save eventLog: {}", e);
+            throw new JSONInternalServerErrorException("上传失败，请稍后尝试！");
         }
-        // may return log
+        res.put("eventLog", eventLog);
         res.put("code", code);
         return res;
     }
@@ -73,20 +79,18 @@ public class EventLogController {
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public void download(@RequestParam("id") String id, HttpServletResponse response) {
         EventLog eventLog = eventLogService.getEventLogById(id);
-        User user = getUser();
-        if (!Util.isActiveAndBelongTo(eventLog, user) && !Util.isActiveAndShared(eventLog)) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
-        String fileName = eventLog.getLogName();
-        response.setHeader("Content-Disposition","attachment;filename=" + Util.encodeForURL(fileName));
-        try (OutputStream outputStream = response.getOutputStream()){
-            logStorage.download(eventLog, outputStream);
-            outputStream.flush();
-        }
-        catch (IOException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
+        logStorage.download(eventLog, inputStream -> {
+            String fileName = eventLog.getLogName();
+            response.setHeader("Content-Disposition","attachment;filename=" + Util.encodeForURL(fileName));
+            try {
+                IOUtils.copyLarge(inputStream, response.getOutputStream());
+            }
+            catch (IOException e) {
+                LOGGER.error("Fail to download eventLog: {}", e);
+                throw new JSONInternalServerErrorException();
+            }
+            return true;
+        });
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)

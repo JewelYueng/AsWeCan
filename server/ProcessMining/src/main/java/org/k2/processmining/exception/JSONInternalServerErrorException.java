@@ -6,7 +6,9 @@ package org.k2.processmining.exception;
 public class JSONInternalServerErrorException extends RuntimeException {
     private String message;
 
-    public JSONInternalServerErrorException() {}
+    public JSONInternalServerErrorException() {
+        message = "Internal Server Error. Please try later.";
+    }
     public JSONInternalServerErrorException(String message) {
         this.message = message;
     }

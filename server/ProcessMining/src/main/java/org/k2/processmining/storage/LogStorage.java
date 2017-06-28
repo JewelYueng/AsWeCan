@@ -24,10 +24,10 @@ public interface LogStorage {
         }
         return false;
     }
-    @PreAuthorize("hasPermission(#log, 'download') or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasPermission(#log, 'download') or T(org.k2.processmining.model.LogShareState).isShared(#log.isShared)")
     boolean download(AbstractLog log, OutputStream outputStream);
 
-    @PreAuthorize("hasPermission(#log, 'download') or hasRole('ROLE_ADMIN') or T(org.k2.processmining.model.LogShareState).isShared(#log.isShared)")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasPermission(#log, 'download') or T(org.k2.processmining.model.LogShareState).isShared(#log.isShared)")
     <T> T download(AbstractLog log, ProcessInputStream<T> processInputStream);
     default boolean download(AbstractLog log, File outputFile) {
         try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile))){

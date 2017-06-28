@@ -2,6 +2,8 @@ package org.k2.processmining.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.apache.commons.io.IOUtils;
+import org.k2.processmining.exception.JSONInternalServerErrorException;
 import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.LogShareState;
 import org.k2.processmining.model.LogState;
@@ -12,6 +14,8 @@ import org.k2.processmining.service.NormalLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.util.Util;
 import org.k2.processmining.utils.GsonParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,6 +36,8 @@ import java.util.*;
 @Controller
 @RequestMapping("/normalLog")
 public class NormalLogController {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(NormalLogController.class);
 
     @Autowired
     private NormalLogService normalLogService;
@@ -96,17 +102,16 @@ public class NormalLogController {
         normalLog.setLogName(file.getOriginalFilename());
         normalLog.setIsShared(isShare);
         Map<String, Object> res = new HashMap<>();
-        int code = 1;
         try (InputStream inputStream = file.getInputStream()) {
             if (!normalLogService.save(normalLog, inputStream)) {
-                code = 0;
+                throw new JSONInternalServerErrorException("上传失败，请稍后尝试！");
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            code = 0;
+            LOGGER.error("Fail to save normalLog: {}", e);
+            throw new JSONInternalServerErrorException("上传失败，请稍后尝试！");
         }
-        // may return rawLog
-        res.put("code", code);
+        res.put("normalLog", normalLog);
+        res.put("code", 1);
         return res;
     }
 
@@ -119,19 +124,18 @@ public class NormalLogController {
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public void download(@RequestParam("id") String id, HttpServletResponse response) {
         NormalLog normalLog = normalLogService.getNormalLogById(id);
-        User user = getUser();
-//        if (!Util.isActiveAndBelongTo(normalLog, user) || !Util.isActiveAndShared(normalLog)) {
-//            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//            return;
-//        }
-        String fileName = normalLog.getLogName();
-        response.setHeader("Content-Disposition", "attachment;filename=" + Util.encodeForURL(fileName));
-        try (OutputStream outputStream = response.getOutputStream()) {
-            logStorage.download(normalLog, outputStream);
-            outputStream.flush();
-        } catch (IOException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
+        logStorage.download(normalLog, inputStream -> {
+            String fileName = normalLog.getLogName();
+            response.setHeader("Content-Disposition","attachment;filename=" + Util.encodeForURL(fileName));
+            try {
+                IOUtils.copyLarge(inputStream, response.getOutputStream());
+            }
+            catch (IOException e) {
+                LOGGER.error("Fail to download normalLog: {}", e);
+                throw new JSONInternalServerErrorException();
+            }
+            return true;
+        });
     }
 
 
@@ -230,8 +234,7 @@ public class NormalLogController {
         }
         EventLog eventLog = normalLogService.transToEventLog(normalLog);
         if (eventLog == null) {
-            res.put("code", 0);
-            return res;
+            throw new JSONInternalServerErrorException("转化为事件日志失败，请检查输入，稍后尝试！");
         }
         res.put("code", 1);
         res.put("eventLog",eventLog);

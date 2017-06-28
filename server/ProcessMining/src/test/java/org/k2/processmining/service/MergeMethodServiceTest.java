@@ -14,10 +14,15 @@ import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.log.RawLog;
 import org.k2.processmining.model.mergemethod.MergeMethod;
 import org.k2.processmining.service.impl.MergeMethodServiceImpl;
+import org.k2.processmining.support.algorithm.MergerFactory;
 import org.k2.processmining.support.spring.SaveExceptionThrowsAdvice;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.*;
 
 /**
@@ -93,6 +98,40 @@ public class MergeMethodServiceTest {
         Map<String,Object> params = new HashMap<>();
         TimeResult<EventLog> result= mergeMethodService.merge(eventLog1, eventLog2, methodId, params);
         System.out.println("mergeTest: result: " + toJSON(result));
+    }
+
+    public void addMethodTest() throws Exception {
+        String jarPath = "";
+        File file = new File(jarPath);
+        MockMultipartFile multipartFile = new MockMultipartFile("", file.getName(), "", new FileInputStream(file));
+        MergeMethod mergeMethod = mergeMethodService.addMethod(new MultipartFile[]{ multipartFile });
+        Assert.assertNotNull(mergeMethod);
+        Map<String,Object> configs = mergeMethodService.getMethodConfig(mergeMethod);
+        System.out.println(toJSON(configs));
+    }
+
+    public void setMethodStateTest() throws Exception {
+        List<String> ids = Arrays.asList("1", "2");
+        mergeMethodService.setMethodState(ids, MethodState.FREEZE.getValue());
+        for (String id : ids) {
+            MergeMethod mergeMethod = mergeMethodService.getMethodById(id);
+            Assert.assertEquals(MethodState.FREEZE.getValue(), mergeMethod.getState());
+        }
+        mergeMethodService.setMethodState(ids, MethodState.ACTIVE.getValue());
+        for (String id : ids) {
+            MergeMethod mergeMethod = mergeMethodService.getMethodById(id);
+            Assert.assertEquals(MethodState.ACTIVE.getValue(), mergeMethod.getState());
+        }
+    }
+
+    public void deleteTest() throws Exception {
+        List<String> ids = Arrays.asList("1221");
+        mergeMethodService.delete(ids);
+        for (String id : ids) {
+            MergeMethod mergeMethod = mergeMethodService.getMethodById(id);
+            Assert.assertNull(mergeMethod);
+            Assert.assertNull(MergerFactory.getInstance().getAlgorithm(id));
+        }
     }
 
     private String toJSON(Object o) throws JsonProcessingException {

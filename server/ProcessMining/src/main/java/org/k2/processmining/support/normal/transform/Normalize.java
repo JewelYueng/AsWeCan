@@ -1,5 +1,7 @@
 package org.k2.processmining.support.normal.transform;
 
+import org.k2.processmining.exception.JSONBadRequestException;
+
 import java.io.*;
 
 public class Normalize {
@@ -40,9 +42,9 @@ public class Normalize {
 
             return true;
         }
-        catch (IOException e) {
+        catch (Exception e) {
             e.printStackTrace();
+            throw new JSONBadRequestException("规范化失败，请检查输入！");
         }
-        return false;
     }
 }

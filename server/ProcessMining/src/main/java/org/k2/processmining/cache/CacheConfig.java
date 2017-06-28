@@ -1,5 +1,6 @@
 package org.k2.processmining.cache;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +15,8 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 /**
  * Created by nyq on 2017/6/23.
  */
-@Configuration
-@EnableCaching
+//@Configuration
+//@EnableCaching
 public class CacheConfig {
 
 
@@ -43,7 +44,11 @@ public class CacheConfig {
 
     @Bean
     public RedisSerializer<Object> redisSerializer() {
-        return new Jackson2JsonRedisSerializer<>(Object.class);
+        Jackson2JsonRedisSerializer redisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
+        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.setVisibility(Json)
+//        redisSerializer.setObjectMapper();
+        return redisSerializer;
     }
 
 }

@@ -5,7 +5,7 @@ package org.k2.processmining.support.mining.model;
  */
 public enum  DiagramType {
 
-    PetriNet("PetriNet"), ResourceRelation("ResourceRelatrion"),
+    PetriNet("PetriNet"), ResourceRelation("ResourceRelation"),
     Sankey("Sankey"), TransitionSystem("TransitionSystem");
 
     private String value;
@@ -13,11 +13,7 @@ public enum  DiagramType {
         this.value = value;
     }
 
-    public String getValue(String v) {
-        DiagramType.valueOf(v);
-        switch (v) {
-
-        }
+    public String getValue() {
         return value;
     }
 }

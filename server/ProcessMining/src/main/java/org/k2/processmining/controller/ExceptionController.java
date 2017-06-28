@@ -1,6 +1,7 @@
 package org.k2.processmining.controller;
 
 import org.k2.processmining.exception.JSONBadRequestException;
+import org.k2.processmining.exception.JSONForbiddenException;
 import org.k2.processmining.exception.JSONInternalServerErrorException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,12 @@ public class ExceptionController {
     public @ResponseBody
     Object handleInternalServerError(JSONInternalServerErrorException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(getRes(e.getMessage()));
+    }
+
+    public @ResponseBody
+    @ExceptionHandler(JSONForbiddenException.class)
+    Object handleForbidden(JSONForbiddenException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(getRes(e.getMessage()));
     }
 
     private Map<String, Object> getRes(String msg) {
