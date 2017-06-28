@@ -4,11 +4,11 @@ import Hello from "@/components/Hello"
 import FilesManager from "components/home/FilesManager"
 import LogMerge from "components/home/Merge"
 import MergeResult from "components/home/MergeResult"
-import ProcessMining from "components/home/processMining/ProcessMining"
+import ProcessMining from "components/home/ProcessMining"
 import Login from "components/login/index"
 import Register from "components/register/index"
 import Home from "components/home/index"
-import Sankey from "components/home/processMining/sankey"
+import MiningResult from "components/home/processMining/index"
 
 Vue.use(Router)
 
@@ -51,8 +51,8 @@ export default new Router({
         },
         {
           path: "/miningResult",
-          name: 'result',
-          component: ProcessMining
+          name: 'miningResult',
+          component: MiningResult
 
         }
       ]
@@ -66,11 +66,6 @@ export default new Router({
       path: "/register",
       name: "register",
       component: Register
-    },
-    {
-      path: "/sankey",
-      name: "sankey",
-      component: Sankey
     }
   ]
 })

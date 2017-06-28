@@ -1,0 +1,181 @@
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>sankey</title>
+</head>
+<p id="chart"></p>
+  <style type="text/css">
+  path:hover{
+    stroke-opacity: 0.9;
+  }
+</style>
+
+<body>
+
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="../../../../static/js/sankey.js"></script>
+<script>
+
+  // 节点和连接数据
+  var data = {
+      /*'nodes': [
+        {name:"accept"},
+        {name:"collect reviews"},
+        {name:"decide"},
+        {name:"get review 1"},
+        {name:"get review 2"},
+        {name:"get review 3"},
+        {name:"get review X"},
+        {name:"invite additional reviewer"},
+        {name:"invite reviewers"},
+      ],
+      'links': [
+        {source: 0, target: 3, value: 10},
+        {source: 1, target: 4, value: 10},
+        {source: 2, target: 4, value: 5},
+        {source: 1, target: 5, value: 5},
+        {source: 3, target: 6, value: 5},
+        {source: 3, target: 7, value: 5},
+        {source: 4, target: 7, value: 10},
+        {source: 4, target: 8, value: 5},
+        {source: 5, target: 8, value: 5}
+      ]*/
+    'nodes':
+      [
+        {name:"accept"},
+        {name:"collect reviews"},
+        {name:"decide"},
+        {name:"get review 1"},
+        {name:"get review 2"},
+        {name:"get review 3"},
+        {name:"get review X"},
+        {name:"invite additional reviewer"},
+        {name:"invite reviewers"},
+        {name:"reject"},
+        {name:"time-out 1"},
+        {name:"time-out 2"},
+        {name:"time-out 3"},
+        {name:"time-out X"}
+      ],
+    'links':
+      [
+        {source:"collect reviews",target:"decide",value:100},
+        {source:"decide",target:"accept",value:45},
+        {source:"decide",target:"invite additional reviewer",value:526},
+        {source:"decide",target:"reject",value:55},
+        {source:"get review 1", target:"collect reviews",value:11},
+        {source:"get review 2", target:"collect reviews",value:10},
+        {source:"get review 3", target:"collect reviews",value:11},
+        {source:"get review X", target:"decide",value:263},
+        {source:"invite additional reviewer", target:"get review X",value:263},
+        {source:"invite additional reviewer", target:"time-out X",value:263},
+        {source:"invite reviewers", target:"get review 1",value:16},
+        {source:"invite reviewers", target:"time-out 1",value:16},
+        {source:"invite reviewers", target:"get review 2",value:19},
+        {source:"invite reviewers", target:"time-out 2",value:12},
+        {source:"invite reviewers", target:"get review 3",value:19},
+        {source:"invite reviewers", target:"time-out 3",value:18},
+        {source:"time-out 1", target:"collect reviews",value:22},
+        {source:"time-out 2", target:"collect reviews",value:26},
+        {source:"time-out 3", target:"collect reviews",value:20},
+        {source:"time-out X", target:"decide",value:263}
+      ]
+  };
+
+  var margin = {top: 1, right: 1, bottom: 6, left: 1},
+    width = 660 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
+
+  var formatNumber = d3.format(",.0f"),
+    format = function(d) { return formatNumber(d) + " TWh"; },
+    color = d3.scale.category20();
+
+  var svg = d3.select("#chart").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+  // 定义桑基布局
+  var sankey = d3.sankey()
+    .nodeWidth(80)
+    .nodePadding(40)
+    .size([width, height])
+    .nodes(data.nodes)
+    .links(data.links)
+    .layout(3);
+
+  var path = sankey.link();
+
+
+  // 绘制连接数据
+  var links = svg.append("g").selectAll("path")
+    .data(data.links)
+    .enter()
+
+  // 绑定节点数据
+  var nodes = svg.append("g").selectAll(".node")
+    .data(data.nodes)
+    .enter();
+
+  // 绘制连接线
+  links.append("path")
+    .attr({
+      fill: "none",   //填充色
+      stroke: function(d,i){ return color(i); },  //描边色
+      "stroke-opacity": 0.5,  //描边透明度
+      d: path,  //路径数据
+      id: function(d,i){ return 'link' +i }  //ID
+    })
+    .style("stroke-width", function (d) {  //连线的宽度
+      return Math.max(1, d.dy);
+    });
+
+  // 绘制矩形节点
+  nodes.append("rect")
+    .attr({
+      x: function (d) { return d.x; },
+      y: function (d) { return d.y; },
+      height: function (d) { return d.dy; },
+      width: sankey.nodeWidth(),
+      fill: "tomato"
+    })
+    .call(d3.behavior.drag()
+      .origin(function(d) { return d; })
+      .on("drag", dragmove)
+    );
+
+  // 绘制节点文本
+  nodes.append("text")
+    .attr({
+      x: function (d) { return d.x+sankey.nodeWidth() / 2; },
+      y: function (d) { return d.y+d.dy / 2; }
+    })
+    .text(function (d) { return d.name; });
+
+  // 绘制连接文本
+  links.append('text')
+    .append('textPath')
+    .attr('xlink:href', function (d,i) { return '#link' + i; })
+    .attr('startOffset','50%')
+    .text(function (d) { return '流量:' + d.value; });
+
+
+  function dragmove(d) {
+    d3.select(this).attr({
+      "x": (d.x = Math.max(0, Math.min(width - d.dx, d3.event.x))),
+      "y": (d.y = Math.max(0, Math.min(height - d.dy, d3.event.y)))
+    });
+
+    sankey.relayout();
+    paths.attr('d',path);
+  }
+
+
+
+</script>
+
+</body>
+</html>
