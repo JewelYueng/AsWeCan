@@ -1,6 +1,5 @@
 package org.k2.processmining.controller;
 
-import org.k2.processmining.security.UserLoginFailureHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,20 +23,29 @@ public class HomeController {
      * @param request
      * @param response
      */
-    @RequestMapping(value = "/login",method = RequestMethod.GET)
-    public void homeForUser(@RequestParam(value = "error",required = false) String error,HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        if (UserLoginFailureHandler.USER_NOT_FOUND.equals(error)){
-            System.out.println("Controller:用户不存在");
-            request.getRequestDispatcher("/html/user_notfound.html").forward(request,response);
-        }
-        if (UserLoginFailureHandler.USER_PWD_ERROR.equals(error)){
-            System.out.println("Controller:用户密码错误");
-            request.getRequestDispatcher("/html/login_failure.html").forward(request,response);
-        }
+
+
+    @RequestMapping(value = "/loginPage",method = RequestMethod.GET)
+    public void
+    homeForUser(@RequestParam(value = "error",required = false) String error, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         request.getRequestDispatcher("/html/login.html").forward(request,response);
 
+        //
+//        if (UserLoginFailureHandler.USER_NOT_FOUND.equals(error)){
+//            System.out.println("Controller:用户不存在");
+//            request.getRequestDispatcher("/html/user_notfound.html").forward(request,response);
+//        }
+//        if (UserLoginFailureHandler.USER_PWD_ERROR.equals(error)){
+//            System.out.println("Controller:用户密码错误");
+//            request.getRequestDispatcher("/html/login_failure.html").forward(request,response);
+//        }
+//        if ("".equals(error))
+//        request.getRequestDispatcher("/html/login.html").forward(request,response);
+////        Map map = new HashMap();
+////        map.put("login","success");
+////        return map;
     }
 
 

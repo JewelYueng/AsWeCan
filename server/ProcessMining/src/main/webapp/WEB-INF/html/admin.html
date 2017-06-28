@@ -1,9 +1,9 @@
 <html lang="en">
-<script src="/js/jquery-3.2.1.min.js"></script>
 <head>
     <meta charset="UTF-8">
     <title>管理员</title>
 </head>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
 <body>
 <div>
     <form name='f'
@@ -28,7 +28,33 @@
             </tr>
         </table>
     </form>
+
 </div>
+<button onclick="clickme(2)" >错误的
+</button>
+<button onclick="clickme(1)">正确的</button>
 </body>
+
+<script>
+    function clickme(username) {
+        var json = {
+            workId: username,
+            password: "1",
+            validateCode: "12"
+        };
+        $.ajax({
+            type:"POST",
+            url:'/admin/adminLogin',
+            contentType: 'application/json',
+            dataType:'json',
+            data:JSON.stringify(json),
+            success:function (result) {
+                console.log("ceshi");
+                console.log("result:"+result);
+            }
+
+        });
+    }
+</script>
 
 </html>

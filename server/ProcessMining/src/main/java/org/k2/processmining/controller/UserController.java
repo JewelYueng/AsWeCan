@@ -3,8 +3,11 @@ package org.k2.processmining.controller;
 import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.UserState;
 import org.k2.processmining.model.user.User;
+import org.k2.processmining.security.user.MyUserDetails;
 import org.k2.processmining.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -106,11 +109,42 @@ public class UserController {
         return map;
     }
 
+    @RequestMapping(value = "/getUser",method = RequestMethod.GET)
+    public @ResponseBody
+    Object getUser(HttpServletRequest request,HttpServletResponse response){
+        Map map = new HashMap();
+        User user = null;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof MyUserDetails){
+            String name = ((UserDetails)principal).getUsername();
+            System.out.println(name);
+            user = userService.getUserByEmail(name);
+        }else if (principal instanceof UserDetails){
+            System.out.println("userDetails");
+        }
+//        User user = userService.getUserByEmail(getUser().getEmail());
+        map.put("user",user);
+        return map;
+    }
+
     public User getUser(){
         User user = new User();
         user.setId("1");
         user.setEmail("1@1.com");
         return user;
+    }
+
+    public User getLoginUser(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof MyUserDetails){
+            String name = ((UserDetails)principal).getUsername();
+            System.out.println(name);
+            User user = userService.getUserByEmail(name);
+            return user;
+        }else if (principal instanceof UserDetails){
+            System.out.println("userDetails");
+        }
+        return null;
     }
 
     public static class PwdForm{

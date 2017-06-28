@@ -1,13 +1,12 @@
 package org.k2.processmining.controller;
 
 import org.k2.processmining.model.testPojo;
-import org.k2.processmining.security.MyUserDetails;
+import org.k2.processmining.security.user.MyUserDetails;
 import org.k2.processmining.service.MyTestService;
-import org.k2.processmining.service.UserService;
+import org.k2.processmining.utils.VerifyCodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -25,6 +25,15 @@ import java.io.IOException;
 
 @Controller
 public class TestController {
+
+    private int width = 90;//验证码宽度
+    private int height = 40;//验证码高度
+    private int codeCount = 4;//验证码个数
+    private int lineCount = 19;//混淆线个数
+
+    char[] codeSequence = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+            'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
+            'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 
     @Autowired
     MyTestService testService;
@@ -82,5 +91,31 @@ public class TestController {
             System.out.println("userDetails");
         }
         return "login";
+    }
+
+    @RequestMapping(value = "/code",method = RequestMethod.GET)
+    public void getCode(@RequestParam(value = "date",required = false)String date,HttpServletRequest request,HttpServletResponse response) throws IOException {
+        System.out.println("getCode");
+        if (date != null){
+            System.out.println(date);
+        }else {
+
+            System.out.println("date is null"+date);
+        }
+        response.setHeader("Pragma", "No-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+        response.setContentType("image/jpeg");
+        //生成随机字串
+        String verifyCode = VerifyCodeUtils.generateVerifyCode(4);
+        //存入会话session
+        HttpSession session = request.getSession(true);
+        //删除以前的
+        session.removeAttribute("verCode");
+        session.setAttribute("verCode", verifyCode.toLowerCase());
+        //生成图片
+        int w = 100, h = 30;
+        VerifyCodeUtils.outputImage(w, h, response.getOutputStream(), verifyCode);
+
     }
 }
