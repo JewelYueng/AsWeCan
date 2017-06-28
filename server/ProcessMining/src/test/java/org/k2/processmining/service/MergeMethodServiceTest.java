@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -101,18 +102,21 @@ public class MergeMethodServiceTest {
         System.out.println("mergeTest: result: " + toJSON(result));
     }
 
+    @Test
     public void addMethodTest() throws Exception {
-        String jarPath = "";
-        File file = new File(jarPath);
-        MockMultipartFile multipartFile = new MockMultipartFile("", file.getName(), "", new FileInputStream(file));
+        InputStream inputStream = MergeMethodServiceTest.class.getClassLoader().getResourceAsStream("algorithm/merger/aia-k2.jar");
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "aia-k2.jar", "", inputStream);
         MergeMethod mergeMethod = new MergeMethod();
         mergeMethod.setId(Util.getUUIDString());
         mergeMethodService.addMethod(mergeMethod, new MultipartFile[]{ multipartFile });
         Assert.assertNotNull(mergeMethod);
         Map<String,Object> configs = mergeMethodService.getMethodConfig(mergeMethod);
         System.out.println(toJSON(configs));
+        mergeMethodService.delete(Collections.singletonList(mergeMethod.getId()));
+        Assert.assertNull(mergeMethodService.getMethodById(mergeMethod.getId()));
     }
 
+    @Test
     public void setMethodStateTest() throws Exception {
         List<String> ids = Arrays.asList("1", "2");
         mergeMethodService.setMethodState(ids, MethodState.FREEZE.getValue());
@@ -127,6 +131,7 @@ public class MergeMethodServiceTest {
         }
     }
 
+    @Test
     public void deleteTest() throws Exception {
         List<String> ids = Arrays.asList("1221");
         mergeMethodService.delete(ids);
