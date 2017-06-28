@@ -32,8 +32,8 @@
 
 <script>
   import BaseBox from './BaseBox'
-  const base_url = 'http://192.168.0.100:8080'
-//  const base_url = ''
+//  const base_url = 'http://192.168.0.100:8080'
+  const base_url = "/AssWeCan"
   const type_map = {
     'raw': base_url + '/rawLog/upload',
     'normal': base_url + '/normalLog/upload',
@@ -55,7 +55,6 @@
         file_info.append('isShare', Number(this.share_status))
         file_info.append('file', this.$refs.file.files[0])
         file_info.append('format', this.$refs.file.files[0].name.split('.').pop())
-        console.log(file_info.get('format'))
         const _this = this
         this.is_uploading = true
         this.$http.post(type_map[this.data.type], file_info, {

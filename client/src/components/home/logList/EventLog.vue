@@ -48,13 +48,17 @@
         <div @click="jumpToRaw(index)" class="relation-logs raw-log">
           {{item.rawLog ? item.rawLog.logName : '无'}}
         </div>
-        <div @click="jumpToNormal(index)" class="relation-logs normal-log">{{item.normalLog ? item.normalLog.logName : '无'}}
+        <div @click="jumpToNormal(index)" class="relation-logs normal-log">
+          {{item.normalLog ? item.normalLog.logName : '无'}}
         </div>
-        <div class="merge-relation">{{item.eventLog.mergeRelation ? `` : '无'}}</div>
+        <div class="merge-relation">
+          <div v-if="item.eventLog.mergeRelation" class="relation1" @click="selectedRel(index,0)">{{item.eventLog.mergeRelation.split(',')[0]}}</div>
+          <div v-if="item.eventLog.mergeRelation" class="relation2" @click="selectedRel(index,1)">{{item.eventLog.mergeRelation.split(',')[1]}}</div>
+          <div v-show="!item.eventLog.mergeRelation">没有融合来源</div>
+        </div>
       </div>
     </div>
   </div>
-
 </template>
 
 <style lang="less" scoped rel="stylesheet/less">
@@ -139,11 +143,12 @@
     background-color: @logList_Choose;
   }
 
-  .too-long-text{
+  .too-long-text {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
   #log-list {
     margin-left: 10px;
     margin-right: 10px;
@@ -159,11 +164,11 @@
       padding: 10px 0px 10px 0px;
       border-bottom: 1px solid #afbfb8;
       .log-head {
-        flex:  0 0 200px;
+        flex: 0 0 200px;
         display: flex;
         flex-direction: row;
         text-align: left;
-        .log-name{
+        .log-name {
           cursor: pointer;
           max-width: 180px;
           .too-long-text;
@@ -172,24 +177,34 @@
       .operations {
         flex: 0 0 150px;
       }
-      .date{
-        flex:0 0 120px;
+      .date {
+        flex: 0 0 120px;
       }
-      .raw-log{
+      .raw-log {
         flex: 0 0 150px;
         .too-long-text;
       }
-      .normal-log{
+      .normal-log {
         flex: 0 0 150px;
         .too-long-text;
       }
-      .event-log{
+      .event-log {
         flex: 0 0 150px;
         .too-long-text;
       }
-      .merge-relation{
+      .merge-relation {
         flex: 0 0 150px;
         .too-long-text;
+        .relation1{
+          width: 130px;
+          .too-long-text;
+          cursor: pointer;
+        }
+        .relation2{
+          width: 130px;
+          .too-long-text;
+          cursor: pointer;
+        }
       }
     }
     .selectedItem {
@@ -218,6 +233,9 @@
     },
     created(){
       this.getTotalItems()
+    },
+    destroyed(){
+      this.selectLog({type: -1, id: null})
     },
     computed: {
       count: function (item, index) {
@@ -272,6 +290,12 @@
         if (this.items[index].rawLog) {
           this.selectLog({type: 0, id: this.items[index].rawLog.id})
           this.changeFilePath('1-1')
+        }
+      },
+      selectedRel(log_index, index){
+        let relations = this.items[log_index].eventLog.mergeRelation
+        if(relations){
+          this.selectLog({type: 2, id: relations.split(',')[index]})
         }
       },
       searchLog(){

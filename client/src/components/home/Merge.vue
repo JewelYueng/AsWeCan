@@ -167,11 +167,12 @@
         }).then(res => {
           console.log(res)
           if(res.status === 200) {
+            this.$hint('融合成功','success')
             this.$router.push({name: 'mergeResult', params: {log: res.data}})
           }
         }, err => {
           if(err.status === 500){
-            this.$hint('参数设置不当', 'warn')
+            this.$hint('服务器中没有该文件，请重新上传后融合', 'warn')
           }
         })
 
