@@ -13,7 +13,7 @@ import java.util.Map;
 public interface Miner {
     SimpleHeuristicsNet mining(XLog xLog, Map<String, Object> params);
     PetriNet toPetriNet(SimpleHeuristicsNet net, XLog xLog);
-    Map<String, ResourceRelation> toResourceRelation(SimpleHeuristicsNet net, String resourceAttr, XLog xLog);
+    Map<String, ResourceRelation> toResourceRelation(SimpleHeuristicsNet net, XLog xLog);
     Sankey toSankey(SimpleHeuristicsNet net, XLog xLog);
     TransitionSystem toTransitionSystem(SimpleHeuristicsNet net, XLog xLog);
 }

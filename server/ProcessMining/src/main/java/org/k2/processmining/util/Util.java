@@ -1,10 +1,12 @@
 package org.k2.processmining.util;
 
+import org.k2.processmining.exception.JSONBadRequestException;
 import org.k2.processmining.model.LogShareState;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.AbstractLog;
 import org.k2.processmining.model.log.LogType;
 import org.k2.processmining.model.user.User;
+import org.k2.processmining.support.mining.model.DiagramType;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -79,5 +81,14 @@ public class Util {
             names[i] = logTypes[i].value;
         }
         return names;
+    }
+
+    public static DiagramType toDiagramType(String type) {
+        try {
+            return DiagramType.valueOf(type);
+        }
+        catch (Exception e) {
+            throw new JSONBadRequestException("The type of diagram does not exist!");
+        }
     }
 }

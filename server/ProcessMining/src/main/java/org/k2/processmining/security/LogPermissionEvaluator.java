@@ -1,7 +1,9 @@
-package org.k2.processmining.security.config;
+package org.k2.processmining.security;
 
 import org.k2.processmining.exception.JSONBadRequestException;
+import org.k2.processmining.exception.JSONForbiddenException;
 import org.k2.processmining.model.log.AbstractLog;
+import org.k2.processmining.security.config.IUserDetail;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 
@@ -14,12 +16,18 @@ public class LogPermissionEvaluator implements PermissionEvaluator {
     @Override
     public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
         if (targetDomainObject == null) {
-            throw new JSONBadRequestException("The log is not exist.");
+            throw new JSONForbiddenException("没有权限操作！");
         }
         if (targetDomainObject instanceof AbstractLog) {
-            IUserDetail iUserDetail = (IUserDetail) authentication.getPrincipal();
             AbstractLog log = (AbstractLog) targetDomainObject;
-            return log.getUserId().equals(iUserDetail.getUser().getId());
+//            MyUserDetails userDetail = (MyUserDetails) authentication.getPrincipal();
+//            if (! log.getUserId().equals(userDetail.getUser().getId())) {
+//                throw new JSONForbiddenException("没有权限操作日志！");
+//            }
+            if (! log.getUserId().equals("1")) {
+                throw new JSONForbiddenException("没有权限操作日志！");
+            }
+            return true;
         }
         throw new UnsupportedOperationException("hasPermission not supported for object <"
                 + targetDomainObject

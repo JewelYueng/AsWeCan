@@ -84,61 +84,6 @@ public class MergeController {
         return res;
     }
 
-
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public @ResponseBody
-    Object addMergeMethod(@Param("files") MultipartFile[] files) {
-        if (files == null || files.length == 0) {
-            return ResponseEntity.badRequest().body("at least one file!");
-        }
-        Map<String,Object> res = new HashMap<>();
-        try {
-            MergeMethod mergeMethod = mergeMethodService.addMethod(files);
-            res.put("state", mergeMethod.getState());
-            res.put("id", mergeMethod.getId());
-            res.put("configs", mergeMethodService.getMethodConfig(mergeMethod));
-            return res;
-        }
-        catch (IOException | LoadMethodException e) {
-            return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
-
-    @RequestMapping(value = "/active", method = RequestMethod.POST)
-    public @ResponseBody
-    Object active(@RequestBody IdListForm form) {
-        return setMethodState(form.getIdList(), MethodState.ACTIVE.getValue());
-    }
-
-    @RequestMapping(value = "/freeze", method = RequestMethod.POST)
-    public @ResponseBody
-    Object freeze(@RequestBody IdListForm form) {
-        return setMethodState(form.getIdList(), MethodState.FREEZE.getValue());
-    }
-
-    private Map<String,Object> setMethodState(List<String> ids, int state) {
-        mergeMethodService.setMethodState(ids, state);
-        Map<String,Object> res = new HashMap<>();
-        res.put("code", 1);
-        return res;
-    }
-
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    public @ResponseBody
-    Object delete(@RequestBody IdListForm form) {
-        mergeMethodService.delete(form.getIdList());
-        return new HashMap<String,Object>(){{put("code", 1);}};
-    }
-
-    public void deleteMergeMethod(){}
-
-    private boolean isValidate(EventLog eventLog, User user) {
-        return eventLog != null && user != null
-                && eventLog.getUserId() != null && user.getId() != null
-                && eventLog.getUserId().equals(user.getId())
-                && eventLog.getState() == LogState.ACTIVE.getValue();
-    }
-
     private User getUser() {
         User user = new User();
         user.setId("1");

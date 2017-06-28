@@ -14,6 +14,8 @@ import org.k2.processmining.service.RawLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.util.Util;
 import org.k2.processmining.utils.GsonParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,6 +45,8 @@ public class RawLogController {
     @Autowired
     private LogStorage logStorage;
 
+    private static Logger LOGGER = LoggerFactory.getLogger(RawLogController.class);
+
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public@ResponseBody
     Object upload(@RequestParam("format") String format,
@@ -63,18 +67,18 @@ public class RawLogController {
         rawLog.setLogName(file.getOriginalFilename());
         rawLog.setIsShared(isShare);
         Map<String, Object> res = new HashMap<>();
-        int code = 1;
         try (InputStream inputStream = file.getInputStream()){
             if (! rawLogService.save(rawLog, inputStream)) {
-                code = 0;
+                throw new JSONInternalServerErrorException("上传失败，请稍后尝试！");
             }
         }
         catch (IOException e) {
-            e.printStackTrace();
-            code = 0;
+            LOGGER.error("Fail to save rawLog: {}", e);
+            throw new JSONInternalServerErrorException("上传失败，请稍后尝试！");
         }
         // may return rawLog
-        res.put("code", code);
+        res.put("code", 1);
+        res.put("rawLog", rawLog);
         return res;
     }
 
@@ -88,8 +92,8 @@ public class RawLogController {
                 IOUtils.copyLarge(inputStream, response.getOutputStream());
             }
             catch (IOException e) {
-                e.printStackTrace();
-                throw new JSONInternalServerErrorException("Internal Server Error!");
+                LOGGER.error("Fail to download rawLog: {}", e);
+                throw new JSONInternalServerErrorException();
             }
             return true;
         });
@@ -102,8 +106,7 @@ public class RawLogController {
         Map<String, Object> res = new HashMap<>();
         NormalLog normalLog = rawLogService.normalize(rawLog, form.toLogConfiguration());
         if (normalLog == null) {
-            res.put("code", 0);
-            return res;
+            throw new JSONInternalServerErrorException("规范化日志失败，请检查输入，稍后再尝试！");
         }
         res.put("code", 1);
         res.put("normalLog", normalLog);

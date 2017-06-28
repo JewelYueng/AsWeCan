@@ -1,6 +1,7 @@
 package org.k2.processmining.service.impl;
 
 import org.deckfour.xes.model.XLog;
+import org.k2.processmining.exception.JSONInternalServerErrorException;
 import org.k2.processmining.mapper.MiningMethodMapper;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.MethodState;
@@ -15,9 +16,12 @@ import org.k2.processmining.support.algorithm.MethodManage;
 import org.k2.processmining.support.algorithm.MinerFactory;
 import org.k2.processmining.support.event.parse.EventLogParse;
 import org.k2.processmining.support.mining.Miner;
+import org.k2.processmining.support.mining.algorithm.heuristics.models.SimpleHeuristicsNet;
+import org.k2.processmining.support.mining.model.DiagramType;
 import org.k2.processmining.support.reflect.ReflectUtil;
 import org.k2.processmining.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -50,6 +54,19 @@ public class MiningMethodServiceImpl implements MiningMethodService {
 
     public MiningMethod getMethodById(String id) {
         return miningMethodMapper.getMethodById(id);
+    }
+
+    @Override
+    public Algorithm<Miner> getAlgorithmById(String id) {
+        Algorithm<Miner> algorithm = MinerFactory.getInstance().getAlgorithm(id);
+        if (algorithm == null) {
+            return null;
+        }
+        MiningMethod miningMethod = getMethodById(id);
+        if (miningMethod == null || !MethodState.isActive(miningMethod.getState())) {
+            return null;
+        }
+        return algorithm;
     }
 
     @Override
@@ -125,22 +142,45 @@ public class MiningMethodServiceImpl implements MiningMethodService {
     }
 
     @Override
-    public String mining(String userId, String eventId, String methodId, Map<String, Object> params) {
-        EventLog eventLog = new EventLog();
-        eventLog.setUserId(userId);
-        eventLog.setId(eventId);
-        return mining(eventLog, methodId, params);
+    public TimeResult mining(EventLog eventLog, Algorithm<Miner> algorithm, Map<String,Object> params, DiagramType type) {
+        XLog xLog = eventLogParse.eventLogParse(eventLog);
+        if (xLog == null || algorithm == null) {
+            throw new JSONInternalServerErrorException();
+        }
+        TimeResult<Object> timeResult = new TimeResult<>();
+        TimeResult<SimpleHeuristicsNet> netResult = miningMethodService.mining(algorithm, eventLog, xLog, params);
+        SimpleHeuristicsNet net = netResult.getResult();
+        timeResult.setTime(netResult.getTime());
+        Object res = null;
+        Miner miner = algorithm.getAlgorithm();
+        switch (type) {
+            case PetriNet:
+                res = miner.toPetriNet(net, xLog);
+                break;
+            case ResourceRelation:
+                res = miner.toResourceRelation(net, xLog);
+                break;
+            case TransitionSystem:
+                res = miner.toTransitionSystem(net, xLog);
+                break;
+            case Sankey:
+                res = miner.toSankey(net, xLog);
+                break;
+            default:
+                break;
+        }
+        timeResult.setResult(res);
+        return timeResult;
     }
 
-    public String mining(EventLog eventLog, String methodId, Map<String, Object> params) {
-        Algorithm<Miner> algorithm = MinerFactory.getInstance().getAlgorithm(methodId);
-        if (algorithm == null || algorithm.getAlgorithm() == null) {
-            return "";
-        }
-        XLog xLog = eventLogParse.eventLogParse(eventLog);
-        if (xLog != null) {
-            return algorithm.getAlgorithm().mining(xLog, params).toString();
-        }
-        return "";
+    @Override
+    public TimeResult<SimpleHeuristicsNet> mining(Algorithm<Miner> algorithm, EventLog eventLog, XLog xLog, Map<String,Object> params) {
+        System.out.println("in mining");
+        TimeResult<SimpleHeuristicsNet> timeResult = new TimeResult<>();
+        timeResult.start();
+        SimpleHeuristicsNet net = algorithm.getAlgorithm().mining(xLog, params);
+        timeResult.stop();
+        timeResult.setResult(net);
+        return timeResult;
     }
 }

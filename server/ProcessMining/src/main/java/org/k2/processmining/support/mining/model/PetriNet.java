@@ -7,7 +7,7 @@ public class PetriNet {
     /**
      * petri net的活动列表变量
      */
-    public List<NetElement> netElementList;
+    private List<NetElement> netElementList;
 
     public List<NetElement> getNetElementList() {
         return netElementList;
