@@ -4,6 +4,7 @@ import org.k2.processmining.exception.JSONBadRequestException;
 import org.k2.processmining.exception.JSONForbiddenException;
 import org.k2.processmining.model.log.AbstractLog;
 import org.k2.processmining.security.config.IUserDetail;
+import org.k2.processmining.support.algorithm.Algorithm;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 
@@ -27,6 +28,9 @@ public class LogPermissionEvaluator implements PermissionEvaluator {
             if (! log.getUserId().equals("1")) {
                 throw new JSONForbiddenException("没有权限操作日志！");
             }
+            return true;
+        }
+        else if (targetDomainObject instanceof Algorithm) {
             return true;
         }
         throw new UnsupportedOperationException("hasPermission not supported for object <"

@@ -48,7 +48,7 @@ public class SaveExceptionThrowsAdvice{
         return o;
     }
 
-    @Around("execution(public * org.k2.processmining.service.MergeMethodService.afterSaveMethod(..))")
+    @Around("execution(public * org.k2.processmining.service.MergeMethodService.addMethod(..))")
     public Object deleteMergeMethod(ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] objects = joinPoint.getArgs();
         Object o = null;
@@ -58,7 +58,9 @@ public class SaveExceptionThrowsAdvice{
                 o = joinPoint.proceed();
             }
             catch (Throwable throwable) {
-                LOGGER.error("fail to save MergeMethod in db");
+                LOGGER.error("fail to add MergeMethod");
+                ReflectUtil.getInstance().closeClassLoader(mergeMethod.getId());
+                System.gc();
                 MergerFactory.getInstance().deleteAlgorithm(mergeMethod.getId());
                 methodManage.deleteMerger(mergeMethod.getId());
                 throw throwable;
@@ -67,7 +69,7 @@ public class SaveExceptionThrowsAdvice{
         return o;
     }
 
-    @Around("execution(public * org.k2.processmining.service.MiningMethodService.afterSaveMethod(..))")
+    @Around("execution(public * org.k2.processmining.service.MiningMethodService.addMethod(..))")
     public Object deleteMinerMethod(ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] objects = joinPoint.getArgs();
         Object o = null;
@@ -77,7 +79,7 @@ public class SaveExceptionThrowsAdvice{
                 o = joinPoint.proceed();
             }
             catch (Throwable throwable) {
-                LOGGER.error("fail to save MiningMethod in db");
+                LOGGER.error("fail to create MiningMethod");
                 ReflectUtil.getInstance().closeClassLoader(miningMethod.getId());
                 System.gc();
                 MinerFactory.getInstance().deleteAlgorithm(miningMethod.getId());

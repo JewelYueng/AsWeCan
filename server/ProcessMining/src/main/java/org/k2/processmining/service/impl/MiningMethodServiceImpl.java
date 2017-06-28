@@ -102,10 +102,7 @@ public class MiningMethodServiceImpl implements MiningMethodService {
     }
 
     @Override
-    public MiningMethod addMethod(MultipartFile[] multipartFiles) throws IOException, LoadMethodException {
-        MiningMethod miningMethod = new MiningMethod();
-        miningMethod.setId(Util.getUUIDString());
-
+    public MiningMethod addMethod(MiningMethod miningMethod, MultipartFile[] multipartFiles) throws IOException, LoadMethodException {
         for (MultipartFile file : multipartFiles) {
             try (InputStream inputStream = file.getInputStream()){
                 methodManage.saveMinerJar(miningMethod.getId(), file.getOriginalFilename(), inputStream);
@@ -114,13 +111,8 @@ public class MiningMethodServiceImpl implements MiningMethodService {
         Algorithm<Miner> minerAlgorithm = methodManage.loadMinerById(miningMethod.getId());
         miningMethod.setMethodName((String)minerAlgorithm.getConfigMap().get("key"));
         MinerFactory.getInstance().put(miningMethod.getId(), minerAlgorithm);
-        miningMethodService.afterSaveMethod(miningMethod);
-        return miningMethod;
-    }
-
-    @Override
-    public void afterSaveMethod(MiningMethod miningMethod) {
         miningMethodMapper.save(miningMethod);
+        return miningMethod;
     }
 
     @Override
@@ -158,7 +150,7 @@ public class MiningMethodServiceImpl implements MiningMethodService {
                 res = miner.toPetriNet(net, xLog);
                 break;
             case ResourceRelation:
-                res = miner.toResourceRelation(net, xLog);
+                res = miner.toResourceRelation(net, xLog).values();
                 break;
             case TransitionSystem:
                 res = miner.toTransitionSystem(net, xLog);

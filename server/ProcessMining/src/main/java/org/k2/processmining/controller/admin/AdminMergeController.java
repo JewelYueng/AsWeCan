@@ -2,10 +2,15 @@ package org.k2.processmining.controller.admin;
 
 import org.apache.ibatis.annotations.Param;
 import org.k2.processmining.controller.IdListForm;
+import org.k2.processmining.exception.JSONBadRequestException;
+import org.k2.processmining.exception.JSONInternalServerErrorException;
 import org.k2.processmining.model.MethodState;
 import org.k2.processmining.model.mergemethod.MergeMethod;
 import org.k2.processmining.service.MergeMethodService;
 import org.k2.processmining.support.algorithm.LoadMethodException;
+import org.k2.processmining.util.Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,6 +34,8 @@ import java.util.Map;
 @RequestMapping("/admin/merge")
 public class AdminMergeController {
 
+    private static Logger LOGGER = LoggerFactory.getLogger(AdminMergeController.class);
+
     @Autowired
     private MergeMethodService mergeMethodService;
 
@@ -36,18 +43,25 @@ public class AdminMergeController {
     public @ResponseBody
     Object addMergeMethod(@Param("files") MultipartFile[] files) {
         if (files == null || files.length == 0) {
-            return ResponseEntity.badRequest().body("at least one file!");
+            throw new JSONBadRequestException("At least one file!");
         }
         Map<String,Object> res = new HashMap<>();
+        MergeMethod mergeMethod = new MergeMethod();
+        mergeMethod.setId(Util.getUUIDString());
         try {
-            MergeMethod mergeMethod = mergeMethodService.addMethod(files);
+            mergeMethodService.addMethod(mergeMethod, files);
             res.put("state", mergeMethod.getState());
             res.put("id", mergeMethod.getId());
             res.put("configs", mergeMethodService.getMethodConfig(mergeMethod));
             return res;
         }
-        catch (IOException | LoadMethodException e) {
-            return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).body(e.getMessage());
+        catch (IOException e) {
+            LOGGER.error("fail to create mergeMethod: {}", e);
+            throw  new JSONInternalServerErrorException();
+        }
+        catch (LoadMethodException e) {
+            LOGGER.error("fail to create mergeMethod: {}", e);
+            throw new JSONBadRequestException(e.getMessage());
         }
     }
 

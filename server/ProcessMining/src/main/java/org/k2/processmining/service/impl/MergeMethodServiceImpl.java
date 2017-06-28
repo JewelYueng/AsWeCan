@@ -139,9 +139,7 @@ public class MergeMethodServiceImpl implements MergeMethodService{
     }
 
     @Override
-    public MergeMethod addMethod(MultipartFile[] multipartFiles) throws IOException, LoadMethodException {
-        MergeMethod mergeMethod = new MergeMethod();
-        mergeMethod.setId(Util.getUUIDString());
+    public MergeMethod addMethod(MergeMethod mergeMethod, MultipartFile[] multipartFiles) throws IOException, LoadMethodException {
 
         for (MultipartFile file : multipartFiles) {
             try (InputStream inputStream = file.getInputStream()){
@@ -151,7 +149,7 @@ public class MergeMethodServiceImpl implements MergeMethodService{
         Algorithm<Merger> mergerAlgorithm = methodManage.loadMergerById(mergeMethod.getId());
         mergeMethod.setMethodName((String)mergerAlgorithm.getConfigMap().get("key"));
         MergerFactory.getInstance().put(mergeMethod.getId(), mergerAlgorithm);
-        mergeMethodService.afterSaveMethod(mergeMethod);
+        mergeMethodMapper.save(mergeMethod);
         return mergeMethod;
     }
 
@@ -171,11 +169,6 @@ public class MergeMethodServiceImpl implements MergeMethodService{
 //        for (String id :ids) {
 //            methodManage.deleteMerger(id);
 //        }
-    }
-
-    @Override
-    public void afterSaveMethod(MergeMethod mergeMethod) {
-        mergeMethodMapper.save(mergeMethod);
     }
 
     @Override

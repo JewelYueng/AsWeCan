@@ -76,7 +76,6 @@ public class RawLogController {
             LOGGER.error("Fail to save rawLog: {}", e);
             throw new JSONInternalServerErrorException("上传失败，请稍后尝试！");
         }
-        // may return rawLog
         res.put("code", 1);
         res.put("rawLog", rawLog);
         return res;

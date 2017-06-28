@@ -25,8 +25,7 @@ public interface MergeMethodService {
     boolean isActive(MergeMethod mergeMethod);
     TimeResult<EventLog> merge(EventLog eventLog1, EventLog eventLog2, String methodId, Map<String, Object> params);
     void afterSaveInLogStorage(EventLog resultEventLog, XLog resultXLog);
-    MergeMethod addMethod(MultipartFile[] multipartFiles) throws IOException, LoadMethodException;
-    void afterSaveMethod(MergeMethod mergeMethod);
+    MergeMethod addMethod(MergeMethod mergeMethod, MultipartFile[] multipartFiles) throws IOException, LoadMethodException;
     void setMethodState(List<String> ids, int state);
 
     @Transactional

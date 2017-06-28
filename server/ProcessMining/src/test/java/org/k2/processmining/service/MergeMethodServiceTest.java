@@ -16,6 +16,7 @@ import org.k2.processmining.model.mergemethod.MergeMethod;
 import org.k2.processmining.service.impl.MergeMethodServiceImpl;
 import org.k2.processmining.support.algorithm.MergerFactory;
 import org.k2.processmining.support.spring.SaveExceptionThrowsAdvice;
+import org.k2.processmining.util.Util;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.mock.web.MockMultipartFile;
@@ -104,7 +105,9 @@ public class MergeMethodServiceTest {
         String jarPath = "";
         File file = new File(jarPath);
         MockMultipartFile multipartFile = new MockMultipartFile("", file.getName(), "", new FileInputStream(file));
-        MergeMethod mergeMethod = mergeMethodService.addMethod(new MultipartFile[]{ multipartFile });
+        MergeMethod mergeMethod = new MergeMethod();
+        mergeMethod.setId(Util.getUUIDString());
+        mergeMethodService.addMethod(mergeMethod, new MultipartFile[]{ multipartFile });
         Assert.assertNotNull(mergeMethod);
         Map<String,Object> configs = mergeMethodService.getMethodConfig(mergeMethod);
         System.out.println(toJSON(configs));

@@ -8,6 +8,7 @@ import org.k2.processmining.support.algorithm.LoadMethodException;
 import org.k2.processmining.support.mining.Miner;
 import org.k2.processmining.support.mining.algorithm.heuristics.models.SimpleHeuristicsNet;
 import org.k2.processmining.support.mining.model.DiagramType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,11 +28,12 @@ public interface MiningMethodService {
     Map<String, Object> getMethodConfig(String methodId);
     boolean isActive(String id);
     boolean isActive(MiningMethod miningMethod);
+
+    @PreAuthorize("hasPermission(#eventLog, 'mining') and hasPermission(#algorithm, 'mining')")
     TimeResult mining(EventLog eventLog, Algorithm<Miner> algorithm, Map<String,Object> params, DiagramType type);
     TimeResult<SimpleHeuristicsNet> mining(Algorithm<Miner> algorithm, EventLog eventLog, XLog xLog, Map<String,Object> params);
 
-    MiningMethod addMethod(MultipartFile[] multipartFiles) throws IOException, LoadMethodException;
-    void afterSaveMethod(MiningMethod miningMethod);
+    MiningMethod addMethod(MiningMethod miningMethod, MultipartFile[] multipartFiles) throws IOException, LoadMethodException;
     void setMethodState(List<String> ids, int state);
 
     @Transactional

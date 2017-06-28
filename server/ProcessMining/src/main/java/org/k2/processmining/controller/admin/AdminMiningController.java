@@ -2,10 +2,15 @@ package org.k2.processmining.controller.admin;
 
 import org.apache.ibatis.annotations.Param;
 import org.k2.processmining.controller.IdListForm;
+import org.k2.processmining.exception.JSONBadRequestException;
+import org.k2.processmining.exception.JSONInternalServerErrorException;
 import org.k2.processmining.model.MethodState;
 import org.k2.processmining.model.miningmethod.MiningMethod;
 import org.k2.processmining.service.MiningMethodService;
 import org.k2.processmining.support.algorithm.LoadMethodException;
+import org.k2.processmining.util.Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +32,8 @@ import java.util.Map;
 @RequestMapping("/admin/mining")
 public class AdminMiningController {
 
+    private static Logger LOGGER = LoggerFactory.getLogger(AdminMiningController.class);
+
     @Autowired
     private MiningMethodService miningMethodService;
 
@@ -35,18 +41,25 @@ public class AdminMiningController {
     public @ResponseBody
     Object addMiningMethod(@Param("files") MultipartFile[] files) {
         if (files == null || files.length == 0) {
-            return ResponseEntity.badRequest().body("at least one file!");
+            throw new JSONBadRequestException("At least one file!");
         }
         Map<String,Object> res = new HashMap<>();
+        MiningMethod miningMethod = new MiningMethod();
+        miningMethod.setId(Util.getUUIDString());
         try {
-            MiningMethod miningMethod = miningMethodService.addMethod(files);
+            miningMethodService.addMethod(miningMethod, files);
             res.put("state", miningMethod.getState());
             res.put("id", miningMethod.getId());
             res.put("configs", miningMethodService.getMethodConfig(miningMethod));
             return res;
         }
-        catch (IOException | LoadMethodException e) {
-            return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).body(e.getMessage());
+        catch (IOException e) {
+            LOGGER.error("fail to create mergeMethod: {}", e);
+            throw  new JSONInternalServerErrorException();
+        }
+        catch (LoadMethodException e) {
+            LOGGER.error("fail to create mergeMethod: {}", e);
+            throw new JSONBadRequestException(e.getMessage());
         }
     }
 

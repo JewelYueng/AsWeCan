@@ -85,15 +85,15 @@ public class MethodManage {
     }
 
     public Algorithm<Miner> loadMinerById(String id) throws LoadMethodException {
-        return loadMethod(id, getMinerDir(id));
+        return loadMethod(id, getMinerDir(id), Miner.class);
     }
 
     public Algorithm<Merger> loadMergerById(String id) throws LoadMethodException {
-        return loadMethod(id, getMergerDir(id));
+        return loadMethod(id, getMergerDir(id), Merger.class);
     }
 
     @SuppressWarnings("unchecked")
-    private  <T> Algorithm<T> loadMethod(String id, String methodDir) throws LoadMethodException {
+    private  <T> Algorithm<T> loadMethod(String id, String methodDir, Class clazz) throws LoadMethodException {
         Map<String, Object> configs;
         T method;
         File dir = new File(methodDir);
@@ -112,8 +112,10 @@ public class MethodManage {
             method = ReflectUtil.getInstance().getInstanceFromJar(id, jarPaths,configs.get(implPathKey).toString());
         }
         catch (Exception e) {
-            LOGGER.error("fail to reflect for MinerImpl: {}", methodDir, e);
             throw new LoadMethodException("fail to reflect for interface implement: " + methodDir);
+        }
+        if (! clazz.isAssignableFrom(method.getClass())) {
+            throw new LoadMethodException("the "+ method.getClass() + " is not the subclass of "+clazz);
         }
         return new Algorithm<>(id, method, configs);
     }
