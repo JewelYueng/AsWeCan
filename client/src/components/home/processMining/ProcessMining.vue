@@ -22,6 +22,9 @@
     created(){
       this.changeHomePath('/mining')
       this.$d3.selectAll('p').style('color', 'white');
+      if(this.$route.params.log_id){
+        console.log(this.$route.params.log_id)
+      }
     }
 
 

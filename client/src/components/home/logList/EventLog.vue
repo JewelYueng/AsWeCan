@@ -275,7 +275,7 @@
       }
     },
     methods: {
-      ...mapActions(['selectLog', 'changeFilePath']),
+      ...mapActions(['selectLog', 'changeFilePath', 'changeHomePath']),
       isSelected(index){
         return this.$store.getters.selectedLog.type === 2 && this.items[index].eventLog.id === this.$store.getters.selectedLog.id
 
@@ -391,6 +391,9 @@
           }
         })
 
+      },
+      processMining(index){
+        this.$router.push({name: 'mining', params: {log_id: this.items[index].eventLog.id}})
       },
       getTotalItems(){
         const _this = this
