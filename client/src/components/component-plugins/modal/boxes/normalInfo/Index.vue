@@ -177,12 +177,12 @@
             this.commit(true)
           }
           else {
-            this.$hint('规范化失败', 'erorr');
+            this.$hint('规范化失败，该文件不是格式正确的原始日志文件', 'erorr');
           }
 
         }, res => {
           if (res.status === 500) {
-            this.$hint('参数设置不当或文件不是原始日志', 'warn');
+            this.$hint('服务器没有这个文件，请重新上传', 'warn');
           }
         })
       },
