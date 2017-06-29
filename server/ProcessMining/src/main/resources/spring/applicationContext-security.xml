@@ -18,13 +18,15 @@
         <security:intercept-url pattern="/admin/**" access="permitAll"/>
         <security:custom-filter ref="adminFilter" position="FORM_LOGIN_FILTER"/>
         <security:logout logout-url="/admin/logout" success-handler-ref="adminLogoutSuccessHandler"/>
+        <security:access-denied-handler error-page="/home/accessDeniedJSON"/>
         <security:csrf disabled="true"/>
     </security:http>
 
     <security:http auto-config="false" pattern="/**" entry-point-ref="userEntryPoint">
-        <security:intercept-url pattern="/**" access="permitAll"/>
+        <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
         <security:custom-filter ref="userFilter" position="FORM_LOGIN_FILTER"/>
         <security:logout logout-url="/home/logout" delete-cookies="JSESSIONID" success-handler-ref="userLogoutSuccessHandler"/>
+        <security:access-denied-handler error-page="/home/accessDeniedJSON"/>
         <security:csrf disabled="true"/>
     </security:http>
 
@@ -89,6 +91,15 @@
         <property name="defaultTargetUrl" value="/home/login"/>
     </bean>
 
+    <bean id="logPermissionEvaluator" class="org.k2.processmining.security.LogPermissionEvaluator"/>
+
+    <bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
+        <property name="permissionEvaluator" ref="logPermissionEvaluator"/>
+    </bean>
+
+    <security:global-method-security pre-post-annotations="enabled">
+        <security:expression-handler ref="expressionHandler"/>
+    </security:global-method-security>
 
 
 </beans>

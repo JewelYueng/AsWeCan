@@ -224,14 +224,7 @@ public class NormalLogController {
     public @ResponseBody
     Object transToEvent(@RequestParam("id") String id) {
         NormalLog normalLog = normalLogService.getNormalLogById(id);
-        User user = getUser();
         Map<String, Object> res = new HashMap<>();
-        if (normalLog == null || normalLog.getUserId() == null
-                || !normalLog.getUserId().equals(user.getId()) || !LogState.isActive(normalLog.getState())) {
-            res.put("code", 0);
-            res.put("msg", "The log is not exist!");
-            return ResponseEntity.badRequest().body(res);
-        }
         EventLog eventLog = normalLogService.transToEventLog(normalLog);
         if (eventLog == null) {
             throw new JSONInternalServerErrorException("转化为事件日志失败，请检查输入，稍后尝试！");

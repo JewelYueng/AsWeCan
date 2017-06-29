@@ -1,5 +1,6 @@
 package org.k2.processmining.controller;
 
+import org.k2.processmining.exception.JSONForbiddenException;
 import org.k2.processmining.utils.VerifyCodeUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,4 +73,8 @@ public class HomeController {
 
     }
 
+    @RequestMapping(value = "/accessDeniedJSON", method = {RequestMethod.GET, RequestMethod.POST})
+    public void accessDeniedJSON() {
+        throw new JSONForbiddenException("Attempted to access the protected resource!");
+    }
 }

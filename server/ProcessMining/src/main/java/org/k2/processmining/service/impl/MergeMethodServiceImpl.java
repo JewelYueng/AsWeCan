@@ -1,6 +1,7 @@
 package org.k2.processmining.service.impl;
 
 import org.deckfour.xes.model.XLog;
+import org.k2.processmining.exception.JSONBadRequestException;
 import org.k2.processmining.mapper.EventLogMapper;
 import org.k2.processmining.mapper.MergeMethodMapper;
 import org.k2.processmining.model.LogState;
@@ -102,25 +103,26 @@ public class MergeMethodServiceImpl implements MergeMethodService{
 
 
     @Override
-    public TimeResult<EventLog> merge(EventLog eventLog1, EventLog eventLog2, String methodId, Map<String, Object> params) {
+    public TimeResult<EventLog> merge(EventLog eventLog1, EventLog eventLog2, MergeMethod mergeMethod, Map<String, Object> params) {
+        String methodId = mergeMethod.getId();
         Algorithm<Merger> algorithm = MergerFactory.getInstance().getAlgorithm(methodId);
         if (algorithm == null || algorithm.getAlgorithm() == null) {
-            return null;
+            throw new JSONBadRequestException("Algorithm is not exist!");
         }
         XLog xLog1 = eventLogParse.eventLogParse(eventLog1);
         if (xLog1 == null) {
-            return null;
+            throw new JSONBadRequestException(eventLog1.getLogName()+" could not convert to XLog.");
         }
         XLog xLog2 = eventLogParse.eventLogParse(eventLog2);
         if (xLog2 == null) {
-            return null;
+            throw new JSONBadRequestException(eventLog1.getLogName()+" could not convert to XLog.");
         }
         TimeResult<EventLog> timeResult = new TimeResult<>();
         timeResult.start();
         XLog resultXLog =  algorithm.getAlgorithm().merge(xLog1, xLog2, params);
         timeResult.stop();
         if (resultXLog == null) {
-            return null;
+            throw new JSONBadRequestException("Could not merge two log. Check input.");
         }
         EventLog resultEventLog = new EventLog();
         resultEventLog.setId(Util.getUUIDString());
