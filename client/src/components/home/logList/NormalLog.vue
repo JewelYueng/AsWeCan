@@ -90,7 +90,7 @@
     margin-right: 210px;
     font-size: 20px;
   }
-
+  .button:hover{background-color: @light_blue}
   .button {
     cursor: pointer;
     color: white;
