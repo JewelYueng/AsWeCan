@@ -20,11 +20,15 @@
             </tr>
             <tr>
                 <td class="title">输入验证码:</td>
-                <td><input class="control" type='text' name='code' /></td>
+                <td><input class="control" type='text' name='code' id="code" /></td>
+                <td><img src="/home/code" id="codeImage"><a href="#" onclick="reloadCode()">看不清？</a></td>
             </tr>
             <tr>
                 <td colspan='2'><input name="submit" type="submit"
                                        value="登录" /></td>
+            </tr>
+            <tr>
+                <td><input type="button" onclick="logout()" value="登出"></td>
             </tr>
         </table>
     </form>
@@ -40,7 +44,7 @@
         var json = {
             email: username,
             password: "3",
-            validateCode: "121221"
+            validateCode: $('#code').val()
         };
         $.ajax({
             type:"POST",
@@ -54,6 +58,19 @@
             }
 
         });
+    }
+    function reloadCode() {
+        var image = document.getElementById("codeImage");
+        image.src = "/home/code?date="+Date();
+    }
+
+    function logout() {
+        $.ajax({
+            type: "POST",
+            url: "/home/logout",
+            contentType: "application/json",
+            dataType: "json"
+        })
     }
 </script>
 

@@ -1,9 +1,14 @@
 package org.k2.processmining.utils;
 
+import sun.misc.BASE64Encoder;
+
 import javax.mail.*;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Properties;
 
@@ -16,6 +21,8 @@ public class SendEmail {
     public static final int PORT = 25;  //163邮箱的端口为25
     public static final String FROM = "15626445092@163.com";
     public static final String PWD = "assdd215";
+
+    private static BASE64Encoder base64Encoder = new BASE64Encoder();
 
     private static Session getSession(){
         Properties properties = new Properties();
@@ -55,30 +62,21 @@ public class SendEmail {
         }
     }
 
-    public static void main(String []args){
-
-        SendEmail.send("574335078@qq.com","test");
-//        Properties properties = new Properties();
-//        properties.setProperty("mail.debug","true");
-//        properties.setProperty("mail.host",HOST);
-//        properties.setProperty("mial.transport.protocol","smtp");
-//        properties.setProperty("mail.smtp.auth","true");
-//
-//        Session session = Session.getInstance(properties);
-//        try {
-//            Transport transport = session.getTransport();
-//            transport.connect("15626445092@163.com","qq1129498163");
-//            Message message = new MimeMessage(session);
-//            message.setFrom(new InternetAddress("15626445092@163.com"));
-//            message.setRecipient(Message.RecipientType.TO,new InternetAddress("assdd215@163.com"));
-//            message.setSubject("test");
-//            message.setText("content");
-//        } catch (NoSuchProviderException e) {
-//            e.printStackTrace();
-//        } catch (MessagingException e) {
-//            e.printStackTrace();
-//        }
-
-
+    public static String getValCode(String email){
+        if ("".equals(email))
+            return null;
+        MessageDigest md5 = null;
+        String encodeStr = "";
+        try {
+            md5 = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        try {
+            encodeStr = base64Encoder.encode(md5.digest(email.getBytes("utf-8")));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return encodeStr;
     }
 }

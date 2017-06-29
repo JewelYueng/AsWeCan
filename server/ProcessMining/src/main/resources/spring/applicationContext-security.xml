@@ -11,16 +11,20 @@
     <security:http pattern="/home/loginPage" security="none"/>
     <security:http pattern="/static/**" security="none"/>
     <security:http pattern="/js/**" security="none"/>
+    <security:http pattern="/home/code" security="none"/>
+    <security:http pattern="/user/register/**" security="none"/>
 
     <security:http auto-config="false" pattern="/admin/**" entry-point-ref="adminEntryPoint">
         <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
         <security:custom-filter ref="adminFilter" position="FORM_LOGIN_FILTER"/>
+        <security:logout logout-url="/admin/logout" success-handler-ref="adminLogoutSuccessHandler"/>
         <security:csrf disabled="true"/>
     </security:http>
 
     <security:http auto-config="false" pattern="/**" entry-point-ref="userEntryPoint">
         <security:intercept-url pattern="/**" access="permitAll"/>
         <security:custom-filter ref="userFilter" position="FORM_LOGIN_FILTER"/>
+        <security:logout logout-url="/home/logout" delete-cookies="JSESSIONID" success-handler-ref="userLogoutSuccessHandler"/>
         <security:csrf disabled="true"/>
     </security:http>
 
@@ -55,7 +59,9 @@
     <bean id="adminFailureHandler" class="org.k2.processmining.security.admin.AdminFailureHandler">
         <property name="defaultFailureUrl" value="/admin/login" />
     </bean>
-
+    <bean id="adminLogoutSuccessHandler" class="org.k2.processmining.security.admin.AdminLogoutSuccessHandler">
+        <property name="defaultTargetUrl" value="/admin/login"/>
+    </bean>
 
     <bean id="userFilter" class="org.k2.processmining.security.user.UserAuthenticationFilter">
         <property name="authenticationManager" ref="userAuthenticationManager"/>
@@ -79,16 +85,10 @@
     <bean id="userSuccessHandler" class="org.k2.processmining.security.user.UserSuccessHandler">
         <property name="defaultTargetUrl" value="/home/"/>
     </bean>
-
-
-
-    <bean id="logPermissionEvaluator" class="org.k2.processmining.security.LogPermissionEvaluator"/>
-
-    <bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
-        <property name="permissionEvaluator" ref="logPermissionEvaluator"/>
+    <bean id="userLogoutSuccessHandler" class="org.k2.processmining.security.user.UserLogoutSuccessHandler">
+        <property name="defaultTargetUrl" value="/home/login"/>
     </bean>
 
-    <security:global-method-security pre-post-annotations="enabled">
-        <security:expression-handler ref="expressionHandler"/>
-    </security:global-method-security>
+
+
 </beans>

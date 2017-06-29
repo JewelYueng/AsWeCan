@@ -1,9 +1,14 @@
 package org.k2.processmining.controller;
 
 import org.k2.processmining.model.user.Administrator;
+import org.k2.processmining.model.user.User;
 import org.k2.processmining.security.admin.AdminFailureHandler;
+import org.k2.processmining.security.config.AdminDetail;
+import org.k2.processmining.security.user.MyUserDetails;
 import org.k2.processmining.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,8 +42,7 @@ public class AdminController {
     public @ResponseBody
     Object listAllAdmins(){
         Map map = new HashMap();
-        map.put("fjaklfj","fa");
-//        map.put("");
+        map.put("admins",adminService.getAllAdmins());
         return map;
     }
 
@@ -51,19 +55,32 @@ public class AdminController {
         return map;
     }
 
+    @RequestMapping(value = "/getAdmin",method = RequestMethod.GET)
+    public @ResponseBody
+    Object getAdmin(){
+        Map map = new HashMap();
+        map.put("admin",getLoginAdmin());
+        return map;
+    }
+
 
     @RequestMapping(value = "/home")
     public @ResponseBody
-    Object home(HttpServletRequest request,HttpServletResponse response){
-//        try {
-//            request.getRequestDispatcher("/html/activateSuccess.html").forward(request,response);
-//        } catch (ServletException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+    Object home(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
         Map map = new HashMap();
-        map.put("test","fjalfjal");
+        request.getRequestDispatcher("/html/index.html").forward(request,response);
         return map;
     }
+
+    private Administrator getLoginAdmin(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof AdminDetail){
+            String workId = ((AdminDetail)principal).getUsername();
+            System.out.println(workId);
+            Administrator administrator = adminService.getAdminByWorkId(workId);
+            return administrator;
+        }
+        return null;
+    }
+
 }

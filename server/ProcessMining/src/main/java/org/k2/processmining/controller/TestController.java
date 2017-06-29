@@ -93,29 +93,4 @@ public class TestController {
         return "login";
     }
 
-    @RequestMapping(value = "/code",method = RequestMethod.GET)
-    public void getCode(@RequestParam(value = "date",required = false)String date,HttpServletRequest request,HttpServletResponse response) throws IOException {
-        System.out.println("getCode");
-        if (date != null){
-            System.out.println(date);
-        }else {
-
-            System.out.println("date is null"+date);
-        }
-        response.setHeader("Pragma", "No-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setDateHeader("Expires", 0);
-        response.setContentType("image/jpeg");
-        //生成随机字串
-        String verifyCode = VerifyCodeUtils.generateVerifyCode(4);
-        //存入会话session
-        HttpSession session = request.getSession(true);
-        //删除以前的
-        session.removeAttribute("verCode");
-        session.setAttribute("verCode", verifyCode.toLowerCase());
-        //生成图片
-        int w = 100, h = 30;
-        VerifyCodeUtils.outputImage(w, h, response.getOutputStream(), verifyCode);
-
-    }
 }

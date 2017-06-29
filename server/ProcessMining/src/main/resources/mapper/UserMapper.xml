@@ -23,8 +23,8 @@
     </update>
 
     <insert id="save">
-        INSERT INTO user(id,username,password,email,state)
-        VALUE (#{id},#{name},#{password},#{email},#{state})
+        INSERT INTO user(id,username,password,email,state,registerdate,activatecode)
+        VALUE (#{id},#{name},#{password},#{email},#{state},#{registerDate},#{activateCode})
     </insert>
 
     <select id="listAllUsers" resultMap="user">
@@ -43,8 +43,47 @@
         SELECT * FROM user WHERE email = #{email} AND password = #{password}
     </select>
 
-    <update id="updatePwdById">
+    <update id="updatePwdById" >
         UPDATE user SET password = #{password} WHERE id = #{id}
+    </update>
+
+    <update id="updateUserByUserEmail" parameterType="User">
+        UPDATE user SET username = #{name},password = #{password},state = #{state},registerdate = #{registerDate}
+        ,activatecode = #{activateCode}
+        WHERE email = #{email}
+    </update>
+
+    <update id="deleteLogsByUserId">
+        UPDATE raw_log SET state = 2 WHERE userid IN
+        <foreach collection="idList" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="deleteRawLogsByUserId">
+        UPDATE raw_log SET state = 2 WHERE userid IN
+        <foreach collection="idList" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="deleteNormalLogsByUserId">
+        UPDATE normal_log SET state = 2 WHERE userid IN
+        <foreach collection="idList" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="deleteEventLogsByUserId">
+        UPDATE event_log SET state = 2 WHERE userid IN
+        <foreach collection="idList" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+
+    <update id="updateRegisterDateByEmail">
+        UPDATE user SET registerdate = #{date} WHERE email = #{email}
     </update>
 
     <resultMap id="user" type="User">
@@ -53,5 +92,8 @@
         <result column="password" property="password"/>
         <result column="email" property="email"/>
         <result column="state" property="state"/>
+        <result column="registerdate" property="registerDate"/>
+        <result column="activatecode" property="activateCode"/>
     </resultMap>
+
 </mapper>

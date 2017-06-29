@@ -9,6 +9,12 @@ import org.k2.processmining.utils.SendEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,21 +31,39 @@ public class UserServiceImpl implements UserService{
     UserService userService;
 
     @Override
-    public int addUser(User user) {
-        if (user == null){
-            return 0;//用户为空
+    public int addUser(User newUser) {
+        if (newUser == null){
+            return 401;//用户为空
         }
-        if (user.getEmail() == null){
-            return 1; //邮箱为空
+        if (newUser.getEmail() == null){
+            return 402; //邮箱为空
         }
-        if (userService.getUserByEmail(user.getEmail()) != null){
-            return 2;//邮箱重复
+        User oldUser=  userService.getUserByEmail(newUser.getEmail());
+        if (oldUser != null && oldUser.getState() != 2){
+            return 403;//邮箱重复
         }
-        user.setId(Util.getUUIDString());
-        user.setState(UserState.FREEZE.getValue());
-        userMapper.save(user);
-        userService.activateAccount(user.getEmail());
-        return 3;
+        if (newUser.getName() == null){
+            return 404; //用户名为null
+        }
+        newUser.setId(Util.getUUIDString());
+        newUser.setState(UserState.FREEZE.getValue());
+        newUser.setRegisterDate(new Date());
+        newUser.setActivateCode(SendEmail.getValCode(newUser.getEmail()));
+        if (oldUser!=null){
+            userMapper.updateUserByUserEmail(newUser);
+        }else {
+            userMapper.save(newUser);
+        }
+
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                userService.sendActivateEmail(newUser.getEmail(), newUser.getActivateCode());
+            }
+        }.start();
+
+        return 200;
     }
 
     @Override
@@ -76,24 +100,81 @@ public class UserServiceImpl implements UserService{
     public int checkoutUserByEmailAndPwd(String email, String password) {
 
         if (userMapper.getUserByEmail(email) == null){
-            return 0;
+            return 400; //邮箱不存在
         }
         if (userMapper.getUserByEmailAndPwd(email,password) == null){
-            return 1;
+            return 401; //密码错误
         }
-        return 2;
+        return 200; //邮箱密码正确
     }
 
     @Override
-    public int activateAccount(String email) {
+    public int sendActivateEmail(String email, String activateCode) {
+        String urlCode = null;
+        try {
+            urlCode = URLEncoder.encode(activateCode,"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        userMapper.updateRegisterDateByEmail(email,new Date());
 
-        StringBuffer buffer = new StringBuffer("点击下面链接激活账号，48小时生效，否则重新注册账号，链接只能使用一次，请尽快激活！</br>");
-        buffer.append("<a href=\"http://localhost:8080/user/register/activate?email=");
-        buffer.append(email);
-        buffer.append("\">http://localhost:8080/springmvc/user/register/activate?email=");
-        buffer.append(email);
+        StringBuffer buffer = new StringBuffer("点击下面链接激活账号，48小时生效，链接只能使用一次，请尽快激活！</br>");
+        buffer.append("<a href=\"http://localhost:8080/user/register/activate?email="+email+"&activateCode="+urlCode);
+//        buffer.append("<a href=\"http://localhost:8080/user/");
+        buffer.append("\">http://localhost:8080/user/register/activate?email="+email+"&activateCode="+activateCode);
         buffer.append("</a>");
         SendEmail.send(email,buffer.toString());
         return 0;
+    }
+
+    @Override
+    public int activateAccountByEmailAndCode(String email, String activateCode) {
+        User user = userService.getUserByEmail(email);
+        String decodeStr = null;
+        try {
+            decodeStr = URLDecoder.decode(activateCode,"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        if (new Date().after(getValidateDate(user.getRegisterDate()))){
+            return 399; //激活邮件过期
+        }
+
+        System.out.println("activateCode:"+decodeStr);
+        if (user == null){
+            return 400; //查无此用户
+        }
+        if (!activateCode.equals(user.getActivateCode())){
+            System.out.println("newUser.getActivateCode:"+user.getActivateCode());
+            return 401; //验证码错误
+        }
+        if (user.getState() == UserState.ACTIVE.getValue()){
+            return 402;//用户已激活
+        }
+        List<String> emailList = new ArrayList<>();
+        emailList.add(email);
+        userService.updateStateByUserEmail(emailList,UserState.ACTIVE.getValue());
+        return 200;
+    }
+
+    @Override
+    public void deleteUserById(List<String> idList) {
+        //TODO 将与用户相关的所有日志全部置为删除状态
+//        userMapper.deleteLogsByUserId(idList);
+        System.out.println("id:"+idList.get(0));
+        userMapper.deleteRawLogsByUserId(idList);
+        userMapper.deleteNormalLogsByUserId(idList);
+        userMapper.deleteEventLogsByUserId(idList);
+        userMapper.updateStateByUserId(idList,UserState.DELETE.getValue());
+    }
+
+    private Date getValidateDate(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE,2);
+        System.out.println(calendar.getTime());
+        System.out.println(new Date());
+        return calendar.getTime();
     }
 }

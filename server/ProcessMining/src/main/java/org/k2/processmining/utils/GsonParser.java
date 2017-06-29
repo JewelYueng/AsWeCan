@@ -11,4 +11,8 @@ public class GsonParser {
         Gson gson = new GsonBuilder().create();
         return gson.fromJson(json,clazz);
     }
+
+    public static String parseToCodeAndMessage(int code,String message){
+        return "{\"code\":"+code+",\"message\":\""+message+"\"}";
+    }
 }

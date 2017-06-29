@@ -1,6 +1,7 @@
 package org.k2.processmining.model.user;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 补充了state状态
@@ -12,6 +13,8 @@ public class User implements Serializable{
     private String email;
     private String password;
     private int state = 1;
+    private Date registerDate;
+    private String activateCode;
 
     public String getId() {
         return id;
@@ -51,5 +54,21 @@ public class User implements Serializable{
 
     public int getState() {
         return state;
+    }
+
+    public void setActivateCode(String activateCode) {
+        this.activateCode = activateCode;
+    }
+
+    public String getActivateCode() {
+        return activateCode;
+    }
+
+    public Date getRegisterDate() {
+        return registerDate;
+    }
+
+    public void setRegisterDate(Date registerDate) {
+        this.registerDate = registerDate;
     }
 }

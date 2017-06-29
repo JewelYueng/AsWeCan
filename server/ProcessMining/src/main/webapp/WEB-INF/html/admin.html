@@ -26,6 +26,9 @@
                 <td colspan='2'><input name="submit" type="submit"
                                        value="登录" /></td>
             </tr>
+            <tr>
+                <td><input type="button" onclick="logout()" value="登出"></td>
+            </tr>
         </table>
     </form>
 
@@ -54,6 +57,14 @@
             }
 
         });
+    }
+    function logout() {
+        $.ajax({
+            type: "POST",
+            url: "/admin/logout",
+            contentType: "application/json",
+            dataType: "json"
+        })
     }
 </script>
 

@@ -45,7 +45,7 @@ public class UserController {
     Object activeUser(@Valid @RequestBody IdListForm idListForm){
         Map map = new HashMap();
         userService.updateStateByUserId(idListForm.getIdList(), UserState.ACTIVE.getValue());
-        map.put("code",1);
+        map.put("code",200);
         return map;
     }
 
@@ -54,7 +54,7 @@ public class UserController {
     Object freezeUser(@Valid @RequestBody IdListForm idListForm){
         Map map = new HashMap();
         userService.updateStateByUserId(idListForm.getIdList(),UserState.FREEZE.getValue());
-        map.put("code",1);
+        map.put("code",200);
         return map;
     }
 
@@ -68,27 +68,21 @@ public class UserController {
     }
 
     @RequestMapping(value = "/register/activate",method = RequestMethod.GET)
-    public String activateAccount(HttpServletRequest request,HttpServletResponse response){
-        String email = request.getParameter("email");
-        List<String> emailList = new ArrayList<>();
-        emailList.add(email);
-        userService.updateStateByUserEmail(emailList,UserState.ACTIVE.getValue());
-        try {
-            request.getRequestDispatcher("/html/activateSuccess.html").forward(request,response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public void activateAccount(@RequestParam(value = "email")String email,@RequestParam(value = "activateCode")String activateCode,
+                                  HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("######################activateAccount#####################");
+        int code = userService.activateAccountByEmailAndCode(email,activateCode);
+        System.out.println("code:"+code);
+        request.getRequestDispatcher("/html/activateSuccess.html").forward(request,response);
+//        return "index";
     }
 
     @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
     public @ResponseBody
     Object delete(@RequestBody IdListForm ids){
         Map map = new HashMap();
-        userService.updateStateByUserId(ids.getIdList(),UserState.DELETE.getValue());
-        map.put("code",1);
+        userService.deleteUserById(ids.getIdList());
+        map.put("code",200);
         return map;
     }
 
@@ -97,7 +91,7 @@ public class UserController {
     Object updatePassword(@RequestBody PwdForm pwdForm){
         Map map = new HashMap();
         userService.updatePwdById(getUser().getId(),pwdForm.getPassword());
-        map.put("code",1);
+        map.put("code",200);
         return map;
     }
 
@@ -113,15 +107,7 @@ public class UserController {
     public @ResponseBody
     Object getUser(HttpServletRequest request,HttpServletResponse response){
         Map map = new HashMap();
-        User user = null;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof MyUserDetails){
-            String name = ((UserDetails)principal).getUsername();
-            System.out.println(name);
-            user = userService.getUserByEmail(name);
-        }else if (principal instanceof UserDetails){
-            System.out.println("userDetails");
-        }
+        User user = getLoginUser();
 //        User user = userService.getUserByEmail(getUser().getEmail());
         map.put("user",user);
         return map;
@@ -134,12 +120,12 @@ public class UserController {
         return user;
     }
 
-    public User getLoginUser(){
+    private User getLoginUser(){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof MyUserDetails){
-            String name = ((UserDetails)principal).getUsername();
-            System.out.println(name);
-            User user = userService.getUserByEmail(name);
+            String email = ((MyUserDetails)principal).getUsername();
+            System.out.println(email);
+            User user = userService.getUserByEmail(email);
             return user;
         }else if (principal instanceof UserDetails){
             System.out.println("userDetails");

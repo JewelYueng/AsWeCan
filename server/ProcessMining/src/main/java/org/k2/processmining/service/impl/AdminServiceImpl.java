@@ -23,12 +23,12 @@ public class AdminServiceImpl implements AdminService{
     @Override
     public int checkoutAdminByWorkIdAndPwd(String workId, String password) {
         if (adminMapper.getAdminByWorkId(workId) == null){
-            return 0;
+            return 400; //工号不存在
         }
         if (adminMapper.getAdminByWorkIdAndPwd(workId,password) == null){
-            return 1;
+            return 401; //密码错误
         }
-        return 2;
+        return 200; //验证成功
     }
 
     @Override

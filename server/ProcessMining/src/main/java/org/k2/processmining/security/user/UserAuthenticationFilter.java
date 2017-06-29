@@ -66,9 +66,14 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
             UserForm userForm = GsonParser.fromJson(buffer.toString(),UserForm.class);
             this.jsonPassword = userForm.getPassword();
             this.jsonUsername = userForm.getEmail();
-            if (userForm.getValidateCode() == null){
-                System.out.println("userForm.validateCode:null");
-                throw new UsernameNotFoundException("validate code is null");
+            if ("".equals(userForm.getValidateCode())){
+                System.out.println("user validateCode is null");
+                throw new UsernameNotFoundException(UserFailureHandler.USER_VALIDATECODE_NULL);
+            }
+            System.out.println("session.verCode:"+session.getAttribute("validateCode"));
+            if (userForm.getValidateCode().compareToIgnoreCase((String) session.getAttribute("validateCode")) != 0){
+                System.out.println("validateCode is wrong"+userForm.getValidateCode());
+                throw new UsernameNotFoundException(UserFailureHandler.USER_VALIDATECODE_WRONG);
             }
         }
         System.out.println(jsonUsername+"   "+jsonPassword);

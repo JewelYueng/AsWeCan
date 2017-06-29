@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public class MyUserDetailService implements UserDetailsService{
 
-    public static final String USER_NOT_FOUND = "user not found";
 
     @Autowired
     UserService userService;
@@ -26,7 +25,7 @@ public class MyUserDetailService implements UserDetailsService{
 
         if (user == null){
             //查无此账号
-            throw new UsernameNotFoundException(USER_NOT_FOUND);
+            throw new UsernameNotFoundException(UserFailureHandler.USER_NAME_NOT_FOUND);
         }
         System.out.println(user.getEmail()+"   "+user.getPassword());
             MyUserDetails myUserDetails = new MyUserDetails(user);
