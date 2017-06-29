@@ -4,6 +4,7 @@ import org.deckfour.xes.model.XLog;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.k2.processmining.exception.JSONBadRequestException;
 import org.k2.processmining.model.MethodState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.mergemethod.MergeMethod;
@@ -54,28 +55,23 @@ public class MergeMethodServiceWhiteBoxTest {
         Map<String,Object> params = new HashMap<>();
 
         // 判定情况 1:true
-        res = mergeMethodService.merge(eventLog1, eventLog2, inactiveMethod, params);
-        Assert.assertNull(res);
+        mergeAssertException(eventLog1, eventLog2, inactiveMethod, params);
 
         // 判定情况 1:false, 2:true
         Merger merger = MergerFactory.getInstance().getAlgorithm(activeMethod.getId()).getAlgorithm();
         MergerFactory.getInstance().getAlgorithm(activeMethod.getId()).setAlgorithm(null);
-        res = mergeMethodService.merge(eventLog1, eventLog2, activeMethod, params);
-        Assert.assertNull(res);
+        mergeAssertException(eventLog1, eventLog2, activeMethod, params);
         MergerFactory.getInstance().getAlgorithm(activeMethod.getId()).setAlgorithm(merger);
 
         // 判定情况 1:false, 2:false, 3:true
-        res = mergeMethodService.merge(null, eventLog2, activeMethod, params);
-        Assert.assertNull(res);
+        mergeAssertException(null, eventLog2, activeMethod, params);
 
         // 判定情况 1:false, 2:false, 3:false, 4:true
-        res = mergeMethodService.merge(eventLog1, null, activeMethod, params);
-        Assert.assertNull(res);
+        mergeAssertException(eventLog1, null, activeMethod, params);
 
         // 判定情况 1:false, 2:false, 3:false, 4:false, 5:true
         MergerFactory.getInstance().getAlgorithm(activeMethod.getId()).setAlgorithm(((xLog1, xLog2, params1) -> null));
-        res = mergeMethodService.merge(eventLog1, eventLog2, activeMethod, params);
-        Assert.assertNull(res);
+        mergeAssertException(eventLog1, eventLog2, activeMethod, params);
         MergerFactory.getInstance().getAlgorithm(activeMethod.getId()).setAlgorithm(merger);
 
         // 判定情况 1:false, 2:false, 3:false, 4:false, 5:false, 6:true
@@ -84,5 +80,15 @@ public class MergeMethodServiceWhiteBoxTest {
         // 判定情况 1:false, 2:false, 3:false, 4:false, 5 false, 6:false
         res = mergeMethodService.merge(eventLog1, eventLog2, activeMethod, params);
         Assert.assertNotNull(res);
+    }
+
+    private void mergeAssertException(EventLog eventLog1, EventLog eventLog2, MergeMethod mergeMethod, Map<String, Object> params) {
+        try {
+            mergeMethodService.merge(eventLog1, eventLog2, mergeMethod, params);
+        }
+        catch (JSONBadRequestException e) {
+            return;
+        }
+        throw new RuntimeException("fail");
     }
 }
