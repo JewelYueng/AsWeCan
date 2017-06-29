@@ -15,7 +15,7 @@
         <div class="event-log">事件日志</div>
       </div>
       <div class="list" v-for="(item,index) in items">
-        <div class="log-name">{{item.rawLog.logName}}</div>
+        <div class="log-name" :title="item.rawLog.logName">{{item.rawLog.logName}}</div>
         <div class="uploader">{{item.user.name}}</div>
         <div class="date">
           {{`${new Date(item.rawLog.createDate).getFullYear()}-${new Date(item.rawLog.createDate).getMonth() + 1}-${new Date(item.rawLog.createDate).getDate()}`}}

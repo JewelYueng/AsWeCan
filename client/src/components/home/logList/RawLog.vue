@@ -27,7 +27,7 @@
       <div class="list" v-for="(item,index) in items" :class="{selectedItem: isSelected(index)}">
         <div class="log-head">
           <input type="checkbox" v-model="checked" :value="item.rawLog.id" @click="currClick(item,index)">
-          <span @click="showDetail(index)" class="log-name" :title="item.rawLog.logName" :title="item.rawLog.logName">{{item.rawLog.logName}}</span>
+          <span @click="showDetail(index)" class="log-name" :title="item.rawLog.logName" >{{item.rawLog.logName}}</span>
         </div>
         <div class="operations">
           <img class="process_button" title="生成规范化日志" v-on:click="transferToNormal(index)" src="static/img/process_color.png">
