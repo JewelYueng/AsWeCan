@@ -13,6 +13,9 @@
     "test": "npm run unit && npm run e2e"
   },
   "dependencies": {
+    "d3": "^4.9.1",
+    "d3-force": "^1.0.6",
+    "d3-sankey": "^0.7.1",
     "element-ui": "^1.3.7",
     "less": "^2.7.2",
     "less-loader": "^4.0.4",

@@ -24,7 +24,7 @@
       <div class="list" v-for="(item, index) in items" :class="{selectedItem: isSelected(index)}">
         <div class="log-head">
           <input type="checkbox" v-model="checked" :value="item.normalLog.id" @click="currClick(item,index)">
-          <span class="log-name">
+          <span class="log-name" :title="item.normalLog.logName">
             {{item.normalLog.logName}}</span>
         </div>
         <div class="operations">
@@ -42,10 +42,10 @@
         <div class="date">
           {{`${new Date(item.normalLog.createDate).getFullYear()}-${new Date(item.normalLog.createDate).getMonth() + 1}-${new Date(item.normalLog.createDate).getDate()}`}}
         </div>
-        <div class="relation-logs raw-log" @click="jumpToRaw(index)">
+        <div class="relation-logs raw-log" @click="jumpToRaw(index)" :title="item.rawLog ? item.rawLog.logName : '无'">
           {{item.rawLog ? item.rawLog.logName : '无'}}
         </div>
-        <div class="relation-logs event-log" @click="jumpToEvent(index)">
+        <div class="relation-logs event-log" @click="jumpToEvent(index)" :title="item.eventLog ? item.eventLog.logName : '无'">
           {{item.eventLog ? item.eventLog.logName : '无'}}
         </div>
       </div>

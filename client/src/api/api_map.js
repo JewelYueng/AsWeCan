@@ -50,5 +50,5 @@ export default {
 // 流程挖掘
   "getMiningMethods": [GET, "/mining/method"],
   "mining": [POST, "/mining"]
-
+  
 }

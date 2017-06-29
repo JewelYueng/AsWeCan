@@ -7,31 +7,31 @@
     <el-table :data="format" border style="margin-top: 30px;width: 90%;margin: auto;" max-height="400">
       <el-table-column prop="name" label="数据项名">
         <template scope="scope">
-          <el-input v-model="editing.name" v-show="isEditing(scope.$index)"></el-input>
+          <el-input autosize type="textarea" v-model="editing.name" v-show="isEditing(scope.$index)"></el-input>
           <div v-show="!isEditing(scope.$index)">{{scope.row.name}}</div>
         </template>
       </el-table-column>
       <el-table-column prop="character" label="占位符">
         <template scope="scope">
-          <el-input v-model="editing.character" v-show="isEditing(scope.$index)"></el-input>
+          <el-input autosize type="textarea" v-model="editing.character" v-show="isEditing(scope.$index)"></el-input>
           <div v-show="!isEditing(scope.$index)">{{scope.row.name}}</div>
         </template>
       </el-table-column>
       <el-table-column prop="identifier" label="格式标示符">
         <template scope="scope">
-          <el-input v-model="editing.identifier" v-show="isEditing(scope.$index)"></el-input>
+          <el-input autosize type="textarea" v-model="editing.identifier" v-show="isEditing(scope.$index)"></el-input>
           <div v-show="!isEditing(scope.$index)">{{scope.row.identifier}}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="source" label="源格式">
+      <el-table-column prop="source" label="源格式" width="150">
         <template scope="scope">
-          <el-input type="textarea" :row="2" v-model="editing.source" v-show="isEditing(scope.$index)"></el-input>
+          <el-input type="textarea" autosize v-model="editing.source" v-show="isEditing(scope.$index)"></el-input>
           <div v-show="!isEditing(scope.$index)">{{scope.row.source}}</div>
         </template>
       </el-table-column>
       <el-table-column prop="target" label="目标格式">
         <template scope="scope">
-          <el-input v-model="editing.target" v-show="isEditing(scope.$index)"></el-input>
+          <el-input autosize v-model="editing.target" type="textarea" v-show="isEditing(scope.$index)"></el-input>
           <div v-show="!isEditing(scope.$index)">{{scope.row.target}}</div>
         </template>
       </el-table-column>
@@ -95,8 +95,12 @@
         this.$emit('SAVE_FORMAT', this.format)
       },
       handleDelete(index, row){
-        this.format.splice(index, 1)
-        this.$emit('SAVE_FORMAT', this.format)
+        if(this.editingRow === -1) {
+          this.format.splice(index, 1)
+          this.$emit('SAVE_FORMAT', this.format)
+        }else{
+          this.$hint('请保存编辑后再删除', 'warn')
+        }
       },
       isEditing(index){
         return index === this.editingRow

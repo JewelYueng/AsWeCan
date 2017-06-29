@@ -38,6 +38,13 @@
     margin: 20px 35px;
   }
 
+  .el-table .cell, .el-table th>div{
+    padding: 5px;
+    textarea{
+      border: none;
+      height: 100%;
+    }
+  }
 
 </style>
 
@@ -82,37 +89,7 @@
         },
         send_data: {},
         view_dict: [Format, Integration, Record],
-//        editingRow: -1,
-//        data1: [
-//          {
-//            name: '[QC]',
-//            character: 'ABCD',
-//            identifier: '[Method]',
-//            source: 'Incident:A-B-C-D,Plan:C/B/ATD,Task:A/B/CTD,DEFAULT:A-B-CTD',
-//            target: 'A-B-CTD'
-//          },
-//        ],
-//        dataTime: [
-//          {
-//            sourceItem: '[QC]',
-//            targetItem: 'Time'
-//          }
-//        ],
-//        data2: [
-//          {oriName: "EventName", target: ["[Method]", "[Status]"]},
-//          {oriName: "FKPlanID", target: ["[FKPlanID]"]},
-//          {oriName: "PKIncidentId", target: ["[PKIncidentId]"]},
-//          {oriName: "PKTaskID", target: ["[PKTaskID]"]},
-//          {oriName: "PKPlanID", target: ["[PKPlanID]"]},
-//          {oriName: "FKIncidentID", target: ["[FKIncidentID]"]}
-//        ],
-//        data3: [
-//          {
-//            item: '/t',
-//            name: ' ',
-//            null: ' '
-//          }
-//        ]
+
       }
 
     },
@@ -122,47 +99,7 @@
       Record
     },
     methods: {
-//      表格的操作函数
-//      addBlankRow(){
-//        this.data1.push({})
-//      },
-//      handleEdit(index, row){
-//        this.editingRow = index
-//      },
-//      saveEdit(index, row){
-//        this.data1[index] = this.editing
-//        this.editingRow = -1
-//      },
-//      handleDelete(index, row){
-//        this.data1.splice(index, 1)
-//      },
-//      isEditing(index){
-//        return index === this.editingRow
-//      },
       Normalizing(){
-//        this.$api({
-//          method: 'normalize', body: {
-//            "rawLogId": this.data.id,
-//            "formats": this.format,
-//            "timeNames": "[QC]",
-//            "renameOrMergeItems": this.integration,
-//            "oriItemSeparator": "\t",
-//            "oriNameValSeparator": " ",
-//            "oriNulVal": ""
-//          }
-//        }).then((res) => {
-//          console.log(res);
-//          if (res.data.code === 1) {
-//            this.$hint('规范化成功', 'success');
-//          }
-//          else if(res.status === 500){
-//            this.$hint('参数设置不当', 'warn');
-//          }
-//          else{
-//            this.$hint('网络连接失败', 'erorr');
-//          }
-//
-//        })
         this.$api({
           method: 'normalize', body: _.extend({
             "rawLogId": this.data.id,
@@ -182,7 +119,11 @@
 
         }, res => {
           if (res.status === 500) {
-            this.$hint('服务器没有这个文件，请重新上传', 'warn');
+            this.$hint('服务器错误，请稍后再试', 'error');
+          }else if (res.status === 400){
+            this.$hint('服务器没有这个文件请')
+          }else if(res.status === 403){
+            this.$hint('你没有这个权限')
           }
         })
       },
@@ -203,9 +144,6 @@
       },
     },
     computed: {
-//      editing(){
-//        return this.editingRow === -1 ? {} : this.data1[this.editingRow]
-//      },
       current_view(){
         return this.view_dict[this.selectedTab]
       }
