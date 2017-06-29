@@ -19,7 +19,7 @@
 
 <script>
   import * as d3 from 'd3'
-  import {sankey, sankeyLinkHorizontal} from 'd3-sankey'
+  import * as d3_sankey from 'd3-sankey'
   import {mapActions} from 'vuex'
   //  let sankey = function () {
   //    var sankey = {},
@@ -858,7 +858,7 @@
           },
           color = d3.scaleOrdinal(d3.schemeCategory10);
 
-        sankey()
+        d3_sankey.sankey()
           .nodeWidth(15)
           .nodePadding(10)
           .extent([
@@ -880,12 +880,14 @@
           .attr("font-size", 10)
           .selectAll("g");
 
-        sankey(this.energy);
+        d3_sankey.sankey(this.energy);
+        console.log(d3_sankey.sankeyLinkHorizontal())
         debugger
         link = link
           .data(this.energy.links)
           .enter().append("path")
-          .attr("d", 'M16,136.6610907581682C75.85714285714286,136.6610907581682,75.85714285714286,141.90009870097748,135.71428571428572,141.90009870097748')
+//          .attr("d", 'M16,136.6610907581682C75.85714285714286,136.6610907581682,75.85714285714286,141.90009870097748,135.71428571428572,141.90009870097748')
+          .attr("d", d3_sankey.sankeyLinkHorizontal())
           .attr("stroke-width", function (d) {
             return Math.max(1, d.width);
           });
@@ -903,20 +905,16 @@
 
         node.append("rect")
           .attr("x", function (d) {
-//            return d.x0;
-            return 1
+            return d.x0;
           })
           .attr("y", function (d) {
-//            return d.y0;
-            return 130.00906008125477
+            return d.y0;
           })
           .attr("height", function (d) {
-//            return d.y1 - d.y0;
-            return 13.304061353826853
+            return d.y1 - d.y0;
           })
           .attr("width", function (d) {
-//            return d.x1 - d.x0;
-            return 15
+            return d.x1 - d.x0;
           })
           .attr("fill", function (d) {
             return color(d.name.replace(/ .*/, ""));
@@ -947,7 +945,6 @@
           .text(function (d) {
             return d.name + "\n" + format(d.value);
           });
-
 
       }
 

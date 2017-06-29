@@ -32,6 +32,7 @@
 
 <script>
   import * as d3 from "d3"
+  import { forceSimulation,forceCenter, forceLink } from 'd3-force'
   export default{
     data(){
       return {
@@ -76,7 +77,7 @@
                   ],
                 "nodes":
                   [
-                    {"name":"[____]"},
+                    {"name":"[__INVALID__]"},
                     {"name":"[Wil]"},
                     {"name":"[Anne, Mike]"},
                     {"name":"[Pete, Mary, Sara, Sam, Pam, John, Carol]"},
@@ -96,20 +97,20 @@
           .append("svg")
           .attr("width",width)
           .attr("height",height);
-        var color = d3.scale.category20();
-//       let color = this.$d3.scaleOrdinal(this.$d3.schemeCategory20)
-        var force = d3.layout.force()
-          .nodes(targetObject.nodes)
-          .links(targetObject.links)
-          .size([width, height])
-          .linkDistance(150)
-          .charge([-400]);
-
-        force.start();
-//        var simu = this.$d3.forceSimulation(targetObject.nodes)
-//          .force("charge", -400)
-//          .force("link", this.$d3.forceLink(targetObject.links))
-//          .force("center", d3.forceCenter());;
+//        var color = d3.scale.category20();
+       let color = d3.scaleOrdinal(d3.schemeCategory20)
+//        var force = forceSimulation()
+//          .nodes(targetObject.nodes)
+//          .links(targetObject.links)
+//          .size([width, height])
+//          .linkDistance(150)
+//          .charge([-400]);
+//
+//        force.start();
+        var simu =forceSimulation(targetObject.nodes)
+        simu.force("charge", -400)
+//          .force("link", forceLink(targetObject.links))
+//          .force("center", forceCenter());
 
 
 
@@ -142,7 +143,7 @@
             return d.value;
           });
 
-        var forceDrag = force.drag()
+        var forceDrag = simu.drag()
           .on("dragstart", function () {
             d3.event.sourceEvent.stopPropagation();
           });
