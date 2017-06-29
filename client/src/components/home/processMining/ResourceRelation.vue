@@ -97,7 +97,7 @@
           .attr("width",width)
           .attr("height",height);
 //        var color = d3.scale.category20();
-        
+
       let color = d3.scaleOrdinal(d3.schemeCategory20)
 //        var force = d3.layout.force()
 //          .nodes(targetObject.nodes)
