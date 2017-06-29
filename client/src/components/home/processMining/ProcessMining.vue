@@ -117,7 +117,6 @@
     methods: {
       ...mapActions(['changeHomePath']),
       change: function (m_index, p_key, min, max) {
-//  console.log(event.target.value);
         let send_data = this.send_params_arr[m_index][p_key]
 
         if (parseFloat(send_data) <= min) {
@@ -131,9 +130,36 @@
         }
       },
       mining: function () {
-        this.$router.push({name: "miningResult"})
+        let selectedIndex = this.methods.findIndex( method => {
+          return method.id === this.selectedId
+        })
+        let body_raw = {
+          id: this.log.id,
+          methodId: this.selectedId,
+          parameters: this.send_params_arr[selectedIndex]
+        }
         this.$api({
-          method: 'mining'
+          method: 'mining',
+          body: {
+            id: this.log.id,
+            methodId: this.selectedId,
+            diagramType: 'ResourceRelation',
+            parameters: this.send_params_arr[selectedIndex]
+          }
+        }).then( res => {
+          if (res.status === 200) {
+            this.$router.push({name: "miningResult", params: {raw_data: body_raw, resource_data: res.data.disgram}})
+            this.$hint(`挖掘成功,耗时${res.data.timeCost}秒`,'success')
+          }else{
+            this.$hint('挖掘失败','error')
+          }
+        }, err => {
+          console.log(err)
+          if(err.status === 400){
+            this.$hint('服务器不存在相应的文件，请删除后重新上传',"error")
+          }else if (err.status === 500){
+            this.$hint('参数设置不当','warn')
+          }
         })
       },
       chooseLog(index){
