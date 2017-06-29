@@ -18,11 +18,12 @@
 </template>
 
 <style lang="less" scoped rel="stylesheet/less">
-  .links {
+  .link {
     fill: none;
-    stroke: #000;
-    stroke-opacity: .2;
+    stroke: #666;
+    stroke-width: 1.5px;
   }
+
   .chart {
     height: 500px;
     background-color: #58a181;
@@ -31,17 +32,42 @@
 
 
 <script>
-  import * as d3 from "d3"
-  import { forceSimulation,forceCenter, forceLink } from 'd3-force'
+//  import * as d3 from "d3"
+//  import { forceSimulation,forceCenter, forceLink } from 'd3-force'
   export default{
     data(){
       return {
         selectedAttr:"",
+//        nGraph:{
+//          "links":[],
+//          "nodes":[]
+//        },
         items:{
           "timeCost":541,
           "diagram":
             [
-              { "resourceAttr":"org:resource",
+              { "resourceAttr":"test2",
+                "links":
+                  [
+                    {"source":"[__INVALID__]","target":"[Anne, Mike]","value":136},
+                    {"source":"[__INVALID__]","target":"[Wil]","value":526},
+                    {"source":"[Anne, Mike]","target":"[Pete, Sara, Mary, Sam, Pam, John, Carol]","value":526},
+                    {"source":"[Wil]","target":"[Anne, Mike]","value":1252},
+                    {"source":"[Anne, Mike]","target":"[Wil]","value":200},
+                    {"source":"[Pete, Mary, Sara, Sam, Pam, John, Carol]","target":"[Anne, Mike]","value":64},
+                    {"source":"[Pete, Sara, Mary, Sam, Pam, John, Carol]","target":"[Wil]","value":526},
+                    {"source":"[Anne, Mike]","target":"[Pete, Mary, Sara, Sam, Pam, John, Carol]","value":108},
+                    {"source":"[Anne, Mike]","target":"[__INVALID__]","value":618}
+                  ],
+                "nodes":
+                  [
+                    {"name":"[__aaa__]"},
+                    {"name":"[Wil]"},
+                    {"name":"[Anne, Mike]"},
+                    {"name":"[Pete, Mary, Sara, Sam, Pam, John, Carol]"},
+                    {"name":"[Pete, Sara, Mary, Sam, Pam, John, Carol]"}
+                  ]},
+              { "resourceAttr":"test3",
                   "links":
                     [
                       {"source":"[__INVALID__]","target":"[Anne, Mike]","value":136},
@@ -61,60 +87,135 @@
                       {"name":"[Anne, Mike]"},
                       {"name":"[Pete, Mary, Sara, Sam, Pam, John, Carol]"},
                       {"name":"[Pete, Sara, Mary, Sam, Pam, John, Carol]"}
-                    ]},
-              { "resourceAttr":"source",
-                "links":
-                  [
-                    {"source":"[__INVALID__]","target":"[Anne, Mike]","value":136},
-                    {"source":"[__INVALID__]","target":"[Wil]","value":526},
-                    {"source":"[Anne, Mike]","target":"[Pete, Sara, Mary, Sam, Pam, John, Carol]","value":526},
-                    {"source":"[Wil]","target":"[Anne, Mike]","value":1252},
-                    {"source":"[Anne, Mike]","target":"[Wil]","value":200},
-                    {"source":"[Pete, Mary, Sara, Sam, Pam, John, Carol]","target":"[Anne, Mike]","value":64},
-                    {"source":"[Pete, Sara, Mary, Sam, Pam, John, Carol]","target":"[Wil]","value":526},
-                    {"source":"[Anne, Mike]","target":"[Pete, Mary, Sara, Sam, Pam, John, Carol]","value":108},
-                    {"source":"[Anne, Mike]","target":"[__INVALID__]","value":618}
-                  ],
-                "nodes":
-                  [
-                    {"name":"[____]"},
-                    {"name":"[Wil]"},
-                    {"name":"[Anne, Mike]"},
-                    {"name":"[Pete, Mary, Sara, Sam, Pam, John, Carol]"},
-                    {"name":"[Pete, Sara, Mary, Sam, Pam, John, Carol]"}
-                  ]},
+                    ]}
+
             ]}
 
       }
     },
     methods:{
       produceLayout:function () {
-        let targetObject=this.items.diagram.find(this.findObject);
+        var _this = this;
+//        var canvas = document.querySelector("canvas"),
+//          context = canvas.getContext("2d"),
+//          width = canvas.width,
+//          height = canvas.height;
+        console.log(_this.selectedAttr)
+
+        let targetObject=_this.items.diagram.find(_this.findObject);
         let width = 1000;
         let height = 1000;
-        console.log(targetObject)
+
+        console.log(targetObject.nodes.length)
+
+        let kimap = {};
+
+        let nGraph = {
+          nodes: [],
+          links: []
+        }
+        for (var i = 0; i !== targetObject.nodes.length; i++) {
+          nGraph.nodes.push({
+            name: targetObject.nodes[i].name
+          });
+          kimap[targetObject.nodes[i].name] = i;
+        }
+
+        for (var j = 0; j !== targetObject.links.length; j++) {
+          var s = targetObject.links[j].source;
+          var t = targetObject.links[j].target;
+
+          nGraph.links.push({
+            source: kimap[s],
+            target: kimap[t],
+            value: targetObject.links[j].value
+          });
+        }
+
+        console.log(nGraph)
+
         var svg = d3.select(".chart")
           .append("svg")
           .attr("width",width)
           .attr("height",height);
-//        var color = d3.scale.category20();
+        var color = d3.scale.category20();
 
-      let color = d3.scaleOrdinal(d3.schemeCategory20)
-//        var force = d3.layout.force()
-//          .nodes(targetObject.nodes)
-//          .links(targetObject.links)
-//          .size([width, height])
-//          .linkDistance(150)
-//          .charge([-400]);
+//      let color = d3.scaleOrdinal(d3.schemeCategory20)
+        var force = d3.layout.force()
+          .nodes(nGraph.nodes)
+          .links(nGraph.links)
+          .size([width, height])
+          .linkDistance(150)
+          .charge([-400]);
 //
-//        force.start();
-        var simu = d3.forceSimulation(targetObject.nodes)
-          .force("charge", -400)
-          .force("link", d3.forceLink(targetObject.links))
-          .force("center", d3.forceCenter());;
-
-
-
+        force.start();
+//        var simulation = d3.forceSimulation()
+//          .force("link", d3.forceLink().id(function(d) { return d.id; }))
+//          .force("charge", d3.forceManyBody())
+//          .force("center", d3.forceCenter(width / 2, height / 2));
+//
+//        simulation
+//          .nodes(targetObject.nodes)
+//          .on("tick", ticked);
+//
+//        simulation.force("link")
+//          .links(targetObject.links);
+//
+//
+//        d3.select(canvas)
+//          .call(d3.drag()
+//            .container(canvas)
+//            .subject(dragsubject)
+//            .on("start", dragstarted)
+//            .on("drag", dragged)
+//            .on("end", dragended));
+//
+//        function ticked() {
+//          context.clearRect(0, 0, width, height);
+//
+//          context.beginPath();
+//          graph.links.forEach(drawLink);
+//          context.strokeStyle = "#aaa";
+//          context.stroke();
+//
+//          context.beginPath();
+//          graph.nodes.forEach(drawNode);
+//          context.fill();
+//          context.strokeStyle = "#fff";
+//          context.stroke();
+//        }
+//
+//        function dragsubject() {
+//          return simulation.find(d3.event.x, d3.event.y);
+//        }
+//
+//        function dragstarted() {
+//          if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+//          d3.event.subject.fx = d3.event.subject.x;
+//          d3.event.subject.fy = d3.event.subject.y;
+//        }
+//
+//        function dragged() {
+//          d3.event.subject.fx = d3.event.x;
+//          d3.event.subject.fy = d3.event.y;
+//        }
+//
+//        function dragended() {
+//          if (!d3.event.active) simulation.alphaTarget(0);
+//          d3.event.subject.fx = null;
+//          d3.event.subject.fy = null;
+//        }
+//
+//        function drawLink(d) {
+//          context.moveTo(d.source.x, d.source.y);
+//          context.lineTo(d.target.x, d.target.y);
+//        }
+//
+//        function drawNode(d) {
+//          context.moveTo(d.x + 3, d.y);
+//          context.arc(d.x, d.y, 3, 0, 2 * Math.PI);
+//        }
+////
         var g = svg.append("g");
 
         svg.call(d3.behavior.zoom()
@@ -125,11 +226,13 @@
           .attr("class", "links");
 
         var link = links.selectAll("line")
-          .data(targetObject.links)
+          .data(nGraph.links)
           .enter().append("line")
           .attr("stroke-width", function (d) {
             return Math.sqrt(d.value) > 10 ? 10 : Math.sqrt(d.value);
-          });
+          })
+          .style("stroke","#333")
+          ;
 
         link.append("title")
           .text(function (d) {
@@ -137,7 +240,7 @@
           });
 
         var linkText = links.selectAll("text")
-          .data(targetObject.links)
+          .data(nGraph.links)
           .enter().append("text")
           .attr("class", "link-text")
           .text(function (d) {
@@ -152,7 +255,7 @@
         var nodes = g.append("g")
           .attr("class", "nodes");
         var node = nodes.selectAll("circle")
-          .data(targetObject.nodes)
+          .data(nGraph.nodes)
           .enter().append("circle")
           .attr("r", 5)
           .attr("fill", function (d) {
@@ -171,7 +274,7 @@
           });
 
         var nodeText = nodes.selectAll("text")
-          .data(targetObject.nodes)
+          .data(nGraph.nodes)
           .enter().append("text")
           .attr("class", "node-text")
           .text(function (d) {
@@ -183,7 +286,7 @@
 
 
 
-        simu.on("tick", function () {
+        force.on("tick", function () {
           // 更新连线坐标
           link.attr("x1", function (d) {
             return d.source.x;
@@ -222,7 +325,8 @@
       },
 
       findObject:function (graph) {
-        return graph.resourceAttr===this.selectedAttr;
+        var _this = this;
+        return graph.resourceAttr===_this.selectedAttr;
       }
     }
   }
