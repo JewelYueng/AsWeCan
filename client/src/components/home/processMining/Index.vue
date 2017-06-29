@@ -46,7 +46,7 @@
 </style>
 
 <script>
-  import Sankey from "./sankey.vue"
+  import Sankey from "./Sankey.vue"
 
   import {mapActions} from 'vuex'
 
@@ -67,21 +67,21 @@
         Sankey
     },
     created(){
-      this.changeHomePath('/')
+      this.changeHomePath('/mining')
     },
     methods: {
-      ...mapActions(['changeHomePath','changeFilePath']),
+      ...mapActions(['changeHomePath','changeDiagramPath']),
       handleSelect(key, keyPath) {
         this.active_index = key
-        this.changeFilePath(key)
+        this.changeDiagramPath(key)
       }
     },
     computed: {
       current_view() {
-        return this.view_dict[this.$store.getters.file_path || '1']
+        return this.view_dict[this.current_index || '1']
       },
       current_index(){
-        return this.$store.getters.file_path
+        return this.$store.getters.diagram_path
       }
     }
   }

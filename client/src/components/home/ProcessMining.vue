@@ -143,7 +143,6 @@
     components: {},
     created(){
       this.changeHomePath('/mining')
-      this.$d3.selectAll('p').style('color', 'white');
       this.$api({method: 'getMiningMethods'}).then( res => {
         console.log(res)
         this.methods = res.data.methods
