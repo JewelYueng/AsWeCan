@@ -12,7 +12,7 @@
       </el-menu>
     </div>
     <div id="right-window">
-      <component :is="current_view" :resource="resource"></component>
+      <component :is="current_view" :sankey="sankey" :petri="petri" :produce="produce" :resource="resource"></component>
     </div>
   </div>
 </template>
@@ -62,7 +62,10 @@
           //"2-2":
           "3": Sankey
         },
-        diagram_data: {}
+        sankey: {},
+        petri: {},
+        resource: {},
+        produce: {}
       }
     },
     components: {
@@ -71,8 +74,7 @@
     },
     created(){
       this.changeHomePath('/mining')
-      let mining_params = this.$route.params.raw_data
-      this.diagram_data.resource = this.$route.params.resource_data
+      this.resource = this.$route.params.resource_data
       this.getDiagramData('PetriNet')
       this.getDiagramData('Sankey')
       this.getDiagramData('TransitionSystem')
@@ -90,6 +92,7 @@
           'Sankey': 'sankey',
           'TransitionSystem': 'produce',
         }
+        let mining_params = this.$route.params.raw_data
         this.$api({
           method: 'mining',
           body: _.extend({
@@ -97,7 +100,7 @@
           },mining_params)
         }).then( res => {
           if (res.status === 200) {
-            this.diagram_data.petri = res.data.diagram
+            this[diagram_dict[diagram_type]] = res.data.diagram
           }}, err => {
           this.$hint('网络出错，请刷新再试','warn')
         })
