@@ -54,6 +54,9 @@
   #merge-result{
     background-color: @light_theme;
     height: 100%;
+    width: @major_width;
+    padding: 10px;
+    box-sizing: border-box;
     .header {
       text-align: left;
       font-size: 24px;
@@ -67,15 +70,14 @@
       flex-direction: column;
       align-items: flex-start;
       justify-content: flex-start;
-      height: 650px;
       overflow-y: auto;
-      width: @right_side_width - 80px;
+      width: 100%;
       padding: 10px;
       box-sizing: border-box;
       .result-item{
         display: flex;
         flex-direction: row;
-        width: @right_side_width - 130px;
+        width: 96%;
         border-bottom: @dark_theme 1px solid;
         padding: 20px  ;
         .key{

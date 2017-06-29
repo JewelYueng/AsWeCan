@@ -22,14 +22,18 @@
         <div class="operations"></div>
       </div>
       <div class="list" v-for="(item,index) in items">
-        <div class="img-button log-name" @click="showDetail(index)">{{item.eventLog.logName}}</div>
+        <div class="img-button log-name" @click="showDetail(index)" :title="item.eventLog.logName">{{item.eventLog.logName}}</div>
         <div class="uploader">{{item.eventLog.userId}}</div>
         <div class="date">
           {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()}`}}
         </div>
-        <div class="raw-log">{{item.rawLog ? item.rawLog.logName : '无'}}</div>
-        <div class="normal-log">{{item.normalLog ? item.normalLog.logName : '无'}}</div>
-        <div class="merge-relation">{{item.eventLog.mergeRelation ? `` : '无'}}</div>
+        <div class="raw-log" :title="item.rawLog ? item.rawLog.logName : '无'">{{item.rawLog ? item.rawLog.logName : '无'}}</div>
+        <div class="normal-log" :title="item.normalLog ? item.normalLog.logName : '无'">{{item.normalLog ? item.normalLog.logName : '无'}}</div>
+        <div class="merge-relation">
+          <div v-if="item.eventLog.mergeRelation" class="relation1" @click="selectedRel(index,0)" :title="item.eventLog.mergeRelation.split(',')[0]">{{item.eventLog.mergeRelation.split(',')[0]}}</div>
+          <div v-if="item.eventLog.mergeRelation" class="relation2" @click="selectedRel(index,1)" :title="item.eventLog.mergeRelation.split(',')[1]">{{item.eventLog.mergeRelation.split(',')[1]}}</div>
+          <div v-show="!item.eventLog.mergeRelation">没有融合来源</div>
+        </div>
         <div class="operations">
           <img class="download_button" title="下载" src="static/img/download_color.png" @click="download(index)">
         </div>

@@ -1,9 +1,7 @@
 <template>
   <div>
     <h1>Sankey Diagrams</h1>
-    <p id="chart">
-      <svg width="960" height="500"></svg>
-    </p>
+    <svg width="960" height="500"></svg>
 
   </div>
 </template>
@@ -18,8 +16,8 @@
 </style>
 
 <script>
-  import * as d3 from 'd3'
-  import * as d3_sankey from 'd3-sankey'
+  //  import * as d3 from 'd3'
+  //  import * as d3_sankey from 'd3-sankey'
   import {mapActions} from 'vuex'
   //  let sankey = function () {
   //    var sankey = {},
@@ -853,12 +851,10 @@
           height = +svg.attr("height");
 
         var formatNumber = d3.format(",.0f"),
-          format = function (d) {
-            return formatNumber(d) + " TWh";
-          },
+          format = function(d) { return formatNumber(d) + " TWh"; },
           color = d3.scaleOrdinal(d3.schemeCategory10);
 
-        d3_sankey.sankey()
+        var sankey = d3.sankey()
           .nodeWidth(15)
           .nodePadding(10)
           .extent([
@@ -880,14 +876,12 @@
           .attr("font-size", 10)
           .selectAll("g");
 
-        d3_sankey.sankey(this.energy);
-        console.log(d3_sankey.sankeyLinkHorizontal())
+        sankey(this.energy);
         debugger
         link = link
           .data(this.energy.links)
           .enter().append("path")
-//          .attr("d", 'M16,136.6610907581682C75.85714285714286,136.6610907581682,75.85714285714286,141.90009870097748,135.71428571428572,141.90009870097748')
-          .attr("d", d3_sankey.sankeyLinkHorizontal())
+          .attr("d", d3.sankeyLinkHorizontal())
           .attr("stroke-width", function (d) {
             return Math.max(1, d.width);
           });
@@ -953,7 +947,7 @@
     created(){
       this.changeDiagramPath('3')
       this.resolvedLinks()
-      console.log(d3.select("svg").attr('width'))
+      console.log(d3.select('svg').attr(width))
       this.initSVG()
     }
   }
