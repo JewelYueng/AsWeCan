@@ -106,6 +106,8 @@
     cursor: pointer;
   }
 
+  .button:hover{background-color: @light_blue}
+
   .button {
     cursor: pointer;
     display: inline-block;
