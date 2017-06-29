@@ -67,6 +67,13 @@ public class MiningMethodServiceTest {
     }
 
     @Test
+    public void getActiveMethodsTest() throws Exception {
+        List<MiningMethod> activeMethods = miningMethodService.getActiveMethods();
+        Assert.assertFalse(activeMethods.isEmpty());
+        System.out.println("getActiveMethodsTest: activeMethods: " + toJSON(activeMethods));
+    }
+
+    @Test
     public void getAlgorithmTest() throws Exception {
         Algorithm algorithm = miningMethodService.getAlgorithmById(activeMethod.getId());
         Assert.assertNotNull(algorithm);

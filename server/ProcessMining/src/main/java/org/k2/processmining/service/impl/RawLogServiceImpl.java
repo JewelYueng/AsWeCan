@@ -1,5 +1,6 @@
 package org.k2.processmining.service.impl;
 
+import org.k2.processmining.cache.CacheConfig;
 import org.k2.processmining.mapper.NormalLogMapper;
 import org.k2.processmining.mapper.RawLogMapper;
 import org.k2.processmining.model.LogGroup;
@@ -15,6 +16,8 @@ import org.k2.processmining.support.normal.transform.LogConfiguration;
 import org.k2.processmining.support.normal.transform.Normalize;
 import org.k2.processmining.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -44,6 +47,7 @@ public class RawLogServiceImpl implements RawLogService {
     }
 
     @Override
+//    @Cacheable(value = CacheConfig.RAW_LOG_CACHE, key = "'userId_'+#user.id")
     public List<LogGroup> getLogsByUser(User user) {
         List<LogGroup> logGroups = rawLogMapper.listLogGroups(user.getId(), LogState.ACTIVE.getValue(),-1,null);
         verifyLogGroupsIsActive(logGroups);

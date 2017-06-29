@@ -5,10 +5,12 @@ import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.log.RawLog;
 import org.k2.processmining.model.user.User;
 
+import java.io.Serializable;
+
 /**
  * Created by nyq on 2017/6/18.
  */
-public class LogGroup {
+public class LogGroup implements Serializable{
     private User user;
     private RawLog rawLog;
     private NormalLog normalLog;

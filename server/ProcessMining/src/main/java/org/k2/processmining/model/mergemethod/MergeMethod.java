@@ -1,9 +1,11 @@
 package org.k2.processmining.model.mergemethod;
 
+import java.io.Serializable;
+
 /**
  * Created by Aria on 2017/6/9.
  */
-public class MergeMethod {
+public class MergeMethod implements Serializable{
     private String id;
     private String methodName;
     private int state = 1;

@@ -1,6 +1,7 @@
 package org.k2.processmining.service.impl;
 
 import org.deckfour.xes.model.XLog;
+import org.k2.processmining.cache.CacheConfig;
 import org.k2.processmining.exception.JSONInternalServerErrorException;
 import org.k2.processmining.mapper.MiningMethodMapper;
 import org.k2.processmining.model.LogState;
@@ -21,6 +22,7 @@ import org.k2.processmining.support.mining.model.DiagramType;
 import org.k2.processmining.support.reflect.ReflectUtil;
 import org.k2.processmining.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -80,13 +82,13 @@ public class MiningMethodServiceImpl implements MiningMethodService {
     }
 
     public Map<String, Object> getMethodConfig(MiningMethod miningMethod) {
-        return miningMethod == null ? Collections.emptyMap() : getMethodConfig(miningMethod.getId());
+        return miningMethod == null ? null : getMethodConfig(miningMethod.getId());
     }
 
     public Map<String, Object> getMethodConfig(String methodId) {
         Algorithm<Miner> algorithm = MinerFactory.getInstance().getAlgorithm(methodId);
         if (algorithm == null) {
-            return Collections.emptyMap();
+            return null;
         }
         return algorithm.getConfigMap();
     }
@@ -146,7 +148,7 @@ public class MiningMethodServiceImpl implements MiningMethodService {
         Object res = null;
         Miner miner = algorithm.getAlgorithm();
         switch (type) {
-            case PetriNet:
+            case PetriNet: default:
                 res = miner.toPetriNet(net, xLog);
                 break;
             case ResourceRelation:
@@ -158,16 +160,14 @@ public class MiningMethodServiceImpl implements MiningMethodService {
             case Sankey:
                 res = miner.toSankey(net, xLog);
                 break;
-            default:
-                break;
         }
         timeResult.setResult(res);
         return timeResult;
     }
 
     @Override
+    @Cacheable(value = CacheConfig.NET_CACHE, keyGenerator = "netKeyGenerator")
     public TimeResult<SimpleHeuristicsNet> mining(Algorithm<Miner> algorithm, EventLog eventLog, XLog xLog, Map<String,Object> params) {
-        System.out.println("in mining");
         TimeResult<SimpleHeuristicsNet> timeResult = new TimeResult<>();
         timeResult.start();
         SimpleHeuristicsNet net = algorithm.getAlgorithm().mining(xLog, params);

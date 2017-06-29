@@ -1,9 +1,11 @@
 package org.k2.processmining.service;
 
+import java.io.Serializable;
+
 /**
  * Created by nyq on 2017/6/24.
  */
-public class TimeResult<T> {
+public class TimeResult<T> implements Serializable {
     private T result;
     private long time;
 

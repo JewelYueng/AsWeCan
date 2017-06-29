@@ -1,11 +1,12 @@
 package org.k2.processmining.model.log;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Aria on 2017/6/13.
  */
-public abstract class AbstractLog {
+public abstract class AbstractLog implements Serializable{
     private String type;  //日志类型
     private String id;
     private String logName;
