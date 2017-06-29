@@ -28,8 +28,8 @@
     background-color: #58a181;
   }
 </style>
-<script src="/static/js/sankey.js"></script>
-<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+
 <script>
   export default{
     data(){
@@ -59,22 +59,45 @@
                       {"name":"[Anne, Mike]"},
                       {"name":"[Pete, Mary, Sara, Sam, Pam, John, Carol]"},
                       {"name":"[Pete, Sara, Mary, Sam, Pam, John, Carol]"}
-                    ]}
+                    ]},
+              { "resourceAttr":"source",
+                "links":
+                  [
+                    {"source":"[__INVALID__]","target":"[Anne, Mike]","value":136},
+                    {"source":"[__INVALID__]","target":"[Wil]","value":526},
+                    {"source":"[Anne, Mike]","target":"[Pete, Sara, Mary, Sam, Pam, John, Carol]","value":526},
+                    {"source":"[Wil]","target":"[Anne, Mike]","value":1252},
+                    {"source":"[Anne, Mike]","target":"[Wil]","value":200},
+                    {"source":"[Pete, Mary, Sara, Sam, Pam, John, Carol]","target":"[Anne, Mike]","value":64},
+                    {"source":"[Pete, Sara, Mary, Sam, Pam, John, Carol]","target":"[Wil]","value":526},
+                    {"source":"[Anne, Mike]","target":"[Pete, Mary, Sara, Sam, Pam, John, Carol]","value":108},
+                    {"source":"[Anne, Mike]","target":"[__INVALID__]","value":618}
+                  ],
+                "nodes":
+                  [
+                    {"name":"[____]"},
+                    {"name":"[Wil]"},
+                    {"name":"[Anne, Mike]"},
+                    {"name":"[Pete, Mary, Sara, Sam, Pam, John, Carol]"},
+                    {"name":"[Pete, Sara, Mary, Sam, Pam, John, Carol]"}
+                  ]},
             ]}
 
       }
     },
     methods:{
       produceLayout:function () {
-        let targetObject=this.items.diagram.find(findObject);
+        let targetObject=this.items.diagram.find(this.findObject);
         let width = 1000;
         let height = 1000;
+        console.log(targetObject)
         var svg = d3.select(".chart")
           .append("svg")
           .attr("width",width)
           .attr("height",height);
-        let color = d3.scale.category20();
-        var force = this.$d3.layout.force()
+        var color = d3.scale.category20();
+//       let color = this.$d3.scaleOrdinal(this.$d3.schemeCategory20)
+        var force = d3.layout.force()
           .nodes(targetObject.nodes)
           .links(targetObject.links)
           .size([width, height])
@@ -82,10 +105,16 @@
           .charge([-400]);
 
         force.start();
+//        var simu = this.$d3.forceSimulation(targetObject.nodes)
+//          .force("charge", -400)
+//          .force("link", this.$d3.forceLink(targetObject.links))
+//          .force("center", d3.forceCenter());;
+
+
 
         var g = svg.append("g");
 
-        svg.call(this.$d3.behavior.zoom()
+        svg.call(d3.behavior.zoom()
           .scaleExtent([1 / 8, 8])
           .on("zoom", zoomed));
 
@@ -114,7 +143,7 @@
 
         var forceDrag = force.drag()
           .on("dragstart", function () {
-            this.$d3.event.sourceEvent.stopPropagation();
+            d3.event.sourceEvent.stopPropagation();
           });
 
         var nodes = g.append("g")
@@ -127,6 +156,11 @@
             return color(d.group);
           })
           .call(forceDrag);
+
+        function zoomed() {
+          g.attr("transform",
+            "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+        };
 
         node.append("title")
           .text(function (d) {
@@ -146,7 +180,7 @@
 
 
 
-        force.on("tick", function () {
+        simu.on("tick", function () {
           // 更新连线坐标
           link.attr("x1", function (d) {
             return d.source.x;
@@ -183,10 +217,7 @@
         });
 
       },
-      zoomed:function() {
-    g.attr("transform",
-      "translate(" + this.$d3.event.translate + ")scale(" + this.$d3.event.scale + ")");
-  },
+
       findObject:function (graph) {
         return graph.resourceAttr===this.selectedAttr;
       }

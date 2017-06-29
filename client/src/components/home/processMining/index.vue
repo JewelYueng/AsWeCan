@@ -47,6 +47,7 @@
 
 <script>
   import Sankey from "./sankey.vue"
+  import ResourceRelation from './ResourceRelation.vue'
 
   import {mapActions} from 'vuex'
 
@@ -56,7 +57,7 @@
         msg: 'leftSide',
         active_index: '1',
         view_dict: {
-         // "1":
+          "1":ResourceRelation,
           //"2-1":
           //"2-2":
           "3": Sankey
@@ -64,7 +65,8 @@
       }
     },
     components: {
-        Sankey
+        Sankey,
+      ResourceRelation
     },
     created(){
       this.changeHomePath('/')
