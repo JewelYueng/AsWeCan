@@ -16,6 +16,7 @@
   }
 
 </style>
+
 <script>
   import * as d3 from 'd3'
   import {sankey, sankeyLinkHorizontal} from 'd3-sankey'
@@ -884,7 +885,7 @@
         link = link
           .data(this.energy.links)
           .enter().append("path")
-          .attr("d", sankeyLinkHorizontal())
+          .attr("d", 'M16,136.6610907581682C75.85714285714286,136.6610907581682,75.85714285714286,141.90009870097748,135.71428571428572,141.90009870097748')
           .attr("stroke-width", function (d) {
             return Math.max(1, d.width);
           });
@@ -902,16 +903,20 @@
 
         node.append("rect")
           .attr("x", function (d) {
-            return d.x0;
+//            return d.x0;
+            return 1
           })
           .attr("y", function (d) {
-            return d.y0;
+//            return d.y0;
+            return 130.00906008125477
           })
           .attr("height", function (d) {
-            return d.y1 - d.y0;
+//            return d.y1 - d.y0;
+            return 13.304061353826853
           })
           .attr("width", function (d) {
-            return d.x1 - d.x0;
+//            return d.x1 - d.x0;
+            return 15
           })
           .attr("fill", function (d) {
             return color(d.name.replace(/ .*/, ""));
