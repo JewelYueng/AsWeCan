@@ -34,9 +34,9 @@
         </el-select>
       </div>
       <br>
-
+      <el-button type="primary" @click="mining()">开始挖掘</el-button>
     </div>
-    <el-button type="primary" @click="mining()">开始挖掘</el-button>
+
   </div>
 </template>
 <style lang="less" scoped rel="stylesheet/less">
@@ -66,12 +66,13 @@
     border-radius: @log_button_border-radius;
     background-color: white;
     border: 2px solid @dark_theme;
+    margin: 30px;
   }
 
   .mining-list {
-    height: @main_height;
     background-color: @light_theme;
-    overflow: hidden;
+    min-height: 500px;
+    padding: 10px;
   }
 
   .title {
@@ -84,12 +85,11 @@
     text-align: left;
   }
 
-  .file1_choose{
-    margin-left: 50px;
+  .file_choose{
+    margin-left: 30px;
     margin-top: 5px;
     margin-bottom: 10px;
     text-align: left;
-
   }
 
   hr {
@@ -132,10 +132,13 @@
       },
       mining: function () {
         this.$router.push({name: "miningResult"})
+        this.$api({
+          method: 'mining'
+        })
       },
       chooseLog(index){
         this.$modal({type: 'show-logs'}).then((res)=>{
-          this[`log${index}`] = res
+          this.log = res
         })
 
       }
