@@ -1,6 +1,7 @@
 package org.k2.processmining.controller;
 
 import org.apache.ibatis.annotations.Param;
+import org.k2.processmining.exception.JSONBadRequestException;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.MethodState;
 import org.k2.processmining.model.log.EventLog;
@@ -62,23 +63,13 @@ public class MergeController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public @ResponseBody Object merge(@Valid @RequestBody MergeMethodForm form) {
         MergeMethod mergeMethod = mergeMethodService.getMethodById(form.methodId);
-        Map<String, Object> res = new HashMap<>();
-        if (mergeMethod == null || ! mergeMethodService.isActive(mergeMethod)) {
-            res.put("msg", "The merge algorithm is not exist!");
-            return ResponseEntity.badRequest().body(res);
-        }
-        User user = getUser();
         EventLog eventLog1 = eventLogService.getEventLogById(form.getEventLogId1());
         EventLog eventLog2 = eventLogService.getEventLogById(form.getEventLogId2());
-        if (!Util.isActiveAndBelongTo(eventLog1, user) || !Util.isActiveAndBelongTo(eventLog2, user)) {
-            res.put("msg", "The event logs are not exist!");
-            return ResponseEntity.badRequest().body(res);
-        }
-        TimeResult<EventLog> result = mergeMethodService.merge(eventLog1, eventLog2, form.methodId, form.parameters);
+        TimeResult<EventLog> result = mergeMethodService.merge(eventLog1, eventLog2, mergeMethod, form.parameters);
         if (result == null) {
-            res.put("msg", "Fail to merge the logs. Please check the input content and try again!");
-            return ResponseEntity.status(HttpServletResponse.SC_BAD_REQUEST).body(res);
+            throw new JSONBadRequestException("Fail to merge the logs. Please check the input content and try again!");
         }
+        Map<String, Object> res = new HashMap<>();
         res.put("timeCost", result.getTime());
         res.put("eventLog", result.getResult());
         return res;

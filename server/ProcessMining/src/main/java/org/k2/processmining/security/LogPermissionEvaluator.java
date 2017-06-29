@@ -17,18 +17,13 @@ public class LogPermissionEvaluator implements PermissionEvaluator {
     @Override
     public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
         if (targetDomainObject == null) {
-            throw new JSONForbiddenException("没有权限操作！");
+            throw new JSONForbiddenException("Attempted to access the protected resource!");
         }
         if (targetDomainObject instanceof AbstractLog) {
             AbstractLog log = (AbstractLog) targetDomainObject;
 //            MyUserDetails userDetail = (MyUserDetails) authentication.getPrincipal();
-//            if (! log.getUserId().equals(userDetail.getUser().getId())) {
-//                throw new JSONForbiddenException("没有权限操作日志！");
-//            }
-            if (! log.getUserId().equals("1")) {
-                throw new JSONForbiddenException("没有权限操作日志！");
-            }
-            return true;
+//            return log.getUserId().equals(userDetail.getUser().getId());
+            return log.getUserId().equals("1");
         }
         else if (targetDomainObject instanceof Algorithm) {
             return true;

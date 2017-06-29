@@ -54,27 +54,27 @@ public class MergeMethodServiceWhiteBoxTest {
         Map<String,Object> params = new HashMap<>();
 
         // 判定情况 1:true
-        res = mergeMethodService.merge(eventLog1, eventLog2, inactiveMethod.getId(), params);
+        res = mergeMethodService.merge(eventLog1, eventLog2, inactiveMethod, params);
         Assert.assertNull(res);
 
         // 判定情况 1:false, 2:true
         Merger merger = MergerFactory.getInstance().getAlgorithm(activeMethod.getId()).getAlgorithm();
         MergerFactory.getInstance().getAlgorithm(activeMethod.getId()).setAlgorithm(null);
-        res = mergeMethodService.merge(eventLog1, eventLog2, activeMethod.getId(), params);
+        res = mergeMethodService.merge(eventLog1, eventLog2, activeMethod, params);
         Assert.assertNull(res);
         MergerFactory.getInstance().getAlgorithm(activeMethod.getId()).setAlgorithm(merger);
 
         // 判定情况 1:false, 2:false, 3:true
-        res = mergeMethodService.merge(null, eventLog2, activeMethod.getId(), params);
+        res = mergeMethodService.merge(null, eventLog2, activeMethod, params);
         Assert.assertNull(res);
 
         // 判定情况 1:false, 2:false, 3:false, 4:true
-        res = mergeMethodService.merge(eventLog1, null, activeMethod.getId(), params);
+        res = mergeMethodService.merge(eventLog1, null, activeMethod, params);
         Assert.assertNull(res);
 
         // 判定情况 1:false, 2:false, 3:false, 4:false, 5:true
         MergerFactory.getInstance().getAlgorithm(activeMethod.getId()).setAlgorithm(((xLog1, xLog2, params1) -> null));
-        res = mergeMethodService.merge(eventLog1, eventLog2, activeMethod.getId(), params);
+        res = mergeMethodService.merge(eventLog1, eventLog2, activeMethod, params);
         Assert.assertNull(res);
         MergerFactory.getInstance().getAlgorithm(activeMethod.getId()).setAlgorithm(merger);
 
@@ -82,7 +82,7 @@ public class MergeMethodServiceWhiteBoxTest {
 //        Assert.assertNull(res);
 
         // 判定情况 1:false, 2:false, 3:false, 4:false, 5 false, 6:false
-        res = mergeMethodService.merge(eventLog1, eventLog2, activeMethod.getId(), params);
+        res = mergeMethodService.merge(eventLog1, eventLog2, activeMethod, params);
         Assert.assertNotNull(res);
     }
 }
