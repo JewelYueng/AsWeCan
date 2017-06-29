@@ -96,20 +96,21 @@
           .append("svg")
           .attr("width",width)
           .attr("height",height);
-        var color = d3.scale.category20();
-//       let color = this.$d3.scaleOrdinal(this.$d3.schemeCategory20)
-        var force = d3.layout.force()
-          .nodes(targetObject.nodes)
-          .links(targetObject.links)
-          .size([width, height])
-          .linkDistance(150)
-          .charge([-400]);
-
-        force.start();
-//        var simu = this.$d3.forceSimulation(targetObject.nodes)
-//          .force("charge", -400)
-//          .force("link", this.$d3.forceLink(targetObject.links))
-//          .force("center", d3.forceCenter());;
+//        var color = d3.scale.category20();
+        
+      let color = d3.scaleOrdinal(d3.schemeCategory20)
+//        var force = d3.layout.force()
+//          .nodes(targetObject.nodes)
+//          .links(targetObject.links)
+//          .size([width, height])
+//          .linkDistance(150)
+//          .charge([-400]);
+//
+//        force.start();
+        var simu = d3.forceSimulation(targetObject.nodes)
+          .force("charge", -400)
+          .force("link", d3.forceLink(targetObject.links))
+          .force("center", d3.forceCenter());;
 
 
 
