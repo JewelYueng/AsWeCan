@@ -8,7 +8,7 @@ import ProcessMining from "components/home/ProcessMining"
 import Login from "components/login/index"
 import Register from "components/register/index"
 import Home from "components/home/index"
-import MiningResult from "components/home/processMining/index"
+import MiningResult from "components/home/processMining/Index"
 
 Vue.use(Router)
 

@@ -90,8 +90,6 @@ d3.sankey = function() {
 
       if (typeof source === 'number') source = link.source = nodes[link.source];
       if (typeof target === "number") target = link.target = nodes[link.target];
-      // if (typeof source === 'string' ) source = link.source = nodes[nodes.findIndex( node => { return node.name === source})]
-      // if (typeof target === 'string' ) target = link.target = nodes[nodes.findIndex( node => { return node.name === target})]
       source.sourceLinks.push(link);
       target.targetLinks.push(link);
 
@@ -131,6 +129,7 @@ d3.sankey = function() {
       });
       remainingNodes = nextNodes;
       ++x;
+      debugger
     }
 
     //
