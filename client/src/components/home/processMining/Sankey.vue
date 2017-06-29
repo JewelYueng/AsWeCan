@@ -1,19 +1,23 @@
 <template>
   <div class="sankey">
     <h1>Sankey Diagrams</h1>
+    <div class="show">
     <el-button type="primary" @click="produceLayout()">展现桑基图</el-button>
-    <div class="chart">
-
     </div>
+    <svg class="chart">
+    </svg>
   </div>
 </template>
 
 <style type="text/css" rel="stylesheet/less">
-  .chart {
-    height: 500px;
-    background-color: #58a181;
-  }
 
+  .sankey{
+    display: flex;
+    flex-direction: column;
+    .show{
+      text-align: center;
+    }
+  }
   .node rect {
     cursor: move;
     fill-opacity: .9;
@@ -102,16 +106,15 @@ export default{
           left: 1
         },
         width = 960 - margin.left - margin.right,
-        height = 500 * (1 + parseInt(this.items.diagram.nodes.length / 10)) - margin.top - margin.bottom;
+        height = 300 * (1 + parseInt(this.items.diagram.nodes.length / 10)) - margin.top - margin.bottom;
 
       var formatNumber = d3.format(",.0f"),
         format = function (d) {
           return formatNumber(d) + " 次";
-        }
+        },
+        color = d3.scale.category20();
 
-        var color = d3.scale.category20();
-
-      var svg = d3.select(".chart").attr("class", "link")
+      var svg = d3.select(".chart").attr("class", "sankey")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
@@ -123,11 +126,6 @@ export default{
         .size([width, height]);
 
       var path = sankey.link();
-
-
-
-
-
 
 
       var kimap = {};
@@ -199,8 +197,14 @@ export default{
         .enter().append("path")
         .attr("class", "link")
         .attr("d", path)
-        .style("stroke-width", function(d) { return Math.max(1, d.dy); })
-        .sort(function(a, b) { return b.dy - a.dy; });
+        .attr("stroke-width", function(d) { return Math.max(1, d.dy); })
+        .sort(function(a, b) { return b.dy - a.dy; })
+        .attr({
+          fill: "none",   //填充色
+          stroke: function(d,i){ return color(i); },  //描边色
+          "stroke-opacity": 0.5,  //描边透明度
+          id: function(d,i){ return 'link' +i }  //ID
+        });
 
 // add the link titles
       link.append("text")
@@ -210,6 +214,7 @@ export default{
         .text(function(d) {
           return d.source.name + " → " +
             d.target.name + "\n" + format(d.value); });
+
 
 // add in the nodes
       var node = svg.append("g").selectAll(".node")
@@ -238,15 +243,18 @@ export default{
 
 // add in the title for the nodes
       node.append("text")
-        .attr("x", -6)
-        .attr("y", function(d) { return d.dy / 2; })
-        .attr("dy", ".35em")
+        .attr("y", function(d) { return d.dy/2; })
+        .attr("x", function(d) { return d.dx - 6; })
+        .attr("dy", "0.35em")
         .attr("text-anchor", "end")
-        .attr("transform", null)
         .text(function(d) { return d.name; })
         .filter(function(d) { return d.x < width / 2; })
-        .attr("x", 6 + sankey.nodeWidth())
-        .attr("text-anchor", "start");
+        .attr("x", function(d) { return d.dx + 6; })
+        .attr("text-anchor", "start")
+
+
+      node.append("title")
+        .text(function(d) { return d.name + "\n" + format(d.value); });
 
 // the function for moving the nodes
       function dragmove(d) {
