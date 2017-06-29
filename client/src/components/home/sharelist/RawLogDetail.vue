@@ -20,8 +20,8 @@
         <div class="date">
           {{`${new Date(item.rawLog.createDate).getFullYear()}-${new Date(item.rawLog.createDate).getMonth() + 1}-${new Date(item.rawLog.createDate).getDate()}`}}
         </div>
-        <div class="normal-log">{{item.normalLog ? item.normalLog.logName : '无'}}</div>
-        <div class="event-log">{{item.eventLog ? item.eventLog.logName : '无'}}</div>
+        <div class="normal-log" :title="item.normalLog ? item.normalLog.logName : '无'">{{item.normalLog ? item.normalLog.logName : '无'}}</div>
+        <div class="event-log" :title="item.eventLog ? item.eventLog.logName : '无'">{{item.eventLog ? item.eventLog.logName : '无'}}</div>
         <div class="operations">
           <img class="download_button" title="下载" src="static/img/download_color.png" @click="download(index)">
         </div>

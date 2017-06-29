@@ -29,7 +29,7 @@
       <div class="list" v-for="(item,index) in items" :class="{selectedItem: isSelected(index)}">
         <div class="input-box log-head">
           <input type="checkbox" v-model="checked" :value="item.eventLog.id" @click="currClick(item,index)">
-          <span @click="showDetail(index)" class="log-name">{{item.eventLog.logName}}</span>
+          <span @click="showDetail(index)" class="log-name" :title="item.eventLog.logName">{{item.eventLog.logName}}</span>
         </div>
         <div class="operations">
           <img class="process_button img-button" title="开始流程挖掘" v-on:click="processMining(index)"
@@ -45,15 +45,15 @@
         <div class="date">
           {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()}`}}
         </div>
-        <div @click="jumpToRaw(index)" class="relation-logs raw-log">
+        <div @click="jumpToRaw(index)" class="relation-logs raw-log" :title="item.rawLog ? item.rawLog.logName : '无'">
           {{item.rawLog ? item.rawLog.logName : '无'}}
         </div>
-        <div @click="jumpToNormal(index)" class="relation-logs normal-log">
+        <div @click="jumpToNormal(index)" class="relation-logs normal-log" :title="item.normalLog ? item.normalLog.logName : '无'">
           {{item.normalLog ? item.normalLog.logName : '无'}}
         </div>
         <div class="merge-relation">
-          <div v-if="item.eventLog.mergeRelation" class="relation1" @click="selectedRel(index,0)">{{item.eventLog.mergeRelation.split(',')[0]}}</div>
-          <div v-if="item.eventLog.mergeRelation" class="relation2" @click="selectedRel(index,1)">{{item.eventLog.mergeRelation.split(',')[1]}}</div>
+          <div v-if="item.eventLog.mergeRelation" class="relation1" @click="selectedRel(index,0)" :title="item.eventLog.mergeRelation.split(',')[0]">{{item.eventLog.mergeRelation.split(',')[0]}}</div>
+          <div v-if="item.eventLog.mergeRelation" class="relation2" @click="selectedRel(index,1)" :title="item.eventLog.mergeRelation.split(',')[1]">{{item.eventLog.mergeRelation.split(',')[1]}}</div>
           <div v-show="!item.eventLog.mergeRelation">没有融合来源</div>
         </div>
       </div>
