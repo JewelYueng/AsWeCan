@@ -77,7 +77,7 @@
                   ],
                 "nodes":
                   [
-                    {"name":"[__INVALID__]"},
+                    {"name":"[____]"},
                     {"name":"[Wil]"},
                     {"name":"[Anne, Mike]"},
                     {"name":"[Pete, Mary, Sara, Sam, Pam, John, Carol]"},
@@ -98,8 +98,9 @@
           .attr("width",width)
           .attr("height",height);
 //        var color = d3.scale.category20();
-       let color = d3.scaleOrdinal(d3.schemeCategory20)
-//        var force = forceSimulation()
+
+      let color = d3.scaleOrdinal(d3.schemeCategory20)
+//        var force = d3.layout.force()
 //          .nodes(targetObject.nodes)
 //          .links(targetObject.links)
 //          .size([width, height])
@@ -107,10 +108,10 @@
 //          .charge([-400]);
 //
 //        force.start();
-        var simu =forceSimulation(targetObject.nodes)
-        simu.force("charge", -400)
-//          .force("link", forceLink(targetObject.links))
-//          .force("center", forceCenter());
+        var simu = d3.forceSimulation(targetObject.nodes)
+          .force("charge", -400)
+          .force("link", d3.forceLink(targetObject.links))
+          .force("center", d3.forceCenter());;
 
 
 
@@ -143,7 +144,7 @@
             return d.value;
           });
 
-        var forceDrag = simu.drag()
+        var forceDrag = force.drag()
           .on("dragstart", function () {
             d3.event.sourceEvent.stopPropagation();
           });
