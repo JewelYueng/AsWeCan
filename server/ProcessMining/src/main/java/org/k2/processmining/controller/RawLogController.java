@@ -25,6 +25,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -180,6 +181,7 @@ public class RawLogController {
     @RequestMapping(value = "/search",method = RequestMethod.GET)
     public @ResponseBody
     Object getLogByFuzzyName(@RequestParam("keyWord")String keyWord){
+        keyWord = Util.validateString(keyWord);
         Map<String,Object> result = new HashMap<>();
         User user = getUser();
         List<LogGroup> logGroups = rawLogService.getLogByFuzzyName(keyWord,user);
@@ -190,8 +192,15 @@ public class RawLogController {
     @RequestMapping(value = "/sharedLogs/search", method = RequestMethod.GET)
     public @ResponseBody
     Object getSharedLogByFuzzyName(@RequestParam("keyWord") String keyWord) {
+        keyWord = Util.validateString(keyWord);
         List<LogGroup> logGroups = rawLogService.getSharedLogsByFuzzyName(keyWord);
         return new HashMap<String,Object>(){{put("logGroups", logGroups);}};
+    }
+
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public @ResponseBody
+    Object getAllLogs() {
+        return new HashMap<String,Object>(){{put("logGroups", rawLogService.getLogGroups());}};
     }
 
     private User getUser() {

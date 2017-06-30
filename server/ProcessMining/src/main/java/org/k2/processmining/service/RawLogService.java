@@ -16,6 +16,15 @@ import java.util.List;
  * Created by Aria on 2017/6/13.
  */
 public interface RawLogService {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    List<LogGroup> getLogGroups();
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    List<LogGroup> getLogGroupsByKeyWord(String keyWord);
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    void deleteByAdmin(List<String> ids);
+
     RawLog getRawLogById(String id);
     List<LogGroup> getLogsByUser(User user);
     List<LogGroup> getSharedLogs();

@@ -91,4 +91,11 @@ public class Util {
             throw new JSONBadRequestException("The type of diagram does not exist!");
         }
     }
+
+    public static String validateString(String keyWord) {
+        if (keyWord == null || (keyWord=keyWord.trim()).length() == 0) {
+            throw new JSONBadRequestException("Illegal keyWord!");
+        }
+        return keyWord;
+    }
 }

@@ -81,30 +81,6 @@
          VALUES (#{id}, #{logName}, #{createDate}, #{userId}, #{format}, #{state}, #{isShared})
     </insert>
 
-    <!--<update id="updateShareStateByLogId" parameterType="RawLog">-->
-        <!--UPDATE raw_log-->
-        <!--SET isshared = #{isShared,jdbcType = TINYINT}-->
-        <!--WHERE id = #{id,jdbcType = TINYINT}-->
-    <!--</update>-->
-
-    <update id="updateLogStateByLogId">
-        UPDATE raw_log
-        SET state = #{state, jdbcType = TINYINT}
-        WHERE id IN
-        <foreach collection="idList" item="item" index="index" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-    </update>
-
-    <update id="updateShareStateByLogId">
-        UPDATE raw_log
-        SET isshared = #{isshared}
-        WHERE id IN
-        <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-    </update>
-
     <sql id="updateLogStateSQL">
         UPDATE ${table} SET state=#{state} WHERE
         <if test="userId != null">
@@ -130,13 +106,6 @@
             #{item}
         </foreach>
     </sql>
-
-    <update id="delete">
-        <bind name="state" value="2" />
-        <include refid="updateLogStateSQL">
-            <property name="table" value="raw_log"/>
-        </include>
-    </update>
 
     <update id="updateLogState">
         <include refid="updateLogStateSQL">

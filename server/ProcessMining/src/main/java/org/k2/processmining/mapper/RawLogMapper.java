@@ -17,8 +17,6 @@ import java.util.Map;
 public interface RawLogMapper {
     RawLog getRawLogById(@Param("id") String id);
     void save(RawLog log);
-    void updateShareStateByLogId(RawLog rawLog);
-    void updateLogStateByLogId(RawLog rawLog);
     Integer updateLogState(@Param("ids") List<String> ids, @Param("state") int state, @Param("userId") String userId);
     Integer updateIsShared(@Param("ids") List<String> ids, @Param("isShared") int isShared, @Param("userId") String userId);
 

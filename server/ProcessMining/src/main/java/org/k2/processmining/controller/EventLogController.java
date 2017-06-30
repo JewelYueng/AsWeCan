@@ -175,6 +175,7 @@ public class EventLogController {
     @RequestMapping(value = "/search",method = RequestMethod.GET)
     public @ResponseBody
     Object getLogByFuzzyName(@RequestParam("keyWord") String keyWord){
+        keyWord = Util.validateString(keyWord);
         Map<String,Object> result = new HashMap<>();
         User user = getUser();
         List<LogGroup> logGroups = eventLogService.getLogByFuzzyName(keyWord,user);
@@ -185,6 +186,7 @@ public class EventLogController {
     @RequestMapping(value = "/sharedLogs/search", method = RequestMethod.GET)
     public @ResponseBody
     Object getSharedLogByFuzzyName(@RequestParam("keyWord") String keyWord) {
+        keyWord = Util.validateString(keyWord);
         List<LogGroup> logGroups = eventLogService.getSharedLogsByFuzzyName(keyWord);
         return new HashMap<String,Object>(){{put("logGroups", logGroups);}};
     }

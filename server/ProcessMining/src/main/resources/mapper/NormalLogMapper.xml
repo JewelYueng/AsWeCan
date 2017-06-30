@@ -55,15 +55,6 @@
         VALUES(#{id}, #{logName}, #{createDate}, #{userId}, #{format}, #{isShared}, #{state}, #{rawLogId})
     </insert>
 
-    <update id="updateLogStateByLogId">
-        UPDATE normal_log
-        SET state = #{state, jdbcType = TINYINT}
-        WHERE id IN
-        <foreach collection="idList" index="index" item="item" separator="," open="(" close=")">
-            #{item}
-        </foreach>
-    </update>
-
     <resultMap id="normalLog" type="NormalLog">
         <id column="id" property="id"/>
         <result column="log_name" property="logName"/>

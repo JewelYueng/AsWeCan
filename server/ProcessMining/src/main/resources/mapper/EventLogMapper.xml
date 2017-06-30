@@ -53,24 +53,6 @@
         </include>
     </update>
 
-    <update id="updateShareStateByLogId">
-        UPDATE event_log
-        SET isshared = #{isshared,jdbcType = TINYINT}
-        WHERE id IN
-        <foreach collection="idList" item="item" index="index" separator="," open="(" close=")">
-            #{item}
-        </foreach>
-    </update>
-
-    <update id="updateLogStateByLogId">
-        UPDATE event_log
-        SET state = #{state, jdbcType = TINYINT}
-        WHERE id IN
-        <foreach collection="idList" item="item" index="index" separator="," open="(" close=")">
-            #{item}
-        </foreach>
-    </update>
-
     <resultMap id="eventLog" type="EventLog">
         <id column="id" property="id"/>
         <result column="log_name" property="logName"/>

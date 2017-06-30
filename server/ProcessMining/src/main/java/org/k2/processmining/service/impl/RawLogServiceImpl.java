@@ -42,6 +42,25 @@ public class RawLogServiceImpl implements RawLogService {
     private NormalLogMapper normalLogMapper;
 
     @Override
+    public List<LogGroup> getLogGroups() {
+        List<LogGroup> logGroups = rawLogMapper.listLogGroups(null, LogState.ACTIVE.getValue(), -1, null);
+        verifyLogGroupsIsActive(logGroups);
+        return logGroups;
+    }
+
+    @Override
+    public List<LogGroup> getLogGroupsByKeyWord(String keyWord) {
+        List<LogGroup> logGroups = rawLogMapper.listLogGroups(null, LogState.ACTIVE.getValue(), -1, keyWord);
+        verifyLogGroupsIsActive(logGroups);
+        return logGroups;
+    }
+
+    @Override
+    public void deleteByAdmin(List<String> ids) {
+        rawLogMapper.updateLogState(ids, LogState.DELETE.getValue(), null);
+    }
+
+    @Override
     public RawLog getRawLogById(String id) {
         return rawLogMapper.getRawLogById(id);
     }

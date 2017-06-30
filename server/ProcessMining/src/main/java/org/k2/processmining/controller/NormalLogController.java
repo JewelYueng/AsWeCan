@@ -201,10 +201,9 @@ public class NormalLogController {
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public @ResponseBody
     Object getLogByFuzzyName(@RequestParam("keyWord") String keyWord) {
-        System.out.println("keyWord:" + keyWord);
+        keyWord = Util.validateString(keyWord);
         Map<String, Object> result = new HashMap<>();
-        User user = new User();
-        user.setId("1");
+        User user = getUser();
         List<LogGroup> logGroups = normalLogService.getLogByFuzzyName(keyWord, user);
         result.put("logGroups", logGroups);
         return result;
@@ -214,6 +213,7 @@ public class NormalLogController {
     @RequestMapping(value = "/sharedLogs/search", method = RequestMethod.GET)
     public @ResponseBody
     Object getSharedLogByFuzzyName(@RequestParam("keyWord") String keyWord) {
+        keyWord = Util.validateString(keyWord);
         List<LogGroup> logGroups = normalLogService.getSharedLogsByFuzzyName(keyWord);
         return new HashMap<String,Object>(){{put("logGroups", logGroups);}};
     }
