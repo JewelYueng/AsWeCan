@@ -48,6 +48,27 @@
   .relation-logs{
     cursor: pointer;
   }
+
+  .button {
+    cursor: pointer;
+    display: inline-block;
+    color: white;
+    font-size: 16px;
+    font-weight: lighter;
+    height: @log_button_height;
+    line-height: @log_button_height;
+    width: @log_button_width;
+    border-radius: @log_button_border-radius;
+    background-color: @main_green;
+    img {
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+      position: relative;
+      top: -3px;
+      left: -5px;
+    }
+  }
 </style>
 
 <script>
