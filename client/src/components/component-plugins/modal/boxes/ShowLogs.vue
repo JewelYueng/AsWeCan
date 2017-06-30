@@ -10,27 +10,27 @@
       <el-table-column
         type="index"
         label="索引"
-        width="120">
+        width="80">
       </el-table-column>
       <el-table-column
         property="eventLog.logName"
         label="文件名"
-        width="120">
+        width="120" show-overflow-tooltip>
       </el-table-column>
       <el-table-column
         property="rawLog.logName"
         label="原始日志"
-        width="120">
+        width="120" show-overflow-tooltip>
       </el-table-column>
       <el-table-column
         property="nomalLog.logName"
         label="规范化日志"
-        width="120">
+        width="120" show-overflow-tooltip>
       </el-table-column>
       <el-table-column
         property="eventLog.mergeRelation"
         label="融合来源"
-        width="150">
+        width="150" show-overflow-tooltip>
       </el-table-column>
     </el-table>
     <div class="btn-group">

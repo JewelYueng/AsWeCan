@@ -84,7 +84,7 @@
 
   .close-btn {
     position: relative;
-    left: -40px;
+    left: -50px;
     top: 5px;
     i {
       color: #5c8aac;
@@ -95,7 +95,7 @@
     width: 20px;
     height: 20px;
     position: relative;
-    left: -40px;
+    left: -50px;
     top: 5px;
     cursor: pointer;
   }
@@ -144,7 +144,7 @@
         text-align: left;
         .log-name {
           cursor: pointer;
-          max-width: 180px;
+          width: 180px;
           .too-long-text;
         }
       }

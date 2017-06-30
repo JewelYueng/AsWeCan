@@ -26,7 +26,6 @@
 
   .chart {
     height: 500px;
-    background-color: #58a181;
   }
 </style>
 
@@ -35,13 +34,10 @@
 //  import * as d3 from "d3"
 //  import { forceSimulation,forceCenter, forceLink } from 'd3-force'
   export default{
+    props: ['resource'],
     data(){
       return {
         selectedAttr:"",
-//        nGraph:{
-//          "links":[],
-//          "nodes":[]
-//        },
         items:{
           "timeCost":541,
           "diagram":
@@ -92,6 +88,9 @@
             ]}
 
       }
+    },
+    created(){
+      this.items.diagram = this.resource
     },
     methods:{
       produceLayout:function () {

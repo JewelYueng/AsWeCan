@@ -79,6 +79,7 @@
   import { register } from './modal'
   import Upload from './boxes/Upload.vue'
   import ShowLogs from './boxes/ShowLogs.vue'
+  import Loading from './boxes/Loading.vue'
 
   export default {
     components: {
@@ -86,7 +87,8 @@
       NormalInfo,
       LogDetail,
       Upload,
-      ShowLogs
+      ShowLogs,
+      Loading
     },
     data(){
       return {
