@@ -104,6 +104,9 @@ public class MergeMethodServiceImpl implements MergeMethodService{
 
     @Override
     public TimeResult<EventLog> merge(EventLog eventLog1, EventLog eventLog2, MergeMethod mergeMethod, Map<String, Object> params) {
+        if (eventLog1 != null && eventLog2 != null && eventLog1.getId().equals(eventLog2.getId())) {
+            throw new JSONBadRequestException("Please use different eventLogs");
+        }
         String methodId = mergeMethod.getId();
         Algorithm<Merger> algorithm = MergerFactory.getInstance().getAlgorithm(methodId);
         if (algorithm == null || algorithm.getAlgorithm() == null) {
