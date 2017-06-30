@@ -111,11 +111,11 @@ public class MergeMethodServiceImpl implements MergeMethodService{
         }
         XLog xLog1 = eventLogParse.eventLogParse(eventLog1);
         if (xLog1 == null) {
-            throw new JSONBadRequestException(eventLog1.getLogName()+" could not convert to XLog.");
+            throw new JSONBadRequestException("EventLog1 could not convert to XLog.");
         }
         XLog xLog2 = eventLogParse.eventLogParse(eventLog2);
         if (xLog2 == null) {
-            throw new JSONBadRequestException(eventLog1.getLogName()+" could not convert to XLog.");
+            throw new JSONBadRequestException("EventLog2 could not convert to XLog.");
         }
         TimeResult<EventLog> timeResult = new TimeResult<>();
         timeResult.start();

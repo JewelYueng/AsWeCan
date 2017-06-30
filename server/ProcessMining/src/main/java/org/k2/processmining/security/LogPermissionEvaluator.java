@@ -2,6 +2,7 @@ package org.k2.processmining.security;
 
 import org.k2.processmining.exception.JSONBadRequestException;
 import org.k2.processmining.exception.JSONForbiddenException;
+import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.AbstractLog;
 import org.k2.processmining.security.config.IUserDetail;
 import org.k2.processmining.support.algorithm.Algorithm;
@@ -23,7 +24,7 @@ public class LogPermissionEvaluator implements PermissionEvaluator {
             AbstractLog log = (AbstractLog) targetDomainObject;
 //            MyUserDetails userDetail = (MyUserDetails) authentication.getPrincipal();
 //            return log.getUserId().equals(userDetail.getUser().getId());
-            return log.getUserId().equals("1");
+            return LogState.isActive(log.getState()) && log.getUserId().equals("1");
         }
         else if (targetDomainObject instanceof Algorithm) {
             return true;
