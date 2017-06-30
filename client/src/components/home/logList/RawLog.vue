@@ -37,7 +37,7 @@
                :src="item.rawLog.isShared === 0 ? 'static/img/share_color.png' : 'static/img/forbidden_color.png'">
           <img class="delete_button" title="删除" src="static/img/Delete_color.png" @click="deleteRawLog(index)">
         </div>
-        <div class="data">
+        <div class="date">
           {{`${new Date(item.rawLog.createDate).getFullYear()}-${new Date(item.rawLog.createDate).getMonth() + 1}-${new Date(item.rawLog.createDate).getDate()}`}}
         </div>
         <div @click="jumpToNormal(index)" class="relation-logs normal-log" :title="item.normalLog ? item.normalLog.logName : '无'">{{item.normalLog ? item.normalLog.logName : '无'}}</div>
@@ -141,7 +141,7 @@
         flex-direction: row;
         .log-name{
           cursor: pointer;
-          max-width: 180px;
+          width: 180px;
           .too-long-text;
         }
       }

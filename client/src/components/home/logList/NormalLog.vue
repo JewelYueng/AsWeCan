@@ -144,7 +144,7 @@
         flex-direction: row;
         .log-name{
           cursor: pointer;
-          max-width: 180px;
+          width: 180px;
           .too-long-text;
         }
       }

@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<style type="text/css" rel="stylesheet/less">
+<style type="text/css" rel="stylesheet/less" lang="less">
 
   .sankey{
     display: flex;
@@ -47,55 +47,17 @@
 
 <script>
 export default{
+  props: ['sankey'],
   data(){
     return {
       items:{
         "timeCost":541,
-        "diagram":
-          {
-            "links":
-              [
-                {"source":"collect reviews","target":"decide","value":100},
-                {"source":"decide","target":"accept","value":45},
-                {"source":"decide","target":"invite additional reviewer","value":526},
-                {"source":"decide","target":"reject","value":55},
-                {"source":"get review 1","target":"collect reviews","value":11},
-                {"source":"get review 2","target":"collect reviews","value":10},
-                {"source":"get review 3","target":"collect reviews","value":11},
-                {"source":"get review X","target":"decide","value":263},
-                {"source":"invite additional reviewer","target":"get review X","value":263},
-                {"source":"invite additional reviewer","target":"time-out X","value":263},
-                {"source":"invite reviewers","target":"get review 1","value":16},
-                {"source":"invite reviewers","target":"time-out 1","value":16},
-                {"source":"invite reviewers","target":"get review 2","value":19},
-                {"source":"invite reviewers","target":"time-out 2","value":12},
-                {"source":"invite reviewers","target":"get review 3","value":19},
-                {"source":"invite reviewers","target":"time-out 3","value":18},
-                {"source":"time-out 1","target":"collect reviews","value":22},
-                {"source":"time-out 2","target":"collect reviews","value":26},
-                {"source":"time-out 3","target":"collect reviews","value":20},
-                {"source":"time-out X","target":"decide","value":263}
-              ],
-            "nodes":
-              [
-                {"name":"accept"},
-                {"name":"collect reviews"},
-                {"name":"decide"},
-                {"name":"get review 1"},
-                {"name":"get review 2"},
-                {"name":"get review 3"},
-                {"name":"get review X"},
-                {"name":"invite additional reviewer"},
-                {"name":"invite reviewers"},
-                {"name":"reject"},
-                {"name":"time-out 1"},
-                {"name":"time-out 2"},
-                {"name":"time-out 3"},
-                {"name":"time-out X"}
-              ]
-          }
+        "diagram": {}
       }
     }
+  },
+  created(){
+    this.items.diagram = this.sankey
   },
   methods: {
     produceLayout: function () {
@@ -142,7 +104,6 @@ export default{
         inEdgeCountMap[this.items.diagram.nodes[i].name] = 1;
       }
 
-      debugger
       var posMap = {};
       for (var j = 0; j !== this.items.diagram.links.length; j++) {
         var s = this.items.diagram.links[j].source;

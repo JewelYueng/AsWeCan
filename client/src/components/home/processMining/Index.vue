@@ -79,7 +79,9 @@
       this.getDiagramData('PetriNet')
       this.getDiagramData('Sankey')
       this.getDiagramData('TransitionSystem')
-
+    },
+    destroyed(){
+      this.changeDiagramPath('1')
     },
     methods: {
       ...mapActions(['changeHomePath','changeDiagramPath']),
@@ -92,6 +94,7 @@
           'PetriNet': 'petri',
           'Sankey': 'sankey',
           'TransitionSystem': 'produce',
+          'ResourceRelation': 'resource'
         }
         let mining_params = this.$route.params.raw_data
         this.$api({
@@ -114,6 +117,6 @@
       current_index(){
         return this.$store.getters.diagram_path
       }
-    }
+    },
   }
 </script>

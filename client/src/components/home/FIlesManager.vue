@@ -48,6 +48,12 @@
   .relation-logs{
     cursor: pointer;
   }
+  input[type='checkbox']{
+    width: 20px;
+    position: relative;
+    height: 20px;
+    top: 2px;
+  }
 
   .button {
     cursor: pointer;

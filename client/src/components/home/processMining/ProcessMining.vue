@@ -148,7 +148,8 @@
           }
         }).then( res => {
           if (res.status === 200) {
-            this.$router.push({name: "miningResult", params: {raw_data: body_raw, resource_data: res.data.disgram}})
+            console.log(res)
+            this.$router.push({name: "miningResult", params: {raw_data: body_raw, resource_data: res.data.diagram}})
             this.$hint(`挖掘成功,耗时${res.data.timeCost}秒`,'success')
           }else{
             this.$hint('挖掘失败','error')
