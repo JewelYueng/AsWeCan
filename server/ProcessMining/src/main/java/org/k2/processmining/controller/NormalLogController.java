@@ -124,7 +124,7 @@ public class NormalLogController {
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public void download(@RequestParam("id") String id, HttpServletResponse response) {
         NormalLog normalLog = normalLogService.getNormalLogById(id);
-        logStorage.download(normalLog, inputStream -> {
+        Boolean isSuccess = logStorage.download(normalLog, inputStream -> {
             String fileName = normalLog.getLogName();
             response.setHeader("Content-Disposition","attachment;filename=" + Util.encodeForURL(fileName));
             try {
@@ -136,6 +136,10 @@ public class NormalLogController {
             }
             return true;
         });
+        if (isSuccess == null || !isSuccess) {
+            LOGGER.error("Fail to download normalLog! Is the file<{}> exist in the file system?", id);
+            throw new JSONInternalServerErrorException();
+        }
     }
 
 

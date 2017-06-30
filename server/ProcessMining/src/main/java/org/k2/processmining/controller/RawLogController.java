@@ -84,7 +84,7 @@ public class RawLogController {
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public void download(@RequestParam("id") String id, HttpServletResponse response) {
         RawLog rawLog = rawLogService.getRawLogById(id);
-        logStorage.download(rawLog, inputStream -> {
+        Boolean isSuccess = logStorage.download(rawLog, inputStream -> {
             String fileName = rawLog.getLogName();
             response.setHeader("Content-Disposition","attachment;filename=" + Util.encodeForURL(fileName));
             try {
@@ -96,6 +96,10 @@ public class RawLogController {
             }
             return true;
         });
+        if (isSuccess == null || !isSuccess) {
+            LOGGER.error("Fail to download rawLog! Is the file<{}> exist in the file system?", id);
+            throw new JSONInternalServerErrorException();
+        }
     }
 
     @RequestMapping(value = "/normalize", method = RequestMethod.POST)
