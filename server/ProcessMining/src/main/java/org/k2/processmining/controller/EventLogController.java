@@ -79,7 +79,7 @@ public class EventLogController {
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public void download(@RequestParam("id") String id, HttpServletResponse response) {
         EventLog eventLog = eventLogService.getEventLogById(id);
-        logStorage.download(eventLog, inputStream -> {
+        Boolean isSuccess = logStorage.download(eventLog, inputStream -> {
             String fileName = eventLog.getLogName();
             response.setHeader("Content-Disposition","attachment;filename=" + Util.encodeForURL(fileName));
             try {
@@ -91,6 +91,10 @@ public class EventLogController {
             }
             return true;
         });
+        if (isSuccess == null || !isSuccess) {
+            LOGGER.error("Fail to download eventLog! Is the file<{}> exist in the file system?", id);
+            throw new JSONInternalServerErrorException();
+        }
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)

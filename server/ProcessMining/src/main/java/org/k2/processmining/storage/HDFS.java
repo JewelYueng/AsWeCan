@@ -57,6 +57,7 @@ public class HDFS implements LogStorage {
     @Override
     public String getLogLocation(AbstractLog log) {
         if (log == null || log.getUserId() == null || log.getId() == null) {
+            LOGGER.error("Illegal input!");
             throw new JSONBadRequestException("日志不存在！");
         }
         return HDFS_URL + "/" + log.getUserId() + "/" + log.getType() + "/" + log.getId();
