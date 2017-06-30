@@ -49,15 +49,15 @@
               { "resourceAttr":"test2",
                 "links":
                   [
-                    {"source":"[__INVALID__]","target":"[Anne, Mike]","value":136},
-                    {"source":"[__INVALID__]","target":"[Wil]","value":526},
+                    {"source":"[__aaa__]","target":"[Anne, Mike]","value":136},
+                    {"source":"[__aaa__]","target":"[Wil]","value":526},
                     {"source":"[Anne, Mike]","target":"[Pete, Sara, Mary, Sam, Pam, John, Carol]","value":526},
                     {"source":"[Wil]","target":"[Anne, Mike]","value":1252},
                     {"source":"[Anne, Mike]","target":"[Wil]","value":200},
                     {"source":"[Pete, Mary, Sara, Sam, Pam, John, Carol]","target":"[Anne, Mike]","value":64},
                     {"source":"[Pete, Sara, Mary, Sam, Pam, John, Carol]","target":"[Wil]","value":526},
                     {"source":"[Anne, Mike]","target":"[Pete, Mary, Sara, Sam, Pam, John, Carol]","value":108},
-                    {"source":"[Anne, Mike]","target":"[__INVALID__]","value":618}
+                    {"source":"[Anne, Mike]","target":"[__aaa__]","value":618}
                   ],
                 "nodes":
                   [

@@ -142,6 +142,7 @@ export default{
         inEdgeCountMap[this.items.diagram.nodes[i].name] = 1;
       }
 
+      debugger
       var posMap = {};
       for (var j = 0; j !== this.items.diagram.links.length; j++) {
         var s = this.items.diagram.links[j].source;
