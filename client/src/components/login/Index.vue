@@ -5,19 +5,21 @@
     <el-form :model="ruleForm" :rules="rulesInput" ref="ruleForm" label-width="60px"
              id="LoginForm" style="position: absolute; margin:auto;padding-top: 20px">
       <el-form-item label="邮箱" prop="email">
-        <el-input id="email" v-model="ruleForm.email"></el-input>
+        <el-input id="email" v-model="ruleForm.email" style="width: 200px;right: 16px"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input type="password" v-model="ruleForm.password"></el-input>
+        <el-input type="password" v-model="ruleForm.password" style="width: 200px;right: 16px"></el-input>
       </el-form-item>
-      <el-form-item label="验证码" prop="check">
-        <el-input size="small" id="checkCode" v-model="ruleForm.check"style="width: 40%"></el-input>
+      <el-form-item label="验证码" prop="validateCode">
+        <el-input size="small" id="checkCode" v-model="ruleForm.validateCode"style="width: 40%;right: 20px"></el-input>
         <span style="padding: 10px;width: 40%;border:1px solid black">验证码的框</span>
       </el-form-item>
 
-      <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')">登陆</el-button>
+      <el-form-item style="margin-right: 50px">
+        <el-button type="primary" @click="Login()">登陆</el-button>
         <el-button @click="jumpToRegister()">尚未注册？</el-button>
+        <el-checkbox v-model="ruleForm.checked">是否自动登录？</el-checkbox>
+
       </el-form-item>
 
     </el-form>
@@ -78,7 +80,9 @@ data(){
     ruleForm: {
       email: '',
       password: '',
-      check: ''
+      validateCode: '',
+      checked: true
+
     },
     rulesInput: {
       email: [
@@ -87,7 +91,7 @@ data(){
       password: [
         { validator: validatePass, trigger: 'blur' }
       ],
-      check: [
+      validateCode: [
         { validator: checkCode, trigger: 'blur' }
       ]
     }
@@ -95,18 +99,18 @@ data(){
 
 },
     methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
+      Login() {
+          //console.log(JSON.stringify(this.ruleForm))
+        this.$api({method: 'login', body: this.ruleForm}).then((res) => {
+          console.log(res.data)
+          this.$hint('登陆成功','success')
+          this.$router.push({name: 'home'})
+        }, err => {
+            this.$hint(err.data.message,'error')
+        })
       },
       jumpToRegister() {
-        //跳转到register
+        this.$router.push({path: './register'})
       },
 
     }

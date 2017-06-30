@@ -49,6 +49,9 @@ export default {
   "merge": [POST, "/merge"],
 // 流程挖掘
   "getMiningMethods": [GET, "/mining/method"],
-  "mining": [POST, "/mining"]
-  
+  "mining": [POST, "/mining"],
+
+//  用户系统的接口
+  "login": [POST, '/home/login'],
+  "register": [POST,'/user/register']
 }
