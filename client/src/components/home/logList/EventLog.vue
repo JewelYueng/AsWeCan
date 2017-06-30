@@ -112,7 +112,8 @@
     cursor: pointer;
     display: inline-block;
     color: white;
-    font-size: 24px;
+    font-size: 16px;
+    font-weight: lighter;
     height: @log_button_height;
     line-height: @log_button_height;
     width: @log_button_width;
