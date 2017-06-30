@@ -61,7 +61,7 @@
 
   .close-btn {
     position: relative;
-    left: -40px;
+    left: -50px;
     top: 5px;
     i {
       color: #5c8aac;
@@ -95,7 +95,7 @@
     width: 20px;
     height: 20px;
     position: relative;
-    left: -40px;
+    left: -50px;
     top: 5px;
     cursor: pointer;
   }
