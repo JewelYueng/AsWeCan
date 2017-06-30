@@ -1,5 +1,5 @@
 // const base_url = "/AssWeCan"
-const base_url = "http://192.168.0.101:8080"
+const base_url = "http://116.56.129.93:8088/AssWeCan"
 
 const
   GET = "get",

@@ -3,26 +3,38 @@
     <router-view></router-view>
     <Modal></Modal>
     <Hint></Hint>
-    <Loading class="loading" v-show="showLoading">Loading</Loading>
   </div>
 </template>
 
 <script>
   import Modal from './components/component-plugins/modal/Modal.vue'
   import Hint from './components/component-plugins/hintMessage/HintMessage.vue'
-  import Loading from './components/component-plugins/Loading.vue'
   export default {
     name: 'app',
     components: {
-       Modal, Hint,Loading
+       Modal, Hint
     },
     data() {
       return {
-        showLoading: false
       }
     },
     methods: {},
     created(){
+//      $api定义全局动作
+      this.$api.onEach('request', request => {
+        window.is_requesting = true
+        setTimeout( () => {
+          if(window.is_requesting === true && !window.loading_modal)
+            window.loading_modal = window.$modal({type: 'loading'})
+        }, 1000)
+      })
+      this.$api.onEach('response', response => {
+        window.is_requesting = false
+        if (window.loading_modal && ('commit' in window.loading_modal)) {
+          window.loading_modal.commit()
+          window.loading_modal = null
+        }
+      })
     }
   }
 </script>
