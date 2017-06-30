@@ -16,29 +16,17 @@
 
     <security:http auto-config="false" pattern="/admin/**" entry-point-ref="adminEntryPoint">
         <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
-        <security:custom-filter ref="adminFilter" position="FORM_LOGIN_FILTER"/>
-        <security:logout logout-url="/admin/logout" success-handler-ref="adminLogoutSuccessHandler"/>
-        <security:access-denied-handler error-page="/home/accessDeniedJSON"/>
+        <security:custom-filter ref="adminFilter"  position="FORM_LOGIN_FILTER"/>
+        <security:custom-filter ref="adminRememberMeFilter" position="REMEMBER_ME_FILTER"/>
+        <security:logout logout-url="/admin/logout" delete-cookies="JSESSIONID,adminRememberMe" success-handler-ref="adminLogoutSuccessHandler" />
+        <security:access-denied-handler error-page="/home/accessDeniedJSON" />
         <security:csrf disabled="true"/>
     </security:http>
 
-    <security:http auto-config="false" pattern="/**" entry-point-ref="userEntryPoint">
-        <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
-        <security:custom-filter ref="userFilter" position="FORM_LOGIN_FILTER"/>
-        <security:logout logout-url="/home/logout" delete-cookies="JSESSIONID" success-handler-ref="userLogoutSuccessHandler"/>
-        <security:access-denied-handler error-page="/home/accessDeniedJSON"/>
-        <security:csrf disabled="true"/>
-    </security:http>
-
-    <security:authentication-manager id="userAuthenticationManager">
-        <security:authentication-provider ref="userAuthenticationProvider"/>
-    </security:authentication-manager>
-
-
-    <security:authentication-manager id="adminAuthenticationManager">
+    <security:authentication-manager id="adminAuthenticationManager" erase-credentials="false">
         <security:authentication-provider ref="adminAuthenticationProvider"/>
+        <security:authentication-provider ref="adminRememberMeProvider"/>
     </security:authentication-manager>
-    <!--<bean id="admindeniedHandler" class="org.k2.processmining.security.admin.AdmindeniedHandler"/>-->
     <bean id="adminEntryPoint" class="org.k2.processmining.security.admin.AdminLoginEntryPoint" >
         <constructor-arg value="/admin/login"/>
     </bean>
@@ -54,6 +42,7 @@
         <property name="passwordParameter" value="password"/>
         <property name="authenticationSuccessHandler" ref="adminSuccessHandler"/>
         <property name="authenticationFailureHandler" ref="adminFailureHandler"/>
+        <property name="rememberMeServices" ref="adminRememberMeService"/>
     </bean>
     <bean id="adminSuccessHandler" class="org.k2.processmining.security.admin.AdminSuccessHandler">
         <property name="defaultTargetUrl" value="/admin/" />
@@ -65,6 +54,36 @@
         <property name="defaultTargetUrl" value="/admin/login"/>
     </bean>
 
+    <bean id="adminRememberMeFilter" class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
+        <constructor-arg ref="adminAuthenticationManager"/>
+        <constructor-arg ref="adminRememberMeService"/>
+    </bean>
+    <bean id="adminRememberMeService" class="org.k2.processmining.security.admin.AdminRememberService">
+        <constructor-arg ref="adminUserDetailsService"/>
+        <constructor-arg value="000016aad72443b3b78af239a0b6bd7c"/>
+        <property name="parameter" value="adminRemember"/>
+        <property name="tokenValiditySeconds" value="25200"/>
+        <property name="cookieName" value="adminRememberMe"/>
+    </bean>
+    <bean id="adminRememberMeProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+        <constructor-arg value="000016aad72443b3b78af239a0b6bd7c"/>
+    </bean>
+
+
+    <security:http auto-config="false" pattern="/**" entry-point-ref="userEntryPoint">
+        <security:intercept-url pattern="/**" access="permitAll"/>
+        <security:custom-filter ref="userFilter" position="FORM_LOGIN_FILTER"/>
+        <security:custom-filter ref="userRememberMeFilter" position="REMEMBER_ME_FILTER"/>
+        <security:logout logout-url="/home/logout" delete-cookies="JSESSIONID,userRememberMe" success-handler-ref="userLogoutSuccessHandler"/>
+        <security:access-denied-handler error-page="/home/accessDeniedJSON"/>
+        <security:csrf disabled="true"/>
+    </security:http>
+
+
+    <security:authentication-manager id="userAuthenticationManager">
+        <security:authentication-provider ref="userAuthenticationProvider"/>
+        <security:authentication-provider ref="userRememberMeProvider"/>
+    </security:authentication-manager>
     <bean id="userFilter" class="org.k2.processmining.security.user.UserAuthenticationFilter">
         <property name="authenticationManager" ref="userAuthenticationManager"/>
         <property name="filterProcessesUrl" value="/home/login"/>
@@ -72,6 +91,7 @@
         <property name="passwordParameter" value="password"/>
         <property name="authenticationSuccessHandler" ref="userSuccessHandler"/>
         <property name="authenticationFailureHandler" ref="userFailureHanlder"/>
+        <property name="rememberMeServices" ref="userRememberMeService"/>
     </bean>
     <bean id="userEntryPoint" class="org.k2.processmining.security.user.UserLoginEntryPoint">
         <constructor-arg value="/home/loginPage"/>
@@ -90,16 +110,35 @@
     <bean id="userLogoutSuccessHandler" class="org.k2.processmining.security.user.UserLogoutSuccessHandler">
         <property name="defaultTargetUrl" value="/home/login"/>
     </bean>
-
-    <bean id="logPermissionEvaluator" class="org.k2.processmining.security.LogPermissionEvaluator"/>
-
-    <bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
-        <property name="permissionEvaluator" ref="logPermissionEvaluator"/>
+    <bean id="userRememberMeProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+        <constructor-arg value="111116aad72443b3b78af239a0b6bd7c"/>
+    </bean>
+    <bean id="userRememberMeService" class="org.k2.processmining.security.user.UserRememberMeService">
+        <constructor-arg ref="userDetailsService"/>
+        <constructor-arg value="111116aad72443b3b78af239a0b6bd7c"/>
+        <property name="parameter" value="userRemember"/>
+        <property name="tokenValiditySeconds" value="25200"/>
+        <property name="cookieName" value="userRememberMe"/>
+    </bean>
+    <bean id="userRememberMeFilter" class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
+        <constructor-arg ref="userAuthenticationManager"/>
+        <constructor-arg ref="userRememberMeService"/>
     </bean>
 
-    <security:global-method-security pre-post-annotations="enabled">
-        <security:expression-handler ref="expressionHandler"/>
-    </security:global-method-security>
+
+
+    <!--<bean id="logPermissionEvaluator" class="org.k2.processmining.security.LogPermissionEvaluator"/>-->
+
+    <!--<bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">-->
+        <!--<property name="permissionEvaluator" ref="logPermissionEvaluator"/>-->
+    <!--</bean>-->
+
+    <!--<security:global-method-security pre-post-annotations="enabled">-->
+        <!--<security:expression-handler ref="expressionHandler"/>-->
+    <!--</security:global-method-security>-->
+
+    <!--<bean id="rememberMeFilter" class=""-->
+
 
 
 </beans>

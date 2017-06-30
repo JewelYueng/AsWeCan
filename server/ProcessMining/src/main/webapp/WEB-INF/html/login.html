@@ -7,20 +7,20 @@
 <body>
 <div>
     <form name='f'
-          action='/home/login'
+          action='/admin/adminLogin'
           method='POST'>
         <table class="formtable">
             <tr>
                 <td class="title">输入邮箱:</td>
-                <td><input  class="control" type='text' name='username'></td>
+                <td><input  class="control" type='text' name='email' id="email"></td>
             </tr>
             <tr>
                 <td class="title">输入密码:</td>
-                <td><input class="control" type='password' name='password' /></td>
+                <td><input class="control" type='password' name='password' id="password"/></td>
             </tr>
             <tr>
                 <td class="title">输入验证码:</td>
-                <td><input class="control" type='text' name='code' id="code" /></td>
+                <td><input class="control" type='text' name='code' id="code"/></td>
                 <td><img src="/home/code" id="codeImage"><a href="#" onclick="reloadCode()">看不清？</a></td>
             </tr>
             <tr>
@@ -30,21 +30,25 @@
             <tr>
                 <td><input type="button" onclick="logout()" value="登出"></td>
             </tr>
+            <tr>
+                <td><input type="checkbox" id="userRemember" checked="checked">自动登录</td>
+            </tr>
         </table>
     </form>
 
 </div>
 <button onclick="clickme(2)" >错误的
 </button>
-<button onclick="clickme('3@3.com')">正确的</button>
+<button onclick="clickme(1)">正确的</button>
 </body>
 
 <script>
     function clickme(username) {
         var json = {
-            email: username,
-            password: "3",
-            validateCode: $('#code').val()
+            email: $('#email').val(),
+            password: $('#password').val(),
+            validateCode: $('#code').val(),
+            userRemember: $('#userRemember').val()
         };
         $.ajax({
             type:"POST",
@@ -59,11 +63,6 @@
 
         });
     }
-    function reloadCode() {
-        var image = document.getElementById("codeImage");
-        image.src = "/home/code?date="+Date();
-    }
-
     function logout() {
         $.ajax({
             type: "POST",
@@ -71,6 +70,11 @@
             contentType: "application/json",
             dataType: "json"
         })
+    }
+
+    function reloadCode() {
+        var image = document.getElementById("codeImage");
+        image.src = "/home/code?date="+Date();
     }
 </script>
 

@@ -1,5 +1,6 @@
 package org.k2.processmining.security.user;
 
+import org.k2.processmining.security.admin.AdminRememberService;
 import org.k2.processmining.utils.GsonParser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -63,6 +64,7 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
             }
             System.out.println(buffer.toString());
             System.out.println("session:"+session.getAttribute("validateCode"));
+            System.out.println("json:"+buffer.toString());
             UserForm userForm = GsonParser.fromJson(buffer.toString(),UserForm.class);
             this.jsonPassword = userForm.getPassword();
             this.jsonUsername = userForm.getEmail();
@@ -75,6 +77,15 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
                 System.out.println("validateCode is wrong"+userForm.getValidateCode());
                 throw new UsernameNotFoundException(UserFailureHandler.USER_VALIDATECODE_WRONG);
             }
+            if ("".equalsIgnoreCase(userForm.getUserRemember())){
+                System.out.println("rememberMe is null");
+            }else {
+                System.out.println("rememberMe:"+userForm.getUserRemember());
+                request.setAttribute(UserRememberMeService.REMEMBER_ME_PARAMER,userForm.getUserRemember());
+            }
+        }else {
+            String str = request.getParameter(AdminRememberService.REMEMBER_ME_PARAMER);
+            System.out.println("非JSon请求状况下:"+str);
         }
         System.out.println(jsonUsername+"   "+jsonPassword);
         return super.attemptAuthentication(request, response);
@@ -85,6 +96,7 @@ class  UserForm{
     private String email;
     private String password;
     private String validateCode;
+    private String userRemember;
 
     public void setValidateCode(String validateCode) {
         this.validateCode = validateCode;
@@ -108,5 +120,13 @@ class  UserForm{
 
     public String getEmail() {
         return email;
+    }
+
+    public void setUserRemember(String userRemember) {
+        this.userRemember = userRemember;
+    }
+
+    public String getUserRemember() {
+        return userRemember;
     }
 }

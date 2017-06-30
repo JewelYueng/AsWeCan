@@ -43,10 +43,10 @@ public class AdminAuthenticationFilter extends UsernamePasswordAuthenticationFil
         return username;
     }
 
+
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response){
-
-        System.out.println("AdminAuthenticationFilter attemptAuthentication");
 
         HttpSession session = request.getSession();
         if ("application/json".equals(request.getHeader("Content-Type"))) {
@@ -66,28 +66,39 @@ public class AdminAuthenticationFilter extends UsernamePasswordAuthenticationFil
             } catch (Exception e) {
                 e.printStackTrace();
             }
-                System.out.println(sb.toString());
-                System.out.println("session:"+session.getAttribute("validateCode"));
-                AdminForm adminForm = GsonParser.fromJson(sb.toString(),AdminForm.class);
-                this.jsonPassword = adminForm.getPassword();
-                this.jsonUsername = adminForm.getWorkId();
-                if (adminForm.getValidateCode() == null){
-                    System.out.println("null");
+            AdminForm adminForm = GsonParser.fromJson(sb.toString(),AdminForm.class);
+            this.jsonPassword = adminForm.getPassword();
+            this.jsonUsername = adminForm.getWorkId();
+            if ("".equals(adminForm.getValidateCode())){
+                    System.out.println("admin validateCode null");
                     throw new UsernameNotFoundException("validate code is null");
-                }
-                System.out.println("jsonUserName:"+jsonUsername+"  jsonPassword:"+jsonPassword);
+            }
+            if (adminForm.getValidateCode().compareToIgnoreCase((String) session.getAttribute("validateCode"))!=0){
+                System.out.println("admin validateCode error");
+                throw new UsernameNotFoundException(AdminFailureHandler.ADMIN_VALIDATECODE_WRONG);
+            }
 
+            if ("".equals(adminForm.getAdminRemember())){
+                System.out.println("rememberMe is null");
+            }else {
+                request.setAttribute(AdminRememberService.REMEMBER_ME_PARAMER,adminForm.getAdminRemember());
+            }
         }
-
-
+        else {
+            String str = request.getParameter(AdminRememberService.REMEMBER_ME_PARAMER);
+            System.out.println("非JSon请求状况下:"+str);
+        }
         return super.attemptAuthentication(request, response);
     }
+
+
 }
 
 class AdminForm {
     private String workId;
     private String password;
     private String validateCode;
+    private String adminRemember;
 
     public void setValidateCode(String validateCode) {
         this.validateCode = validateCode;
@@ -111,5 +122,13 @@ class AdminForm {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setAdminRemember(String adminRemember) {
+        this.adminRemember = adminRemember;
+    }
+
+    public String getAdminRemember() {
+        return adminRemember;
     }
 }
