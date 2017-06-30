@@ -12,15 +12,16 @@
         <table class="formtable">
             <tr>
                 <td class="title">输入工号:</td>
-                <td><input  class="control" type='text' name='workId'></td>
+                <td><input  class="control" type='text' name='workId' id="workId"></td>
             </tr>
             <tr>
                 <td class="title">输入密码:</td>
-                <td><input class="control" type='password' name='password' /></td>
+                <td><input class="control" type='password' name='password' id="password"/></td>
             </tr>
             <tr>
                 <td class="title">输入验证码:</td>
-                <td><input class="control" type='text' name='code' /></td>
+                <td><input class="control" type='text' name='code' id="code"/></td>
+                <td><img src="/home/code" id="codeImage"><a href="#" onclick="reloadCode()">看不清？</a></td>
             </tr>
             <tr>
                 <td colspan='2'><input name="submit" type="submit"
@@ -30,7 +31,7 @@
                 <td><input type="button" onclick="logout()" value="登出"></td>
             </tr>
             <tr>
-                <td><input type="checkbox" id="rememberMe" checked="checked">自动登录</td>
+                <td><input type="checkbox" id="adminRemember" checked="checked">自动登录</td>
             </tr>
         </table>
     </form>
@@ -44,10 +45,10 @@
 <script>
     function clickme(username) {
         var json = {
-            workId: username,
-            password: "1",
-            validateCode: "12",
-            rememberme: true
+            workId: $('#workId').val(),
+            password: $('#password').val(),
+            validateCode: $('#code').val(),
+            adminRemember: $('#adminRemember').val()
         };
         $.ajax({
             type:"POST",
@@ -69,6 +70,11 @@
             contentType: "application/json",
             dataType: "json"
         })
+    }
+
+    function reloadCode() {
+        var image = document.getElementById("codeImage");
+        image.src = "/home/code?date="+Date();
     }
 </script>
 
