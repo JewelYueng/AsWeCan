@@ -12,6 +12,7 @@ import org.k2.processmining.service.MergeMethodService;
 import org.k2.processmining.service.TimeResult;
 import org.k2.processmining.service.impl.MergeMethodServiceImpl;
 import org.k2.processmining.support.algorithm.LoadMethodException;
+import org.k2.processmining.util.Message;
 import org.k2.processmining.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -67,7 +68,7 @@ public class MergeController {
         EventLog eventLog2 = eventLogService.getEventLogById(form.getEventLogId2());
         TimeResult<EventLog> result = mergeMethodService.merge(eventLog1, eventLog2, mergeMethod, form.parameters);
         if (result == null) {
-            throw new JSONBadRequestException("Fail to merge the logs. Please check the input content and try again!");
+            throw new JSONBadRequestException(Message.MERGE_FAIL);
         }
         Map<String, Object> res = new HashMap<>();
         res.put("timeCost", result.getTime());

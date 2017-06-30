@@ -1,6 +1,7 @@
 package org.k2.processmining.support.algorithm;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.k2.processmining.model.mergemethod.MergeMethod;
 import org.k2.processmining.model.miningmethod.MiningMethod;
 import org.k2.processmining.support.merge.Merger;
@@ -74,13 +75,7 @@ public class MethodManage {
             throw new IOException("fail to make dirs to save jars");
         }
         try (BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputPath))){
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-            int byteRead = 0;
-            byte[] bytes = new byte[1024];
-            while ((byteRead=inputStream.read(bytes)) != -1) {
-                outputStream.write(bytes, 0 ,byteRead);
-            }
-            outputStream.flush();
+            IOUtils.copyLarge(inputStream, outputStream);
         }
     }
 
@@ -112,7 +107,7 @@ public class MethodManage {
             method = ReflectUtil.getInstance().getInstanceFromJar(id, jarPaths,configs.get(implPathKey).toString());
         }
         catch (Exception e) {
-            throw new LoadMethodException("fail to reflect for interface implement: " + methodDir);
+            throw new LoadMethodException(e, "fail to reflect for interface implement: " + methodDir);
         }
         if (! clazz.isAssignableFrom(method.getClass())) {
             throw new LoadMethodException("the "+ method.getClass() + " is not the subclass of "+clazz);
@@ -156,12 +151,10 @@ public class MethodManage {
                     }
                 }
                 catch (IOException e) {
-                    LOGGER.error("fail to load algorithm-config.yml from: {}",jarPath, e);
-                    throw new LoadMethodException("fail to load algorithm-config.yml from: " + jarPath);
+                    throw new LoadMethodException(e, "fail to load algorithm-config.yml from: " + jarPath);
                 }
             }
         }
-        LOGGER.error("*-k2.jar does not exist");
         throw new LoadMethodException("*-k2.jar does not exist");
     }
 }

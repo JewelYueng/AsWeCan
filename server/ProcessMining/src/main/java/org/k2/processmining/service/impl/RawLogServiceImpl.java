@@ -1,6 +1,6 @@
 package org.k2.processmining.service.impl;
 
-import org.k2.processmining.cache.CacheConfig;
+import org.k2.processmining.exception.InternalServerErrorException;
 import org.k2.processmining.mapper.NormalLogMapper;
 import org.k2.processmining.mapper.RawLogMapper;
 import org.k2.processmining.model.LogGroup;
@@ -9,15 +9,16 @@ import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.log.RawLog;
 import org.k2.processmining.model.user.User;
-import org.k2.processmining.service.NormalLogService;
 import org.k2.processmining.service.RawLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.normal.transform.LogConfiguration;
 import org.k2.processmining.support.normal.transform.Normalize;
+import org.k2.processmining.support.normal.transform.NormalizeException;
+import org.k2.processmining.util.Message;
 import org.k2.processmining.util.Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -28,6 +29,8 @@ import java.util.*;
  */
 @Service
 public class RawLogServiceImpl implements RawLogService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RawLogServiceImpl.class);
 
     @Autowired
     private RawLogService rawLogService;
@@ -141,11 +144,22 @@ public class RawLogServiceImpl implements RawLogService {
         normalLog.setRawLogId(rawLog.getId());
         normalLog.setCreateDate(new Date());
         normalLog.setFormat("txt");
-        Boolean b = logStorage.upload(normalLog,
+        Boolean isSuccess = logStorage.upload(normalLog,
                 outputStream -> logStorage.download(rawLog,
-                        inputStream -> Normalize.normalize(lc, inputStream, outputStream)));
-        if(b == null || !b ) {
-            return null;
+                        inputStream -> {
+                            try {
+                                Normalize.normalize(lc, inputStream, outputStream);
+                            }
+                            catch (NormalizeException e) {
+                                LOGGER.error("Fail to normalize rawLog<{}>", rawLog.getId(), e);
+                                throw new InternalServerErrorException(Message.NORMALIZE_FAIL);
+                            }
+                            return true;
+                        }
+                )
+        );
+        if (isSuccess == null || ! isSuccess) {
+            throw new InternalServerErrorException();
         }
         rawLogService.afterSaveInLogStorageForNormalize(normalLog, rawLog);
         return normalLog;

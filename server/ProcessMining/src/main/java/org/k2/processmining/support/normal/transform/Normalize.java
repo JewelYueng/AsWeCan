@@ -1,16 +1,12 @@
 package org.k2.processmining.support.normal.transform;
 
-import org.k2.processmining.exception.JSONBadRequestException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 
 public class Normalize {
-    private static Logger LOGGER = LoggerFactory.getLogger(Normalize.class);
 
     // don't need to close inputStream and outputStream because they should be closed where they were created ?
-    public static boolean normalize(LogConfiguration LC, InputStream inputStream, OutputStream outputStream) {
+    public static boolean normalize(LogConfiguration LC, InputStream inputStream, OutputStream outputStream) throws NormalizeException {
         String nulVal=" ";
         String seperator="\t";
         int n = 0;
@@ -47,8 +43,7 @@ public class Normalize {
             return true;
         }
         catch (Exception e) {
-            LOGGER.error("fail to normalize: {}", e);
-            throw new JSONBadRequestException("规范化失败，请检查输入！");
+            throw new NormalizeException(e);
         }
     }
 }

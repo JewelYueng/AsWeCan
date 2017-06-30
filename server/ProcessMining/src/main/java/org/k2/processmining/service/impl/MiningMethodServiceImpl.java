@@ -2,7 +2,7 @@ package org.k2.processmining.service.impl;
 
 import org.deckfour.xes.model.XLog;
 import org.k2.processmining.cache.CacheConfig;
-import org.k2.processmining.exception.JSONInternalServerErrorException;
+import org.k2.processmining.exception.JSONBadRequestException;
 import org.k2.processmining.mapper.MiningMethodMapper;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.MethodState;
@@ -20,16 +20,13 @@ import org.k2.processmining.support.mining.Miner;
 import org.k2.processmining.support.mining.algorithm.heuristics.models.SimpleHeuristicsNet;
 import org.k2.processmining.support.mining.model.DiagramType;
 import org.k2.processmining.support.reflect.ReflectUtil;
-import org.k2.processmining.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -138,8 +135,11 @@ public class MiningMethodServiceImpl implements MiningMethodService {
     @Override
     public TimeResult mining(EventLog eventLog, Algorithm<Miner> algorithm, Map<String,Object> params, DiagramType type) {
         XLog xLog = eventLogParse.eventLogParse(eventLog);
-        if (xLog == null || algorithm == null) {
-            throw new JSONInternalServerErrorException();
+        if (xLog == null) {
+            throw new JSONBadRequestException("Fail to parse eventLog! Please check your eventLog!");
+        }
+        if (algorithm == null) {
+            throw new JSONBadRequestException("Algorithm is not exist.");
         }
         TimeResult<Object> timeResult = new TimeResult<>();
         TimeResult<SimpleHeuristicsNet> netResult = miningMethodService.mining(algorithm, eventLog, xLog, params);

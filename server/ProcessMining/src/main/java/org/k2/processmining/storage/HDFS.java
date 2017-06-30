@@ -3,8 +3,10 @@ package org.k2.processmining.storage;
 
 import org.apache.commons.io.IOUtils;
 import org.k2.processmining.exception.JSONBadRequestException;
+import org.k2.processmining.exception.InternalServerErrorException;
 import org.k2.processmining.model.log.AbstractLog;
 import org.k2.processmining.model.user.User;
+import org.k2.processmining.util.Message;
 import org.k2.processmining.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,14 +117,14 @@ public class HDFS implements LogStorage {
             conn.connect();
             return isSuccess(conn.getResponseCode());
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("HTTP request fail: {}:{}", method, reqUrl, e);
+            throw new InternalServerErrorException();
         }
         finally{
             if (conn != null) {
                 conn.disconnect();
             }
         }
-        return false;
     }
 
     @Override
@@ -146,15 +148,15 @@ public class HDFS implements LogStorage {
 //	         conn.setReadTimeout(30000);
             IOUtils.copyLarge(inputStream, conn.getOutputStream());
             return isSuccess(conn.getResponseCode());
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            LOGGER.error("Fail to upload: {}:{}", log.getType(), log.getId(), e);
+            throw new InternalServerErrorException(Message.INTERNAL_SERVER_ERROR);
         }
         finally {
             if (conn != null) {
                 conn.disconnect();
             }
         }
-        return false;
     }
 
     @Override
@@ -163,6 +165,7 @@ public class HDFS implements LogStorage {
         System.out.println("upload: "+reqUrl);
         URL url;
         HttpURLConnection conn = null;
+        T res = null;
         try {
             url = new URL(reqUrl);
             conn = (HttpURLConnection)url.openConnection();
@@ -171,19 +174,20 @@ public class HDFS implements LogStorage {
             conn.setDoOutput(true);
 //           conn.setConnectTimeout(5000);
 //	         conn.setReadTimeout(30000);
-            T res = processOutputStream.processOutputStream(conn.getOutputStream());
-            if (res != null && isSuccess(conn.getResponseCode())) {
-                return res;
+            res = processOutputStream.processOutputStream(conn.getOutputStream());
+            if (!isSuccess(conn.getResponseCode())) {
+                res = null;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            LOGGER.error("Fail to processOutputStream:", e);
+            throw new InternalServerErrorException(Message.INTERNAL_SERVER_ERROR);
         }
         finally {
             if (conn != null) {
                 conn.disconnect();
             }
         }
-        return null;
+        return res;
     }
 
     @Override
@@ -211,14 +215,14 @@ public class HDFS implements LogStorage {
 //                e.printStackTrace();
 //            }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Fail to download: {}:{}", log.getType(), log.getId(), e);
+            throw new InternalServerErrorException(Message.INTERNAL_SERVER_ERROR);
         }
         finally{
             if (conn != null) {
                 conn.disconnect();
             }
         }
-        return false;
     }
 
     @Override
@@ -227,24 +231,26 @@ public class HDFS implements LogStorage {
         System.out.println("download:" + reqUrl);
         URL url;
         HttpURLConnection conn = null;
+        T res = null;
         try {
             url = new URL(reqUrl);
             conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
             conn.connect();
-            T res = processInputStream.processInputStream(conn.getInputStream());
-            if (res != null && isSuccess(conn.getResponseCode())) {
-                return res;
+            res = processInputStream.processInputStream(conn.getInputStream());
+            if (! isSuccess(conn.getResponseCode())) {
+                res = null;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Fail to download: {}:{}", log.getType(), log.getId(), e);
+            throw new InternalServerErrorException(Message.INTERNAL_SERVER_ERROR);
         }
         finally{
             if (conn != null) {
                 conn.disconnect();
             }
         }
-        return null;
+        return res;
     }
 
     @Override
@@ -264,14 +270,14 @@ public class HDFS implements LogStorage {
             return isSuccess(conn.getResponseCode());
 
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("HTTP delete fail: {}", reqUrl, e);
+            throw new InternalServerErrorException(Message.INTERNAL_SERVER_ERROR);
         }
         finally{
             if (conn != null) {
                 conn.disconnect();
             }
         }
-        return false;
     }
 
     private boolean isSuccess(int code) {

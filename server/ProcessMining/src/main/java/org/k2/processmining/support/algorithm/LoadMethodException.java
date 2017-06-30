@@ -12,6 +12,16 @@ public class LoadMethodException extends Exception {
         this.message = message;
     }
 
+    public LoadMethodException(Throwable e) {
+        this(e.getMessage());
+        this.initCause(e);
+    }
+
+    public LoadMethodException(Throwable e, String message) {
+        this(message);
+        this.initCause(e);
+    }
+
     @Override
     public String getMessage() {
         return message;

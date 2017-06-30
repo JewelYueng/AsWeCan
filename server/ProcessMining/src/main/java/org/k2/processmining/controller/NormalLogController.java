@@ -1,9 +1,7 @@
 package org.k2.processmining.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.apache.commons.io.IOUtils;
-import org.k2.processmining.exception.JSONInternalServerErrorException;
+import org.k2.processmining.exception.InternalServerErrorException;
 import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.LogShareState;
 import org.k2.processmining.model.LogState;
@@ -12,12 +10,11 @@ import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.NormalLogService;
 import org.k2.processmining.storage.LogStorage;
+import org.k2.processmining.util.Message;
 import org.k2.processmining.util.Util;
-import org.k2.processmining.utils.GsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -27,7 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.*;
 
 /**
@@ -104,11 +100,11 @@ public class NormalLogController {
         Map<String, Object> res = new HashMap<>();
         try (InputStream inputStream = file.getInputStream()) {
             if (!normalLogService.save(normalLog, inputStream)) {
-                throw new JSONInternalServerErrorException("上传失败，请稍后尝试！");
+                throw new InternalServerErrorException(Message.UPLOAD_FAIL);
             }
         } catch (IOException e) {
-            LOGGER.error("Fail to save normalLog: {}", e);
-            throw new JSONInternalServerErrorException("上传失败，请稍后尝试！");
+            LOGGER.error("Fail to save normalLog:", e);
+            throw new InternalServerErrorException(Message.UPLOAD_FAIL);
         }
         res.put("normalLog", normalLog);
         res.put("code", 1);
@@ -131,14 +127,14 @@ public class NormalLogController {
                 IOUtils.copyLarge(inputStream, response.getOutputStream());
             }
             catch (IOException e) {
-                LOGGER.error("Fail to download normalLog: {}", e);
-                throw new JSONInternalServerErrorException();
+                LOGGER.error("Fail to download normalLog:", e);
+                throw new InternalServerErrorException(Message.DOWNLOAD_FAIL);
             }
             return true;
         });
         if (isSuccess == null || !isSuccess) {
             LOGGER.error("Fail to download normalLog! Is the file<{}> exist in the file system?", id);
-            throw new JSONInternalServerErrorException();
+            throw new InternalServerErrorException(Message.DOWNLOAD_FAIL);
         }
     }
 
@@ -231,7 +227,7 @@ public class NormalLogController {
         Map<String, Object> res = new HashMap<>();
         EventLog eventLog = normalLogService.transToEventLog(normalLog);
         if (eventLog == null) {
-            throw new JSONInternalServerErrorException("转化为事件日志失败，请检查输入，稍后尝试！");
+            throw new InternalServerErrorException(Message.TRANS_TO_EVENT_LOG_FAIL);
         }
         res.put("code", 1);
         res.put("eventLog",eventLog);

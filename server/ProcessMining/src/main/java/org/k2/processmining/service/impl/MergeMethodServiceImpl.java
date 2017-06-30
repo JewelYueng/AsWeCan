@@ -2,13 +2,13 @@ package org.k2.processmining.service.impl;
 
 import org.deckfour.xes.model.XLog;
 import org.k2.processmining.exception.JSONBadRequestException;
+import org.k2.processmining.exception.InternalServerErrorException;
 import org.k2.processmining.mapper.EventLogMapper;
 import org.k2.processmining.mapper.MergeMethodMapper;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.MethodState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.mergemethod.MergeMethod;
-import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.service.MergeMethodService;
 import org.k2.processmining.service.TimeResult;
 import org.k2.processmining.storage.LogStorage;
@@ -22,7 +22,10 @@ import org.k2.processmining.support.event.sumarise.EventLogSummary;
 import org.k2.processmining.support.event.sumarise.Summarize;
 import org.k2.processmining.support.merge.Merger;
 import org.k2.processmining.support.reflect.ReflectUtil;
+import org.k2.processmining.util.Message;
 import org.k2.processmining.util.Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,6 +42,8 @@ import java.util.Map;
  */
 @Service
 public class MergeMethodServiceImpl implements MergeMethodService{
+
+    private static Logger LOGGER = LoggerFactory.getLogger(MergeMethodServiceImpl.class);
 
     @Autowired
     private MergeMethodService mergeMethodService;
@@ -134,9 +139,18 @@ public class MergeMethodServiceImpl implements MergeMethodService{
         resultEventLog.setCreateDate(new Date());
         resultEventLog.setFormat("xes");
         resultEventLog.setMergeRelation(eventLog1.getId() + "," + eventLog2.getId());
-        Boolean b = logStorage.upload(resultEventLog, outputStream -> eventLogExport.convertXLog(resultXLog, outputStream));
-        if (b == null || !b) {
-            return null;
+        Boolean isSuccess = logStorage.upload(resultEventLog, outputStream -> {
+            try {
+                eventLogExport.convertXLog(resultXLog, outputStream);
+            }
+            catch (IOException e) {
+                LOGGER.error("Fail to convert resultEventLog:", e);
+                throw new InternalServerErrorException(Message.INTERNAL_SERVER_ERROR);
+            }
+            return true;
+        });
+        if (isSuccess == null || ! isSuccess) {
+            throw new InternalServerErrorException(Message.INTERNAL_SERVER_ERROR);
         }
         mergeMethodService.afterSaveInLogStorage(resultEventLog, resultXLog);
         timeResult.setResult(resultEventLog);

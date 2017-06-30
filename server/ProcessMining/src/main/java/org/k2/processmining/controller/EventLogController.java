@@ -1,7 +1,7 @@
 package org.k2.processmining.controller;
 
 import org.apache.commons.io.IOUtils;
-import org.k2.processmining.exception.JSONInternalServerErrorException;
+import org.k2.processmining.exception.InternalServerErrorException;
 import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.LogShareState;
 import org.k2.processmining.model.LogState;
@@ -9,12 +9,11 @@ import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.storage.LogStorage;
+import org.k2.processmining.util.Message;
 import org.k2.processmining.util.Util;
-import org.k2.processmining.utils.GsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -22,7 +21,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.*;
 
 /**
@@ -64,12 +62,12 @@ public class EventLogController {
         int code = 1;
         try (InputStream inputForRemote = file.getInputStream(); InputStream inputForSummarize = file.getInputStream()){
             if (! eventLogService.save(eventLog, inputForRemote, inputForSummarize)) {
-                throw new JSONInternalServerErrorException("上传失败，请稍后尝试！");
+                throw new InternalServerErrorException(Message.UPLOAD_FAIL);
             }
         }
         catch (IOException e) {
-            LOGGER.error("Fail to save eventLog: {}", e);
-            throw new JSONInternalServerErrorException("上传失败，请稍后尝试！");
+            LOGGER.error("Fail to save eventLog:", e);
+            throw new InternalServerErrorException(Message.UPLOAD_FAIL);
         }
         res.put("eventLog", eventLog);
         res.put("code", code);
@@ -86,14 +84,14 @@ public class EventLogController {
                 IOUtils.copyLarge(inputStream, response.getOutputStream());
             }
             catch (IOException e) {
-                LOGGER.error("Fail to download eventLog: {}", e);
-                throw new JSONInternalServerErrorException();
+                LOGGER.error("Fail to download eventLog:", e);
+                throw new InternalServerErrorException(Message.DOWNLOAD_FAIL);
             }
             return true;
         });
         if (isSuccess == null || !isSuccess) {
             LOGGER.error("Fail to download eventLog! Is the file<{}> exist in the file system?", id);
-            throw new JSONInternalServerErrorException();
+            throw new InternalServerErrorException(Message.DOWNLOAD_FAIL);
         }
     }
 

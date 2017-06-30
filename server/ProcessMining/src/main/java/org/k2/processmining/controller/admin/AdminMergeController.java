@@ -3,16 +3,16 @@ package org.k2.processmining.controller.admin;
 import org.apache.ibatis.annotations.Param;
 import org.k2.processmining.controller.IdListForm;
 import org.k2.processmining.exception.JSONBadRequestException;
-import org.k2.processmining.exception.JSONInternalServerErrorException;
+import org.k2.processmining.exception.InternalServerErrorException;
 import org.k2.processmining.model.MethodState;
 import org.k2.processmining.model.mergemethod.MergeMethod;
 import org.k2.processmining.service.MergeMethodService;
 import org.k2.processmining.support.algorithm.LoadMethodException;
+import org.k2.processmining.util.Message;
 import org.k2.processmining.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -56,8 +55,8 @@ public class AdminMergeController {
             return res;
         }
         catch (IOException e) {
-            LOGGER.error("fail to create mergeMethod: {}", e);
-            throw  new JSONInternalServerErrorException();
+            LOGGER.error("fail to create mergeMethod:", e);
+            throw  new InternalServerErrorException(Message.INTERNAL_SERVER_ERROR);
         }
         catch (LoadMethodException e) {
             LOGGER.error("fail to create mergeMethod: {}", e);

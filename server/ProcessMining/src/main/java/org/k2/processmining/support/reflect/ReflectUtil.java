@@ -1,5 +1,8 @@
 package org.k2.processmining.support.reflect;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -11,6 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by nyq on 2017/6/15.
  */
 public class ReflectUtil {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReflectUtil.class);
 
     private ConcurrentHashMap<String, URLClassLoader> loaderMap = new ConcurrentHashMap<>();
 
@@ -52,7 +57,7 @@ public class ReflectUtil {
             }
         }
         catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Fail to close class loader<{}>:", id, e);
             return false;
         }
         return true;

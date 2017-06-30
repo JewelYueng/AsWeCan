@@ -1,6 +1,7 @@
 package org.k2.processmining.service.impl;
 
 import org.deckfour.xes.model.XLog;
+import org.k2.processmining.exception.InternalServerErrorException;
 import org.k2.processmining.mapper.EventLogMapper;
 import org.k2.processmining.mapper.NormalLogMapper;
 import org.k2.processmining.model.LogGroup;
@@ -9,14 +10,16 @@ import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.user.User;
-import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.service.NormalLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.event.parse.EventLogParse;
 import org.k2.processmining.support.event.sumarise.EventLogSummary;
 import org.k2.processmining.support.event.sumarise.Summarize;
 import org.k2.processmining.support.event.transform.TransToEvent;
+import org.k2.processmining.support.event.transform.TransToEventException;
 import org.k2.processmining.util.Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +35,8 @@ import java.util.*;
 
 @Service
 public class NormalLogServiceImpl implements NormalLogService {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(NormalLogServiceImpl.class);
 
     @Autowired
     private NormalLogService normalLogService;
@@ -59,9 +64,18 @@ public class NormalLogServiceImpl implements NormalLogService {
         eventLog.setLogName(Util.getTransEventName(normalLog.getLogName()));
         String tmpdir = System.getProperty("java.io.tmpdir");
         String name = eventLog.getId();
-        File file = logStorage.download(normalLog, inputStream -> TransToEvent.transToEvent(inputStream, tmpdir, name));
+        File file = logStorage.download(normalLog, inputStream -> {
+            try {
+                return TransToEvent.transToEvent(inputStream, tmpdir, name);
+            }
+            catch (TransToEventException e) {
+                LOGGER.error("Fail to transform to eventLog for normalLog<{}>:", normalLog.getId(), e);
+                throw new InternalServerErrorException();
+            }
+        });
         if (file == null || !file.isFile()) {
-            return null;
+            LOGGER.error("EventLog file is illegal");
+            throw new InternalServerErrorException();
         }
         try (InputStream inputStream = new FileInputStream(file)) {
             if (logStorage.upload(eventLog, inputStream)) {
@@ -69,10 +83,13 @@ public class NormalLogServiceImpl implements NormalLogService {
                 return eventLog;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Fail to save eventLog:", e);
+            throw new InternalServerErrorException();
         }
         finally {
-            file.delete();
+            if( !file.delete()) {
+                LOGGER.warn("Fail to delete file:{}", file.getAbsolutePath());
+            }
         }
         return null;
     }
@@ -168,7 +185,8 @@ public class NormalLogServiceImpl implements NormalLogService {
             eventLogMapper.save(eventLog);
         }
         catch (IOException e) {
-            throw new RuntimeException(e);
+            LOGGER.error("Fail to save eventLog:", e);
+            throw new InternalServerErrorException("Fail to save eventLog! Please check your input and try again!");
         }
     }
 

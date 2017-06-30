@@ -33,15 +33,7 @@ public class EventLogExportImpl implements EventLogExport {
 	}
 
 	@Override
-	public boolean convertXLog(XLog xLog, OutputStream outputStream) {
-		XesXmlSerializer xesXmlSerializer = new XesXmlSerializer();
-		try {
-			xesXmlSerializer.serialize(xLog, outputStream);
-			return true;
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		return false;
+	public void convertXLog(XLog xLog, OutputStream outputStream) throws IOException {
+		new XesXmlSerializer().serialize(xLog, outputStream);
 	}
 }

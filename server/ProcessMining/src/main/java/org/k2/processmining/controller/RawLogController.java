@@ -1,36 +1,28 @@
 package org.k2.processmining.controller;
 
 import org.apache.commons.io.IOUtils;
-import org.k2.processmining.exception.JSONBadRequestException;
-import org.k2.processmining.exception.JSONInternalServerErrorException;
+import org.k2.processmining.exception.InternalServerErrorException;
 import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.LogShareState;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.log.RawLog;
 import org.k2.processmining.model.user.User;
-import org.k2.processmining.security.config.IUserDetail;
 import org.k2.processmining.service.RawLogService;
 import org.k2.processmining.storage.LogStorage;
+import org.k2.processmining.util.Message;
 import org.k2.processmining.util.Util;
-import org.k2.processmining.utils.GsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -70,12 +62,12 @@ public class RawLogController {
         Map<String, Object> res = new HashMap<>();
         try (InputStream inputStream = file.getInputStream()){
             if (! rawLogService.save(rawLog, inputStream)) {
-                throw new JSONInternalServerErrorException("上传失败，请稍后尝试！");
+                throw new InternalServerErrorException(Message.UPLOAD_FAIL);
             }
         }
         catch (IOException e) {
-            LOGGER.error("Fail to save rawLog: {}", e);
-            throw new JSONInternalServerErrorException("上传失败，请稍后尝试！");
+            LOGGER.error("Fail to save rawLog:", e);
+            throw new InternalServerErrorException(Message.UPLOAD_FAIL);
         }
         res.put("code", 1);
         res.put("rawLog", rawLog);
@@ -92,14 +84,14 @@ public class RawLogController {
                 IOUtils.copyLarge(inputStream, response.getOutputStream());
             }
             catch (IOException e) {
-                LOGGER.error("Fail to download rawLog: {}", e);
-                throw new JSONInternalServerErrorException();
+                LOGGER.error("Fail to download rawLog:", e);
+                throw new InternalServerErrorException(Message.DOWNLOAD_FAIL);
             }
             return true;
         });
         if (isSuccess == null || !isSuccess) {
             LOGGER.error("Fail to download rawLog! Is the file<{}> exist in the file system?", id);
-            throw new JSONInternalServerErrorException();
+            throw new InternalServerErrorException(Message.DOWNLOAD_FAIL);
         }
     }
 
@@ -110,7 +102,7 @@ public class RawLogController {
         Map<String, Object> res = new HashMap<>();
         NormalLog normalLog = rawLogService.normalize(rawLog, form.toLogConfiguration());
         if (normalLog == null) {
-            throw new JSONInternalServerErrorException("规范化日志失败，请检查输入，稍后再尝试！");
+            throw new InternalServerErrorException(Message.NORMALIZE_FAIL);
         }
         res.put("code", 1);
         res.put("normalLog", normalLog);
