@@ -12,7 +12,7 @@
         <table class="formtable">
             <tr>
                 <td class="title">输入工号:</td>
-                <td><input  class="control" type='text' name='username'></td>
+                <td><input  class="control" type='text' name='workId'></td>
             </tr>
             <tr>
                 <td class="title">输入密码:</td>
@@ -29,6 +29,9 @@
             <tr>
                 <td><input type="button" onclick="logout()" value="登出"></td>
             </tr>
+            <tr>
+                <td><input type="checkbox" id="rememberMe" checked="checked">自动登录</td>
+            </tr>
         </table>
     </form>
 
@@ -43,7 +46,8 @@
         var json = {
             workId: username,
             password: "1",
-            validateCode: "12"
+            validateCode: "12",
+            rememberme: true
         };
         $.ajax({
             type:"POST",

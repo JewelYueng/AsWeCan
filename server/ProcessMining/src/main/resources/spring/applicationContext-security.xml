@@ -15,18 +15,20 @@
     <security:http pattern="/user/register/**" security="none"/>
 
     <security:http auto-config="false" pattern="/admin/**" entry-point-ref="adminEntryPoint">
-        <security:intercept-url pattern="/admin/**" access="permitAll"/>
-        <security:custom-filter ref="adminFilter" position="FORM_LOGIN_FILTER"/>
-        <security:logout logout-url="/admin/logout" success-handler-ref="adminLogoutSuccessHandler"/>
-        <security:access-denied-handler error-page="/home/accessDeniedJSON"/>
+        <!--<security:remember-me services-ref="rememberMeService"/>-->
+        <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+        <security:custom-filter ref="adminFilter"  position="FORM_LOGIN_FILTER"/>
+        <security:logout logout-url="/admin/logout" delete-cookies="JSESSIONID" success-handler-ref="adminLogoutSuccessHandler" />
+        <security:access-denied-handler error-page="/home/accessDeniedJSON" />
         <security:csrf disabled="true"/>
     </security:http>
 
     <security:http auto-config="false" pattern="/**" entry-point-ref="userEntryPoint">
-        <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
+        <security:intercept-url pattern="/**" access="permitAll"/>
         <security:custom-filter ref="userFilter" position="FORM_LOGIN_FILTER"/>
         <security:logout logout-url="/home/logout" delete-cookies="JSESSIONID" success-handler-ref="userLogoutSuccessHandler"/>
         <security:access-denied-handler error-page="/home/accessDeniedJSON"/>
+        <!--<security:remember-me key="userProcessMining" remember-me-cookie="user-remember-me" />-->
         <security:csrf disabled="true"/>
     </security:http>
 
@@ -35,7 +37,7 @@
     </security:authentication-manager>
 
 
-    <security:authentication-manager id="adminAuthenticationManager">
+    <security:authentication-manager id="adminAuthenticationManager" erase-credentials="false">
         <security:authentication-provider ref="adminAuthenticationProvider"/>
     </security:authentication-manager>
     <!--<bean id="admindeniedHandler" class="org.k2.processmining.security.admin.AdmindeniedHandler"/>-->
@@ -54,6 +56,7 @@
         <property name="passwordParameter" value="password"/>
         <property name="authenticationSuccessHandler" ref="adminSuccessHandler"/>
         <property name="authenticationFailureHandler" ref="adminFailureHandler"/>
+        <property name="rememberMeServices" ref="rememberMeService"/>
     </bean>
     <bean id="adminSuccessHandler" class="org.k2.processmining.security.admin.AdminSuccessHandler">
         <property name="defaultTargetUrl" value="/admin/" />
@@ -100,6 +103,17 @@
     <security:global-method-security pre-post-annotations="enabled">
         <security:expression-handler ref="expressionHandler"/>
     </security:global-method-security>
+
+    <!--<bean id="rememberMeFilter" class=""-->
+    
+    <bean id="rememberMeService" class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
+        <constructor-arg ref="userDetailsService"/>
+        <constructor-arg value="test"/>
+        <property name="alwaysRemember" value="true"/>
+        <property name="parameter" value="rememberMe"/>
+        <property name="tokenValiditySeconds" value="666666666"/>
+    </bean>
+
 
 
 </beans>
