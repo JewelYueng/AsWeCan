@@ -94,24 +94,25 @@
         <property name="defaultTargetUrl" value="/home/login"/>
     </bean>
 
-    <bean id="logPermissionEvaluator" class="org.k2.processmining.security.LogPermissionEvaluator"/>
+    <!--<bean id="logPermissionEvaluator" class="org.k2.processmining.security.LogPermissionEvaluator"/>-->
 
-    <bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
-        <property name="permissionEvaluator" ref="logPermissionEvaluator"/>
-    </bean>
+    <!--<bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">-->
+        <!--<property name="permissionEvaluator" ref="logPermissionEvaluator"/>-->
+    <!--</bean>-->
 
-    <security:global-method-security pre-post-annotations="enabled">
-        <security:expression-handler ref="expressionHandler"/>
-    </security:global-method-security>
+    <!--<security:global-method-security pre-post-annotations="enabled">-->
+        <!--<security:expression-handler ref="expressionHandler"/>-->
+    <!--</security:global-method-security>-->
 
     <!--<bean id="rememberMeFilter" class=""-->
     
     <bean id="rememberMeService" class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
-        <constructor-arg ref="userDetailsService"/>
-        <constructor-arg value="test"/>
+        <constructor-arg ref="adminUserDetailsService"/>
+        <constructor-arg value="admin"/>
         <property name="alwaysRemember" value="true"/>
         <property name="parameter" value="rememberMe"/>
         <property name="tokenValiditySeconds" value="666666666"/>
+        <property name="cookieName" value="fuckAdmin"/>
     </bean>
 
 
