@@ -37,13 +37,14 @@
 
 <style lang="less" rel="stylesheet/less">
   #box {
-    height: 350px;
+    height: 320px;
     width: 300px;
     border-radius: 5px;
     box-shadow: 0 0 1px 0 #8492a6;
     border: 1px solid #8492a6;
     padding: 20px;
     margin: 100px auto;
+    background-color: white;
   }
 
   #title {
@@ -81,13 +82,13 @@
       position: relative;
       left: -60px;
       text-align: left;
-      top:-18px;
+      top:-30px;
       color: gray;
     }
   }
   .login-btn{
     position: relative;
-    top:-20px;
+    top:-40px;
     button{
       width: 100px;
     }
