@@ -2,7 +2,7 @@ package org.k2.processmining.service.impl;
 
 import org.deckfour.xes.model.XLog;
 import org.k2.processmining.cache.CacheConfig;
-import org.k2.processmining.exception.JSONBadRequestException;
+import org.k2.processmining.exception.BadRequestException;
 import org.k2.processmining.mapper.MiningMethodMapper;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.MethodState;
@@ -136,10 +136,10 @@ public class MiningMethodServiceImpl implements MiningMethodService {
     public TimeResult mining(EventLog eventLog, Algorithm<Miner> algorithm, Map<String,Object> params, DiagramType type) {
         XLog xLog = eventLogParse.eventLogParse(eventLog);
         if (xLog == null) {
-            throw new JSONBadRequestException("Fail to parse eventLog! Please check your eventLog!");
+            throw new BadRequestException("Fail to parse eventLog! Please check your eventLog!");
         }
         if (algorithm == null) {
-            throw new JSONBadRequestException("Algorithm is not exist.");
+            throw new BadRequestException("Algorithm is not exist.");
         }
         TimeResult<Object> timeResult = new TimeResult<>();
         TimeResult<SimpleHeuristicsNet> netResult = miningMethodService.mining(algorithm, eventLog, xLog, params);

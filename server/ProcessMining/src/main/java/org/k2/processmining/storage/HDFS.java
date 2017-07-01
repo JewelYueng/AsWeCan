@@ -2,7 +2,7 @@ package org.k2.processmining.storage;
 
 
 import org.apache.commons.io.IOUtils;
-import org.k2.processmining.exception.JSONBadRequestException;
+import org.k2.processmining.exception.BadRequestException;
 import org.k2.processmining.exception.InternalServerErrorException;
 import org.k2.processmining.model.log.AbstractLog;
 import org.k2.processmining.model.user.User;
@@ -10,7 +10,6 @@ import org.k2.processmining.util.Message;
 import org.k2.processmining.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -19,7 +18,7 @@ import java.net.URL;
 /**
  * Created by nyq on 2017/6/13.
  */
-@Component
+//@Component
 public class HDFS implements LogStorage {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HDFS.class);
@@ -60,7 +59,7 @@ public class HDFS implements LogStorage {
     public String getLogLocation(AbstractLog log) {
         if (log == null || log.getUserId() == null || log.getId() == null) {
             LOGGER.error("Illegal input!");
-            throw new JSONBadRequestException("日志不存在！");
+            throw new BadRequestException("日志不存在！");
         }
         return HDFS_URL + "/" + log.getUserId() + "/" + log.getType() + "/" + log.getId();
     }

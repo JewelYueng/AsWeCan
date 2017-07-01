@@ -1,30 +1,20 @@
 package org.k2.processmining.controller;
 
-import org.apache.ibatis.annotations.Param;
-import org.k2.processmining.exception.JSONBadRequestException;
-import org.k2.processmining.model.LogState;
-import org.k2.processmining.model.MethodState;
+import org.k2.processmining.exception.BadRequestException;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.mergemethod.MergeMethod;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.service.MergeMethodService;
 import org.k2.processmining.service.TimeResult;
-import org.k2.processmining.service.impl.MergeMethodServiceImpl;
-import org.k2.processmining.support.algorithm.LoadMethodException;
 import org.k2.processmining.util.Message;
-import org.k2.processmining.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -68,7 +58,7 @@ public class MergeController {
         EventLog eventLog2 = eventLogService.getEventLogById(form.getEventLogId2());
         TimeResult<EventLog> result = mergeMethodService.merge(eventLog1, eventLog2, mergeMethod, form.parameters);
         if (result == null) {
-            throw new JSONBadRequestException(Message.MERGE_FAIL);
+            throw new BadRequestException(Message.MERGE_FAIL);
         }
         Map<String, Object> res = new HashMap<>();
         res.put("timeCost", result.getTime());

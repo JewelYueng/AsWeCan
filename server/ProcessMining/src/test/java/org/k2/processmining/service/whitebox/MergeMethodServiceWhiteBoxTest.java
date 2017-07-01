@@ -1,10 +1,9 @@
 package org.k2.processmining.service.whitebox;
 
-import org.deckfour.xes.model.XLog;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.k2.processmining.exception.JSONBadRequestException;
+import org.k2.processmining.exception.BadRequestException;
 import org.k2.processmining.model.MethodState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.mergemethod.MergeMethod;
@@ -86,7 +85,7 @@ public class MergeMethodServiceWhiteBoxTest {
         try {
             mergeMethodService.merge(eventLog1, eventLog2, mergeMethod, params);
         }
-        catch (JSONBadRequestException e) {
+        catch (BadRequestException e) {
             return;
         }
         throw new RuntimeException("fail");

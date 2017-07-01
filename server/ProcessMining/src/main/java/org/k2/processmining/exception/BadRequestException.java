@@ -3,11 +3,11 @@ package org.k2.processmining.exception;
 /**
  * Created by nyq on 2017/6/24.
  */
-public class JSONBadRequestException extends RuntimeException {
+public class BadRequestException extends RuntimeException {
     private String message;
 
-    public JSONBadRequestException() {}
-    public JSONBadRequestException(String message) {
+    public BadRequestException() {}
+    public BadRequestException(String message) {
         this.message = message;
     }
 

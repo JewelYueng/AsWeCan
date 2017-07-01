@@ -55,7 +55,12 @@ public class NormalLogServiceWhiteBoxTest {
 
         // 2.4
         normalLog.setId("123");
-        EventLog fail = normalLogService.transToEventLog(normalLog);
-        Assert.assertNull(fail);
+        try {
+            normalLogService.transToEventLog(normalLog);
+            System.out.println("Could not appear!");
+        }
+        catch (Exception e) {
+            // assert exception
+        }
     }
 }

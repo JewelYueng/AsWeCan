@@ -1,6 +1,7 @@
 package org.k2.processmining.service.impl;
 
 import org.deckfour.xes.model.XLog;
+import org.k2.processmining.exception.BadRequestException;
 import org.k2.processmining.exception.InternalServerErrorException;
 import org.k2.processmining.mapper.EventLogMapper;
 import org.k2.processmining.mapper.NormalLogMapper;
@@ -17,6 +18,7 @@ import org.k2.processmining.support.event.sumarise.EventLogSummary;
 import org.k2.processmining.support.event.sumarise.Summarize;
 import org.k2.processmining.support.event.transform.TransToEvent;
 import org.k2.processmining.support.event.transform.TransToEventException;
+import org.k2.processmining.util.Message;
 import org.k2.processmining.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,9 +70,13 @@ public class NormalLogServiceImpl implements NormalLogService {
             try {
                 return TransToEvent.transToEvent(inputStream, tmpdir, name);
             }
-            catch (TransToEventException e) {
+            catch (IOException e) {
                 LOGGER.error("Fail to transform to eventLog for normalLog<{}>:", normalLog.getId(), e);
                 throw new InternalServerErrorException();
+            }
+            catch (TransToEventException e) {
+                LOGGER.error("Fail to transform to eventLog for normalLog<{}>:", normalLog.getId(), e);
+                throw new BadRequestException(Message.TRANS_TO_EVENT_LOG_FAIL);
             }
         });
         if (file == null || !file.isFile()) {

@@ -1,6 +1,6 @@
 package org.k2.processmining.util;
 
-import org.k2.processmining.exception.JSONBadRequestException;
+import org.k2.processmining.exception.BadRequestException;
 import org.k2.processmining.model.LogShareState;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.AbstractLog;
@@ -8,6 +8,7 @@ import org.k2.processmining.model.log.LogType;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.support.mining.model.DiagramType;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.UUID;
@@ -88,14 +89,19 @@ public class Util {
             return DiagramType.valueOf(type);
         }
         catch (Exception e) {
-            throw new JSONBadRequestException("The type of diagram does not exist!");
+            throw new BadRequestException("The type of diagram does not exist!");
         }
     }
 
     public static String validateString(String keyWord) {
         if (keyWord == null || (keyWord=keyWord.trim()).length() == 0) {
-            throw new JSONBadRequestException("Illegal keyWord!");
+            throw new BadRequestException("Illegal keyWord!");
         }
         return keyWord;
+    }
+
+    public static boolean isAjax(HttpServletRequest request) {
+        String requestedWithHeader = request.getHeader("X-Requested-With");
+        return "XMLHttpRequest".equals(requestedWithHeader);
     }
 }

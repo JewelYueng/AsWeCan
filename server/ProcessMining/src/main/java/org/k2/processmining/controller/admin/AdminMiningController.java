@@ -2,7 +2,7 @@ package org.k2.processmining.controller.admin;
 
 import org.apache.ibatis.annotations.Param;
 import org.k2.processmining.controller.IdListForm;
-import org.k2.processmining.exception.JSONBadRequestException;
+import org.k2.processmining.exception.BadRequestException;
 import org.k2.processmining.exception.InternalServerErrorException;
 import org.k2.processmining.model.MethodState;
 import org.k2.processmining.model.miningmethod.MiningMethod;
@@ -41,7 +41,7 @@ public class AdminMiningController {
     public @ResponseBody
     Object addMiningMethod(@Param("files") MultipartFile[] files) {
         if (files == null || files.length == 0) {
-            throw new JSONBadRequestException("At least one file!");
+            throw new BadRequestException("At least one file!");
         }
         Map<String,Object> res = new HashMap<>();
         MiningMethod miningMethod = new MiningMethod();
@@ -59,7 +59,7 @@ public class AdminMiningController {
         }
         catch (LoadMethodException e) {
             LOGGER.error("fail to create mergeMethod: {}", e);
-            throw new JSONBadRequestException(e.getMessage());
+            throw new BadRequestException(e.getMessage());
         }
     }
 

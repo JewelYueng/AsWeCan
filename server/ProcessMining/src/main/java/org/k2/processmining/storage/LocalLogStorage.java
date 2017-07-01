@@ -2,7 +2,7 @@ package org.k2.processmining.storage;
 
 
 import org.apache.commons.io.FileUtils;
-import org.k2.processmining.exception.JSONBadRequestException;
+import org.k2.processmining.exception.BadRequestException;
 import org.k2.processmining.model.log.AbstractLog;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.util.Util;
@@ -13,7 +13,7 @@ import java.io.*;
 /**
  * Created by nyq on 2017/6/11.
  */
-//@Component
+@Component
 public class LocalLogStorage implements LogStorage {
     private static final String ROOT_DIRECTORY = "E:/ppmm";
 
@@ -24,7 +24,7 @@ public class LocalLogStorage implements LogStorage {
     @Override
     public String getLogLocation(AbstractLog log) {
         if (log == null || log.getUserId() == null || log.getId() == null) {
-            throw new JSONBadRequestException("日志不存在！");
+            throw new BadRequestException("日志不存在！");
         }
         return ROOT_DIRECTORY + "/" + log.getUserId() + "/" + log.getType() + "/" + log.getId();
     }

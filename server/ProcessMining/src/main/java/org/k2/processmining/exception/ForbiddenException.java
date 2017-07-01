@@ -3,13 +3,13 @@ package org.k2.processmining.exception;
 /**
  * Created by nyq on 2017/6/28.
  */
-public class JSONForbiddenException extends RuntimeException {
+public class ForbiddenException extends RuntimeException {
     private String message;
 
-    public JSONForbiddenException() {
+    public ForbiddenException() {
         message = "403 Forbidden";
     }
-    public JSONForbiddenException(String message) {
+    public ForbiddenException(String message) {
         this.message = message;
     }
 

@@ -1,10 +1,8 @@
 package org.k2.processmining.security;
 
-import org.k2.processmining.exception.JSONBadRequestException;
-import org.k2.processmining.exception.JSONForbiddenException;
+import org.k2.processmining.exception.ForbiddenException;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.AbstractLog;
-import org.k2.processmining.security.config.IUserDetail;
 import org.k2.processmining.support.algorithm.Algorithm;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
@@ -18,7 +16,7 @@ public class LogPermissionEvaluator implements PermissionEvaluator {
     @Override
     public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
         if (targetDomainObject == null) {
-            throw new JSONForbiddenException("Attempted to access the protected resource!");
+            throw new ForbiddenException("Attempted to access the protected resource!");
         }
         if (targetDomainObject instanceof AbstractLog) {
             AbstractLog log = (AbstractLog) targetDomainObject;

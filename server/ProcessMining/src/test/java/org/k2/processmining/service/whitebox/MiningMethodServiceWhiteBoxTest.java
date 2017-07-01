@@ -7,6 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.k2.processmining.exception.BadRequestException;
 import org.k2.processmining.exception.InternalServerErrorException;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.miningmethod.MiningMethod;
@@ -78,7 +79,7 @@ public class MiningMethodServiceWhiteBoxTest {
     public void miningTest1() throws Exception {
         Algorithm<Miner> algorithm = miningMethodService.getAlgorithmById(activeId);
 
-        expectedException.expect(InternalServerErrorException.class);
+        expectedException.expect(BadRequestException.class);
         miningMethodService.mining((EventLog)null, algorithm, Collections.emptyMap(), DiagramType.PetriNet);
     }
 
@@ -87,7 +88,7 @@ public class MiningMethodServiceWhiteBoxTest {
         String eventLogId = "1";
         EventLog eventLog = eventLogService.getEventLogById(eventLogId);
 
-        expectedException.expect(InternalServerErrorException.class);
+        expectedException.expect(BadRequestException.class);
         miningMethodService.mining(eventLog, (Algorithm)null, Collections.emptyMap(), DiagramType.PetriNet);
     }
 

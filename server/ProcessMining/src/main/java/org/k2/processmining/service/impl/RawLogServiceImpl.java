@@ -1,6 +1,7 @@
 package org.k2.processmining.service.impl;
 
 import org.k2.processmining.exception.InternalServerErrorException;
+import org.k2.processmining.exception.BadRequestException;
 import org.k2.processmining.mapper.NormalLogMapper;
 import org.k2.processmining.mapper.RawLogMapper;
 import org.k2.processmining.model.LogGroup;
@@ -21,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
@@ -150,9 +152,13 @@ public class RawLogServiceImpl implements RawLogService {
                             try {
                                 Normalize.normalize(lc, inputStream, outputStream);
                             }
-                            catch (NormalizeException e) {
+                            catch (IOException e) {
                                 LOGGER.error("Fail to normalize rawLog<{}>", rawLog.getId(), e);
                                 throw new InternalServerErrorException(Message.NORMALIZE_FAIL);
+                            }
+                            catch (NormalizeException e) {
+                                LOGGER.error("Fail to normalize rawLog<{}>", rawLog.getId(), e);
+                                throw new BadRequestException(Message.NORMALIZE_FAIL);
                             }
                             return true;
                         }

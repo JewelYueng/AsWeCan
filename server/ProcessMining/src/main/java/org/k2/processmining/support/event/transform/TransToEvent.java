@@ -18,25 +18,28 @@ import java.util.*;
 public class TransToEvent {
     private static Logger LOGGER = LoggerFactory.getLogger(TransToEvent.class);
 
-    public static File transToEvent(InputStream normalLogInputStream, String path, String name) throws TransToEventException {
+    public static File transToEvent(InputStream normalLogInputStream, String path, String name) throws TransToEventException, IOException {
         try {
             if (!path.endsWith("/") && !path.endsWith("\\")) path += File.separatorChar;
             Log4Normal log4Normal = getLog(normalLogInputStream, name);
             return runEC(log4Normal, path);
         }
         catch (Exception e) {
+            if (e instanceof IOException) {
+                throw (IOException) e;
+            }
             throw new TransToEventException(e);
         }
     }
 
-    private static Log4Normal getLog(InputStream normalLogInputStream, String outputFileName) throws IOException {
+    private static Log4Normal getLog(InputStream normalLogInputStream, String outputFileName) throws IOException, TransToEventException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(normalLogInputStream));
 
         String line;
         String nulVal = Log4Normal.nulVal;
         String separator = Log4Normal.seperator;
         if ((line=reader.readLine()) == null) {
-            throw new IllegalArgumentException("The normalLog is illegal!");
+            throw new TransToEventException("The normalLog is illegal!");
         }
         String[] indexs = line.split(separator);
         ArrayList<String> events = new ArrayList<String>();
