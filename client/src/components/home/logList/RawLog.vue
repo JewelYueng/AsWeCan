@@ -1,47 +1,44 @@
 <template>
   <div class="raw-log-details">
     <div class="head">
-      <div class="button" @click="upload"><img src="static/img/upload.png">上传</div>
-      <div class="button" @click="shareSome"><img src="static/img/share_white.png">分享</div>
-      <div class="button" @click="deleteSome"><img src="static/img/Delete.png" style="padding-top: 2px">删除</div>
+      <el-button type="primary" @click="upload" icon="upload">上传</el-button>
+      <el-button @click="shareSome" icon="share">分享</el-button>
+      <el-button @click="deleteSome" icon="delete">删除</el-button>
       <input type="text" id="search" placeholder="请输入关键字" v-model="keyWord">
-      <div v-show="isSearching" class="img-button close-btn" @click="close_search">
+      <div v-show="isSearching" class="close-btn" @click="close_search">
         <i class="el-icon-circle-cross"></i>
       </div>
-      <img v-show="!isSearching" id="search_button" src="static/img/search.png" @click="searchRawLog()">
+      <div v-show="!isSearching" id="search_button" @click="searchLog"><i class="el-icon-search"></i></div>
     </div>
-    <div class='title'>
-      <span class='title_left'>全部文件，共{{count}}个，已选{{amount}}个</span>
-      <span class='title_right'>关联文件</span>
-    </div>
+    <div class='title'>所有文件已加载，共{{count}}个</div>
     <div id="log-list">
-      <div class="list">
+      <div class="list" style="border-bottom: 0.8px solid #324157">
         <div class="log-head">
           <input type="checkbox" v-model="checkAll" id="文件名" value="文件名">
           <span class="log-name">文件名</span></div>
-        <div class="operations"></div>
         <div class="date">日期</div>
         <div class="normal-log">规范化日志</div>
         <div class="event-log">事件日志</div>
+        <div class="operations"></div>
       </div>
       <div class="list" v-for="(item,index) in items" :class="{selectedItem: isSelected(index)}">
         <div class="log-head">
           <input type="checkbox" v-model="checked" :value="item.rawLog.id" @click="currClick(item,index)">
           <span @click="showDetail(index)" class="log-name" :title="item.rawLog.logName" >{{item.rawLog.logName}}</span>
         </div>
-        <div class="operations">
-          <img class="process_button" title="生成规范化日志" v-on:click="transferToNormal(index)" src="static/img/process_color.png">
-          <img class="download_button" title="下载" src="static/img/download_color.png" @click="download(index)" v-model="item.rawLog.id">
-          <img @click="share(index)"
-               class="img-button share_button" title="分享"
-               :src="item.rawLog.isShared === 0 ? 'static/img/share_color.png' : 'static/img/forbidden_color.png'">
-          <img class="delete_button" title="删除" src="static/img/Delete_color.png" @click="deleteRawLog(index)">
-        </div>
         <div class="date">
           {{`${new Date(item.rawLog.createDate).getFullYear()}-${new Date(item.rawLog.createDate).getMonth() + 1}-${new Date(item.rawLog.createDate).getDate()}`}}
         </div>
         <div @click="jumpToNormal(index)" class="relation-logs normal-log" :title="item.normalLog ? item.normalLog.logName : '无'">{{item.normalLog ? item.normalLog.logName : '无'}}</div>
         <div @click="jumpToEvent(index)" class="relation-logs event-log" :title="item.eventLog ? item.eventLog.logName : '无'">{{item.eventLog ? item.eventLog.logName : '无'}}</div>
+        <div class="operations">
+          <i class="el-icon-setting" title="生成规范化日志" v-on:click="transferToNormal(index)"></i>
+          <img class="download-btn" title="下载" src="static/img/cloud_download.png"
+               @click="download(index)">
+          <i class="el-icon-share" v-show="item.rawLog.isShared==0"title="分享" @click="share(index)"></i>
+          <i class="el-icon-minus" v-show="item.rawLog.isShared!=0"title="取消分享" @click="share(index)"></i>
+          <i class="el-icon-delete" title="删除" @click="deleteLog(index)"></i>
+        </div>
       </div>
     </div>
   </div>
@@ -51,12 +48,12 @@
   @import '~assets/colors.less';
   @import "~assets/layout.less";
 
-  .log-name, .btn_common, .download_button, .share_button, .delete_button, .process_button {
-    cursor: pointer;
-  }
-
-  .img-button {
-    cursor: pointer;
+  .head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    position: relative;
+    padding-bottom: 30px;
   }
 
   .close-btn {
@@ -68,26 +65,22 @@
     }
   }
 
-  .head {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    position: relative;
-  }
-
-  .raw-log-details {
-    padding-top: 20px;
+  .title {
+    position: absolute;
+    right: 55px;
+    font-size: 14px;
+    color: #b5b5b5;
   }
 
   #search {
     margin-left: 300px;
-    background-color: @light_theme;
+    background-color: @tab_selected;
     color: @dark_theme;
     text-align: center;
     width: @search_width;
     height: @search_height;
     border-radius: @search_border-radius;
-    border: 1px solid @dark_theme;
+    border: none;
     outline-style: none;
   }
 
@@ -98,17 +91,6 @@
     left: -50px;
     top: 5px;
     cursor: pointer;
-  }
-  .button:hover{background-color: @light_blue}
-
-
-  .title {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-left: 20px;
-    margin-right: 210px;
-    font-size: 20px;
   }
 
   .list:hover {
@@ -121,19 +103,20 @@
   }
 
   #log-list {
+    padding-top: 20px;
     margin-left: 10px;
     margin-right: 10px;
+    font-size: 14px;
     .list {
       img {
-        width: 20px;
-        height: 20px;
-        margin-right: 10px;
+        width: 12px;
+        height: 12px;
       }
       display: flex;
       flex-direction: row;
       width: 100%;
       padding: 10px 0px 10px 0px;
-      border-bottom: 1px solid #afbfb8;
+      border-bottom: 0.5px solid @light_theme;
       .log-head {
         flex:  0 0 200px;
         text-align: left;
@@ -147,21 +130,26 @@
       }
       .operations {
         flex: 0 0 150px;
+        color: @dark_theme;
+        i{
+          margin: 0 5px;
+          cursor: pointer;
+        }
       }
       .date{
         flex:0 0 120px;
         .too-long-text;
       }
       .raw-log{
-        flex: 0 0 200px;
+        flex: 0 0 250px;
         .too-long-text;
       }
       .normal-log{
-        flex: 0 0 200px;
+        flex: 0 0 250px;
         .too-long-text;
       }
       .event-log{
-        flex: 0 0 200px;
+        flex: 0 0 250px;
         .too-long-text;
       }
     }

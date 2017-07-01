@@ -4,10 +4,11 @@
       <div v-show="isSearching" class="img-button close-btn" @click="close_search">
         <i class="el-icon-circle-cross"></i>
       </div>
-      <img v-show="!isSearching" id="search_button" src="static/img/search.png" @click="search()"></div>
-    <div class="head-2"><span>全部文件，共{{amount}}个</span><span>关联文件</span></div>
+      <div v-show="!isSearching" id="search_button" @click="searchLog"><i class="el-icon-search"></i></div>
+    </div>
+    <div class='title'>所有文件已加载，共{{count}}个</div>
     <div id="log-list">
-      <div class="list">
+      <div class="list" style="border-bottom: 0.8px solid #324157">
         <div class="log-name">文件名</div>
         <div class="uploader">上传者</div>
         <div class="date">日期</div>
@@ -23,7 +24,7 @@
         <div class="normal-log" :title="item.normalLog ? item.normalLog.logName : '无'">{{item.normalLog ? item.normalLog.logName : '无'}}</div>
         <div class="event-log" :title="item.eventLog ? item.eventLog.logName : '无'">{{item.eventLog ? item.eventLog.logName : '无'}}</div>
         <div class="operations">
-          <img class="download_button" title="下载" src="static/img/download_color.png" @click="download(index)">
+          <img class="download_button" title="下载" src="static/img/cloud_download.png" @click="download(index)">
         </div>
       </div>
     </div>
@@ -34,8 +35,19 @@
   @import '~assets/colors.less';
   @import "~assets/layout.less";
 
-  .img-button {
-    cursor: pointer;
+  .head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    position: relative;
+    padding-bottom: 30px;
+  }
+
+  .title {
+    position: absolute;
+    right: 55px;
+    font-size: 14px;
+    color: #b5b5b5;
   }
 
   .close-btn {
@@ -47,50 +59,28 @@
     }
   }
 
-  .raw-log {
-    padding-top: 20px;
-  }
-
   .download_button {
     cursor: pointer;
   }
 
-  .head {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: flex-end;
-    padding-right: 40px;
-  }
-
-  .head-2 {
-    text-align: left;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-left: 20px;
-    margin-right: 210px;
-    font-size: 20px;
-  }
-
   .search {
-    background-color: @light_theme;
+    margin-left: 654px;
+    background-color: @tab_selected;
     color: @dark_theme;
     text-align: center;
     width: @search_width;
     height: @search_height;
     border-radius: @search_border-radius;
-    border: 1px solid @dark_theme;
+    border: none;
     outline-style: none;
-
   }
 
   #search_button {
     width: 20px;
     height: 20px;
     position: relative;
-    right: 28px;
-    top: -5px;
+    left: -50px;
+    top: 5px;
     cursor: pointer;
   }
 
@@ -105,23 +95,25 @@
   }
 
   #log-list {
+    padding-top: 20px;
     margin-left: 10px;
     margin-right: 10px;
+    font-size: 14px;
     .list {
       img {
-        width: 20px;
-        height: 20px;
+        width: 12px;
+        height: 12px;
         margin-right: 10px;
       }
       display: flex;
       flex-direction: row;
       width: 100%;
       padding: 10px 0px 10px 0px;
-      border-bottom: 1px solid #afbfb8;
+      border-bottom: 0.5px solid @light_theme;
       .log-name {
         cursor: pointer;
         max-width: 200px;
-        flex: 0 0 200px;
+        flex: 0 0 250px;
         .too-long-text;
         text-align: left;
       }
@@ -136,11 +128,11 @@
         .too-long-text;
       }
       .normal-log {
-        flex: 0 0 200px;
+        flex: 0 0 250px;
         .too-long-text;
       }
       .event-log {
-        flex: 0 0 200px;
+        flex: 0 0 250px;
         .too-long-text;
       }
     }
