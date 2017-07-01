@@ -13,6 +13,6 @@
 <script>
   import BaseBox from './BaseBox'
   export default{
-    mixins: [BaseBox]
+    mixins: [BaseBox],
   }
 </script>
