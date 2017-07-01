@@ -75,7 +75,6 @@
         color: #5f6e96;
       }
     }
-
   }
   .auto-login{
     .el-form-item__content{
