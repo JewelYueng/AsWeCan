@@ -1,35 +1,34 @@
 <template id="table1">
   <div>
-    <br/>
     <div class="add-btn">
-      <el-button size="small" style="width: 80px;font-size:15px" @click="addBlankRow">添加</el-button>
+      <el-button size="small" icon="plus"  style="width: 80px;font-size:15px" @click="addBlankRow">添加</el-button>
     </div>
-    <el-table :data="format" border style="margin-top: 30px;width: 90%;margin: auto;" max-height="400">
-      <el-table-column prop="name" label="数据项名">
+    <el-table :data="format" border style="margin-top: 10px;width: 90%;margin: auto;" max-height="400">
+      <el-table-column prop="name" label="数据项名" width="80" show-overflow-tooltip>
         <template scope="scope">
           <el-input autosize type="textarea" v-model="editing.name" v-show="isEditing(scope.$index)"></el-input>
           <div v-show="!isEditing(scope.$index)">{{scope.row.name}}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="character" label="占位符">
+      <el-table-column prop="character" label="占位符" width="80" show-overflow-tooltip>
         <template scope="scope">
           <el-input autosize type="textarea" v-model="editing.character" v-show="isEditing(scope.$index)"></el-input>
           <div v-show="!isEditing(scope.$index)">{{scope.row.name}}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="identifier" label="格式标示符">
+      <el-table-column prop="identifier" label="格式标示符" width="100" show-overflow-tooltip>
         <template scope="scope">
           <el-input autosize type="textarea" v-model="editing.identifier" v-show="isEditing(scope.$index)"></el-input>
           <div v-show="!isEditing(scope.$index)">{{scope.row.identifier}}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="source" label="源格式" width="150">
+      <el-table-column prop="source" label="源格式" width="150" show-overflow-tooltip>
         <template scope="scope">
           <el-input type="textarea" autosize v-model="editing.source" v-show="isEditing(scope.$index)"></el-input>
           <div v-show="!isEditing(scope.$index)">{{scope.row.source}}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="target" label="目标格式">
+      <el-table-column prop="target" label="目标格式" width="80" show-overflow-tooltip>
         <template scope="scope">
           <el-input autosize v-model="editing.target" type="textarea" v-show="isEditing(scope.$index)"></el-input>
           <div v-show="!isEditing(scope.$index)">{{scope.row.target}}</div>
@@ -37,7 +36,7 @@
       </el-table-column>
       <el-table-column
         label="操作"
-        width="140">
+        >
         <template scope="scope" class="btn-column">
           <el-button
             size="small"
