@@ -80,28 +80,7 @@
         selectedTrace: "",
         items: {
           "timeCost": 541,
-          "diagram": {
-            "links": [
-              {"source": "[__INVALID__]", "target": "[Anne, Mike]", "value": 136},
-              {"source": "[__INVALID__]", "target": "[Wil]", "value": 526},
-              {"source": "[Anne, Mike]", "target": "[Pete, Sara, Mary, Sam, Pam, John, Carol]", "value": 526},
-              {"source": "[Wil]", "target": "[Anne, Mike]", "value": 1252},
-              {"source": "[Anne, Mike]", "target": "[Wil]", "value": 200},
-              {"source": "[Pete, Mary, Sara, Sam, Pam, John, Carol]", "target": "[Anne, Mike]", "value": 64},
-              {"source": "[Pete, Sara, Mary, Sam, Pam, John, Carol]", "target": "[Wil]", "value": 526},
-              {"source": "[Anne, Mike]", "target": "[Pete, Mary, Sara, Sam, Pam, John, Carol]", "value": 108},
-              {"source": "[Anne, Mike]", "target": "[__INVALID__]", "value": 618}
-            ],
-            "nodes": [
-              {"name": "[__INVALID__]"},
-              {"name": "[Wil]"},
-              {"name": "[Anne, Mike]"},
-              {"name": "[Pete, Mary, Sara, Sam, Pam, John, Carol]"},
-              {"name": "[Pete, Sara, Mary, Sam, Pam, John, Carol]"}
-            ],
-            "traces": ["a,b,d,c,f", "a,c,b,d,f", "a,c,d,b,f", "a,d,e,f", "a,b,c,d,f", "a,e,d,f"],
-            "allTraces": ["a,b,d,c,f", "a,c,b,d,f", "a,c,d,b,f", "a,d,e,f", "a,b,c,d,f", "a,e,d,f"]
-          }
+          "diagram": {}
         }
       }
     },
@@ -133,8 +112,8 @@
         let traceTimers = []
         let links = d3.selectAll('.link')
           .attr("stroke-width", 0);
-        debugger
         let timerArr = [];
+        debugger
         for (let i = 0; i !== this.items.diagram.allTraces.length; i++) {
           let trace = this.items.diagram.allTraces[i].split(",");
           for (let j = 0; j !== trace.length; j++) {
@@ -293,7 +272,7 @@
             } else {
               let edge = layout.edge({
                 v: trace[i],
-                w: trace[i + 1]
+                w: trace[i + 1],
               });
               let str = trace[i] + '->' + trace[i + 1];
               if (edge === undefined) {
@@ -315,6 +294,7 @@
 
                   let p = traceGroup.append("path")
                     .attr("class", "edge")
+                    .attr("fill","none")
                     .attr("id", "trace-" + tIndex)
                     .attr("d", line(tEdge.points))
                     .attr("stroke-width", function (d) {
@@ -393,7 +373,8 @@
           .data(layout.edges())
           .enter()
           .append('g')
-          .attr("class", "edge");
+          .attr("class", "edge")
+          .attr("fill","none")
 
 
         let links = edges.append("path")
