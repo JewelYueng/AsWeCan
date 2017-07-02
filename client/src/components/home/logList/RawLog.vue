@@ -50,6 +50,16 @@
         </div>
       </div>
     </div>
+    <div class="block pageDiv">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-size="100"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="items.length">
+      </el-pagination>
+    </div>
   </div>
 </template>
 

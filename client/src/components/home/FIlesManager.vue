@@ -115,6 +115,17 @@
       }
     }
   }
+  .pageDiv {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+  }
 </style>
 
 <script>
