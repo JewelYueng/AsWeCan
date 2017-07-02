@@ -1,15 +1,14 @@
 package org.k2.processmining.controller;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import org.k2.processmining.controller.form.NotEmptyFields;
+
 import java.util.List;
 
 /**
  * Created by nyq on 2017/6/20.
  */
 public class IdListForm {
-    @NotNull
-    @Size(min = 1)
+    @NotEmptyFields
     private List<String> idList;
 
     public List<String> getIdList() {

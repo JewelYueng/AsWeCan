@@ -1,6 +1,7 @@
 package org.k2.processmining.controller;
 
 import org.apache.commons.io.IOUtils;
+import org.hibernate.validator.constraints.NotBlank;
 import org.k2.processmining.exception.InternalServerErrorException;
 import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.LogShareState;
@@ -19,6 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -41,9 +45,9 @@ public class EventLogController {
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public@ResponseBody
-    Object upload(@RequestParam("format") String format,
-                  @RequestParam("isShare") int isShare,
-                  @RequestParam("file")CommonsMultipartFile file) {
+    Object upload(@RequestParam("format") @NotBlank(message = "Format should not be empty.") String format,
+                  @RequestParam(value = "isShare", defaultValue = "0") int isShare,
+                  @RequestParam("file") @NotNull(message = "File should not be empty.") CommonsMultipartFile file) {
         String eventLogId = Util.getUUIDString();
 
         User user = getUser();
@@ -73,7 +77,8 @@ public class EventLogController {
     }
 
     @RequestMapping(value = "/download", method = RequestMethod.GET)
-    public void download(@RequestParam("id") String id, HttpServletResponse response) {
+    public void download(@Valid @RequestParam("id") @NotBlank(message = "The logId is invalid.") String id,
+                         HttpServletResponse response) {
         EventLog eventLog = eventLogService.getEventLogById(id);
         try {
             logStorage.download(eventLog, inputStream -> {
@@ -122,7 +127,7 @@ public class EventLogController {
      */
     @RequestMapping(value = "/share",method = RequestMethod.POST)
     public @ResponseBody
-    Object shareEventLogs(@RequestBody IdListForm form){
+    Object shareEventLogs(@Valid @RequestBody IdListForm form){
         User user = getUser();
         eventLogService.updateShareStateByLogIdForUser(form.getIdList(), LogShareState.SHARED.getValue(), user.getId());
         return new HashMap<String,Object>(){{put("code", 1);}};
@@ -136,7 +141,7 @@ public class EventLogController {
      */
     @RequestMapping(value = "/unShare",method = RequestMethod.POST)
     public @ResponseBody
-    Object unShareEventLogs(@RequestBody IdListForm form){
+    Object unShareEventLogs(@Valid @RequestBody IdListForm form){
         Map<String,Object> result = new HashMap();
         User user = getUser();
         eventLogService.updateShareStateByLogIdForUser(form.getIdList(),LogShareState.UNSHARED.getValue(), user.getId());
@@ -151,7 +156,7 @@ public class EventLogController {
      */
     @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
     public @ResponseBody
-    Object deleteByLogId(@RequestBody IdListForm form){
+    Object deleteByLogId(@Valid @RequestBody IdListForm form){
         Map<String,Object> result = new HashMap<>();
         User user = getUser();
         eventLogService.updateStateByLogIdForUser(form.getIdList(),LogState.DELETE.getValue(), user.getId());
@@ -166,8 +171,8 @@ public class EventLogController {
      */
     @RequestMapping(value = "/search",method = RequestMethod.GET)
     public @ResponseBody
-    Object getLogByFuzzyName(@RequestParam("keyWord") String keyWord){
-        keyWord = Util.validateString(keyWord);
+    Object getLogByFuzzyName(@Valid @RequestParam("keyWord")
+                             @NotBlank(message = "Key word should not be empty.") String keyWord) {
         Map<String,Object> result = new HashMap<>();
         User user = getUser();
         List<LogGroup> logGroups = eventLogService.getLogByFuzzyName(keyWord,user);
@@ -177,8 +182,8 @@ public class EventLogController {
 
     @RequestMapping(value = "/sharedLogs/search", method = RequestMethod.GET)
     public @ResponseBody
-    Object getSharedLogByFuzzyName(@RequestParam("keyWord") String keyWord) {
-        keyWord = Util.validateString(keyWord);
+    Object getSharedLogByFuzzyName(@Valid @RequestParam("keyWord")
+                                   @NotBlank(message = "Key word should not be empty.") String keyWord) {
         List<LogGroup> logGroups = eventLogService.getSharedLogsByFuzzyName(keyWord);
         return new HashMap<String,Object>(){{put("logGroups", logGroups);}};
     }

@@ -1,6 +1,7 @@
 package org.k2.processmining.controller;
 
 import org.apache.commons.io.IOUtils;
+import org.hibernate.validator.constraints.NotBlank;
 import org.k2.processmining.exception.InternalServerErrorException;
 import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.LogShareState;
@@ -16,12 +17,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -31,6 +34,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("/normalLog")
+@Validated
 public class NormalLogController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(NormalLogController.class);
@@ -80,9 +84,9 @@ public class NormalLogController {
      */
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public @ResponseBody
-    Object uploadLog(@RequestParam("format") String format,
-                     @RequestParam("isShare") int isShare,
-                     @RequestParam("file") CommonsMultipartFile file) {
+    Object uploadLog(@RequestParam("format") @NotBlank(message = "Format should not be empty.") String format,
+                     @RequestParam(value = "isShare", defaultValue = "0") int isShare,
+                     @RequestParam("file") @NotNull(message = "File should not be empty.") CommonsMultipartFile file) {
         String normalLogId = Util.getUUIDString();
 
         User user = getUser();
@@ -116,7 +120,8 @@ public class NormalLogController {
      * @return
      */
     @RequestMapping(value = "/download", method = RequestMethod.GET)
-    public void download(@RequestParam("id") String id, HttpServletResponse response) {
+    public void download(@RequestParam("id") @NotBlank(message = "The logId is invalid.") String id,
+                         HttpServletResponse response) {
         NormalLog normalLog = normalLogService.getNormalLogById(id);
         try {
             logStorage.download(normalLog, inputStream -> {
@@ -158,7 +163,7 @@ public class NormalLogController {
      */
     @RequestMapping(value = "/unShare", method = RequestMethod.POST)
     public @ResponseBody
-    Object unShareNormalLogs(@RequestBody IdListForm form) {
+    Object unShareNormalLogs(@Valid @RequestBody IdListForm form) {
         Map<String, Object> res = new HashMap<>();
         User user = getUser();
         normalLogService.updateShareStateByLogIdForUser(form.getIdList(), LogShareState.UNSHARED.getValue(), user.getId());
@@ -174,7 +179,7 @@ public class NormalLogController {
      */
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     public @ResponseBody
-    Object deleteByLogId(@RequestBody IdListForm form) {
+    Object deleteByLogId(@Valid @RequestBody IdListForm form) {
         Map<String, Object> result = new HashMap<>();
         User user = getUser();
         normalLogService.updateStateByLogIdForUser(form.getIdList(), LogState.DELETE.getValue(), user.getId());
@@ -190,8 +195,8 @@ public class NormalLogController {
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public @ResponseBody
-    Object getLogByFuzzyName(@RequestParam("keyWord") String keyWord) {
-        keyWord = Util.validateString(keyWord);
+    Object getLogByFuzzyName(@Valid @RequestParam("keyWord")
+                             @NotBlank(message = "Key word should not be empty.") String keyWord) {
         Map<String, Object> result = new HashMap<>();
         User user = getUser();
         List<LogGroup> logGroups = normalLogService.getLogByFuzzyName(keyWord, user);
@@ -202,8 +207,8 @@ public class NormalLogController {
 
     @RequestMapping(value = "/sharedLogs/search", method = RequestMethod.GET)
     public @ResponseBody
-    Object getSharedLogByFuzzyName(@RequestParam("keyWord") String keyWord) {
-        keyWord = Util.validateString(keyWord);
+    Object getSharedLogByFuzzyName(@Valid @RequestParam("keyWord")
+                                   @NotBlank(message = "Key word should not be empty.") String keyWord) {
         List<LogGroup> logGroups = normalLogService.getSharedLogsByFuzzyName(keyWord);
         return new HashMap<String,Object>(){{put("logGroups", logGroups);}};
     }
@@ -216,7 +221,8 @@ public class NormalLogController {
      */
     @RequestMapping(value = "/toEventLog", method = RequestMethod.POST)
     public @ResponseBody
-    Object transToEvent(@RequestParam("id") String id) {
+    Object transToEvent(@Valid @RequestParam("id")
+                        @NotBlank(message = "EventLogId should not be empty.") String id) {
         NormalLog normalLog = normalLogService.getNormalLogById(id);
         Map<String, Object> res = new HashMap<>();
         EventLog eventLog = normalLogService.transToEventLog(normalLog);

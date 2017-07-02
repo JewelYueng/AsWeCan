@@ -1,17 +1,24 @@
 package org.k2.processmining.controller;
 
-import org.k2.processmining.exception.BadRequestException;
-import org.k2.processmining.exception.ForbiddenException;
-import org.k2.processmining.exception.InternalServerErrorException;
+import org.hibernate.validator.internal.engine.path.PathImpl;
+import org.k2.processmining.exception.*;
 import org.k2.processmining.util.Message;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by nyq on 2017/6/24.
@@ -24,6 +31,42 @@ public class ExceptionController {
     Object handleException(Exception e) {
         e.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(getRes(Message.INTERNAL_SERVER_ERROR));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public @ResponseBody
+    Object handleConstraintViolationException(ConstraintViolationException e) {
+        Map<String, Object> res = getRes("Invalid request parameters");
+        List<Map<String,String >> fieldErrors = new LinkedList<>();
+        for (ConstraintViolation<?> constraintViolation : e.getConstraintViolations()) {
+            Map<String,String> fieldError = new HashMap<>();
+            fieldError.put("field", ((PathImpl)constraintViolation.getPropertyPath()).getLeafNode().getName());
+            fieldError.put("msg", constraintViolation.getMessage());
+            fieldErrors.add(fieldError);
+        }
+        res.put("fieldErrors", fieldErrors);
+        return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(res);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public @ResponseBody
+    Object handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        List<FiledErrorResource> filedErrorResources = e.getBindingResult().getFieldErrors().stream().map(fieldError ->
+                new FiledErrorResource(fieldError.getObjectName(), fieldError.getCode(),
+                        fieldError.getField(), fieldError.getDefaultMessage())
+        ).collect(Collectors.toList());
+        return ResponseEntity
+                .badRequest()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorResource("Invalid request parameters", filedErrorResources));
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public @ResponseBody
+    Object handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
+        return ResponseEntity.badRequest()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(getRes("Miss request parameter: " + e.getParameterName()));
     }
 
     @ExceptionHandler(BadRequestException.class)

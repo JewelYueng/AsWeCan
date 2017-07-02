@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -65,13 +66,13 @@ public class AdminMiningController {
 
     @RequestMapping(value = "/active", method = RequestMethod.POST)
     public @ResponseBody
-    Object active(@RequestBody IdListForm form) {
+    Object active(@Valid @RequestBody IdListForm form) {
         return setMethodState(form.getIdList(), MethodState.ACTIVE.getValue());
     }
 
     @RequestMapping(value = "/freeze", method = RequestMethod.POST)
     public @ResponseBody
-    Object freeze(@RequestBody IdListForm form) {
+    Object freeze(@Valid @RequestBody IdListForm form) {
         return setMethodState(form.getIdList(), MethodState.FREEZE.getValue());
     }
 
@@ -84,7 +85,7 @@ public class AdminMiningController {
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     public @ResponseBody
-    Object delete(@RequestBody IdListForm form) {
+    Object delete(@Valid @RequestBody IdListForm form) {
         miningMethodService.delete(form.getIdList());
         return new HashMap<String,Object>(){{put("code", 1);}};
     }

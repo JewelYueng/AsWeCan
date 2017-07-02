@@ -1,6 +1,8 @@
 package org.k2.processmining.controller;
 
 import org.apache.ibatis.annotations.Param;
+import org.hibernate.validator.constraints.NotBlank;
+import org.k2.processmining.controller.form.Diagram;
 import org.k2.processmining.model.MethodState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.miningmethod.MiningMethod;
@@ -20,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -67,17 +70,14 @@ public class MiningController {
         return res;
     }
 
-    private User getUser() {
-        User user = new User();
-        user.setId("1");
-        user.setName("y2k");
-        return user;
-    }
-
     public static class MiningForm {
+        @NotBlank(message = "EventLogId is invalid.")
         private String id;
+        @NotBlank(message = "MethodId is invalid.")
         private String methodId;
+        @Diagram
         private String diagramType;
+        @NotNull(message = "Params is invalid.")
         private Map<String, Object> parameters;
 
         public String getId() {
