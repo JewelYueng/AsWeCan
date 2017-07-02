@@ -49,6 +49,7 @@
   import ResourceRelation from './ResourceRelation.vue'
   import Sankey from "./Sankey.vue"
   import WorkNet from "./WorkNet.vue"
+  import TransitionSystem from "./TransitionSystem.vue"
   import _ from 'lodash'
   import {mapActions} from 'vuex'
 
@@ -59,7 +60,7 @@
         active_index: '1',
         view_dict: {
           "1":ResourceRelation,
-          //"2-1":
+          "2-1":TransitionSystem,
           "2-2": WorkNet,
           "3": Sankey
         },

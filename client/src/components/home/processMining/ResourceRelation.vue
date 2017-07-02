@@ -25,7 +25,7 @@
   }
 
   .chart {
-    height: 500px;
+    height: 1000px;
     background-color: #58a181;
   }
 </style>
