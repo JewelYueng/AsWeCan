@@ -84,10 +84,10 @@ public class MergeMethodServiceWhiteBoxTest {
     private void mergeAssertException(EventLog eventLog1, EventLog eventLog2, MergeMethod mergeMethod, Map<String, Object> params) {
         try {
             mergeMethodService.merge(eventLog1, eventLog2, mergeMethod, params);
+            throw new RuntimeException("Could not appear");
         }
         catch (BadRequestException e) {
-            return;
+            // assert exception
         }
-        throw new RuntimeException("fail");
     }
 }

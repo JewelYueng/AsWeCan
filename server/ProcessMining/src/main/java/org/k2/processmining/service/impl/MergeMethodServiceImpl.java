@@ -9,6 +9,7 @@ import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.MethodState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.mergemethod.MergeMethod;
+import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.service.MergeMethodService;
 import org.k2.processmining.service.TimeResult;
 import org.k2.processmining.storage.LogStorage;
@@ -46,7 +47,7 @@ public class MergeMethodServiceImpl implements MergeMethodService{
     private static Logger LOGGER = LoggerFactory.getLogger(MergeMethodServiceImpl.class);
 
     @Autowired
-    private MergeMethodService mergeMethodService;
+    private EventLogService eventLogService;
 
     @Autowired
     private MergeMethodMapper mergeMethodMapper;
@@ -139,20 +140,18 @@ public class MergeMethodServiceImpl implements MergeMethodService{
         resultEventLog.setCreateDate(new Date());
         resultEventLog.setFormat("xes");
         resultEventLog.setMergeRelation(eventLog1.getId() + "," + eventLog2.getId());
-        Boolean isSuccess = logStorage.upload(resultEventLog, outputStream -> {
-            try {
+        try {
+            logStorage.upload(resultEventLog, outputStream -> {
                 eventLogExport.convertXLog(resultXLog, outputStream);
-            }
-            catch (IOException e) {
-                LOGGER.error("Fail to convert resultEventLog:", e);
-                throw new InternalServerErrorException(Message.INTERNAL_SERVER_ERROR);
-            }
-            return true;
-        });
-        if (isSuccess == null || ! isSuccess) {
+                return true;
+            });
+        }
+        catch (IOException e) {
+            LOGGER.error("Fail to convert resultEventLog:", e);
             throw new InternalServerErrorException(Message.INTERNAL_SERVER_ERROR);
         }
-        mergeMethodService.afterSaveInLogStorage(resultEventLog, resultXLog);
+        Summarize.summarizeTo(resultXLog, resultEventLog);
+        eventLogService.save(resultEventLog);
         timeResult.setResult(resultEventLog);
         return timeResult;
     }
@@ -188,15 +187,5 @@ public class MergeMethodServiceImpl implements MergeMethodService{
 //        for (String id :ids) {
 //            methodManage.deleteMerger(id);
 //        }
-    }
-
-    @Override
-    public void afterSaveInLogStorage(EventLog resultEventLog, XLog resultXLog) {
-        EventLogSummary eventLogSummary = Summarize.summarizeXLog(resultXLog);
-        resultEventLog.setCaseNumber(eventLogSummary.getCases());
-        resultEventLog.setEventNames(eventLogSummary.getEventNames());
-        resultEventLog.setEventNumber(eventLogSummary.getEvents());
-        resultEventLog.setOperatorNames(eventLogSummary.getOperatorNames());
-        eventLogMapper.save(resultEventLog);
     }
 }

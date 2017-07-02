@@ -43,7 +43,7 @@ public class EventLogServiceTest {
         eventLog.setFormat("xes");
         InputStream inputForRemote = EventLogServiceTest.class.getClassLoader().getResourceAsStream("log/eventLogTest.xes");
         InputStream inputForSummarize = EventLogServiceTest.class.getClassLoader().getResourceAsStream("log/eventLogTest.xes");
-        Assert.assertTrue(eventLogService.save(eventLog, inputForRemote, inputForSummarize));
+        eventLogService.save(eventLog, inputForRemote, inputForSummarize);
     }
 
     @Test

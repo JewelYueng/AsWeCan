@@ -8,47 +8,39 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import java.io.*;
 
 public interface LogStorage {
-    String getLogLocation(AbstractLog log);
-    boolean makeDirectoryForUser(User user);
-    boolean isExist(AbstractLog log);
-    boolean isExist(User user);
-    boolean deleteUser(User user);
-    boolean upload(AbstractLog log, InputStream inputStream);
-    <T> T upload(AbstractLog log, ProcessOutputStream<T> processOutputStream);
-    default boolean upload(AbstractLog log, File file) {
+    String getLogLocation(AbstractLog log) throws IOException;
+    void makeDirectoryForUser(User user) throws IOException;
+    boolean isExist(AbstractLog log) throws IOException;
+    boolean isExist(User user) throws IOException;
+    void deleteUser(User user) throws IOException;
+    void upload(AbstractLog log, InputStream inputStream) throws IOException;
+    <T> T upload(AbstractLog log, ProcessOutputStream<T> processOutputStream) throws IOException;
+    default void upload(AbstractLog log, File file) throws IOException{
         try (InputStream inputStream = new BufferedInputStream(new FileInputStream(file))){
-            return upload(log, inputStream);
+            upload(log, inputStream);
         }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
     @PreAuthorize("#log!=null and T(org.k2.processmining.model.LogState).ACTIVE.value==#log.state " +
             "and ( hasRole('ROLE_ADMIN') or hasPermission(#log, 'download') " +
                     "or T(org.k2.processmining.model.LogShareState).SHARED.value==#log.isShared)")
-    boolean download(AbstractLog log, OutputStream outputStream);
+    void download(AbstractLog log, OutputStream outputStream) throws IOException;
 
     @PreAuthorize("#log!=null and T(org.k2.processmining.model.LogState).ACTIVE.value==#log.state " +
             "and ( hasRole('ROLE_ADMIN') or hasPermission(#log, 'download') " +
                     "or T(org.k2.processmining.model.LogShareState).SHARED.value==#log.isShared)")
-    <T> T download(AbstractLog log, ProcessInputStream<T> processInputStream);
-    default boolean download(AbstractLog log, File outputFile) {
+    <T> T download(AbstractLog log, ProcessInputStream<T> processInputStream) throws IOException;
+    default void download(AbstractLog log, File outputFile) throws IOException{
         try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile))){
-            return download(log, outputStream);
+            download(log, outputStream);
         }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
-    boolean delete(AbstractLog log);
+    void delete(AbstractLog log) throws IOException;
 
     interface ProcessInputStream<T> {
-        T processInputStream(InputStream inputStream);
+        T processInputStream(InputStream inputStream) throws IOException;
     }
 
     interface ProcessOutputStream<T> {
-        T processOutputStream(OutputStream outputStream);
+        T processOutputStream(OutputStream outputStream) throws IOException;
     }
 }

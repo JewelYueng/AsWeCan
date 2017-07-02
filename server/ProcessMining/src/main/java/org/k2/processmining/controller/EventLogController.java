@@ -61,9 +61,7 @@ public class EventLogController {
         Map<String, Object> res = new HashMap<>();
         int code = 1;
         try (InputStream inputForRemote = file.getInputStream(); InputStream inputForSummarize = file.getInputStream()){
-            if (! eventLogService.save(eventLog, inputForRemote, inputForSummarize)) {
-                throw new InternalServerErrorException(Message.UPLOAD_FAIL);
-            }
+            eventLogService.save(eventLog, inputForRemote, inputForSummarize);
         }
         catch (IOException e) {
             LOGGER.error("Fail to save eventLog:", e);
@@ -77,20 +75,16 @@ public class EventLogController {
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public void download(@RequestParam("id") String id, HttpServletResponse response) {
         EventLog eventLog = eventLogService.getEventLogById(id);
-        Boolean isSuccess = logStorage.download(eventLog, inputStream -> {
-            String fileName = eventLog.getLogName();
-            response.setHeader("Content-Disposition","attachment;filename=" + Util.encodeForURL(fileName));
-            try {
+        try {
+            logStorage.download(eventLog, inputStream -> {
+                String fileName = eventLog.getLogName();
+                response.setHeader("Content-Disposition","attachment;filename=" + Util.encodeForURL(fileName));
                 IOUtils.copyLarge(inputStream, response.getOutputStream());
-            }
-            catch (IOException e) {
-                LOGGER.error("Fail to download eventLog:", e);
-                throw new InternalServerErrorException(Message.DOWNLOAD_FAIL);
-            }
-            return true;
-        });
-        if (isSuccess == null || !isSuccess) {
-            LOGGER.error("Fail to download eventLog! Is the file<{}> exist in the file system?", id);
+                return true;
+            });
+        }
+        catch (IOException e) {
+            LOGGER.error("Fail to download eventLog:", e);
             throw new InternalServerErrorException(Message.DOWNLOAD_FAIL);
         }
     }

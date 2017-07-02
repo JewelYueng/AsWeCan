@@ -11,6 +11,7 @@ import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.user.User;
+import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.service.NormalLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.event.parse.EventLogParse;
@@ -41,7 +42,7 @@ public class NormalLogServiceImpl implements NormalLogService {
     private static Logger LOGGER = LoggerFactory.getLogger(NormalLogServiceImpl.class);
 
     @Autowired
-    private NormalLogService normalLogService;
+    private EventLogService eventLogService;
 
     @Autowired
     private LogStorage logStorage;
@@ -51,9 +52,6 @@ public class NormalLogServiceImpl implements NormalLogService {
 
     @Autowired
     private EventLogMapper eventLogMapper;
-
-    @Autowired
-    private EventLogParse eventLogParse;
 
     @Override
     public EventLog transToEventLog(NormalLog normalLog) {
@@ -66,38 +64,37 @@ public class NormalLogServiceImpl implements NormalLogService {
         eventLog.setLogName(Util.getTransEventName(normalLog.getLogName()));
         String tmpdir = System.getProperty("java.io.tmpdir");
         String name = eventLog.getId();
-        File file = logStorage.download(normalLog, inputStream -> {
-            try {
-                return TransToEvent.transToEvent(inputStream, tmpdir, name);
-            }
-            catch (IOException e) {
-                LOGGER.error("Fail to transform to eventLog for normalLog<{}>:", normalLog.getId(), e);
-                throw new InternalServerErrorException();
-            }
-            catch (TransToEventException e) {
-                LOGGER.error("Fail to transform to eventLog for normalLog<{}>:", normalLog.getId(), e);
-                throw new BadRequestException(Message.TRANS_TO_EVENT_LOG_FAIL);
-            }
-        });
-        if (file == null || !file.isFile()) {
-            LOGGER.error("EventLog file is illegal");
-            throw new InternalServerErrorException();
+        File file;
+        try {
+            file = logStorage.download(normalLog, inputStream -> {
+                try {
+                    return TransToEvent.transToEvent(inputStream, tmpdir, name);
+                }
+                catch (TransToEventException e) {
+                    LOGGER.error("Fail to transform to eventLog for normalLog<{}>:", normalLog.getId(), e);
+                    throw new BadRequestException(Message.TRANS_TO_EVENT_LOG_FAIL);
+                }
+            });
         }
-        try (InputStream inputStream = new FileInputStream(file)) {
-            if (logStorage.upload(eventLog, inputStream)) {
-                normalLogService.afterSaveInLogStorageForTransToEventLog(eventLog, normalLog, file);
-                return eventLog;
-            }
-        } catch (IOException e) {
+        catch (IOException e) {
+            LOGGER.error("Fail to transform to eventLog for normalLog<{}>:", normalLog.getId(), e);
+            throw new InternalServerErrorException(Message.TRANS_TO_EVENT_LOG_FAIL);
+        }
+
+        eventLogMapper.deleteEventLogByNormalLogId(normalLog.getId());
+
+        try (InputStream inputForRemote = new FileInputStream(file);
+             InputStream inputForSummarize = new FileInputStream(file)){
+            eventLogService.save(eventLog, inputForRemote, inputForSummarize);
+        }
+        catch (IOException e) {
             LOGGER.error("Fail to save eventLog:", e);
             throw new InternalServerErrorException();
         }
         finally {
-            if( !file.delete()) {
-                LOGGER.warn("Fail to delete file:{}", file.getAbsolutePath());
-            }
+            file.deleteOnExit();
         }
-        return null;
+        return eventLog;
     }
 
     /**
@@ -155,12 +152,14 @@ public class NormalLogServiceImpl implements NormalLogService {
     }
 
     @Override
-    public boolean save(NormalLog normalLog, InputStream inputStream) {
-        if (logStorage.upload(normalLog, inputStream)) {
-            normalLogService.afterSaveInLogStorage(normalLog);
-            return true;
-        }
-        return false;
+    public void save(NormalLog normalLog, InputStream inputStream) throws IOException {
+        logStorage.upload(normalLog, inputStream);
+        normalLogMapper.save(normalLog);
+    }
+
+    @Override
+    public void save(NormalLog normalLog) {
+        normalLogMapper.save(normalLog);
     }
 
     @Override
@@ -171,29 +170,6 @@ public class NormalLogServiceImpl implements NormalLogService {
     @Override
     public void updateStateByLogIdForUser(List<String> ids, int state, String userId) {
         normalLogMapper.updateLogState(ids, state, userId);
-    }
-
-    @Override
-    public void afterSaveInLogStorage(NormalLog normalLog) {
-        normalLogMapper.save(normalLog);
-    }
-
-    @Override
-    public void afterSaveInLogStorageForTransToEventLog(EventLog eventLog, NormalLog normalLog, File file) {
-        try ( InputStream inputForParse = new FileInputStream(file)){
-            XLog xLog = eventLogParse.eventLogParse(inputForParse);
-            EventLogSummary eventLogSummary = Summarize.summarizeXLog(xLog);
-            eventLog.setCaseNumber(eventLogSummary.getCases());
-            eventLog.setEventNames(eventLogSummary.getEventNames());
-            eventLog.setEventNumber(eventLogSummary.getEvents());
-            eventLog.setOperatorNames(eventLogSummary.getOperatorNames());
-            eventLogMapper.deleteEventLogByNormalLogId(normalLog.getId());
-            eventLogMapper.save(eventLog);
-        }
-        catch (IOException e) {
-            LOGGER.error("Fail to save eventLog:", e);
-            throw new InternalServerErrorException("Fail to save eventLog! Please check your input and try again!");
-        }
     }
 
     private void verifyLogGroupsIsActive(List<LogGroup> logGroups){

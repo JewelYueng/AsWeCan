@@ -2,6 +2,7 @@ package org.k2.processmining.support.event.sumarise;
 
 import org.deckfour.xes.model.XAttribute;
 import org.deckfour.xes.model.XLog;
+import org.k2.processmining.model.log.EventLog;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,6 +13,14 @@ import java.util.Set;
  * Created by nyq on 2017/6/17.
  */
 public class Summarize {
+
+    public static void summarizeTo(XLog xLog, EventLog eventLog) {
+        EventLogSummary eventLogSummary = Summarize.summarizeXLog(xLog);
+        eventLog.setCaseNumber(eventLogSummary.getCases());
+        eventLog.setEventNames(eventLogSummary.getEventNames());
+        eventLog.setEventNumber(eventLogSummary.getEvents());
+        eventLog.setOperatorNames(eventLogSummary.getOperatorNames());
+    }
 
     public static EventLogSummary summarizeXLog(XLog log) {
         int events = 0;

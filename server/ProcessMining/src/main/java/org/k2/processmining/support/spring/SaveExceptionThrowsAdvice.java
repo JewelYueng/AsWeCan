@@ -31,6 +31,20 @@ public class SaveExceptionThrowsAdvice{
     @Autowired
     private MethodManage methodManage;
 
+    @Around("execution(public * org.k2.processmining.service.*.save(..))")
+    public Object deleteLog(ProceedingJoinPoint joinPoint) throws Throwable {
+        try {
+            return joinPoint.proceed();
+        }
+        catch (Throwable throwable) {
+            Object[] objects = joinPoint.getArgs();
+            if (objects.length > 0 && objects[0] instanceof AbstractLog) {
+                logStorage.delete((AbstractLog) objects[0]);
+            }
+            throw throwable;
+        }
+    }
+
     @Around("execution(public * org.k2.processmining.service.*.afterSaveInLogStorage*(..)) && args(..)")
     public Object deleteFromLogStorageIfFail(ProceedingJoinPoint joinPoint) throws Throwable{
         Object[] objects = joinPoint.getArgs();

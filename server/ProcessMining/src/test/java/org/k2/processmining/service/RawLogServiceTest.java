@@ -44,7 +44,7 @@ public class RawLogServiceTest {
         rawLog.setCreateDate(new Date());
         rawLog.setFormat("txt");
         InputStream inputStream = RawLogServiceTest.class.getClassLoader().getResourceAsStream("log/rawLogTest.txt");
-        Assert.assertTrue(rawLogService.save(rawLog, inputStream));
+        rawLogService.save(rawLog, inputStream);
     }
 
     @Test
@@ -110,9 +110,9 @@ public class RawLogServiceTest {
     @Test
     public void normalizeTest() throws Exception {
         RawLog rawLog = rawLogService.getRawLogById("1");
-        String formats = "[QC],ABCD,A-B-CTD,A-B-CTD";
+        String formats = "[QC],ABCD,[Method],Incident:A-B-C-D,Plan:C/B/ATD,Task:A/B/CTD,DEFAULT:A-B-CTD,A-B-CTD";
         String timeNames = "[QC]";
-        String dataNames = "[Method];[Status]:EventName,[FKPlanID]:FKPlanID,[PkIncidentID]:PkIncidentID,[PkTaskID]:PkTaskID,[PKPlanID]:PKPlanID;[FKIncidentID]:FKIncidentID";
+        String dataNames = "[Method];[Status]:EventName,[FKPlanID]:FKPlanID,[PKIncidentID]:PKIncidentID,[PKTaskID]:PKTaskID,[PKPlanID]:PKPlanID,[FKIncidentID]:FKIncidentID";
         String oriItemSeparator = "\t";
         String oriNameValSeparator = " ";
         String oriNulVal = "";

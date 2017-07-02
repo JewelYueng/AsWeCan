@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -30,14 +31,11 @@ public interface RawLogService {
     List<LogGroup> getSharedLogs();
     List<LogGroup> getLogByFuzzyName(String keyWord,User user);
     List<LogGroup> getSharedLogsByFuzzyName(String keyWord);
-    boolean save(RawLog log, InputStream inputStream);
+    void save(RawLog log, InputStream inputStream) throws IOException;
 
     @PreAuthorize("hasPermission(#rawLog, 'normalize')")
+    @Transactional
     NormalLog normalize(RawLog rawLog, LogConfiguration lc);
     void updateShareStateByLogIdForUser(List<String> ids, int isShared, String userId);
     void updateStateByLogIdForUser(List<String> ids, int state, String userId);
-    void afterSaveInLogStorage(RawLog log);
-
-    @Transactional
-    void afterSaveInLogStorageForNormalize(NormalLog normalLog, RawLog rawLog);
 }

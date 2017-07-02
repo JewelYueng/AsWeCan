@@ -99,9 +99,7 @@ public class NormalLogController {
         normalLog.setIsShared(isShare);
         Map<String, Object> res = new HashMap<>();
         try (InputStream inputStream = file.getInputStream()) {
-            if (!normalLogService.save(normalLog, inputStream)) {
-                throw new InternalServerErrorException(Message.UPLOAD_FAIL);
-            }
+            normalLogService.save(normalLog, inputStream);
         } catch (IOException e) {
             LOGGER.error("Fail to save normalLog:", e);
             throw new InternalServerErrorException(Message.UPLOAD_FAIL);
@@ -120,20 +118,16 @@ public class NormalLogController {
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public void download(@RequestParam("id") String id, HttpServletResponse response) {
         NormalLog normalLog = normalLogService.getNormalLogById(id);
-        Boolean isSuccess = logStorage.download(normalLog, inputStream -> {
-            String fileName = normalLog.getLogName();
-            response.setHeader("Content-Disposition","attachment;filename=" + Util.encodeForURL(fileName));
-            try {
+        try {
+            logStorage.download(normalLog, inputStream -> {
+                String fileName = normalLog.getLogName();
+                response.setHeader("Content-Disposition","attachment;filename=" + Util.encodeForURL(fileName));
                 IOUtils.copyLarge(inputStream, response.getOutputStream());
-            }
-            catch (IOException e) {
-                LOGGER.error("Fail to download normalLog:", e);
-                throw new InternalServerErrorException(Message.DOWNLOAD_FAIL);
-            }
-            return true;
-        });
-        if (isSuccess == null || !isSuccess) {
-            LOGGER.error("Fail to download normalLog! Is the file<{}> exist in the file system?", id);
+                return true;
+            });
+        }
+        catch (IOException e) {
+            LOGGER.error("Fail to download normalLog:", e);
             throw new InternalServerErrorException(Message.DOWNLOAD_FAIL);
         }
     }

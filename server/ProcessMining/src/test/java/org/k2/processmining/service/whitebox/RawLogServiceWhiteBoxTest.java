@@ -18,6 +18,7 @@ import org.k2.processmining.support.normal.transform.LogConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.Date;
@@ -49,12 +50,18 @@ public class RawLogServiceWhiteBoxTest {
         rawLog.setCreateDate(new Date());
         rawLog.setFormat("txt");
         InputStream inputStream = RawLogServiceWhiteBoxTest.class.getClassLoader().getResourceAsStream("log/rawLogTest.txt");
-        Assert.assertTrue(rawLogService.save(rawLog, inputStream));
+        rawLogService.save(rawLog, inputStream);
 
 
         // 1.2 inputStream exception
         inputStream.close();
-        Assert.assertFalse(rawLogService.save(rawLog, inputStream));
+        try {
+            rawLogService.save(rawLog, inputStream);
+            throw new RuntimeException("Could not appear");
+        }
+        catch (IOException e) {
+            // assert exception
+        }
     }
 
     @Test
@@ -77,7 +84,7 @@ public class RawLogServiceWhiteBoxTest {
         rawLog.setId("123");
         try {
             normalLog = rawLogService.normalize(rawLog, lc);
-            System.out.println("Could not appear");
+            throw new RuntimeException("Could not appear");
         }
         catch (Exception e) {
             // assert exception

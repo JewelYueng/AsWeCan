@@ -9,6 +9,7 @@ import org.k2.processmining.service.NormalLogService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.UUID;
@@ -38,12 +39,18 @@ public class NormalLogServiceWhiteBoxTest {
         normalLog.setCreateDate(new Date());
         normalLog.setFormat("txt");
         InputStream inputStream = NormalLogServiceWhiteBoxTest.class.getClassLoader().getResourceAsStream("log/normalLogTest.txt");
-        Assert.assertTrue(normalLogService.save(normalLog, inputStream));
+        normalLogService.save(normalLog, inputStream);
 
 
         // 2.2 inputStream exception
         inputStream.close();
-        Assert.assertFalse(normalLogService.save(normalLog, inputStream));
+        try {
+            normalLogService.save(normalLog, inputStream);
+            throw new RuntimeException("Could not appear");
+        }
+        catch (IOException e) {
+            // assert exception
+        }
     }
 
     @Test
@@ -57,7 +64,7 @@ public class NormalLogServiceWhiteBoxTest {
         normalLog.setId("123");
         try {
             normalLogService.transToEventLog(normalLog);
-            System.out.println("Could not appear!");
+            throw new RuntimeException("Could not appear");
         }
         catch (Exception e) {
             // assert exception

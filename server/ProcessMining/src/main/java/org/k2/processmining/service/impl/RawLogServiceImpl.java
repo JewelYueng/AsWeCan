@@ -10,6 +10,7 @@ import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.log.RawLog;
 import org.k2.processmining.model.user.User;
+import org.k2.processmining.service.NormalLogService;
 import org.k2.processmining.service.RawLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.normal.transform.LogConfiguration;
@@ -35,7 +36,7 @@ public class RawLogServiceImpl implements RawLogService {
     private static final Logger LOGGER = LoggerFactory.getLogger(RawLogServiceImpl.class);
 
     @Autowired
-    private RawLogService rawLogService;
+    private NormalLogService normalLogService;
 
     @Autowired
     private LogStorage logStorage;
@@ -108,23 +109,9 @@ public class RawLogServiceImpl implements RawLogService {
     }
 
     @Override
-    public boolean save(RawLog log, InputStream inputStream) {
-        if (logStorage.upload(log, inputStream)) {
-            rawLogService.afterSaveInLogStorage(log);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void afterSaveInLogStorage(RawLog log) {
+    public void save(RawLog log, InputStream inputStream) throws IOException {
+        logStorage.upload(log, inputStream);
         rawLogMapper.save(log);
-    }
-
-    @Override
-    public void afterSaveInLogStorageForNormalize(NormalLog normalLog, RawLog rawLog) {
-        normalLogMapper.deleteNormalLogByRawLogId(rawLog.getId());
-        normalLogMapper.save(normalLog);
     }
 
     @Override
@@ -146,28 +133,28 @@ public class RawLogServiceImpl implements RawLogService {
         normalLog.setRawLogId(rawLog.getId());
         normalLog.setCreateDate(new Date());
         normalLog.setFormat("txt");
-        Boolean isSuccess = logStorage.upload(normalLog,
-                outputStream -> logStorage.download(rawLog,
-                        inputStream -> {
-                            try {
-                                Normalize.normalize(lc, inputStream, outputStream);
+        normalLogMapper.deleteNormalLogByRawLogId(rawLog.getId());
+        try {
+            logStorage.upload(normalLog,
+                    outputStream -> logStorage.download(rawLog,
+                            inputStream -> {
+                                try {
+                                    Normalize.normalize(lc, inputStream, outputStream);
+                                }
+                                catch (NormalizeException e) {
+                                    LOGGER.error("Fail to normalize rawLog<{}>", rawLog.getId(), e);
+                                    throw new BadRequestException(Message.NORMALIZE_FAIL);
+                                }
+                                return true;
                             }
-                            catch (IOException e) {
-                                LOGGER.error("Fail to normalize rawLog<{}>", rawLog.getId(), e);
-                                throw new InternalServerErrorException(Message.NORMALIZE_FAIL);
-                            }
-                            catch (NormalizeException e) {
-                                LOGGER.error("Fail to normalize rawLog<{}>", rawLog.getId(), e);
-                                throw new BadRequestException(Message.NORMALIZE_FAIL);
-                            }
-                            return true;
-                        }
-                )
-        );
-        if (isSuccess == null || ! isSuccess) {
-            throw new InternalServerErrorException();
+                    )
+            );
         }
-        rawLogService.afterSaveInLogStorageForNormalize(normalLog, rawLog);
+        catch (IOException e) {
+            LOGGER.error("Fail to normalize rawLog<{}>", rawLog.getId(), e);
+            throw new InternalServerErrorException(Message.NORMALIZE_FAIL);
+        }
+        normalLogService.save(normalLog);
         return normalLog;
     }
 

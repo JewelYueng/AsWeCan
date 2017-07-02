@@ -1,6 +1,7 @@
 package org.k2.processmining.service.impl;
 
 import org.deckfour.xes.model.XLog;
+import org.k2.processmining.exception.BadRequestException;
 import org.k2.processmining.mapper.EventLogMapper;
 import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.LogShareState;
@@ -11,12 +12,16 @@ import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.event.parse.EventLogParse;
+import org.k2.processmining.support.event.parse.EventLogParseException;
 import org.k2.processmining.support.event.sumarise.EventLogSummary;
 import org.k2.processmining.support.event.sumarise.Summarize;
 import org.k2.processmining.util.Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,8 +34,7 @@ import java.util.Map;
 @Service
 public class EventLogServiceImpl implements EventLogService {
 
-    @Autowired
-    private EventLogService eventLogService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventLogServiceImpl.class);
 
     @Autowired
     private EventLogMapper eventLogMapper;
@@ -91,24 +95,22 @@ public class EventLogServiceImpl implements EventLogService {
     }
 
     @Override
-    public boolean save(EventLog log, InputStream inputForRemote, InputStream inputForSummarize) {
-
-        if (! logStorage.upload(log, inputForRemote)) {
-            return false;
+    public void save(EventLog log, InputStream inputForRemote, InputStream inputForSummarize) throws IOException {
+        logStorage.upload(log, inputForRemote);
+        try {
+            XLog xLog = eventLogParse.eventLogParse(inputForSummarize);
+            Summarize.summarizeTo(xLog, log);
         }
-        eventLogService.afterSaveInLogStorage(log, inputForSummarize);
-        return true;
+        catch (EventLogParseException e) {
+            LOGGER.error("Fail to parse eventLog:", e);
+            throw new BadRequestException("Fail to parse eventLog. Please check the content of eventLog");
+        }
+        eventLogMapper.save(log);
     }
 
     @Override
-    public void afterSaveInLogStorage(EventLog eventLog, InputStream inputForSummarize) {
-        XLog xLog = eventLogParse.eventLogParse(inputForSummarize);
-        EventLogSummary eventLogSummary = Summarize.summarizeXLog(xLog);
-        eventLog.setCaseNumber(eventLogSummary.getCases());
-        eventLog.setEventNames(eventLogSummary.getEventNames());
-        eventLog.setEventNumber(eventLogSummary.getEvents());
-        eventLog.setOperatorNames(eventLogSummary.getOperatorNames());
-        eventLogMapper.save(eventLog);
+    public void save(EventLog log) {
+        eventLogMapper.save(log);
     }
 
     private void verifyLogGroupsIsActive(List<LogGroup> logGroups) {

@@ -4,6 +4,7 @@ import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.user.User;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -12,8 +13,8 @@ import java.util.List;
  */
 public interface EventLogService {
     EventLog getEventLogById(String id);
-    boolean save(EventLog log, InputStream inputForRemote, InputStream inputForSummarize);
-    void afterSaveInLogStorage(EventLog eventLog, InputStream inputForSummarize);
+    void save(EventLog log, InputStream inputForRemote, InputStream inputForSummarize) throws IOException;
+    void save(EventLog log);
     List<LogGroup> getLogsByUserId(String userId);
     List<LogGroup> getSharedLogs();
     List<LogGroup> getLogByFuzzyName(String keyWord,User user);

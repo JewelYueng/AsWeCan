@@ -43,7 +43,7 @@ public class NormalLogServiceTest {
         normalLog.setCreateDate(new Date());
         normalLog.setFormat("txt");
         InputStream inputStream = NormalLogServiceTest.class.getClassLoader().getResourceAsStream("log/normalLogTest.txt");
-        Assert.assertTrue(normalLogService.save(normalLog, inputStream));
+        normalLogService.save(normalLog, inputStream);
     }
 
     @Test

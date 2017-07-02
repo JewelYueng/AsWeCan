@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -22,14 +23,15 @@ public interface NormalLogService {
     List<LogGroup> getLogByFuzzyName(String keyWord, User user);
     List<LogGroup> getSharedLogsByFuzzyName(String keyWord);
     NormalLog getNormalLogById(String id);
-    boolean save(NormalLog normalLog, InputStream inputStream);
+    void save(NormalLog normalLog, InputStream inputStream) throws IOException;
+    void save(NormalLog normalLog);
 
     @PreAuthorize("hasPermission(#normalLog, 'transToEvent')")
+    @Transactional
     EventLog transToEventLog(NormalLog normalLog);
     void updateShareStateByLogIdForUser(List<String> ids, int isShared, String userId);
     void updateStateByLogIdForUser(List<String> ids, int state, String userId);
-    void afterSaveInLogStorage(NormalLog normalLog);
 
-    @Transactional
-    void afterSaveInLogStorageForTransToEventLog(EventLog eventLog, NormalLog normalLog, File file);
+//    @Transactional
+//    void afterSaveInLogStorageForTransToEventLog(EventLog eventLog, NormalLog normalLog, File file);
 }

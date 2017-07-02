@@ -61,9 +61,7 @@ public class RawLogController {
         rawLog.setIsShared(isShare);
         Map<String, Object> res = new HashMap<>();
         try (InputStream inputStream = file.getInputStream()){
-            if (! rawLogService.save(rawLog, inputStream)) {
-                throw new InternalServerErrorException(Message.UPLOAD_FAIL);
-            }
+            rawLogService.save(rawLog, inputStream);
         }
         catch (IOException e) {
             LOGGER.error("Fail to save rawLog:", e);
@@ -77,20 +75,16 @@ public class RawLogController {
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public void download(@RequestParam("id") String id, HttpServletResponse response) {
         RawLog rawLog = rawLogService.getRawLogById(id);
-        Boolean isSuccess = logStorage.download(rawLog, inputStream -> {
-            String fileName = rawLog.getLogName();
-            response.setHeader("Content-Disposition","attachment;filename=" + Util.encodeForURL(fileName));
-            try {
+        try {
+            logStorage.download(rawLog, inputStream -> {
+                String fileName = rawLog.getLogName();
+                response.setHeader("Content-Disposition","attachment;filename=" + Util.encodeForURL(fileName));
                 IOUtils.copyLarge(inputStream, response.getOutputStream());
-            }
-            catch (IOException e) {
-                LOGGER.error("Fail to download rawLog:", e);
-                throw new InternalServerErrorException(Message.DOWNLOAD_FAIL);
-            }
-            return true;
-        });
-        if (isSuccess == null || !isSuccess) {
-            LOGGER.error("Fail to download rawLog! Is the file<{}> exist in the file system?", id);
+                return true;
+            });
+        }
+        catch (IOException e) {
+            LOGGER.error("Fail to download rawLog:", e);
             throw new InternalServerErrorException(Message.DOWNLOAD_FAIL);
         }
     }

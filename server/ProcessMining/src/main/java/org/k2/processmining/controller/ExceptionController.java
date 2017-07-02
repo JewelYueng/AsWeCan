@@ -3,6 +3,7 @@ package org.k2.processmining.controller;
 import org.k2.processmining.exception.BadRequestException;
 import org.k2.processmining.exception.ForbiddenException;
 import org.k2.processmining.exception.InternalServerErrorException;
+import org.k2.processmining.util.Message;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,6 +18,13 @@ import java.util.Map;
  */
 @ControllerAdvice
 public class ExceptionController {
+
+    @ExceptionHandler(Exception.class)
+    public @ResponseBody
+    Object handleException(Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(getRes(Message.INTERNAL_SERVER_ERROR));
+    }
 
     @ExceptionHandler(BadRequestException.class)
     public @ResponseBody

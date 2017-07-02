@@ -14,6 +14,7 @@ import org.k2.processmining.service.impl.EventLogServiceImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.Date;
@@ -46,11 +47,17 @@ public class EventLogServiceWhiteBoxTest {
         eventLog.setFormat("xes");
         InputStream inputForRemote = EventLogServiceWhiteBoxTest.class.getClassLoader().getResourceAsStream("log/eventLogTest.xes");
         InputStream inputForSummarize = EventLogServiceWhiteBoxTest.class.getClassLoader().getResourceAsStream("log/eventLogTest.xes");
-        Assert.assertTrue(eventLogService.save(eventLog, inputForRemote, inputForSummarize));
+        eventLogService.save(eventLog, inputForRemote, inputForSummarize);
 
         // 3.2
         inputForRemote.close();
-        Assert.assertFalse(eventLogService.save(eventLog, inputForRemote, inputForSummarize));
+        try {
+            eventLogService.save(eventLog, inputForRemote, inputForSummarize);
+            throw new RuntimeException("Could not appear");
+        }
+        catch (IOException e) {
+            // assert exception
+        }
     }
 
     @Test

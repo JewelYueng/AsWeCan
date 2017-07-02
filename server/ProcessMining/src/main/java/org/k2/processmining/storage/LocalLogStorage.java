@@ -2,6 +2,7 @@ package org.k2.processmining.storage;
 
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.k2.processmining.exception.BadRequestException;
 import org.k2.processmining.model.log.AbstractLog;
 import org.k2.processmining.model.user.User;
@@ -13,7 +14,7 @@ import java.io.*;
 /**
  * Created by nyq on 2017/6/11.
  */
-@Component
+//@Component
 public class LocalLogStorage implements LogStorage {
     private static final String ROOT_DIRECTORY = "E:/ppmm";
 
@@ -22,27 +23,25 @@ public class LocalLogStorage implements LogStorage {
     }
 
     @Override
-    public String getLogLocation(AbstractLog log) {
+    public String getLogLocation(AbstractLog log) throws IOException {
         if (log == null || log.getUserId() == null || log.getId() == null) {
-            throw new BadRequestException("日志不存在！");
+            throw new URLJoinException("Fail to join URL for AbstractLog:" + log);
         }
         return ROOT_DIRECTORY + "/" + log.getUserId() + "/" + log.getType() + "/" + log.getId();
     }
 
     @Override
-    public boolean makeDirectoryForUser(User user) {
+    public void makeDirectoryForUser(User user) throws IOException {
         String[] dirs = Util.getLogTypeNames();
         for (String dir : dirs) {
             if (! new File(ROOT_DIRECTORY + "/" + user.getId() + "/" + dir).mkdirs()) {
                 deleteUser(user);
-                return false;
             }
         }
-        return true;
     }
 
     @Override
-    public boolean isExist(AbstractLog log) {
+    public boolean isExist(AbstractLog log) throws IOException {
         return new File(getLogLocation(log)).isFile();
     }
 
@@ -52,77 +51,42 @@ public class LocalLogStorage implements LogStorage {
     }
 
     @Override
-    public boolean deleteUser(User user) {
-        try {
-            FileUtils.deleteDirectory(new File(ROOT_DIRECTORY + "/" + user.getId()));
-            return true;
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
+    public void deleteUser(User user) throws IOException {
+        FileUtils.deleteDirectory(new File(ROOT_DIRECTORY + "/" + user.getId()));
     }
 
     @Override
-    public boolean upload(AbstractLog log, InputStream inputStream) {
+    public void upload(AbstractLog log, InputStream inputStream) throws IOException {
         try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(getLogLocation(log)))){
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-            byte[] bytes = new byte[1024];
-            int len = 0;
-            while ((len=inputStream.read(bytes)) != -1) {
-                bufferedOutputStream.write(bytes, 0, len);
-            }
-            bufferedOutputStream.flush();
-            return true;
+            IOUtils.copyLarge(inputStream, bufferedOutputStream);
         }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     @Override
-    public boolean download(AbstractLog log, OutputStream outputStream) {
+    public void download(AbstractLog log, OutputStream outputStream) throws IOException {
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(getLogLocation(log)))){
-            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
-            byte[] bytes = new byte[1024];
-            int len = 0;
-            while ((len=bufferedInputStream.read(bytes)) != -1) {
-                bufferedOutputStream.write(bytes, 0, len);
-            }
-            bufferedOutputStream.flush();
-            return true;
+            IOUtils.copyLarge(bufferedInputStream, outputStream);
         }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     @Override
-    public boolean delete(AbstractLog log) {
-        return new File(getLogLocation(log)).delete();
+    public void delete(AbstractLog log) throws IOException {
+        if (! new File(getLogLocation(log)).delete()) {
+            throw new IOException("Fail to delete log: " + log);
+        }
     }
 
     @Override
-    public <T> T upload(AbstractLog log, ProcessOutputStream<T> processOutputStream) {
+    public <T> T upload(AbstractLog log, ProcessOutputStream<T> processOutputStream) throws IOException {
         try (OutputStream outputStream = new FileOutputStream(getLogLocation(log))){
             return processOutputStream.processOutputStream(outputStream);
         }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     @Override
-    public <T> T download(AbstractLog log, ProcessInputStream<T> processInputStream) {
+    public <T> T download(AbstractLog log, ProcessInputStream<T> processInputStream) throws IOException{
         try (InputStream inputStream = new FileInputStream(getLogLocation(log))){
             return processInputStream.processInputStream(inputStream);
         }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }

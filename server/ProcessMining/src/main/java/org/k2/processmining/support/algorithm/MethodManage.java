@@ -47,8 +47,8 @@ public class MethodManage {
     public MethodManage() {}
 
     public void init() {
-//        rootPath = this.getClass().getResource("/").getPath().replaceAll("/classes", "");
-        rootPath = "E:/IdeaProjects/AsWeCan/server/ProcessMining/src/main/webapp/WEB-INF";
+        rootPath = this.getClass().getResource("/").getPath().replaceAll("/classes", "");
+//        rootPath = "E:/IdeaProjects/AsWeCan/server/ProcessMining/src/main/webapp/WEB-INF";
     }
 
     public String getMinerDir(String miningMethodId) {

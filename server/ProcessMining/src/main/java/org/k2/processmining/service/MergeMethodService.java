@@ -29,7 +29,6 @@ public interface MergeMethodService {
             " and hasPermission(#eventLog1, 'owner') and hasPermission(#eventLog2, 'owner')" +
             " and #mergeMethod.state==T(org.k2.processmining.model.MethodState).ACTIVE.value")
     TimeResult<EventLog> merge(EventLog eventLog1, EventLog eventLog2, MergeMethod mergeMethod, Map<String, Object> params);
-    void afterSaveInLogStorage(EventLog resultEventLog, XLog resultXLog);
     MergeMethod addMethod(MergeMethod mergeMethod, MultipartFile[] multipartFiles) throws IOException, LoadMethodException;
     void setMethodState(List<String> ids, int state);
 

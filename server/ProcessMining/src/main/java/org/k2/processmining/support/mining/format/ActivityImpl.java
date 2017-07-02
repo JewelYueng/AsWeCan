@@ -91,12 +91,12 @@ public class ActivityImpl implements Activity {
 			return null;
 		}
 	}
-	public static void main(String args[]) throws FileNotFoundException{
-		InputStream in =new FileInputStream(new File("d:/testfile/XESfile.xes"));
-		EventLogParseImpl eventLogSumariseImpl = new EventLogParseImpl();
-		XLog log = eventLogSumariseImpl.eventLogParse(in);
-		ActivityImpl impl=new ActivityImpl();
-		System.out.println(impl.getEventAttrs(log).toString());
-	}
+//	public static void main(String args[]) throws FileNotFoundException{
+//		InputStream in =new FileInputStream(new File("d:/testfile/XESfile.xes"));
+//		EventLogParseImpl eventLogSumariseImpl = new EventLogParseImpl();
+//		XLog log = eventLogSumariseImpl.eventLogParse(in);
+//		ActivityImpl impl=new ActivityImpl();
+//		System.out.println(impl.getEventAttrs(log).toString());
+//	}
 
 }
