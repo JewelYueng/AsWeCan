@@ -75,6 +75,39 @@
       left: -5px;
     }
   }
+
+  .search {
+    display: flex;
+    flex-direction: row;
+    input {
+      margin-left: 300px;
+      background-color: @light_theme;
+      color: @dark_theme;
+      text-align: center;
+      width: @search_width;
+      height: @search_height;
+      line-height: @search_height;
+      padding: 0 3px;
+      border-radius: @search_border-radius;
+      border: none;
+      outline-style: none;
+    }
+    .search-button{
+      position: relative;
+      top: 6px;
+      left: -22px;
+      cursor: pointer;
+    }
+    .close-btn {
+      position: relative;
+      left: -22px;
+      top: 6px;
+      cursor: pointer;
+      i {
+        color: @dark_theme;
+      }
+    }
+  }
 </style>
 
 <script>

@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<style type="text/css" rel="stylesheet/less" lang="less">
+<style type="text/css" rel="stylesheet/less" lang="less" scoped>
 
   .sankey{
     display: flex;

@@ -53,5 +53,5 @@ export default {
 
 //  用户系统的接口
   "login": [POST, '/home/login'],
-  "register": [POST,'/user/register']
+  "register": [POST,'/user/register'],
 }
