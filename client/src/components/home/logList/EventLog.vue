@@ -1,9 +1,11 @@
 <template>
   <div class="event-log-details">
     <div class="head">
-      <el-button type="primary" @click="upload" icon="upload">上传</el-button>
-      <el-button @click="shareSome" icon="share">分享</el-button>
-      <el-button @click="deleteSome" icon="delete">删除</el-button>
+      <div class="bash-btns">
+        <el-button type="primary" @click="upload" icon="upload">上传</el-button>
+        <el-button @click="shareSome" icon="share">分享</el-button>
+        <el-button @click="deleteSome" icon="delete">删除</el-button>
+      </div>
       <div class="search">
         <input type="text" placeholder="请输入关键字" v-model="keyWord">
         <div v-show="isSearching" class="close-btn" @click="close_search">
@@ -60,20 +62,22 @@
         </div>
       </div>
     </div>
+    <div class="block pageDiv">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-size="100"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="items.length">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
 <style lang="less" scoped rel="stylesheet/less">
   @import '~assets/colors.less';
   @import "~assets/layout.less";
-
-  .head {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    position: relative;
-    padding-bottom: 30px;
-  }
 
   .title {
     position: absolute;
@@ -164,6 +168,13 @@
   .log-name {
     cursor: pointer;
   }
+
+  .pageDiv {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+  }
 </style>
 
 <script>
@@ -173,6 +184,7 @@
     components: {ElButton},
     data(){
       return {
+        currentPage: 1,
         checked: [],
         totalAmount: [],
         isSearching: false,

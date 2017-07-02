@@ -1,14 +1,18 @@
 <template>
   <div class="normal-log">
     <div class="head">
-      <el-button type="primary" @click="upload" icon="upload"> 上传</el-button>
-      <el-button @click="shareSome" icon="share"> 分享</el-button>
-      <el-button @click="deleteSome" icon="delete"> 删除</el-button>
-      <input type="text" id="searchBox" placeholder="请输入关键字" v-model="keyWord">
+      <div class="bash-btns">
+        <el-button type="primary" @click="upload" icon="upload"> 上传</el-button>
+        <el-button @click="shareSome" icon="share"> 分享</el-button>
+        <el-button @click="deleteSome" icon="delete"> 删除</el-button>
+      </div>
+      <div class="search">
+      <input type="text"  placeholder="请输入关键字" v-model="keyWord">
       <div v-show="isSearching" class="close-btn" @click="close_search">
         <i class="el-icon-circle-cross"></i>
       </div>
-      <div v-show="!isSearching" id="search_button" @click="searchLog"><i class="el-icon-search"></i></div>
+      <div v-show="!isSearching" class="search-button" @click="searchLog"><i class="el-icon-search"></i></div>
+      </div>
     </div>
     <div class='title'>所有文件已加载，共{{count}}个</div>
     <div id="log-list">
@@ -33,15 +37,16 @@
         <div class="relation-logs raw-log" @click="jumpToRaw(index)" :title="item.rawLog ? item.rawLog.logName : '无'">
           {{item.rawLog ? item.rawLog.logName : '无'}}
         </div>
-        <div class="relation-logs event-log" @click="jumpToEvent(index)" :title="item.eventLog ? item.eventLog.logName : '无'">
+        <div class="relation-logs event-log" @click="jumpToEvent(index)"
+             :title="item.eventLog ? item.eventLog.logName : '无'">
           {{item.eventLog ? item.eventLog.logName : '无'}}
         </div>
         <div class="operations">
           <i class="el-icon-setting" title="生成事件日志" v-on:click="transferToEvent(index)"></i>
           <img class="download-btn" title="下载" src="static/img/cloud_download.png"
                @click="download(index)">
-          <i class="el-icon-share" v-show="item.normalLog.isShared==0"title="分享" @click="share(index)"></i>
-          <i class="el-icon-minus" v-show="item.normalLog.isShared!=0"title="取消分享" @click="share(index)"></i>
+          <i class="el-icon-share" v-show="item.normalLog.isShared==0" title="分享" @click="share(index)"></i>
+          <i class="el-icon-minus" v-show="item.normalLog.isShared!=0" title="取消分享" @click="share(index)"></i>
           <i class="el-icon-delete" title="删除" @click="deleteLog(index)"></i>
         </div>
       </div>
@@ -54,13 +59,6 @@
   @import '~assets/colors.less';
   @import "~assets/layout.less";
 
-  .head {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    position: relative;
-    padding-bottom: 30px;
-  }
 
   .close-btn {
     position: relative;
@@ -78,36 +76,17 @@
     color: #b5b5b5;
   }
 
-  #searchBox {
-    margin-left: 300px;
-    background-color: @tab_selected;
-    color: @dark_theme;
-    text-align: center;
-    width: @search_width;
-    height: @search_height;
-    border-radius: @search_border-radius;
-    border: none;
-    outline-style: none;
-  }
-
-  #search_button {
-    width: 20px;
-    height: 20px;
-    position: relative;
-    left: -50px;
-    top: 5px;
-    cursor: pointer;
-  }
 
   .list:hover {
     background-color: @logList_Choose;
   }
 
-  .too-long-text{
+  .too-long-text {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
   #log-list {
     padding-top: 20px;
     margin-left: 10px;
@@ -124,11 +103,11 @@
       padding: 10px 0px 10px 0px;
       border-bottom: 0.5px solid @light_theme;
       .log-head {
-        flex:  0 0 200px;
+        flex: 0 0 200px;
         text-align: left;
         display: flex;
         flex-direction: row;
-        .log-name{
+        .log-name {
           cursor: pointer;
           width: 180px;
           .too-long-text;
@@ -137,24 +116,24 @@
       .operations {
         flex: 0 0 150px;
         color: @dark_theme;
-        i{
+        i {
           margin: 0 5px;
           cursor: pointer;
         }
       }
-      .date{
-        flex:0 0 120px;
+      .date {
+        flex: 0 0 120px;
         .too-long-text;
       }
-      .raw-log{
+      .raw-log {
         flex: 0 0 250px;
         .too-long-text;
       }
-      .normal-log{
+      .normal-log {
         flex: 0 0 250px;
         .too-long-text;
       }
-      .event-log{
+      .event-log {
         flex: 0 0 250px;
         .too-long-text;
       }
@@ -284,8 +263,8 @@
             this.$hint('请使用格式正确的规范化日志进行转换', 'warn')
           }
         }, err => {
-          if(err.status === 400){
-            this.$hint('服务器中没有该文件，请删除后重新上传','warn')
+          if (err.status === 400) {
+            this.$hint('服务器中没有该文件，请删除后重新上传', 'warn')
           }
         })
       },

@@ -1,9 +1,11 @@
 <template>
   <div class="raw-log-details">
     <div class="head">
-      <el-button type="primary" @click="upload" icon="upload">上传</el-button>
-      <el-button @click="shareSome" icon="share">分享</el-button>
-      <el-button @click="deleteSome" icon="delete">删除</el-button>
+      <div class="bash-btns">
+        <el-button type="primary" @click="upload" icon="upload">上传</el-button>
+        <el-button @click="shareSome" icon="share">分享</el-button>
+        <el-button @click="deleteSome" icon="delete">删除</el-button>
+      </div>
       <div class="search">
         <input type="text" placeholder="请输入关键字" v-model="keyWord">
         <div v-show="isSearching" class="close-btn" @click="close_search">
@@ -55,15 +57,6 @@
   @import '~assets/colors.less';
   @import "~assets/layout.less";
 
-  .head {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    position: relative;
-    padding-bottom: 30px;
-  }
-
-
 
   .title {
     position: absolute;
@@ -71,7 +64,6 @@
     font-size: 14px;
     color: #b5b5b5;
   }
-
 
   .list:hover {
     background-color: @logList_Choose;

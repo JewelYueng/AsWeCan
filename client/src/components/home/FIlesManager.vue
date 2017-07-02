@@ -44,6 +44,7 @@
     box-sizing: border-box;
     padding: 30px 30px 0 30px;
     overflow: auto;
+    position: relative;
   }
   .relation-logs{
     cursor: pointer;
@@ -76,11 +77,17 @@
     }
   }
 
+  .head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+    padding-bottom: 30px;
+  }
   .search {
     display: flex;
     flex-direction: row;
     input {
-      margin-left: 300px;
       background-color: @light_theme;
       color: @dark_theme;
       text-align: center;
