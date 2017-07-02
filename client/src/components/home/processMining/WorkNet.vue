@@ -214,29 +214,30 @@
       }
     },
     created(){
-      this.items.diagram = this.petri
+//      深复制
+      this.items.diagram = JSON.parse( JSON.stringify(this.petri))
     },
     methods: {
       renderWorkflow(){
 // Create a new directed graph
-        var g = new dagreD3.graphlib.Graph().setGraph({
+        let g = new dagreD3.graphlib.Graph().setGraph({
 //          是否需要横向布局
           rankdir: "LR"
         });
-        for (var index in this.items.diagram.netElementList) {
-          var data = this.items.diagram.netElementList[index];
-          var name = data.name;
+        for (let index in this.items.diagram.netElementList) {
+          let data = this.items.diagram.netElementList[index];
+          let name = data.name;
 // 先设置节点
           data.label = name;
           data.rx = data.ry = 5;
           g.setNode(name, data);
 // 此处将output转化为二维数组
-          var subnetNum = data.subnetNum;
-          var subnetList = data.subnetList;
-          var output = translate(data.output, subnetNum, subnetList);
-          var isStart = data.isStart;
-          var isEnd = data.isEnd;
-          var kusuo;
+          let subnetNum = data.subnetNum;
+          let subnetList = data.subnetList;
+          let output = translate(data.output, subnetNum, subnetList);
+          let isStart = data.isStart;
+          let isEnd = data.isEnd;
+          let kusuo;
           console.log(data)
 // 开始画库所和边
           if (isStart === "true") {
@@ -264,7 +265,7 @@
             });
           } else {
 // 如果输出不为空，则先画source到库所的边
-            for (var i in output) {
+            for (let i in output) {
               kusuo = output[i].join("").toUpperCase();
               g.setNode(kusuo, {
                 label: "",
@@ -276,7 +277,7 @@
                 width: 30
               });
 // 库所到output的边
-              for (var j in output[i]) {
+              for (let j in output[i]) {
                 g.setEdge(kusuo, output[i][j], {
                   label: "",
                   lineInterpolate: "basis",
@@ -288,10 +289,10 @@
         }
 // 一维数组转化为二维数组
         function translate(arr, col, row) {
-          var arr1 = [];
-          for (var i = 0; i < col; i++) {
-            var arr2 = [];
-            for (var j = 0; j < row[i]; j++) {
+          let arr1 = [];
+          for (let i = 0; i < col; i++) {
+            let arr2 = [];
+            for (let j = 0; j < row[i]; j++) {
               if (arr != null)
                 arr2[j] = arr.shift();
             }
@@ -301,15 +302,15 @@
         }
 
 // Create the renderer
-        var render = new dagreD3.render();
+        let render = new dagreD3.render();
 
 // Set up an SVG group so that we can translate the final graph.
-        var svg = d3.select('svg'),
+        let svg = d3.select('svg'),
           inner = svg.append("g");
 
 
 // Set up zoom support
-        var zoom = d3.behavior.zoom().on("zoom", function () {
+        let zoom = d3.behavior.zoom().on("zoom", function () {
           inner.attr("transform", "translate(" + d3.event.translate + ")" +
             "scale(" + d3.event.scale + ")");
         });
@@ -322,7 +323,7 @@
 // Run the renderer. This is what draws the final graph.
         render(inner, g);
 // Center the graph
-        var initialScale = 0.8;
+        let initialScale = 0.8;
         zoom
           .translate([(svg.attr("width") - g.graph().width * initialScale) / 2, 150])
           .scale(initialScale)
