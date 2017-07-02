@@ -14,47 +14,48 @@
   .workNet {
     display: flex;
     flex-direction: column;
+    .show {
+      text-align: center;
+    }
+
+    .node rect {
+      cursor: move;
+      stroke: #333;
+      fill: #fff;
+    }
+
+    .node text {
+      pointer-events: none;
+      color: #82a6da;
+      text-shadow: 0 1px 0 #fff;
+    }
+
+    circle {
+      fill: #c0c0c0;
+    }
+
+    .link {
+      fill: none;
+      stroke: #ffa21d;
+      stroke-opacity: .2;
+    }
+
+    .link:hover {
+      stroke-opacity: .5;
+    }
+
+    .edgePath path {
+      stroke: #516082;
+      fill: #516082;
+      stroke-width: 2px;
+    }
+
+    path:hover {
+      stroke-opacity: 0.9;
+    }
   }
 
-  .show {
-    text-align: center;
-  }
 
-  .node rect {
-    cursor: move;
-    stroke: #333;
-    fill: #fff;
-  }
-
-  .node text {
-    pointer-events: none;
-    color: #82a6da;
-    text-shadow: 0 1px 0 #fff;
-  }
-
-  circle {
-    fill: #c0c0c0;
-  }
-
-  .link {
-    fill: none;
-    stroke: #ffa21d;
-    stroke-opacity: .2;
-  }
-
-  .link:hover {
-    stroke-opacity: .5;
-  }
-
-  .edgePath path {
-    stroke: #516082;
-    fill: #516082;
-    stroke-width: 2px;
-  }
-
-  path:hover {
-    stroke-opacity: 0.9;
-  }
 </style>
 
 <script>
