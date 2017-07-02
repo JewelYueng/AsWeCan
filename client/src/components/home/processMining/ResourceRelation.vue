@@ -38,6 +38,10 @@
     data(){
       return {
         selectedAttr:"",
+//        nGraph:{
+//          "links":[],
+//          "nodes":[]
+//        },
         items:{
           "timeCost":541,
           "diagram":
