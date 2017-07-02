@@ -4,11 +4,14 @@
       <el-button type="primary" @click="upload" icon="upload">上传</el-button>
       <el-button @click="shareSome" icon="share">分享</el-button>
       <el-button @click="deleteSome" icon="delete">删除</el-button>
-      <input type="text" id="search" placeholder="请输入关键字" v-model="keyWord">
-      <div v-show="isSearching" class="close-btn" @click="close_search">
-        <i class="el-icon-circle-cross"></i>
+      <div class="search">
+        <input type="text" placeholder="请输入关键字" v-model="keyWord">
+        <div v-show="isSearching" class="close-btn" @click="close_search">
+          <i class="el-icon-circle-cross"></i>
+        </div>
+        <div v-show="!isSearching" class="search-button" @click="searchLog"><i class="el-icon-search"></i>
+        </div>
       </div>
-      <div v-show="!isSearching" id="search_button" @click="searchLog"><i class="el-icon-search"></i></div>
     </div>
     <div class='title'>所有文件已加载，共{{count}}个</div>
     <div id="log-list">
@@ -24,19 +27,23 @@
       <div class="list" v-for="(item,index) in items" :class="{selectedItem: isSelected(index)}">
         <div class="log-head">
           <input type="checkbox" v-model="checked" :value="item.rawLog.id" @click="currClick(item,index)">
-          <span @click="showDetail(index)" class="log-name" :title="item.rawLog.logName" >{{item.rawLog.logName}}</span>
+          <span @click="showDetail(index)" class="log-name" :title="item.rawLog.logName">{{item.rawLog.logName}}</span>
         </div>
         <div class="date">
           {{`${new Date(item.rawLog.createDate).getFullYear()}-${new Date(item.rawLog.createDate).getMonth() + 1}-${new Date(item.rawLog.createDate).getDate()}`}}
         </div>
-        <div @click="jumpToNormal(index)" class="relation-logs normal-log" :title="item.normalLog ? item.normalLog.logName : '无'">{{item.normalLog ? item.normalLog.logName : '无'}}</div>
-        <div @click="jumpToEvent(index)" class="relation-logs event-log" :title="item.eventLog ? item.eventLog.logName : '无'">{{item.eventLog ? item.eventLog.logName : '无'}}</div>
+        <div @click="jumpToNormal(index)" class="relation-logs normal-log"
+             :title="item.normalLog ? item.normalLog.logName : '无'">{{item.normalLog ? item.normalLog.logName : '无'}}
+        </div>
+        <div @click="jumpToEvent(index)" class="relation-logs event-log"
+             :title="item.eventLog ? item.eventLog.logName : '无'">{{item.eventLog ? item.eventLog.logName : '无'}}
+        </div>
         <div class="operations">
           <i class="el-icon-setting" title="生成规范化日志" v-on:click="transferToNormal(index)"></i>
           <img class="download-btn" title="下载" src="static/img/cloud_download.png"
                @click="download(index)">
-          <i class="el-icon-share" v-show="item.rawLog.isShared==0"title="分享" @click="share(index)"></i>
-          <i class="el-icon-minus" v-show="item.rawLog.isShared!=0"title="取消分享" @click="share(index)"></i>
+          <i class="el-icon-share" v-show="item.rawLog.isShared==0" title="分享" @click="share(index)"></i>
+          <i class="el-icon-minus" v-show="item.rawLog.isShared!=0" title="取消分享" @click="share(index)"></i>
           <i class="el-icon-delete" title="删除" @click="deleteLog(index)"></i>
         </div>
       </div>
@@ -56,14 +63,7 @@
     padding-bottom: 30px;
   }
 
-  .close-btn {
-    position: relative;
-    left: -50px;
-    top: 5px;
-    i {
-      color: #5c8aac;
-    }
-  }
+
 
   .title {
     position: absolute;
@@ -72,31 +72,12 @@
     color: #b5b5b5;
   }
 
-  #search {
-    margin-left: 300px;
-    background-color: @tab_selected;
-    color: @dark_theme;
-    text-align: center;
-    width: @search_width;
-    height: @search_height;
-    border-radius: @search_border-radius;
-    border: none;
-    outline-style: none;
-  }
-
-  #search_button {
-    width: 20px;
-    height: 20px;
-    position: relative;
-    left: -50px;
-    top: 5px;
-    cursor: pointer;
-  }
 
   .list:hover {
     background-color: @logList_Choose;
   }
-  .too-long-text{
+
+  .too-long-text {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -118,11 +99,11 @@
       padding: 10px 0px 10px 0px;
       border-bottom: 0.5px solid @light_theme;
       .log-head {
-        flex:  0 0 200px;
+        flex: 0 0 200px;
         text-align: left;
         display: flex;
         flex-direction: row;
-        .log-name{
+        .log-name {
           cursor: pointer;
           width: 180px;
           .too-long-text;
@@ -131,24 +112,24 @@
       .operations {
         flex: 0 0 150px;
         color: @dark_theme;
-        i{
+        i {
           margin: 0 5px;
           cursor: pointer;
         }
       }
-      .date{
-        flex:0 0 120px;
+      .date {
+        flex: 0 0 120px;
         .too-long-text;
       }
-      .raw-log{
+      .raw-log {
         flex: 0 0 250px;
         .too-long-text;
       }
-      .normal-log{
+      .normal-log {
         flex: 0 0 250px;
         .too-long-text;
       }
-      .event-log{
+      .event-log {
         flex: 0 0 250px;
         .too-long-text;
       }
@@ -248,7 +229,7 @@
           this.getTotalItems()
         })
       },
-      deleteRawLog: function (index) {
+      deleteLog: function (index) {
 
         this.$api({method: 'deleteRawLog', opts: {body: {idList: [this.items[index].rawLog.id]}}}).then((res) => {
           if (parseInt(res.data.code) === 1) {
@@ -319,7 +300,7 @@
         aTag.click();
         URL.revokeObjectURL(blob);
       },
-      searchRawLog: function () {
+      searchLog: function () {
         this.totalAmount = []
         this.checkedAll = false
         this.checked = []
