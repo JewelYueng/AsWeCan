@@ -25,8 +25,7 @@
   }
 
   .chart {
-    height: 1000px;
-    background-color: #58a181;
+    height: 500px;
   }
 </style>
 
@@ -35,6 +34,7 @@
 //  import * as d3 from "d3"
 //  import { forceSimulation,forceCenter, forceLink } from 'd3-force'
   export default{
+    props: ['resource'],
     data(){
       return {
         selectedAttr:"",
@@ -92,6 +92,9 @@
             ]}
 
       }
+    },
+    created(){
+      this.items.diagram = this.resource
     },
     methods:{
       produceLayout:function () {

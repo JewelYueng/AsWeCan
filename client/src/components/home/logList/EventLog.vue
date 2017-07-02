@@ -1,46 +1,32 @@
 <template>
   <div class="event-log-details">
     <div class="head">
-      <div class="button" @click="upload"><img src="static/img/upload.png">上传</div>
-      <div class="button" @click="shareSome"><img src="static/img/share_white.png">分享</div>
-      <div class="button" @click="deleteSome"><img src="static/img/Delete.png" style="padding-top: 2px">删除</div>
+      <el-button type="primary" @click="upload" icon="upload">上传</el-button>
+      <el-button @click="shareSome" icon="share">分享</el-button>
+      <el-button @click="deleteSome" icon="delete">删除</el-button>
       <input type="text" id="search" placeholder="请输入关键字" v-model="keyWord">
-      <div v-show="isSearching" class="img-button close-btn" @click="close_search">
+      <div v-show="isSearching" class="close-btn" @click="close_search">
         <i class="el-icon-circle-cross"></i>
       </div>
-      <img v-show="!isSearching" id="search_button" src="static/img/search.png" @click="searchLog">
+      <div v-show="!isSearching" id="search_button" @click="searchLog"><i class="el-icon-search"></i></div>
     </div>
-    <div class='title'>
-      <span class='title_left'>全部文件，共{{count}}个，已选{{amount}}个</span>
-      <span class='title_right'>关联文件</span>
-    </div>
+    <div class='title'>所有文件已加载，共{{count}}个</div>
     <div id="log-list">
-      <div class="list">
+      <div class="list" style="border-bottom: 0.8px solid #324157">
         <div class="log-head">
           <input type="checkbox" v-model="checkAll" id="文件名" value="文件名">
           <span class="log-name">文件名</span>
         </div>
-        <div class="operations"></div>
         <div class="date">日期</div>
         <div class="raw-log">原始日志</div>
         <div class="normal-log">规范化日志</div>
         <div class="merge-relation">融合来源</div>
+        <div class="operations"></div>
       </div>
       <div class="list" v-for="(item,index) in items" :class="{selectedItem: isSelected(index)}">
         <div class="input-box log-head">
           <input type="checkbox" v-model="checked" :value="item.eventLog.id" @click="currClick(item,index)">
           <span @click="showDetail(index)" class="log-name" :title="item.eventLog.logName">{{item.eventLog.logName}}</span>
-        </div>
-        <div class="operations">
-          <img class="process_button img-button" title="开始流程挖掘" v-on:click="processMining(index)"
-               src="static/img/process_color.png">
-          <img class="download_button img-button" title="下载" src="static/img/download_color.png"
-               @click="download(index)">
-          <img class="share_button img-button" title="分享"
-               :src="item.eventLog.isShared === 0 ? 'static/img/share_color.png' : 'static/img/forbidden_color.png'"
-               @click="share(index)">
-          <img class="delete_button img-button" src="static/img/Delete_color.png" alt="删除" title="删除"
-               @click="deleteLog(index)">
         </div>
         <div class="date">
           {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()}`}}
@@ -56,6 +42,14 @@
           <div v-if="item.eventLog.mergeRelation" class="relation2" @click="selectedRel(index,1)" :title="item.eventLog.mergeRelation.split(',')[1]">{{item.eventLog.mergeRelation.split(',')[1]}}</div>
           <div v-show="!item.eventLog.mergeRelation">没有融合来源</div>
         </div>
+        <div class="operations">
+          <i class="el-icon-setting" title="开始流程挖掘" v-on:click="processMining(index)"></i>
+          <img class="download-btn" title="下载" src="static/img/cloud_download.png"
+             @click="download(index)">
+          <i class="el-icon-share" v-show="item.eventLog.isShared==0"title="分享" @click="share(index)"></i>
+          <i class="el-icon-minus" v-show="item.eventLog.isShared!=0"title="取消分享" @click="share(index)"></i>
+          <i class="el-icon-delete" title="删除" @click="deleteLog(index)"></i>
+        </div>
       </div>
     </div>
   </div>
@@ -70,76 +64,44 @@
     flex-direction: row;
     justify-content: space-around;
     position: relative;
-  }
-
-  .event-log-details {
-    padding-top: 20px;
-  }
-
-  #search {
-    margin-left: 300px;
-    background-color: @light_theme;
-    color: @dark_theme;
-    text-align: center;
-    width: @search_width;
-    height: @search_height;
-    border-radius: @search_border-radius;
-    border: 1px solid @dark_theme;
-    outline-style: none;
+    padding-bottom: 30px;
   }
 
   .close-btn {
     position: relative;
-    left: -40px;
+    left: -50px;
     top: 5px;
     i {
       color: #5c8aac;
     }
   }
 
+  .title {
+    position: absolute;
+    right: 55px;
+    font-size: 14px;
+    color: #b5b5b5;
+  }
+
+  #search {
+    margin-left: 300px;
+    background-color: @tab_selected;
+    color: @dark_theme;
+    text-align: center;
+    width: @search_width;
+    height: @search_height;
+    border-radius: @search_border-radius;
+    border: none;
+    outline-style: none;
+  }
+
   #search_button {
     width: 20px;
     height: 20px;
     position: relative;
-    left: -40px;
+    left: -50px;
     top: 5px;
     cursor: pointer;
-  }
-
-  .button:hover{background-color: @light_blue}
-
-  .button {
-    cursor: pointer;
-    display: inline-block;
-    color: white;
-    font-size: 16px;
-    font-weight: lighter;
-    height: @log_button_height;
-    line-height: @log_button_height;
-    width: @log_button_width;
-    border-radius: @log_button_border-radius;
-    background-color: @main_green;
-    img {
-      width: 20px;
-      height: 20px;
-      vertical-align: middle;
-      position: relative;
-      top: -3px;
-      left: -5px;
-    }
-  }
-
-  .img-button {
-    cursor: pointer;
-  }
-
-  .title {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-left: 20px;
-    margin-right: 210px;
-    font-size: 20px;
   }
 
   .list:hover {
@@ -153,19 +115,20 @@
   }
 
   #log-list {
+    padding-top: 20px;
     margin-left: 10px;
     margin-right: 10px;
+    font-size: 14px;
     .list {
       img {
-        width: 20px;
-        height: 20px;
-        margin-right: 10px;
+        width: 12px;
+        height: 12px;
       }
       display: flex;
       flex-direction: row;
       width: 100%;
       padding: 10px 0px 10px 0px;
-      border-bottom: 1px solid #afbfb8;
+      border-bottom: 0.5px solid @light_theme;
       .log-head {
         flex: 0 0 200px;
         display: flex;
@@ -173,12 +136,17 @@
         text-align: left;
         .log-name {
           cursor: pointer;
-          max-width: 180px;
+          width: 180px;
           .too-long-text;
         }
       }
       .operations {
         flex: 0 0 150px;
+        color: @dark_theme;
+        i{
+          margin: 0 5px;
+          cursor: pointer;
+        }
       }
       .date {
         flex: 0 0 120px;
@@ -196,7 +164,7 @@
         .too-long-text;
       }
       .merge-relation {
-        flex: 0 0 150px;
+        flex: 0 0 200px;
         .too-long-text;
         .relation1{
           width: 130px;

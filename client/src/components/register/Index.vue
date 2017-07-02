@@ -3,10 +3,11 @@
     <div id="box">
       <div id="title">注册</div>
       <el-form :model="ruleForm" ref="ruleForm" label-width="70px"
-               id="LoginForm" style="padding-right: 40px;padding-top: 20px">
+               id="RegisterForm" style="padding-right: 40px;padding-top: 20px">
+        <div style="padding-left: 20px">
         <el-form-item label="注册邮箱" prop="email"
                       :rules="[
-      { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+      { message: '请输入邮箱地址', trigger: 'blur' },
       { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' }
     ]"
         >
@@ -25,11 +26,12 @@
           <el-input size="small" v-model="ruleForm.check" id="checkCode" style="width: 40%"></el-input>
           <span style="padding: 10px;width: 40%;border:1px solid black">验证码的框</span>
         </el-form-item>
-
+        </div>
+        <div style="marigin-right: 80px;">
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">注册</el-button>
+          <el-button type="primary" @click="register">注册</el-button>
           <el-button @click="jumpToLogin">返回登陆页</el-button>
-        </el-form-item>
+        </el-form-item></div>
       </el-form>
 
 
@@ -65,6 +67,13 @@
       let validateUserName = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('用户名不能为空'));
+        }else {
+          callback();
+        }
+      };
+      let validateEmail = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入邮箱地址'));
         }else {
           callback();
         }
@@ -125,18 +134,22 @@
 
     },
     methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
+      register() {
+        this.$api({method:'register',body: {
+            name: this.ruleForm.userName,
+            password: this.ruleForm.pass,
+            email: this.ruleForm.email,
+        }}).then((res) => {
+          console.log(res.data)
+          this.$hint("已发送激活邮件，请尽快激活",'success')
+
+          this.$router.push({name: 'home'})
+        }, err => {
+          this.$hint(err.data.message,'error')
+        })
       },
       jumpToLogin() {
-        //跳转到login
+        this.$router.push({path: './login'})
       },
     }
 
