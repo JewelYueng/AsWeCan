@@ -152,15 +152,11 @@
             this.$router.push({name: "miningResult", params: {raw_data: body_raw, resource_data: res.data.diagram}})
             this.$hint(`挖掘成功,耗时${res.data.timeCost}秒`,'success')
           }else{
-            this.$hint('挖掘失败','error')
+            this.$hint('不明原因失败，建议刷新','error')
           }
         }, err => {
           console.log(err)
-          if(err.status === 400){
-            this.$hint('服务器不存在相应的文件，请删除后重新上传',"error")
-          }else if (err.status === 500){
-            this.$hint('参数设置不当','warn')
-          }
+          this.$hint(err.data.msg,'error')
         })
       },
       chooseLog(index){

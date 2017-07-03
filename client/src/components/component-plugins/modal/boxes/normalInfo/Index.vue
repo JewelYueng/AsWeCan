@@ -1,7 +1,7 @@
 <template>
   <div class="fram">
     <button @click="back" style="position: absolute;right: 0px;top: 5px;
-       color: #324157;background-color: white;z-index: 100;border: none;"><i class="el-icon-close"></i>
+       color: #324157;background-color: white;z-index: 100;border: none;cursor: pointer"><i class="el-icon-close"></i>
     </button>
     <el-tabs v-model="activeName" type="card" >
       <el-tab-pane label="数据项格式配置" name="0"></el-tab-pane>
@@ -117,17 +117,12 @@
             this.commit(true)
           }
           else {
-            this.$hint('规范化失败，该文件不是格式正确的原始日志文件', 'erorr');
+            this.$hint('不明原因失败，建议刷新', 'erorr');
           }
+        }, err => {
+          console.log(err)
+          this.$hint(err.data.msg,'error')
 
-        }, res => {
-          if (res.status === 500) {
-            this.$hint('服务器错误，请稍后再试', 'error');
-          }else if (res.status === 400){
-            this.$hint('服务器没有这个文件请')
-          }else if(res.status === 403){
-            this.$hint('你没有这个权限')
-          }
         })
       },
       changeFormat(format){
