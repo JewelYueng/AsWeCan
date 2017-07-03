@@ -1,9 +1,11 @@
 <template>
   <div class="raw-log-details">
     <div class="head">
-      <el-button type="primary" @click="upload" icon="upload">上传</el-button>
-      <el-button @click="shareSome" icon="share">分享</el-button>
-      <el-button @click="deleteSome" icon="delete">删除</el-button>
+      <div class="bash-btns">
+        <el-button type="primary" @click="upload" icon="upload">上传</el-button>
+        <el-button @click="shareSome" icon="share">分享</el-button>
+        <el-button @click="deleteSome" icon="delete">删除</el-button>
+      </div>
       <div class="search">
         <input type="text" placeholder="请输入关键字" v-model="keyWord">
         <div v-show="isSearching" class="close-btn" @click="close_search">
@@ -40,13 +42,23 @@
         </div>
         <div class="operations">
           <i class="el-icon-setting" title="生成规范化日志" v-on:click="transferToNormal(index)"></i>
-          <img class="download-btn" title="下载" src="static/img/cloud_download.png"
+          <img class="download-btn" title="下载" src="static/img/cloud_download.svg"
                @click="download(index)">
           <i class="el-icon-share" v-show="item.rawLog.isShared==0" title="分享" @click="share(index)"></i>
           <i class="el-icon-minus" v-show="item.rawLog.isShared!=0" title="取消分享" @click="share(index)"></i>
           <i class="el-icon-delete" title="删除" @click="deleteLog(index)"></i>
         </div>
       </div>
+    </div>
+    <div class="block pageDiv">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-size="100"
+        layout="total, prev, pager, next, jumper"
+        :total="items.length">
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -55,15 +67,6 @@
   @import '~assets/colors.less';
   @import "~assets/layout.less";
 
-  .head {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    position: relative;
-    padding-bottom: 30px;
-  }
-
-
 
   .title {
     position: absolute;
@@ -71,7 +74,6 @@
     font-size: 14px;
     color: #b5b5b5;
   }
-
 
   .list:hover {
     background-color: @logList_Choose;
@@ -115,6 +117,13 @@
         i {
           margin: 0 5px;
           cursor: pointer;
+          font-size: 18px;
+        }
+        img{
+          width: 18px;
+          height: 18px;
+          position: relative;
+          top: 2px;
         }
       }
       .date {

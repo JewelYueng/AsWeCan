@@ -33,7 +33,9 @@
         </div>
         <div class="result-name result-item">
           <div class="key">mergeRelation</div>
-          <div class="value">{{result.eventLog.mergeRelation}}</div>
+          <div class="relations">
+          <div class="value" v-for="log in result.relation" @click="jumpTo">{{log.logName}}</div>
+          </div>
         </div>
       </div>
       <div class="btn-group">
@@ -88,6 +90,13 @@
           text-align: left;
           flex: 0 0 80%;
         }
+        .relations{
+          display: flex;
+          flex-direction: row;
+
+        }
+
+
       }
     }
 

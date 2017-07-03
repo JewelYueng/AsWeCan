@@ -102,11 +102,15 @@
       cleanTrace(type){
         debugger
         const _this = this;
-        if (_this[`timers${type}`] !== null && _this[`timers${type}`].length !== 0) {
-          this[`timers${type}`].forEach(function (timer) {
+        if (this.timers1 !== null && this.timers1.length !== 0) {
+          this.timers1.forEach(function (timer) {
+
+        if (this.timers2 !== null && this.timers2.length !== 0) {
+          this.timers2.forEach(function (timer) {
             clearTimeout(timer);
           })
         }
+        document.getElementsByClassName("trace-group").innerHTML = '';
         let groups = document.getElementsByClassName("trace-group")
         for(let i = 0; i < groups.length; i++){
           groups[i].innerHTML = ""

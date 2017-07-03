@@ -106,8 +106,10 @@
         }).then( res => {
           if (res.status === 200) {
             this[diagram_dict[diagram_type]] = res.data.diagram
-          }}, err => {
-          this.$hint('网络出错，请刷新再试','warn')
+          }
+        }, err => {
+          console.log(err)
+          this.$hint(err.data.msg,'error')
         })
       }
     },

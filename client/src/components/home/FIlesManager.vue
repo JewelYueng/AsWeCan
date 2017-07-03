@@ -29,6 +29,7 @@
   .left-side {
     background-color: @light_theme;
     width: @left_side_width;
+    min-width: 200px;
     height: @main_height;
     box-sizing: border-box;
   }
@@ -44,6 +45,8 @@
     box-sizing: border-box;
     padding: 30px 30px 0 30px;
     overflow: auto;
+    min-width: 1020px;
+    position: relative;
   }
   .relation-logs{
     cursor: pointer;
@@ -76,11 +79,17 @@
     }
   }
 
+  .head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+    padding-bottom: 30px;
+  }
   .search {
     display: flex;
     flex-direction: row;
     input {
-      margin-left: 300px;
       background-color: @light_theme;
       color: @dark_theme;
       text-align: center;
@@ -107,6 +116,17 @@
         color: @dark_theme;
       }
     }
+  }
+  .pageDiv {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
   }
 </style>
 
