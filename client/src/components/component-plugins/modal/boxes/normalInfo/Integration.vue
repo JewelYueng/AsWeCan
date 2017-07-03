@@ -1,33 +1,35 @@
 <template id="table2">
   <div>
+    <br/>
     <div style="text-align: left;margin-left: 10px;">时间项整合</div>
+    <br/>
     <el-table :data="dataTime" border style=
       "margin-top: 20px;width: 90%;margin: auto;">
-      <el-table-column prop="sourceItem" label="源数据项"></el-table-column>
-      <el-table-column prop="targetItem" label="目标数据项"></el-table-column>
+      <el-table-column prop="sourceItem" label="源数据项" ></el-table-column>
+      <el-table-column prop="targetItem" label="目标数据项" ></el-table-column>
     </el-table>
     <br/>
     <div style="text-align: left;margin-left: 10px;">数据项整合（不含时间项）</div>
     <div class="add-btn">
-      <el-button size="small" style="width: 80px;font-size:15px" @click="addBlankRow">添加</el-button>
+      <el-button size="small" icon="plus" style="width: 80px;font-size:15px" @click="addBlankRow">添加</el-button>
 
     </div>
 
     <el-table :data="ui_item" border style=
       "margin-top: 20px;width: 90%;margin: auto;" max-height="200">
-      <el-table-column prop="oriName" label="源数据项">
+      <el-table-column prop="oriName" label="源数据项" >
         <template scope="scope">
           <el-input v-model="editing.oriName" v-show="isEditing(scope.$index)"></el-input>
           <div v-show="!isEditing(scope.$index)">{{scope.row.oriName}}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="target" label="目标数据项">
+      <el-table-column prop="target" label="目标数据项" >
         <template scope="scope">
           <el-input v-model="editing.target" v-show="isEditing(scope.$index)"></el-input>
           <div v-show="!isEditing(scope.$index)">{{scope.row.target}}</div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="140">
+      <el-table-column label="操作" width="187px">
         <template scope="scope" class="btn-column">
           <el-button
             size="small"
