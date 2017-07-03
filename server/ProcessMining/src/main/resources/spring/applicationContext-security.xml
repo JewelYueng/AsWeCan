@@ -13,9 +13,10 @@
     <security:http pattern="/js/**" security="none"/>
     <security:http pattern="/home/code" security="none"/>
     <security:http pattern="/user/register/**" security="none"/>
+    <security:http pattern="login" security="none"/>
 
     <security:http auto-config="false" pattern="/admin/**" entry-point-ref="adminEntryPoint">
-        <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+        <security:intercept-url pattern="/admin/**" access="permitAll"/>
         <security:custom-filter ref="adminFilter"  position="FORM_LOGIN_FILTER"/>
         <security:custom-filter ref="adminRememberMeFilter" position="REMEMBER_ME_FILTER"/>
         <security:logout logout-url="/admin/logout" delete-cookies="JSESSIONID,adminRememberMe" success-handler-ref="adminLogoutSuccessHandler" />
@@ -71,7 +72,7 @@
 
 
     <security:http auto-config="false" pattern="/**" entry-point-ref="userEntryPoint">
-        <security:intercept-url pattern="/**" access="permitAll"/>
+        <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
         <security:custom-filter ref="userFilter" position="FORM_LOGIN_FILTER"/>
         <security:custom-filter ref="userRememberMeFilter" position="REMEMBER_ME_FILTER"/>
         <security:logout logout-url="/home/logout" delete-cookies="JSESSIONID,userRememberMe" success-handler-ref="userLogoutSuccessHandler"/>
@@ -108,7 +109,7 @@
         <property name="defaultTargetUrl" value="/home/"/>
     </bean>
     <bean id="userLogoutSuccessHandler" class="org.k2.processmining.security.user.UserLogoutSuccessHandler">
-        <property name="defaultTargetUrl" value="/home/login"/>
+        <property name="defaultTargetUrl" value="/home/loginPage"/>
     </bean>
     <bean id="userRememberMeProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
         <constructor-arg value="111116aad72443b3b78af239a0b6bd7c"/>

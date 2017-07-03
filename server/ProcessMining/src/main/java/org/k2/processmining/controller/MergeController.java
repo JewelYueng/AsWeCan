@@ -61,10 +61,6 @@ public class MergeController {
         Map<String, Object> res = new HashMap<>();
         res.put("timeCost", result.getTime());
         res.put("eventLog", result.getResult());
-        System.out.println("result.getRelation:"+result.getResult().getMergeRelation());
-        res.put("relation",eventLogService.getMergeLogsByLogId(result.getResult().getMergeRelation().split(",")));
-//        res.put("relation",eventLogService.getMergeLogsByLogId()
-
         return res;
     }
 

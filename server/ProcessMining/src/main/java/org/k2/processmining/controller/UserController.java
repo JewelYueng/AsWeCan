@@ -40,23 +40,23 @@ public class UserController {
         return map;
     }
 
-    @RequestMapping(value = "/active",method = RequestMethod.POST)
-    public @ResponseBody
-    Object activeUser(@Valid @RequestBody IdListForm idListForm){
-        Map map = new HashMap();
-        userService.updateStateByUserId(idListForm.getIdList(), UserState.ACTIVE.getValue());
-        map.put("code",200);
-        return map;
-    }
+//    @RequestMapping(value = "/active",method = RequestMethod.POST)
+//    public @ResponseBody
+//    Object activeUser(@Valid @RequestBody IdListForm idListForm){
+//        Map map = new HashMap();
+//        userService.updateStateByUserId(idListForm.getIdList(), UserState.ACTIVE.getValue());
+//        map.put("code",200);
+//        return map;
+//    }
 
-    @RequestMapping(value = "/freeze",method = RequestMethod.POST)
-    public @ResponseBody
-    Object freezeUser(@Valid @RequestBody IdListForm idListForm){
-        Map map = new HashMap();
-        userService.updateStateByUserId(idListForm.getIdList(),UserState.FREEZE.getValue());
-        map.put("code",200);
-        return map;
-    }
+//    @RequestMapping(value = "/freeze",method = RequestMethod.POST)
+//    public @ResponseBody
+//    Object freezeUser(@Valid @RequestBody IdListForm idListForm){
+//        Map map = new HashMap();
+//        userService.updateStateByUserId(idListForm.getIdList(),UserState.FREEZE.getValue());
+//        map.put("code",200);
+//        return map;
+//    }
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public @ResponseBody
@@ -77,14 +77,14 @@ public class UserController {
 //        return "index";
     }
 
-    @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
-    public @ResponseBody
-    Object delete(@RequestBody IdListForm ids){
-        Map map = new HashMap();
-        userService.deleteUserById(ids.getIdList());
-        map.put("code",200);
-        return map;
-    }
+//    @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
+//    public @ResponseBody
+//    Object delete(@RequestBody IdListForm ids){
+//        Map map = new HashMap();
+//        userService.deleteUserById(ids.getIdList());
+//        map.put("code",200);
+//        return map;
+//    }
 
     @RequestMapping(value = "/password",method = RequestMethod.POST)
     public @ResponseBody

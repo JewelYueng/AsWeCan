@@ -144,14 +144,15 @@ public class UserServiceImpl implements UserService{
             e.printStackTrace();
         }
 
+        if (user == null){
+            return 400; //查无此用户
+        }
+
         if (new Date().after(getValidateDate(user.getRegisterDate()))){
             return 399; //激活邮件过期
         }
 
-        System.out.println("activateCode:"+decodeStr);
-        if (user == null){
-            return 400; //查无此用户
-        }
+
         if (!activateCode.equals(user.getActivateCode())){
             System.out.println("newUser.getActivateCode:"+user.getActivateCode());
             return 401; //验证码错误

@@ -26,13 +26,9 @@ public class HomeController {
      * @param request
      * @param response
      */
-
-
-
     @RequestMapping(value = "/loginPage",method = RequestMethod.GET)
     public void
-    homeForUser(@RequestParam(value = "error",required = false) String error, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    homeForUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/html/login.html").forward(request,response);
     }
 
