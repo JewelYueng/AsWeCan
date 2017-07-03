@@ -1,7 +1,9 @@
 package org.k2.processmining.service.impl;
 
 import org.deckfour.xes.model.XLog;
+import org.k2.processmining.config.AppConfig;
 import org.k2.processmining.exception.BadRequestException;
+import org.k2.processmining.mapper.CommonLogMapper;
 import org.k2.processmining.mapper.EventLogMapper;
 import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.LogShareState;
@@ -9,6 +11,7 @@ import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.log.RawLog;
 import org.k2.processmining.model.user.User;
+import org.k2.processmining.service.CommonLogService;
 import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.event.parse.EventLogParse;
@@ -29,7 +32,7 @@ import java.util.*;
  * Created by nyq on 2017/6/19.
  */
 @Service
-public class EventLogServiceImpl implements EventLogService {
+public class EventLogServiceImpl extends CommonLogService implements EventLogService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventLogServiceImpl.class);
 
@@ -41,6 +44,58 @@ public class EventLogServiceImpl implements EventLogService {
 
     @Autowired
     private EventLogParse eventLogParse;
+
+    @Autowired
+    public EventLogServiceImpl(EventLogMapper eventLogMapper) {
+        super(eventLogMapper);
+    }
+
+    @Override
+    public List<LogGroup> getLogGroups() {
+        return eventLogMapper.listLogGroups(null, LogState.ACTIVE.getValue(), -1, null);
+    }
+
+    @Override
+    public List<LogGroup> getLogGroupsByKeyWord(String keyWord) {
+        return eventLogMapper.listLogGroups(null, LogState.ACTIVE.getValue(), -1, keyWord);
+    }
+
+    @Override
+    public void deleteByAdmin(List<String> ids) {
+        eventLogMapper.updateLogState(ids, LogState.DELETE.getValue(), null);
+    }
+
+    @Override
+    public List<LogGroup> getLogsByUser(User user, int page) {
+        List<LogGroup> logGroups = super.getLogsByUser(user, page);
+        verifyLogGroupsIsActive(logGroups);
+        addMergeRelationEventLogs(logGroups);
+        return logGroups;
+    }
+
+    @Override
+    public List<LogGroup> getLogsByUserAndKeyWord(User user, String keyWord, int page) {
+        List<LogGroup> logGroups = super.getLogsByUserAndKeyWord(user, keyWord, page);
+        verifyLogGroupsIsActive(logGroups);
+        addMergeRelationEventLogs(logGroups);
+        return logGroups;
+    }
+
+    @Override
+    public List<LogGroup> getSharedLogs(int page) {
+        List<LogGroup> logGroups = super.getSharedLogs(page);
+        verifyLogGroupsIsShared(logGroups);
+        addMergeRelationEventLogs(logGroups);
+        return logGroups;
+    }
+
+    @Override
+    public List<LogGroup> getSharedLogsByKeyWord(String keyWord, int page) {
+        List<LogGroup> logGroups = super.getSharedLogsByKeyWord(keyWord, page);
+        verifyLogGroupsIsShared(logGroups);
+        addMergeRelationEventLogs(logGroups);
+        return logGroups;
+    }
 
     @Override
     public EventLog getEventLogById(String id) {
@@ -150,6 +205,29 @@ public class EventLogServiceImpl implements EventLogService {
             }
             if (! Util.isActiveAndShared(logGroup.getNormalLog())) {
                 logGroup.setNormalLog(null);
+            }
+        }
+    }
+
+    private void addMergeRelationEventLogs(List<LogGroup> logGroups) {
+        Set<String> mergeEventLogIds = new HashSet<>();
+        for (LogGroup logGroup : logGroups) {
+            String mergeRelations = logGroup.getEventLog().getMergeRelation();
+            if (mergeRelations != null) {
+                mergeEventLogIds.addAll(Arrays.asList(mergeRelations.split(",")));
+            }
+        }
+        List<EventLog> eventLogs = eventLogMapper.listEventLogByIds(new ArrayList<>(mergeEventLogIds));
+        Map<String,EventLog> map = new HashMap<>();
+        eventLogs.forEach(eventLog -> map.put(eventLog.getId(), eventLog));
+        for (LogGroup logGroup : logGroups) {
+            String mergeRelations = logGroup.getEventLog().getMergeRelation();
+            if (mergeRelations != null) {
+                ArrayList<EventLog> mergeEventLogs = new ArrayList<>(2);
+                for (String id :mergeRelations.split(",")) {
+                    mergeEventLogs.add(map.get(id));
+                }
+                logGroup.getEventLog().setMergeRelationLogs(mergeEventLogs);
             }
         }
     }

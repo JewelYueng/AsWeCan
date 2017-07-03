@@ -13,7 +13,7 @@ import java.util.Map;
  * Created by Aria on 2017/6/19.
  */
 @Repository
-public interface NormalLogMapper {
+public interface NormalLogMapper extends CommonLogMapper {
     List<LogGroup> listLogGroups(@Param("userId")String userId,
                                  @Param("state") int state,
                                  @Param("isShared") int isShared,

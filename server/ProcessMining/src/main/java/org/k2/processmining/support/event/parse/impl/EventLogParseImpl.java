@@ -53,8 +53,6 @@ public class EventLogParseImpl implements EventLogParse {
 		return null;
 	}
 
-	// TODO: 2017/7/2 refactor 
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public XLog eventLogParse(InputStream in) throws IOException, EventLogParseException {

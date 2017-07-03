@@ -110,20 +110,30 @@ public class RawLogController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public @ResponseBody
-    Object getLogsByUserId() {
+    Object getLogsByUserId(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
         User user = getUser();
-        List<LogGroup> logGroups = rawLogService.getLogsByUser(user);
+        int pageNum = rawLogService.getLogPageNumByUserId(user.getId());
+        if (page > pageNum) {
+            page = pageNum;
+        }
+        List<LogGroup> logGroups = page == 0 ? Collections.emptyList() : rawLogService.getLogsByUser(user, page);
         Map<String, Object> map = new HashMap<>();
         map.put("logGroups", logGroups);
+        map.put("pageNum", pageNum);
+        map.put("currPage", page);
         return map;
     }
 
     @RequestMapping(value = "/sharedLogs", method = RequestMethod.GET)
     public @ResponseBody
-    Object getSharedLog() {
-        List<LogGroup> logGroups = rawLogService.getSharedLogs();
+    Object getSharedLog(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+        int pageNum = rawLogService.getSharedLogPageNum();
+        if (page > pageNum) page = pageNum;
+        List<LogGroup> logGroups = page == 0 ? Collections.emptyList() : rawLogService.getSharedLogs(page);
         Map<String, Object> map = new HashMap<>();
         map.put("logGroups", logGroups);
+        map.put("pageNum", pageNum);
+        map.put("currPage", page);
         return map;
     }
 
@@ -171,26 +181,47 @@ public class RawLogController {
      */
     @RequestMapping(value = "/search",method = RequestMethod.GET)
     public @ResponseBody
-    Object getLogByFuzzyName(@NotBlank(message = "The key word is invalid.") @RequestParam("keyWord") String keyWord){
-        Map<String,Object> result = new HashMap<>();
+    Object getLogByFuzzyName(@NotBlank(message = "The key word is invalid.") @RequestParam("keyWord") String keyWord,
+                             @RequestParam(value = "page", required = false, defaultValue = "1") int page){
         User user = getUser();
-        List<LogGroup> logGroups = rawLogService.getLogByFuzzyName(keyWord,user);
-        result.put("logGroups",logGroups);
-        return result;
+        int pageNum = rawLogService.getLogPageNumByUserIdAndKeyWord(user.getId(), keyWord);
+        if (page > pageNum) page = pageNum;
+        List<LogGroup> logGroups = page == 0 ? Collections.emptyList() : rawLogService.getLogsByUserAndKeyWord(user, keyWord, page);
+        Map<String,Object> res = new HashMap<>();
+        res.put("logGroups",logGroups);
+        res.put("pageNum", pageNum);
+        res.put("currPage", page);
+        return res;
     }
 
     @RequestMapping(value = "/sharedLogs/search", method = RequestMethod.GET)
     public @ResponseBody
     Object getSharedLogByFuzzyName(@Valid @RequestParam("keyWord")
-                                   @NotBlank(message = "Key word should not be empty.") String keyWord) {
-        List<LogGroup> logGroups = rawLogService.getSharedLogsByFuzzyName(keyWord);
-        return new HashMap<String,Object>(){{put("logGroups", logGroups);}};
+                                   @NotBlank(message = "Key word should not be empty.") String keyWord,
+                                   @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+        int pageNum = rawLogService.getSharedLogPageNumByKeyWord(keyWord);
+        if (page > pageNum) page = pageNum;
+        List<LogGroup> logGroups = page == 0 ? Collections.emptyList() : rawLogService.getSharedLogsByKeyWord(keyWord, page);
+        Map<String,Object> res = new HashMap<>();
+        res.put("logGroups",logGroups);
+        res.put("pageNum", pageNum);
+        res.put("currPage", page);
+        return res;
     }
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @RequestMapping(value = "/page", method = RequestMethod.GET)
     public @ResponseBody
-    Object getAllLogs() {
-        return new HashMap<String,Object>(){{put("logGroups", rawLogService.getLogGroups());}};
+    Object getPageOfLogId(@RequestParam("id") String id) {
+        User user = getUser();
+        int page = rawLogService.getPageOfLogId(user.getId(), id);
+        return new HashMap<String,Object>(){{put("page", page);}};
+    }
+
+    @RequestMapping(value = "/sharedLogs/page")
+    public @ResponseBody
+    Object getPageOfSharedLogId(@RequestParam("id") String id) {
+        int page = rawLogService.getPageOfSharedLogId(id);
+        return new HashMap<String,Object>(){{put("page", page);}};
     }
 
     private User getUser() {

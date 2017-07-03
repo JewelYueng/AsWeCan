@@ -18,6 +18,12 @@ import java.util.List;
  */
 public interface NormalLogService {
 
+    List<LogGroup> getLogGroups();
+
+    List<LogGroup> getLogGroupsByKeyWord(String keyWord);
+
+    void deleteByAdmin(List<String> ids);
+
     List<LogGroup> getLogGroupsByUserId(String userId);
     List<LogGroup> getSharedLogGroups();
     List<LogGroup> getLogByFuzzyName(String keyWord, User user);

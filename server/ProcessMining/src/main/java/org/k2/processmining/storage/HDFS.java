@@ -260,5 +260,5 @@ public class HDFS implements LogStorage {
         }
     }
 
-    // TODO: 2017/7/2 process 3XX code
+    // TODO: 2017/7/2 process 3XX code, just: conn.setInstanceFollowRedirects(true) ?
 }

@@ -5,6 +5,7 @@ import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.log.RawLog;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Map;
  * Created by nyq on 2017/6/18.
  */
 @Repository
-public interface RawLogMapper {
+public interface RawLogMapper extends CommonLogMapper{
     RawLog getRawLogById(@Param("id") String id);
     void save(RawLog log);
     Integer updateLogState(@Param("ids") List<String> ids, @Param("state") int state, @Param("userId") String userId);
