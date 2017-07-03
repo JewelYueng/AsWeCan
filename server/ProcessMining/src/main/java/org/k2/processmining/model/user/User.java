@@ -1,5 +1,7 @@
 package org.k2.processmining.model.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,6 +13,7 @@ public class User implements Serializable{
     private String id;
     private String name;
     private String email;
+    @JsonIgnore
     private String password;
     private int state = 1;
     private Date registerDate;

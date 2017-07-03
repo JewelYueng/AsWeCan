@@ -1,5 +1,6 @@
 package org.k2.processmining.controller;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.k2.processmining.exception.BadRequestException;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.mergemethod.MergeMethod;
@@ -67,23 +68,14 @@ public class MergeController {
         return res;
     }
 
-    private User getUser() {
-        User user = new User();
-        user.setId("1");
-        user.setName("y2k");
-        return user;
-    }
-
     public static class MergeMethodForm {
-        @NotNull
-        @Size(min = 1, max = 36)
+        @NotBlank(message = "The methodId is invalid.")
         private String methodId;
-        @NotNull
-        @Size(min = 1, max = 36)
+        @NotBlank(message = "The eventLogId1 is invalid.")
         private String eventLogId1;
-        @NotNull
-        @Size(min = 1, max = 36)
+        @NotBlank(message = "The eventLogId1 is invalid.")
         private String eventLogId2;
+        @NotNull(message = "Params is invalid.")
         private Map<String, Object> parameters;
 
         public String getMethodId() {

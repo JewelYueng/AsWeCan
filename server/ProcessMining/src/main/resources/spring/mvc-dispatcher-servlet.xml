@@ -74,4 +74,6 @@
         <property name="maxUploadSize" value="-1" />
     </bean>
 
+    <bean id="methodValidationPostProcessor" class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor"/>
+
 </beans>
