@@ -30,7 +30,7 @@
         >
       </el-table-column>
       <el-table-column
-        property="nomalLog.logName"
+        property="normalLog.logName"
         label="规范化日志"
         width="120" show-overflow-tooltip
        >

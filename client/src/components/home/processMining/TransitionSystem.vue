@@ -89,12 +89,17 @@
     },
     methods: {
       cleanTrace(type){
-        if (this[`timers${type}`] !== null && this[`timers${type}`].length !== 0) {
-          this[`timers${type}`].forEach(function (timer) {
+        if (this.timers1 !== null && this.timers1.length !== 0) {
+          this.timers1.forEach(function (timer) {
             clearTimeout(timer);
           })
         }
-        document.getElementsByClassName("trace-group")[0].innerHTML = '';
+        if (this.timers2 !== null && this.timers2.length !== 0) {
+          this.timers2.forEach(function (timer) {
+            clearTimeout(timer);
+          })
+        }
+        document.getElementsByClassName("trace-group").innerHTML = '';
         if(type === 2) {
           let links = d3.selectAll('.link')
             .attr("stroke-width", (d) =>{
@@ -161,7 +166,7 @@
         let edgeWidthMap = {};
         let linkMap = {};
 
-
+        debugger
         data.nodes.forEach(function (node) {
           nodeValueMap[node.name] = 0;
           nodeSizeMap[node.name] = params.radius;
@@ -309,7 +314,7 @@
                       return traceMap[tStr] % 2 === 1 ? 'red' : 'blue';
                     });
 
-                  let l = document.getElementById('trace-' + tIndex)[0].getTotalLength();
+                  let l = document.getElementById('trace-' + tIndex).getTotalLength();
                   p.style("stroke-dasharray", l);
                   p.style("stroke-dashoffset", l);
                   p.transition()

@@ -13,7 +13,7 @@
       <el-table-column prop="character" label="占位符" width="80" show-overflow-tooltip>
         <template scope="scope">
           <el-input autosize type="textarea" v-model="editing.character" v-show="isEditing(scope.$index)"></el-input>
-          <div v-show="!isEditing(scope.$index)">{{scope.row.name}}</div>
+          <div v-show="!isEditing(scope.$index)">{{scope.row.character}}</div>
         </template>
       </el-table-column>
       <el-table-column prop="identifier" label="格式标示符" width="100" show-overflow-tooltip>
