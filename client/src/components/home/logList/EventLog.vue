@@ -306,9 +306,11 @@
             this.$hint('分享成功', 'success')
             this.getTotalItems()
           } else {
-            this.$hint('分享失败', 'warn')
+            this.$hint('不明原因失败,建议刷新', 'error')
           }
-
+        }, err => {
+          console.log(err)
+          this.$hint(err.data.msg,'error')
         })
       },
       share(index){
@@ -318,8 +320,11 @@
               this.$hint('分享成功', 'success')
               this.getTotalItems()
             } else {
-              this.$hint('分享失败', 'error')
+              this.$hint('不明原因失败，建议刷新', 'error')
             }
+          }, err => {
+            console.log(err)
+            this.$hint(err.data.msg,'error')
           })
         } else {
           this.$api({method: 'unShareEventLog', body: {idList: [this.items[index].eventLog.id]}}).then(res => {
@@ -327,8 +332,11 @@
               this.$hint('取消分享成功', 'success')
               this.getTotalItems()
             } else {
-              this.$hint('取消分享失败', 'error')
+              this.$hint('不明原因失败，建议刷新', 'error')
             }
+          }, err => {
+            console.log(err)
+            this.$hint(err.data.msg,'error')
           })
         }
       },
@@ -343,8 +351,11 @@
               item.checked = false;
             });
           } else {
-            this.$hint('删除失败', 'error')
+            this.$hint('不明原因失败，建议刷新', 'error')
           }
+        }, err => {
+          console.log(err)
+          this.$hint(err.data.msg,'error')
         })
       },
       deleteSome: function () {
@@ -362,8 +373,11 @@
               item.checked = false;
             });
           } else {
-            this.$hint('删除失败', 'error')
+            this.$hint('不明原因失败，建议刷新', 'error')
           }
+        }, err => {
+          console.log(err)
+          this.$hint(err.data.msg,'error')
         })
 
       },

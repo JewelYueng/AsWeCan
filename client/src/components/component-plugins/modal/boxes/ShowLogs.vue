@@ -1,36 +1,45 @@
 <template>
   <div class="logs">
+    <button @click="back" style="position: absolute;right: 0px;top: 5px;
+       color: #324157;background-color: white;border: none;cursor: pointer"><i class="el-icon-close"></i>
+    </button>
     <el-table
       ref="singleTable"
       :data="logs"
       highlight-current-row
       @current-change="handleCurrentChange"
-      height="250"
-      style="width: 100%">
+      max-height="300"
+      style="width: 100%"
+      >
       <el-table-column
         type="index"
         label="索引"
-        width="80">
+        width="80"
+        >
       </el-table-column>
       <el-table-column
         property="eventLog.logName"
         label="文件名"
-        width="120" show-overflow-tooltip>
+        width="120" show-overflow-tooltip
+       >
       </el-table-column>
       <el-table-column
         property="rawLog.logName"
         label="原始日志"
-        width="120" show-overflow-tooltip>
+        width="120" show-overflow-tooltip
+        >
       </el-table-column>
       <el-table-column
         property="normalLog.logName"
         label="规范化日志"
-        width="120" show-overflow-tooltip>
+        width="120" show-overflow-tooltip
+       >
       </el-table-column>
       <el-table-column
         property="eventLog.mergeRelation"
         label="融合来源"
-        width="150" show-overflow-tooltip>
+        width="150" show-overflow-tooltip
+        >
       </el-table-column>
     </el-table>
     <div class="btn-group">
@@ -44,12 +53,16 @@
   @import '~assets/colors.less';
 
   .logs {
-    padding: 10px;
-    background-color: @light_theme;
+    position: relative;
+    padding: 30px;
+    margin-top: 20px;
+    background-color: white;
+    box-shadow: 0 0 3px 0 #324157;
+    border-radius: 5px;
   }
 
   .btn-group{
-    margin-top: 10px;
+    margin-top: 20px;
   }
   .el-table__body tr.current-row>td{
     background-color: @light_silver;
@@ -84,6 +97,9 @@
       },
       handleCurrentChange(val) {
         this.selectedLog = val;
+      },
+      back(){
+        this.commit(true)
       }
     }
   }

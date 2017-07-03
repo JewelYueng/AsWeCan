@@ -76,7 +76,6 @@
 
   .merge-list {
     min-height: 500px;
-    background-color: @light_theme;
     padding: 10px;
   }
 
@@ -171,11 +170,7 @@
             this.$router.push({name: 'mergeResult', params: {log: res.data}})
           }
         }, err => {
-          if(err.status === 500){
-            this.$hint('参数设置不正确', 'warn')
-          }else if(err.status === 400){
-            this.$hint('服务器中没有该文件，请重新上传后融合', 'warn')
-          }
+          this.$hint(err.data.msg,'error')
         })
 
       },

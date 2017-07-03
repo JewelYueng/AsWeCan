@@ -100,6 +100,7 @@
         }else{
           this.$hint('请保存编辑后再删除', 'warn')
         }
+
       },
       isEditing(index){
         return index === this.editingRow

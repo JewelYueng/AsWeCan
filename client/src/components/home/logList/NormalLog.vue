@@ -277,12 +277,11 @@
             this.$hint('生成成功', 'success')
             this.getTotalItems()
           } else {
-            this.$hint('请使用格式正确的规范化日志进行转换', 'warn')
+            this.$hint('不明原有失败，建议刷新', 'error')
           }
         }, err => {
-          if (err.status === 400) {
-            this.$hint('服务器中没有该文件，请删除后重新上传', 'warn')
-          }
+          console.log(err)
+          this.$hint(err.data.msg,'error')
         })
       },
 
@@ -318,8 +317,11 @@
               item.checked = false;
             });
           } else {
-            this.$hint('删除失败', 'error')
+            this.$hint('不明原因失败，建议刷新', 'error')
           }
+          }, err => {
+          console.log(err)
+          this.$hint(err.data.msg,'error')
         })
 
       },
@@ -339,8 +341,11 @@
               item.checked = false;
             });
           } else {
-            this.$hint('删除失败', 'error')
+            this.$hint('不明原因失败，建议刷新', 'error')
           }
+        }, err => {
+          console.log(err)
+          this.$hint(err.data.msg,'error')
         })
 
       },
@@ -353,7 +358,9 @@
           } else {
             this.$hint('分享失败', 'warn')
           }
-
+        }, err => {
+          console.log(err)
+          this.$hint(err.data.msg,'error')
         })
       },
       share(index){
@@ -363,8 +370,11 @@
               this.$hint('分享成功', 'success')
               this.getTotalItems()
             } else {
-              this.$hint('分享失败', 'warn')
+              this.$hint('不明原因失败，建议刷新', 'warn')
             }
+          }, err => {
+            console.log(err)
+            this.$hint(err.data.msg,'error')
           })
         } else {
           this.$api({method: 'unShareNormalLog', body: {idList: [this.items[index].normalLog.id]}}).then(res => {
@@ -374,6 +384,9 @@
             } else {
               this.$hint('取消分享失败', 'warn')
             }
+          }, err => {
+            console.log(err)
+            this.$hint(err.data.msg,'error')
           })
         }
       },
