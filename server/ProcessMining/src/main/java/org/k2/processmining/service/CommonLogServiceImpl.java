@@ -92,7 +92,7 @@ public abstract class CommonLogServiceImpl<T extends AbstractLog> implements Com
         return mapper.listLogGroupsPage(
                 null,
                 LogState.ACTIVE.getValue(),
-                -1,
+                LogShareState.SHARED.getValue(),
                 null,
                 (page-1) * AppConfig.PAGE_SIZE, AppConfig.PAGE_SIZE);
     }
@@ -101,7 +101,7 @@ public abstract class CommonLogServiceImpl<T extends AbstractLog> implements Com
         return mapper.listLogGroupsPage(
                 null,
                 LogState.ACTIVE.getValue(),
-                -1,
+                LogShareState.SHARED.getValue(),
                 keyWord,
                 (page-1) * AppConfig.PAGE_SIZE, AppConfig.PAGE_SIZE);
     }
