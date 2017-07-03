@@ -104,7 +104,8 @@
         const _this = this;
         if (this.timers1 !== null && this.timers1.length !== 0) {
           this.timers1.forEach(function (timer) {
-
+            clearTimeout(timer);
+          })}
         if (this.timers2 !== null && this.timers2.length !== 0) {
           this.timers2.forEach(function (timer) {
             clearTimeout(timer);
