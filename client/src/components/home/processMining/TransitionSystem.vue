@@ -5,6 +5,7 @@
     <div class="all" v-show="showTotalBtn" @click="runTotal">
       <span>全记录动画</span>
       <el-button type="primary" @click="runTotal()" id="all-trace-run">运行</el-button>
+      <el-button type="primary" @click="cleanTrace(2)" >清除</el-button>
     </div>
     <div class="simple" v-show="showSelector">
       <span>单记录动画</span>
@@ -16,7 +17,7 @@
           :value="item">
         </el-option>
       </el-select>
-      <el-button type="primary" @click="runTrace()" id="trace-submit">运行</el-button>
+      <el-button type="primary" @click="runTrace('#diagraph')" id="trace-submit">运行</el-button>
       <el-button type="primary" @click="cleanTrace(1)">清除</el-button>
     </div>
     <svg id="diagraph" width="1000" height="450"></svg>
@@ -71,6 +72,16 @@
     props: ['produce'],
     data(){
       return {
+        layout:null,
+        traceGroup:null,
+        g:null,
+        svg:null,
+        wrapper:null,
+        nodeValueMap :{},
+      nodeSizeMap : {},
+      edgeValueMap : {},
+      edgeWidthMap : {},
+      linkMap : {},
         showSelector: false,
         showTotalBtn: false,
 //        单记录运行的计时器
@@ -89,52 +100,143 @@
     },
     methods: {
       cleanTrace(type){
+        debugger
+        const _this = this;
         if (this.timers1 !== null && this.timers1.length !== 0) {
           this.timers1.forEach(function (timer) {
             clearTimeout(timer);
-          })
-        }
+          })}
         if (this.timers2 !== null && this.timers2.length !== 0) {
           this.timers2.forEach(function (timer) {
             clearTimeout(timer);
           })
         }
         document.getElementsByClassName("trace-group").innerHTML = '';
+        let groups = document.getElementsByClassName("trace-group")
+        for(let i = 0; i < groups.length; i++){
+          groups[i].innerHTML = ""
+        }
         if(type === 2) {
           let links = d3.selectAll('.link')
             .attr("stroke-width", (d) =>{
-              return this.renderDiagraph(this.items.diagram,'#diagraph').Res5[d.v + ':' + d.w];
+              return _this.edgeWidthMap[d.v + ':' + d.w];
             });
         }
       },
-      runTrace(){
-        this.cleanTrace(1);
-        let trace = this.selectedTrace.split(",");
-        this.timers1 = this.renderDiagraph(this.items.diagram,'#diagraph').Res(trace);
+      runTrace(selector){
+        const _this = this;
+        _this.cleanTrace(1);
+        let trace = _this.selectedTrace.split(",");
+
+
+          let traceTimers = [];
+          let du = 1000;
+          let traceMap = {};
+        let line = d3.svg.line()
+          .x(function (d) {
+            return d.x;
+          })
+          .y(function (d) {
+            return d.y;
+          })
+          .interpolate("basis");
+          for (let i = 0; i !== trace.length; i++) {
+            let node = _this.layout.node(trace[i]);
+            if (node === undefined) {
+              console.log("没有找到节点");
+              return traceTimers;
+            }
+
+            if (i + 1 >= trace.length) {
+              (function () {
+                let tNode = node;
+
+                let t = setTimeout(function () {
+                  d3.select(selector).append("g").append("g").attr("class", "trace-group").append("circle")
+                    .attr('cx', tNode.x)
+                    .attr('cy', tNode.y)
+                    .attr('r', 5);
+                }, du * i);
+                traceTimers.push(t);
+              })();
+            } else {
+              let edge = _this.layout.edge({
+                v: trace[i],
+                w: trace[i + 1],
+              });
+              let str = trace[i] + '->' + trace[i + 1];
+              if (edge === undefined) {
+                console.log("没有找到边");
+                continue;
+              }
+
+              (function () {
+                let tEdge = edge;
+                let tNode = node;
+                let tIndex = i;
+                let tStr = str;
+
+                let t = setTimeout(function () {
+                  d3.select(selector).append("g").append("g").attr("class", "trace-group").append("circle")
+                    .attr('cx', tNode.x)
+                    .attr('cy', tNode.y)
+                    .attr('r', 5);
+
+                  let p = d3.select(selector).append("g").append("g").attr("class", "trace-group").append("path")
+                    .attr("class", "edge")
+                    .attr("fill","none")
+                    .attr("id", "trace-" + tIndex)
+
+                    .attr("d", line(tEdge.points))
+                    .attr("stroke-width", function (d) {
+                      return 2;
+                    })
+                    .attr("stroke", function (d) {
+                      if (traceMap[tStr] === undefined) {
+                        traceMap[tStr] = 1;
+                      } else {
+                        traceMap[tStr] += 1;
+                      }
+                      return traceMap[tStr] % 2 === 1 ? 'red' : 'blue';
+                    });
+
+                  let l = document.getElementById('trace-' + tIndex).getTotalLength();
+                  p.style("stroke-dasharray", l);
+                  p.style("stroke-dashoffset", l);
+                  p.transition()
+                    .style("stroke-dashoffset", 0)
+                    .duration(du);
+                }, du * i);
+                traceTimers.push(t);
+              })();
+            }
+          }
+          this.timers1=traceTimers;
       },
       runTotal(){
-        this.cleanTrace(2);
+        const _this = this;
+        _this.cleanTrace(2);
         let traceTimers = []
         let links = d3.selectAll('.link')
           .attr("stroke-width", 0);
         let timerArr = [];
-        debugger
-        for (let i = 0; i !== this.items.diagram.allTraces.length; i++) {
-          let trace = this.items.diagram.allTraces[i].split(",");
+
+        for (let i = 0; i !== _this.items.diagram.allTraces.length; i++) {
+          let trace = _this.items.diagram.allTraces[i].split(",");
           for (let j = 0; j !== trace.length; j++) {
             if (j + 1 < trace.length) {
               let tStr = trace[j] + ':' + trace[j + 1];
-              if (!this.renderDiagraph(this.items.diagram,'#diagraph').Res3[tStr]) {
+              if (!_this.linkMap[tStr]) {
                 continue;
               }
-              let v = 1 / this.renderDiagraph(this.items.diagram,'#diagraph').Res4[tStr] * this.renderDiagraph(this.items.diagram,'#diagraph').Res5[tStr];
+              let v = 1 / _this.edgeValueMap[tStr] * _this.edgeWidthMap[tStr];
 
               function creator(str, v) {
                 return function () {
-                  this.renderDiagraph(this.items.diagram,'#diagraph').Res3[str].attr("stroke-width", function () {
+                  _this.linkMap[str].attr("stroke-width", function () {
                     return parseFloat(d3.select(this).attr("stroke-width")) + v;
                   });
-                  this.renderDiagraph(this.items.diagram,'#diagraph').Res3[str].style("stroke", "red").transition().duration(500).style("stroke", "#ccc");
+                  _this.linkMap[str].style("stroke", "red").transition().duration(500).style("stroke", "#ccc");
                 }
               }
 
@@ -146,46 +248,41 @@
         for (let k = 0; k !== timerArr.length; k++) {
           traceTimers.push(setTimeout(timerArr[k], 100 * k));
         }
-        const _this = this
+
         console.log(links)
         traceTimers.push(setTimeout(function () {
           links.attr("stroke-width", function (d) {
-            return _this.renderDiagraph(_this.items.diagram,'#diagraph').Res5[d.v + ':' + d.w];
+            return _this.edgeWidthMap[d.v + ':' + d.w];
           });
         }, 100 * timerArr.length));
-        this.timers2 = traceTimers;
+        _this.timers2 = traceTimers;
       },
       renderDiagraph: function (data, selector) {
         let params = {
           'radius': 10,
           'margin': 30
         };
-        let nodeValueMap = {};
-        let nodeSizeMap = {};
-        let edgeValueMap = {};
-        let edgeWidthMap = {};
-        let linkMap = {};
-
-        debugger
+//debugger
+        const _this = this;
         data.nodes.forEach(function (node) {
-          nodeValueMap[node.name] = 0;
-          nodeSizeMap[node.name] = params.radius;
+          _this.nodeValueMap[node.name] = 0;
+          _this.nodeSizeMap[node.name] = params.radius;
         });
         data.links.forEach(function (link) {
-          nodeValueMap[link.source] += parseInt(link.value);
-          nodeValueMap[link.target] += parseInt(link.value);
-          edgeValueMap[link.source + ":" + link.target] = parseInt(link.value);
+          _this.nodeValueMap[link.source] += parseInt(link.value);
+          _this.nodeValueMap[link.target] += parseInt(link.value);
+          _this.edgeValueMap[link.source + ":" + link.target] = parseInt(link.value);
         });
 
 
-        let nodeRange = getMinMax(nodeValueMap);
-        let edgeRange = getMinMax(edgeValueMap);
+        let nodeRange = getMinMax(_this.nodeValueMap);
+        let edgeRange = getMinMax(_this.edgeValueMap);
 
-        for (let key in nodeValueMap) {
-          nodeSizeMap[key] += parseInt(20 * getRatio(nodeValueMap[key], nodeRange));
+        for (let key in _this.nodeValueMap) {
+          _this.nodeSizeMap[key] += parseInt(20 * getRatio(_this.nodeValueMap[key], nodeRange));
         }
-        for (let key in edgeValueMap) {
-          edgeWidthMap[key] = 1 + parseInt(10 * getRatio(edgeValueMap[key], edgeRange));
+        for (let key in _this.edgeValueMap) {
+          _this.edgeWidthMap[key] = 1 + parseInt(10 * getRatio(_this.edgeValueMap[key], edgeRange));
         }
 
         function getMinMax(someMap) {
@@ -219,8 +316,8 @@
           input.nodes.forEach(function (node) {
             g.setNode(node.name, {
               label: node.name,
-              width: nodeSizeMap[node.name] * 2,
-              height: nodeSizeMap[node.name] * 2
+              width: _this.nodeSizeMap[node.name] * 2,
+              height: _this.nodeSizeMap[node.name] * 2
             });
           });
           input.links.forEach(function (link) {
@@ -240,7 +337,7 @@
           })
           .interpolate("basis");
 
-        let layout = produceLayout(data, {
+        _this.layout = produceLayout(data, {
           rankdir: "LR",
           nodesep: 80,
           ranksep: 150,
@@ -250,104 +347,28 @@
         });
 
 
-        function runTrace(trace) {
-          let traceTimers = [];
-          let du = 1000;
-          let traceMap = {};
 
-          for (let i = 0; i !== trace.length; i++) {
-            let node = layout.node(trace[i]);
-            if (node === undefined) {
-              console.log("没有找到节点");
-              return traceTimers;
-            }
-
-            if (i + 1 >= trace.length) {
-              (function () {
-                let tNode = node;
-
-                let t = setTimeout(function () {
-                  traceGroup.append("circle")
-                    .attr('cx', tNode.x)
-                    .attr('cy', tNode.y)
-                    .attr('r', 5);
-                }, du * i);
-                traceTimers.push(t);
-              })();
-            } else {
-              let edge = layout.edge({
-                v: trace[i],
-                w: trace[i + 1],
-              });
-              let str = trace[i] + '->' + trace[i + 1];
-              if (edge === undefined) {
-                console.log("没有找到边");
-                continue;
-              }
-
-              (function () {
-                let tEdge = edge;
-                let tNode = node;
-                let tIndex = i;
-                let tStr = str;
-
-                let t = setTimeout(function () {
-                  traceGroup.append("circle")
-                    .attr('cx', tNode.x)
-                    .attr('cy', tNode.y)
-                    .attr('r', 5);
-
-                  let p = traceGroup.append("path")
-                    .attr("class", "edge")
-                    .attr("fill","none")
-                    .attr("id", "trace-" + tIndex)
-                    .attr("d", line(tEdge.points))
-                    .attr("stroke-width", function (d) {
-                      return 2;
-                    })
-                    .attr("stroke", function (d) {
-                      if (traceMap[tStr] === undefined) {
-                        traceMap[tStr] = 1;
-                      } else {
-                        traceMap[tStr] += 1;
-                      }
-                      return traceMap[tStr] % 2 === 1 ? 'red' : 'blue';
-                    });
-
-                  let l = document.getElementById('trace-' + tIndex).getTotalLength();
-                  p.style("stroke-dasharray", l);
-                  p.style("stroke-dashoffset", l);
-                  p.transition()
-                    .style("stroke-dashoffset", 0)
-                    .duration(du);
-                }, du * i);
-                traceTimers.push(t);
-              })();
-            }
-          }
-
-          return traceTimers;
-        }
 
 
         function Return_edgeWidthMap(d) {
           console.log(d)
-          return edgeWidthMap[d.v + ':' + d.w];
+          return _this.edgeWidthMap[d.v + ':' + d.w];
         }
 
 //        如果存在一条以上路径，则显示单记录动画模块
         if (data.traces !== undefined) {
-          this.showSelector = true
+          _this.showSelector = true
         }
 //        如果存在总路径，则显示全记录运行模块
         if (data.allTraces !== undefined) {
-          this.showTotalBtn = true;
+          _this.showTotalBtn = true;
         }
 //        目前没有发现以下这一句修改类名的必要
-        let svg = d3.select(selector).attr('class', 'daiding');
+        _this.svg = d3.select(selector).attr('class', 'daiding');
 
-        let marker =
-          svg.append("marker")
+        let svg = d3.select(selector)
+          let marker =
+          d3.select(selector).append("marker")
             .attr("id", "arrow")
             .attr("markerUnits", "userSpaceOnUse")
             .attr("markerWidth", "12")
@@ -361,21 +382,21 @@
             .attr('fill', 'red'); //箭头颜色
 
 
-        let wrapper = svg.append("g");
-        let g = wrapper.append("g");
-        let traceGroup = wrapper.append("g").attr("class", "trace-group");
+        _this.wrapper = d3.select(selector).append("g");
+        _this.g = d3.select(selector).append("g").append("g");
+        _this.traceGroup = d3.select(selector).append("g").append("g").attr("class", "trace-group");
 
         svg.call(d3.behavior.zoom()
           .scaleExtent([1 / 8, 8])
           .on("zoom", zoomed));
 
         function zoomed() {
-          wrapper.attr("transform",
+          svg.append("g").attr("transform",
             "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
         }
 
-        let edges = g.selectAll(".edge")
-          .data(layout.edges())
+        let edges = d3.select(selector).append("g").append("g").selectAll(".edge")
+          .data(_this.layout.edges())
           .enter()
           .append('g')
           .attr("class", "edge")
@@ -384,11 +405,11 @@
 
         let links = edges.append("path")
           .attr("d", function (d) {
-            linkMap[d.v + ':' + d.w] = d3.select(this);
-            return line(layout.edge(d).points);
+            _this.linkMap[d.v + ':' + d.w] = d3.select(this);
+            return line(_this.layout.edge(d).points);
           })
           .attr("stroke-width", function (d) {
-            return edgeWidthMap[d.v + ':' + d.w];
+            return _this.edgeWidthMap[d.v + ':' + d.w];
           })
           .attr('class', 'link')
           .attr('fill', 'none')
@@ -398,11 +419,11 @@
 
         links.append("title")
           .text(function (d) {
-            return edgeValueMap[d.v + ':' + d.w];
+            return _this.edgeValueMap[d.v + ':' + d.w];
           });
 
-        let nodes = g.selectAll(".node")
-          .data(layout.nodes())
+        let nodes = d3.select(selector).append("g").append("g").selectAll(".node")
+          .data(_this.layout.nodes())
           .enter()
           .append('g')
           .attr("class", "node");
@@ -414,23 +435,23 @@
 
         nodes.append('circle')
           .attr('cx', function (d) {
-            return layout.node(d).x;
+            return _this.layout.node(d).x;
           })
           .attr('cy', function (d) {
-            return layout.node(d).y;
+            return _this.layout.node(d).y;
           })
           .attr('r', function (d) {
-            return nodeSizeMap[d];
+            return _this.nodeSizeMap[d];
           })
           .attr('fill', '#516082')
 
 
         nodes.append('text')
           .attr('x', function (d) {
-            return layout.node(d).x - 30;
+            return _this.layout.node(d).x - 30;
           })
           .attr('y', function (d) {
-            return layout.node(d).y - nodeSizeMap[d] - 5;
+            return _this.layout.node(d).y - _this.nodeSizeMap[d] - 5;
           })
           .text(function (d) {
             if (d.length > 10)
@@ -439,13 +460,7 @@
               return d;
           })
 
-        return {
-          Res: runTrace,
-          Res2: Return_edgeWidthMap,
-          Res3: linkMap,
-          Res4: edgeValueMap,
-          Res5: edgeWidthMap
-        }
+
       },
 
 //      traceAniInit: function () {
