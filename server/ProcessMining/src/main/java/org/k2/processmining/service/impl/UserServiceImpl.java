@@ -4,11 +4,13 @@ import org.k2.processmining.mapper.UserMapper;
 import org.k2.processmining.model.UserState;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.UserService;
+import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.util.Util;
 import org.k2.processmining.utils.SendEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -29,6 +31,11 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    LogStorage logStorage;
+
+    private static String serverUrl = "http://192.168.0.101:8080";
 
     @Override
     public int addUser(User newUser) {
@@ -119,9 +126,9 @@ public class UserServiceImpl implements UserService{
         userMapper.updateRegisterDateByEmail(email,new Date());
 
         StringBuffer buffer = new StringBuffer("点击下面链接激活账号，48小时生效，链接只能使用一次，请尽快激活！</br>");
-        buffer.append("<a href=\"http://localhost:8080/user/register/activate?email="+email+"&activateCode="+urlCode);
+        buffer.append("<a href=\""+serverUrl+"/user/register/activate?email="+email+"&activateCode="+urlCode);
 //        buffer.append("<a href=\"http://localhost:8080/user/");
-        buffer.append("\">http://localhost:8080/user/register/activate?email="+email+"&activateCode="+activateCode);
+        buffer.append("\">"+serverUrl+"/user/register/activate?email="+email+"&activateCode="+activateCode);
         buffer.append("</a>");
         SendEmail.send(email,buffer.toString());
         return 0;
@@ -155,6 +162,11 @@ public class UserServiceImpl implements UserService{
         List<String> emailList = new ArrayList<>();
         emailList.add(email);
         userService.updateStateByUserEmail(emailList,UserState.ACTIVE.getValue());
+        try {
+            logStorage.makeDirectoryForUser(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return 200;
     }
 

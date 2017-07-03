@@ -15,13 +15,13 @@ import java.io.IOException;
  */
 public class UserFailureHandler extends SimpleUrlAuthenticationFailureHandler{
 
-    public static final String USER_NAME_NOT_FOUND = "user not found";
+    public static final String USER_NAME_NOT_FOUND = "the email is not found!";
     public static final int USER_NAME_NOT_FOUND_CODE = 401;
-    public static final String USER_PASSWORD_WRONG = "user password wrong";
+    public static final String USER_PASSWORD_WRONG = "the password is error!";
     public static final int USER_PASSWORD_WRONG_CODE = 402;
-    public static final String USER_VALIDATECODE_NULL = "user validateCode null";
+    public static final String USER_VALIDATECODE_NULL = "the validateCode is null!";
     public static final int USER_VALIDATECODE_NULL_CODE = 403;
-    public static final String USER_VALIDATECODE_WRONG = "user validateCode wrong";
+    public static final String USER_VALIDATECODE_WRONG = "the validateCode is error!";
     public static final int USER_VALIDATECODE_WRONG_CODE = 404;
 
     @Override

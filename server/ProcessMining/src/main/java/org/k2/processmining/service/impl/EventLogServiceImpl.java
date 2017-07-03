@@ -137,6 +137,16 @@ public class EventLogServiceImpl extends CommonLogService implements EventLogSer
     }
 
     @Override
+    public List<EventLog> getMergeLogsByLogId(String []idList) {
+        List<EventLog> list = new ArrayList<>();
+        for (String id:idList){
+//            list.add(eventLogMapper.getEventLogById(id).getLogName());
+            list.add(eventLogMapper.getEventLogById(id));
+        }
+        return list;
+    }
+
+    @Override
     public void updateShareStateByLogIdForUser(List<String> ids, int isShared, String userId) {
         eventLogMapper.updateIsShared(ids, isShared, userId);
     }
