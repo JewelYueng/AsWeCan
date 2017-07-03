@@ -1,96 +1,43 @@
 package org.k2.processmining.service;
 
-import org.k2.processmining.config.AppConfig;
-import org.k2.processmining.exception.BadRequestException;
-import org.k2.processmining.mapper.CommonLogMapper;
 import org.k2.processmining.model.LogGroup;
-import org.k2.processmining.model.LogShareState;
-import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.user.User;
+import org.springframework.security.access.prepost.PreAuthorize;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
  * Created by nyq on 2017/7/3.
  */
-public abstract class CommonLogService {
-    private CommonLogMapper mapper;
+public interface CommonLogService<T> {
 
-    public CommonLogService(CommonLogMapper mapper) {
-        this.mapper = mapper;
-    }
+    T getLogById(String id);
+    void save(T log);
+    void save(T log, InputStream inputStream) throws IOException;
 
-    public List<LogGroup> getLogsByUser(User user, int page) {
-        return mapper.listLogGroupsPage(user.getId(),
-                LogState.ACTIVE.getValue(),
-                -1,
-                null,
-                (page-1) * AppConfig.PAGE_SIZE, AppConfig.PAGE_SIZE);
-    }
+    void updateShareStateByLogIdForUser(List<String> ids, int isShared, String userId);
+    void updateStateByLogIdForUser(List<String> ids, int state, String userId);
 
-    public List<LogGroup> getLogsByUserAndKeyWord(User user, String keyWord, int page) {
-        return  mapper.listLogGroupsPage(user.getId(),
-                LogState.ACTIVE.getValue(),
-                -1,
-                keyWord,
-                (page-1) * AppConfig.PAGE_SIZE, AppConfig.PAGE_SIZE);
-    }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    List<LogGroup> getLogGroups(int page);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    List<LogGroup> getLogGroupsByKeyWord(String keyWord, int page);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    void deleteByAdmin(List<String> ids);
 
-    public List<LogGroup> getSharedLogs(int page) {
-        return mapper.listLogGroupsPage(
-                null,
-                LogState.ACTIVE.getValue(),
-                -1,
-                null,
-                (page-1) * AppConfig.PAGE_SIZE, AppConfig.PAGE_SIZE);
-    }
+    List<LogGroup> getLogsByUser(User user, int page);
+    List<LogGroup> getLogsByUserAndKeyWord(User user, String keyWord, int page);
+    List<LogGroup> getSharedLogs(int page);
+    List<LogGroup> getSharedLogsByKeyWord(String keyWord, int page);
 
-    public List<LogGroup> getSharedLogsByKeyWord(String keyWord, int page) {
-        return mapper.listLogGroupsPage(
-                null,
-                LogState.ACTIVE.getValue(),
-                -1,
-                keyWord,
-                (page-1) * AppConfig.PAGE_SIZE, AppConfig.PAGE_SIZE);
-    }
-
-    public int getLogPageNumByUserId(String userId) {
-        Integer count = mapper.countLogs(userId, LogState.ACTIVE.getValue(), -1, null);
-        return AppConfig.pageNum(count);
-    }
-
-    public int getLogPageNumByUserIdAndKeyWord(String userId, String keyWord) {
-        Integer count = mapper.countLogs(userId, LogState.ACTIVE.getValue(), -1, keyWord);
-        return AppConfig.pageNum(count);
-    }
-
-    public int getSharedLogPageNum() {
-        Integer count = mapper.countLogs(null, LogState.ACTIVE.getValue(),
-                LogShareState.SHARED.getValue(), null);
-        return AppConfig.pageNum(count);
-    }
-
-    public int getSharedLogPageNumByKeyWord(String keyWord) {
-        Integer count = mapper.countLogs(null, LogState.ACTIVE.getValue(),
-                LogShareState.SHARED.getValue(), keyWord);
-        return AppConfig.pageNum(count);
-    }
-
-    public int getPageOfLogId(String userId, String id) {
-        Integer line = mapper.lineOfLogId(id, userId,
-                LogState.ACTIVE.getValue(), -1);
-        if (line == null) {
-            throw new BadRequestException("The log is not exist");
-        }
-        return AppConfig.pageNum(line);
-    }
-
-    public int getPageOfSharedLogId(String id) {
-        Integer line = mapper.lineOfLogId(id, null,
-                LogState.ACTIVE.getValue(), LogShareState.SHARED.getValue());
-        if (line == null) {
-            throw new BadRequestException("The log is not exist");
-        }
-        return AppConfig.pageNum(line);
-    }
+    int getLogPageNum();
+    int getLogPageNumByKeyWord(String keyWord);
+    int getLogPageNumByUserId(String userId);
+    int getLogPageNumByUserIdAndKeyWord(String userId, String keyWord);
+    int getSharedLogPageNum();
+    int getSharedLogPageNumByKeyWord(String keyWord);
+    int getPageOfLogId(String userId, String id);
+    int getPageOfSharedLogId(String id);
 }

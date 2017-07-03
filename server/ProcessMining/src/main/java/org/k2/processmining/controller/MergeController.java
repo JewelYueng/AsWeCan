@@ -52,19 +52,17 @@ public class MergeController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public @ResponseBody Object merge(@Valid @RequestBody MergeMethodForm form) {
         MergeMethod mergeMethod = mergeMethodService.getMethodById(form.methodId);
-        EventLog eventLog1 = eventLogService.getEventLogById(form.getEventLogId1());
-        EventLog eventLog2 = eventLogService.getEventLogById(form.getEventLogId2());
+        EventLog eventLog1 = eventLogService.getLogById(form.getEventLogId1());
+        EventLog eventLog2 = eventLogService.getLogById(form.getEventLogId2());
         TimeResult<EventLog> result = mergeMethodService.merge(eventLog1, eventLog2, mergeMethod, form.parameters);
         if (result == null) {
             throw new BadRequestException(Message.MERGE_FAIL);
         }
+        List<EventLog> eventLogs = eventLogService.getEventLogsByIds(Arrays.asList(result.getResult().getMergeRelation().split(",")));
+        result.getResult().setMergeRelationLogs(eventLogs);
         Map<String, Object> res = new HashMap<>();
         res.put("timeCost", result.getTime());
         res.put("eventLog", result.getResult());
-        System.out.println("result.getRelation:"+result.getResult().getMergeRelation());
-        res.put("relation",eventLogService.getMergeLogsByLogId(result.getResult().getMergeRelation().split(",")));
-//        res.put("relation",eventLogService.getMergeLogsByLogId()
-
         return res;
     }
 

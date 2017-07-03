@@ -53,7 +53,7 @@ public class NormalLogServiceTest {
         String userId = "1";
         normalLogService.updateStateByLogIdForUser(ids, state, userId);
         for (String id : ids) {
-            Assert.assertEquals(state, normalLogService.getNormalLogById(id).getState());
+            Assert.assertEquals(state, normalLogService.getLogById(id).getState());
         }
     }
 
@@ -64,28 +64,31 @@ public class NormalLogServiceTest {
         String userId = "1";
         normalLogService.updateShareStateByLogIdForUser(ids, state, userId);
         for (String id : ids) {
-            Assert.assertEquals(state, normalLogService.getNormalLogById(id).getIsShared());
+            Assert.assertEquals(state, normalLogService.getLogById(id).getIsShared());
         }
     }
 
     @Test
     public void getNormalLogByIdTest() throws Exception {
         String id = "1";
-        NormalLog normalLog = normalLogService.getNormalLogById(id);
+        NormalLog normalLog = normalLogService.getLogById(id);
         Assert.assertEquals(id, normalLog.getId());
         System.out.println("getNormalLogByIdTest: normalLog: " + toJSON(normalLog));
     }
 
     @Test
     public void getLogGroupsByUserIdTest() throws Exception {
-        String userId = "1";
-        List<LogGroup> logGroups = normalLogService.getLogGroupsByUserId(userId);
+        User user = new User();
+        user.setId("1");
+        int page = 1;
+        List<LogGroup> logGroups = normalLogService.getLogsByUser(user, page);
         System.out.println("getLogGroupsByUserIdTest: logGroups: " + toJSON(logGroups));
     }
 
     @Test
     public void getSharedLogGroupsTest() throws Exception {
-        List<LogGroup> logGroups = normalLogService.getSharedLogGroups();
+        int page = 1;
+        List<LogGroup> logGroups = normalLogService.getSharedLogs(page);
         System.out.println("getSharedLogsTest: logGroups: " + toJSON(logGroups));
     }
 
@@ -94,21 +97,23 @@ public class NormalLogServiceTest {
         String keyWord = "t";
         User user = new User();
         user.setId("1");
-        List<LogGroup> logGroups = normalLogService.getLogByFuzzyName(keyWord, user);
+        int page = 1;
+        List<LogGroup> logGroups = normalLogService.getLogsByUserAndKeyWord(user, keyWord, page);
         System.out.println("getLogByFuzzyNameTest: logGroups: " + toJSON(logGroups));
     }
 
     @Test
     public void getSharedLogsByFuzzyNameTest() throws Exception {
         String keyWord = "t";
-        List<LogGroup> logGroups = normalLogService.getSharedLogsByFuzzyName(keyWord);
+        int page = 1;
+        List<LogGroup> logGroups = normalLogService.getLogGroupsByKeyWord(keyWord, page);
         System.out.println("getSharedLogsByFuzzyNameTest: logGroups: " + toJSON(logGroups));
     }
 
     @Test
     public void transToEventLogTest() throws Exception {
         String normalLogId = "1";
-        NormalLog normalLog = normalLogService.getNormalLogById(normalLogId);
+        NormalLog normalLog = normalLogService.getLogById(normalLogId);
         EventLog eventLog = normalLogService.transToEventLog(normalLog);
         Assert.assertNotNull(eventLog);
         System.out.println("transToEventLogTest: eventLog: " + toJSON(eventLog));

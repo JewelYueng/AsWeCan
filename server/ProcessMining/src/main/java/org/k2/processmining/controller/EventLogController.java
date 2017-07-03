@@ -8,6 +8,7 @@ import org.k2.processmining.model.LogShareState;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.user.User;
+import org.k2.processmining.service.CommonLogService;
 import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.util.Message;
@@ -32,85 +33,55 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("/eventLog")
-public class EventLogController {
+public class EventLogController extends CommonLogController<EventLog> {
 
     private static Logger LOGGER = LoggerFactory.getLogger(EventLogController.class);
 
-    @Autowired
-    private EventLogService eventLogService;
+    public static final String logType = "eventLog";
+
+    private EventLogService logService;
 
     @Autowired
-    private LogStorage logStorage;
+    public EventLogController(EventLogService logService, LogStorage logStorage) {
+        super(logType, logService, logStorage);
+        this.logService = logService;
+    }
 
+    @Override
+    public EventLog createLog(String id, String userId, String format, Date createDate, String logName, int isShare) {
+        EventLog eventLog = new EventLog();
+        eventLog.setId(id);
+        eventLog.setUserId(userId);
+        eventLog.setFormat(format);
+        eventLog.setCreateDate(new Date());
+        eventLog.setLogName(logName);
+        eventLog.setIsShared(isShare);
+        return eventLog;
+    }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public@ResponseBody
     Object upload(@RequestParam("format") @NotBlank(message = "Format should not be empty.") String format,
                   @RequestParam(value = "isShare", defaultValue = "0") int isShare,
                   @RequestParam("file") @NotNull(message = "File should not be empty.") CommonsMultipartFile file) {
-        String eventLogId = Util.getUUIDString();
 
         User user = getUser();
-
         if (!LogShareState.isValid(isShare)) {
             isShare = LogShareState.UNSHARED.getValue();
         }
-        EventLog eventLog = new EventLog();
-        eventLog.setId(eventLogId);
-        eventLog.setUserId(user.getId());
-        eventLog.setFormat(format);
-        eventLog.setCreateDate(new Date());
-        eventLog.setLogName(file.getOriginalFilename());
-        eventLog.setIsShared(isShare);
+        EventLog log = createLog(Util.getUUIDString(), user.getId(), format, new Date(),
+                file.getOriginalFilename(), isShare);
         Map<String, Object> res = new HashMap<>();
-        int code = 1;
         try (InputStream inputForRemote = file.getInputStream(); InputStream inputForSummarize = file.getInputStream()){
-            eventLogService.save(eventLog, inputForRemote, inputForSummarize);
+            logService.save(log, inputForRemote, inputForSummarize);
         }
         catch (IOException e) {
-            LOGGER.error("Fail to save eventLog:", e);
+            LOGGER.error("Fail to save log:", e);
             throw new InternalServerErrorException(Message.UPLOAD_FAIL);
         }
-        res.put("eventLog", eventLog);
-        res.put("code", code);
+        res.put("code", 1);
+        res.put(logType, log);
         return res;
-    }
-
-    @RequestMapping(value = "/download", method = RequestMethod.GET)
-    public void download(@Valid @RequestParam("id") @NotBlank(message = "The logId is invalid.") String id,
-                         HttpServletResponse response) {
-        EventLog eventLog = eventLogService.getEventLogById(id);
-        try {
-            logStorage.download(eventLog, inputStream -> {
-                String fileName = eventLog.getLogName();
-                response.setHeader("Content-Disposition","attachment;filename=" + Util.encodeForURL(fileName));
-                IOUtils.copyLarge(inputStream, response.getOutputStream());
-                return true;
-            });
-        }
-        catch (IOException e) {
-            LOGGER.error("Fail to download eventLog:", e);
-            throw new InternalServerErrorException(Message.DOWNLOAD_FAIL);
-        }
-    }
-
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public @ResponseBody
-    Object getLogsByUserId() {
-        User user = getUser();
-        List<LogGroup> logGroups = eventLogService.getLogsByUserId(user.getId());
-        Map<String, Object> map = new HashMap<>();
-        map.put("logGroups", logGroups);
-        return map;
-    }
-
-    @RequestMapping(value = "/sharedLogs", method = RequestMethod.GET)
-    public @ResponseBody
-    Object getSharedLog() {
-        List<LogGroup> logGroups = eventLogService.getSharedLogs();
-        Map<String, Object> map = new HashMap<>();
-        map.put("logGroups", logGroups);
-        return map;
     }
 
     private User getUser() {
@@ -118,73 +89,6 @@ public class EventLogController {
         user.setId("1");
         user.setName("y2k");
         return user;
-    }
-
-    /**
-     * 分享规范化日志
-     * @param form
-     * @return
-     */
-    @RequestMapping(value = "/share",method = RequestMethod.POST)
-    public @ResponseBody
-    Object shareEventLogs(@Valid @RequestBody IdListForm form){
-        User user = getUser();
-        eventLogService.updateShareStateByLogIdForUser(form.getIdList(), LogShareState.SHARED.getValue(), user.getId());
-        return new HashMap<String,Object>(){{put("code", 1);}};
-    }
-
-
-    /**
-     * 取消分享规范化日志
-     * @param form
-     * @return
-     */
-    @RequestMapping(value = "/unShare",method = RequestMethod.POST)
-    public @ResponseBody
-    Object unShareEventLogs(@Valid @RequestBody IdListForm form){
-        Map<String,Object> result = new HashMap();
-        User user = getUser();
-        eventLogService.updateShareStateByLogIdForUser(form.getIdList(),LogShareState.UNSHARED.getValue(), user.getId());
-        result.put("code", 1);
-        return result;
-    }
-
-    /**
-     * 删除日志
-     * @param form
-     * @return
-     */
-    @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
-    public @ResponseBody
-    Object deleteByLogId(@Valid @RequestBody IdListForm form){
-        Map<String,Object> result = new HashMap<>();
-        User user = getUser();
-        eventLogService.updateStateByLogIdForUser(form.getIdList(),LogState.DELETE.getValue(), user.getId());
-        result.put("code", 1);
-        return result;
-    }
-
-    /**
-     * 搜索日志
-     * @param keyWord
-     * @return
-     */
-    @RequestMapping(value = "/search",method = RequestMethod.GET)
-    public @ResponseBody
-    Object getLogByFuzzyName(@Valid @RequestParam("keyWord")
-                             @NotBlank(message = "Key word should not be empty.") String keyWord) {
-        Map<String,Object> result = new HashMap<>();
-        User user = getUser();
-        List<LogGroup> logGroups = eventLogService.getLogByFuzzyName(keyWord,user);
-        result.put("logGroups",logGroups);
-        return result;
-    }
-
-    @RequestMapping(value = "/sharedLogs/search", method = RequestMethod.GET)
-    public @ResponseBody
-    Object getSharedLogByFuzzyName(@Valid @RequestParam("keyWord")
-                                   @NotBlank(message = "Key word should not be empty.") String keyWord) {
-        List<LogGroup> logGroups = eventLogService.getSharedLogsByFuzzyName(keyWord);
-        return new HashMap<String,Object>(){{put("logGroups", logGroups);}};
+//        return ((IUserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
     }
 }

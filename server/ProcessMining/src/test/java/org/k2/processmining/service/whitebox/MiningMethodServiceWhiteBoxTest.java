@@ -86,7 +86,7 @@ public class MiningMethodServiceWhiteBoxTest {
     @Test
     public void miningTest2() throws Exception {
         String eventLogId = "1";
-        EventLog eventLog = eventLogService.getEventLogById(eventLogId);
+        EventLog eventLog = eventLogService.getLogById(eventLogId);
 
         expectedException.expect(BadRequestException.class);
         miningMethodService.mining(eventLog, (Algorithm)null, Collections.emptyMap(), DiagramType.PetriNet);
@@ -94,7 +94,7 @@ public class MiningMethodServiceWhiteBoxTest {
 
     @Test
     public void miningTest() throws Exception {
-        EventLog eventLog = eventLogService.getEventLogById("1");
+        EventLog eventLog = eventLogService.getLogById("1");
         Algorithm<Miner> algorithm = miningMethodService.getAlgorithmById(activeId);
         for (DiagramType diagramType : DiagramType.values()) {
             TimeResult result = miningMethodService.mining(eventLog, algorithm, Collections.emptyMap(), diagramType);

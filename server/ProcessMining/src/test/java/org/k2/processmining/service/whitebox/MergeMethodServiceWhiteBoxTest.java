@@ -48,8 +48,8 @@ public class MergeMethodServiceWhiteBoxTest {
 
     @Test
     public void mergeTest() throws Exception {
-        EventLog eventLog1 = eventLogService.getEventLogById("1");
-        EventLog eventLog2 = eventLogService.getEventLogById("2");
+        EventLog eventLog1 = eventLogService.getLogById("1");
+        EventLog eventLog2 = eventLogService.getLogById("2");
         TimeResult<EventLog> res = null;
         Map<String,Object> params = new HashMap<>();
 

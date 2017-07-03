@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.k2.processmining.mapper.NormalLogMapper">
 
-    <select id="getNormalLogById" resultMap="normalLog">
+    <select id="getLogById" resultMap="normalLog">
         SELECT * FROM normal_log WHERE id=#{id}
     </select>
 

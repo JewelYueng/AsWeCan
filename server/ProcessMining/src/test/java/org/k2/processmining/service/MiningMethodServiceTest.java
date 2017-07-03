@@ -89,7 +89,7 @@ public class MiningMethodServiceTest {
 
     @Test
     public void miningTest() throws Exception {
-        EventLog eventLog = eventLogService.getEventLogById("1");
+        EventLog eventLog = eventLogService.getLogById("1");
         Algorithm<Miner> algorithm = miningMethodService.getAlgorithmById(activeMethod.getId());
         Map<String, Object> params = new HashMap<>();
         for (DiagramType diagramType : DiagramType.values()) {

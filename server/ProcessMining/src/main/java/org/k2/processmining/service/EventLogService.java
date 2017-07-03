@@ -11,20 +11,7 @@ import java.util.List;
 /**
  * Created by Aria on 2017/6/13.
  */
-public interface EventLogService {
-
-    List<LogGroup> getLogGroups();
-    List<LogGroup> getLogGroupsByKeyWord(String keyWord);
-    void deleteByAdmin(List<String> ids);
-
-    EventLog getEventLogById(String id);
+public interface EventLogService extends CommonLogService<EventLog> {
     void save(EventLog log, InputStream inputForRemote, InputStream inputForSummarize) throws IOException;
-    void save(EventLog log);
-    List<LogGroup> getLogsByUserId(String userId);
-    List<LogGroup> getSharedLogs();
-    List<LogGroup> getLogByFuzzyName(String keyWord,User user);
-    List<LogGroup> getSharedLogsByFuzzyName(String keyWord);
-    List<EventLog> getMergeLogsByLogId(String[] idList);
-    void updateShareStateByLogIdForUser(List<String> ids, int isShared, String userId);
-    void updateStateByLogIdForUser(List<String> ids, int state, String userId);
+    List<EventLog> getEventLogsByIds(List<String> ids);
 }

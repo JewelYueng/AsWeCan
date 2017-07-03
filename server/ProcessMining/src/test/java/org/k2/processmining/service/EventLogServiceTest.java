@@ -53,7 +53,7 @@ public class EventLogServiceTest {
         String userId = "1";
         eventLogService.updateStateByLogIdForUser(ids, state, userId);
         for (String id : ids) {
-            Assert.assertEquals(state, eventLogService.getEventLogById(id).getState());
+            Assert.assertEquals(state, eventLogService.getLogById(id).getState());
         }
     }
 
@@ -64,28 +64,31 @@ public class EventLogServiceTest {
         String userId = "1";
         eventLogService.updateShareStateByLogIdForUser(ids, state, userId);
         for (String id : ids) {
-            Assert.assertEquals(state, eventLogService.getEventLogById(id).getIsShared());
+            Assert.assertEquals(state, eventLogService.getLogById(id).getIsShared());
         }
     }
 
     @Test
     public void getEventLogByIdTest() throws Exception {
         String id = "1";
-        EventLog eventLog = eventLogService.getEventLogById(id);
+        EventLog eventLog = eventLogService.getLogById(id);
         Assert.assertEquals(id, eventLog.getId());
         System.out.println("getEventLogByIdTest: eventLog: " + toJSON(eventLog));
     }
 
     @Test
     public void getLogsByUserIdTest() throws Exception {
-        String userId = "1";
-        List<LogGroup> logGroups = eventLogService.getLogsByUserId(userId);
+        User user = new User();
+        user.setId("1");
+        int page = 1;
+        List<LogGroup> logGroups = eventLogService.getLogsByUser(user, page);
         System.out.println("getLogsByUserTest: logGroups: " + toJSON(logGroups));
     }
 
     @Test
     public void getSharedLogsTest() throws Exception {
-        List<LogGroup> logGroups = eventLogService.getSharedLogs();
+        int page = 1;
+        List<LogGroup> logGroups = eventLogService.getSharedLogs(page);
         System.out.println("getSharedLogsTest: logGroups: " + toJSON(logGroups));
     }
 
@@ -94,14 +97,16 @@ public class EventLogServiceTest {
         String keyWord = "t";
         User user = new User();
         user.setId("1");
-        List<LogGroup> logGroups = eventLogService.getLogByFuzzyName(keyWord, user);
+        int page = 1;
+        List<LogGroup> logGroups = eventLogService.getLogsByUserAndKeyWord(user, keyWord, page);
         System.out.println("getLogByFuzzyNameTest: logGroups: " + toJSON(logGroups));
     }
 
     @Test
     public void getSharedLogsByFuzzyNameTest() throws Exception {
         String keyWord = "t";
-        List<LogGroup> logGroups = eventLogService.getSharedLogsByFuzzyName(keyWord);
+        int page = 1;
+        List<LogGroup> logGroups = eventLogService.getLogGroupsByKeyWord(keyWord, page);
         System.out.println("getSharedLogsByFuzzyNameTest: logGroups: " + toJSON(logGroups));
     }
 
