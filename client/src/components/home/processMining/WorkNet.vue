@@ -1,10 +1,7 @@
 <template>
   <div class="workNet">
     <h1>Work Flow Net</h1>
-    <div class="show">
-      <el-button type="primary" @click="renderWorkflow()">展现工作流网</el-button>
-    </div>
-    <svg class="chart" width="960" height="500">
+    <svg class="chart" width="1130" height="500">
     </svg>
   </div>
 </template>
@@ -218,6 +215,9 @@
 //      深复制
       this.items.diagram = JSON.parse( JSON.stringify(this.petri))
     },
+    mounted(){
+      this.renderWorkflow()
+    },
     methods: {
       renderWorkflow(){
 // Create a new directed graph
@@ -329,7 +329,7 @@
           .translate([(svg.attr("width") - g.graph().width * initialScale) / 2, 150])
           .scale(initialScale)
           .event(svg);
-        svg.attr('height', 900);
+        svg.attr('height', 700);
       }
 
     }

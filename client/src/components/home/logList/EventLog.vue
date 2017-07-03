@@ -16,7 +16,7 @@
     </div>
     <div class='title'>所有文件已加载，共{{count}}个</div>
     <div id="log-list">
-      <div class="list" style="border-bottom: 0.8px solid #324157">
+      <div class="list-head" style="border-bottom: 0.8px solid #324157">
         <div class="log-head">
           <input type="checkbox" v-model="checkAll" id="文件名" value="文件名">
           <span class="log-name">文件名</span>
@@ -27,49 +27,50 @@
         <div class="merge-relation">融合来源</div>
         <div class="operations"></div>
       </div>
-      <div class="list" v-for="(item,index) in items" :class="{selectedItem: isSelected(index)}">
-        <div class="input-box log-head">
-          <input type="checkbox" v-model="checked" :value="item.eventLog.id" @click="currClick(item,index)">
-          <span @click="showDetail(index)" class="log-name"
-                :title="item.eventLog.logName">{{item.eventLog.logName}}</span>
-        </div>
-        <div class="date">
-          {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()}`}}
-        </div>
-        <div @click="jumpToRaw(index)" class="relation-logs raw-log" :title="item.rawLog ? item.rawLog.logName : '无'">
-          {{item.rawLog ? item.rawLog.logName : '无'}}
-        </div>
-        <div @click="jumpToNormal(index)" class="relation-logs normal-log"
-             :title="item.normalLog ? item.normalLog.logName : '无'">
-          {{item.normalLog ? item.normalLog.logName : '无'}}
-        </div>
-        <div class="merge-relation">
-          <div v-if="item.eventLog.mergeRelation" class="relation1" @click="selectedRel(index,0)"
-               :title="item.eventLog.mergeRelation.split(',')[0]">{{getRelationName(index, 0)}}
+      <div class="list">
+        <div class="list-item" v-for="(item,index) in items" :class="{selectedItem: isSelected(index)}">
+          <div class="input-box log-head">
+            <input type="checkbox" v-model="checked" :value="item.eventLog.id" @click="currClick(item,index)">
+            <span @click="showDetail(index)" class="log-name"
+                  :title="item.eventLog.logName">{{item.eventLog.logName}}</span>
           </div>
-          <div v-if="item.eventLog.mergeRelation" class="relation2" @click="selectedRel(index,1)"
-               :title="item.eventLog.mergeRelation.split(',')[1]">{{getRelationName(index, 1)}}
+          <div class="date">
+            {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()}`}}
           </div>
-          <div v-show="!item.eventLog.mergeRelation">没有融合来源</div>
-        </div>
-        <div class="operations">
-          <i class="el-icon-setting" title="开始流程挖掘" v-on:click="processMining(index)"></i>
-          <img class="download-btn" title="下载" src="static/img/cloud_download.svg"
-               @click="download(index)">
-          <i class="el-icon-share" v-show="item.eventLog.isShared==0" title="分享" @click="share(index)"></i>
-          <i class="el-icon-minus" v-show="item.eventLog.isShared!=0" title="取消分享" @click="share(index)"></i>
-          <i class="el-icon-delete" title="删除" @click="deleteLog(index)"></i>
+          <div @click="jumpToRaw(index)" class="relation-logs raw-log" :title="item.rawLog ? item.rawLog.logName : '无'">
+            {{item.rawLog ? item.rawLog.logName : '无'}}
+          </div>
+          <div @click="jumpToNormal(index)" class="relation-logs normal-log"
+               :title="item.normalLog ? item.normalLog.logName : '无'">
+            {{item.normalLog ? item.normalLog.logName : '无'}}
+          </div>
+          <div class="merge-relation">
+            <div v-if="item.eventLog.mergeRelation" class="relation1" @click="selectedRel(index,0)"
+                 :title="item.eventLog.mergeRelationLogs[0].logName">{{item.eventLog.mergeRelationLogs[0].logName}}
+            </div>
+            <div v-if="item.eventLog.mergeRelation" class="relation2" @click="selectedRel(index,1)"
+                 :title="item.eventLog.mergeRelationLogs[1].logName">{{item.eventLog.mergeRelationLogs[1].logName}}
+            </div>
+            <div v-show="!item.eventLog.mergeRelation">没有融合来源</div>
+          </div>
+          <div class="operations">
+            <i class="el-icon-setting" title="开始流程挖掘" v-on:click="processMining(index)"></i>
+            <img class="download-btn" title="下载" src="static/img/cloud_download.svg"
+                 @click="download(index)">
+            <i class="el-icon-share" v-show="item.eventLog.isShared==0" title="分享" @click="share(index)"></i>
+            <i class="el-icon-minus" v-show="item.eventLog.isShared!=0" title="取消分享" @click="share(index)"></i>
+            <i class="el-icon-delete" title="删除" @click="deleteLog(index)"></i>
+          </div>
         </div>
       </div>
     </div>
     <div class="block pageDiv">
       <el-pagination
-        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
-        :page-size="100"
-        layout="total, prev, pager, next, jumper"
-        :total="items.length">
+        :page-size="10"
+        layout="prev, pager, next, jumper"
+        :total="total_items_num">
       </el-pagination>
     </div>
   </div>
@@ -86,7 +87,7 @@
     color: #b5b5b5;
   }
 
-  .list:hover {
+  .list-item:hover {
     background-color: @logList_Choose;
   }
 
@@ -102,6 +103,10 @@
     margin-right: 10px;
     font-size: 14px;
     .list {
+      height: 530px;
+      overflow: auto;
+    }
+    .list-item, .list-head{
       img {
         width: 12px;
         height: 12px;
@@ -167,9 +172,7 @@
         }
       }
     }
-    .selectedItem {
-      background-color: #cbd7ea;
-    }
+
   }
 
   .log-name {
@@ -187,6 +190,7 @@
     data(){
       return {
         currentPage: 1,
+        total_items_num: 10,
         checked: [],
         totalAmount: [],
         isSearching: false,
@@ -195,6 +199,9 @@
       }
     },
     created(){
+      if(this.$store.getters.selectedLog.type === 2){
+        this.currentPage = parseInt(this.$store.getters.selectedLog.page)
+      }
       this.getTotalItems()
     },
     destroyed(){
@@ -239,38 +246,43 @@
     },
     methods: {
       ...mapActions(['selectLog', 'changeFilePath', 'changeHomePath']),
+      handleCurrentChange(val) {
+        this.currentPage = val
+        this.getTotalItems()
+      },
       isSelected(index){
         return this.$store.getters.selectedLog.type === 2 && this.items[index].eventLog.id === this.$store.getters.selectedLog.id
 
       },
-      getRelationName(index, rel_index){
-        if (this.items[index].eventLog.mergeRelation !== null) {
-          let log_index = this.items.findIndex(item => {
-            return item.eventLog.id === this.items[index].eventLog.mergeRelation.split(',')[rel_index]
-          })
-          console.log(log_index)
-          return this.items[log_index].eventLog.logName
-        }else{
-          return ''
-        }
-
-      },
       jumpToNormal(index){
         if (this.items[index].normalLog) {
-          this.selectLog({type: 1, id: this.items[index].normalLog.id})
-          this.changeFilePath('1-2')
+          this.$api({method: 'getNormalLogPage', query: {id: this.items[index].normalLog.id}}).then( res => {
+            this.selectLog({type: 1, id: this.items[index].normalLog.id, page: res.data.page})
+            this.changeFilePath('1-2')
+          }, err => {
+            this.$hint('网络出错','error')
+          })
         }
       },
       jumpToRaw(index){
         if (this.items[index].rawLog) {
-          this.selectLog({type: 0, id: this.items[index].rawLog.id})
-          this.changeFilePath('1-1')
+          this.$api({method: 'getRawLogPage', query: {id: this.items[index].rawLog.id}}).then( res => {
+            this.selectLog({type: 0, id: this.items[index].rawLog.id, page: res.data.page})
+            this.changeFilePath('1-1')
+          }, err => {
+            this.$hint('网络出错','error')
+          })
         }
       },
       selectedRel(log_index, index){
-        let relations = this.items[log_index].eventLog.mergeRelation
-        if (relations) {
-          this.selectLog({type: 2, id: relations.split(',')[index]})
+        let relation_id = this.items[log_index].eventLog.mergeRelationLogs[index].id
+        if (relation_id) {
+          this.$api({method: 'getEventLogPage', query: {id: relation_id}}).then( res => {
+            this.selectLog({type: 2, id: relation_id, page: res.data.page})
+            this.currentPage = res.data.page
+          }, err => {
+            this.$hint('网络出错', 'error')
+          })
         }
       },
       searchLog(){
@@ -310,7 +322,7 @@
           }
         }, err => {
           console.log(err)
-          this.$hint(err.data.msg,'error')
+          this.$hint(err.data.msg, 'error')
         })
       },
       share(index){
@@ -324,7 +336,7 @@
             }
           }, err => {
             console.log(err)
-            this.$hint(err.data.msg,'error')
+            this.$hint(err.data.msg, 'error')
           })
         } else {
           this.$api({method: 'unShareEventLog', body: {idList: [this.items[index].eventLog.id]}}).then(res => {
@@ -336,7 +348,7 @@
             }
           }, err => {
             console.log(err)
-            this.$hint(err.data.msg,'error')
+            this.$hint(err.data.msg, 'error')
           })
         }
       },
@@ -355,7 +367,7 @@
           }
         }, err => {
           console.log(err)
-          this.$hint(err.data.msg,'error')
+          this.$hint(err.data.msg, 'error')
         })
       },
       deleteSome: function () {
@@ -377,7 +389,7 @@
           }
         }, err => {
           console.log(err)
-          this.$hint(err.data.msg,'error')
+          this.$hint(err.data.msg, 'error')
         })
 
       },
@@ -386,9 +398,10 @@
       },
       getTotalItems(){
         const _this = this
-        this.$api({method: 'getEventLog'}).then((res) => {
+        this.$api({method: 'getEventLog', query: {page: this.currentPage}}).then((res) => {
           console.log(res)
           _this.items = res.data.logGroups
+          _this.total_items_num = res.data.pageNum * 10
         })
       },
       createAndDownloadFile(fileName, content) {

@@ -23,6 +23,8 @@ export default {
   "uploadRawLog": [POST, "/rawLog/upload"],
   "downLoadRawLog": [GET, "/rawLog/download"],
   "deleteRawLog": [DELETE, "/rawLog/delete"],
+  "getRawLogPage": [GET, '/rawLog/page'],
+  "getShareRawPage": [GET, '/rawLog/sharedLogs/page'],
   // 规范化日志
   "searchNormalLog": [GET, "/normalLog/search"],
   "searchSharedNormalLog": [GET, '/normalLog/sharedLogs/search'],
@@ -33,6 +35,8 @@ export default {
   "downLoadNormalLog": [GET, "/normalLog/download"],
   "uploadNormalLog": [POST, "/normalLog/upload"],
   "deleteNormalLog": [DELETE, "/normalLog/delete"],
+  "getNormalLogPage": [GET, '/normalLog/page'],
+  "getShareNormalPage": [GET, '/normalLog/sharedLogs/page'],
   // 事件日志
   "searchEventLog": [GET, "/eventLog/search"],
   "searchSharedEventLog": [GET, '/eventLog/sharedLogs/search'],
@@ -42,6 +46,8 @@ export default {
   "unShareEventLog": [POST, "/eventLog/unShare"],
   "downLoadEventLog": [GET, "/eventLog/download"],
   "deleteEventLog": [DELETE, "/eventLog/delete"],
+  "getEventLogPage": [GET, '/eventLog/page'],
+  "getShareEventPage": [GET, '/eventLog/sharedLogs/page'],
 //  事件预处理
   "normalize": [POST, "/rawLog/normalize"],
   "toEventLog": [POST, "/normalLog/toEventLog"],

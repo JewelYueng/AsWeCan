@@ -70,7 +70,6 @@
   }
 
   .mining-list {
-    background-color: @light_theme;
     min-height: 500px;
     padding: 10px;
   }

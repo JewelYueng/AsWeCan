@@ -7,16 +7,16 @@
         <el-button @click="deleteSome" icon="delete"> 删除</el-button>
       </div>
       <div class="search">
-      <input type="text"  placeholder="请输入关键字" v-model="keyWord">
-      <div v-show="isSearching" class="close-btn" @click="close_search">
-        <i class="el-icon-circle-cross"></i>
-      </div>
-      <div v-show="!isSearching" class="search-button" @click="searchLog"><i class="el-icon-search"></i></div>
+        <input type="text" placeholder="请输入关键字" v-model="keyWord">
+        <div v-show="isSearching" class="close-btn" @click="close_search">
+          <i class="el-icon-circle-cross"></i>
+        </div>
+        <div v-show="!isSearching" class="search-button" @click="searchLog"><i class="el-icon-search"></i></div>
       </div>
     </div>
     <div class='title'>所有文件已加载，共{{count}}个</div>
     <div id="log-list">
-      <div class="list" style="border-bottom: 0.8px solid #324157">
+      <div class="list-head" style="border-bottom: 0.8px solid #324157">
         <div class="log-head"><input type="checkbox" v-model="checkAll" id="文件名" value="文件名">
           <span class="log-name">文件名</span>
         </div>
@@ -25,39 +25,40 @@
         <div class="event-log">事件日志</div>
         <div class="operations"></div>
       </div>
-      <div class="list" v-for="(item, index) in items" :class="{selectedItem: isSelected(index)}">
-        <div class="log-head">
-          <input type="checkbox" v-model="checked" :value="item.normalLog.id" @click="currClick(item,index)">
-          <span class="log-name" :title="item.normalLog.logName">
+      <div class="list">
+        <div class="list-item" v-for="(item, index) in items" :class="{selectedItem: isSelected(index)}">
+          <div class="log-head">
+            <input type="checkbox" v-model="checked" :value="item.normalLog.id" @click="currClick(item,index)">
+            <span class="log-name" :title="item.normalLog.logName">
             {{item.normalLog.logName}}</span>
-        </div>
-        <div class="date">
-          {{`${new Date(item.normalLog.createDate).getFullYear()}-${new Date(item.normalLog.createDate).getMonth() + 1}-${new Date(item.normalLog.createDate).getDate()}`}}
-        </div>
-        <div class="relation-logs raw-log" @click="jumpToRaw(index)" :title="item.rawLog ? item.rawLog.logName : '无'">
-          {{item.rawLog ? item.rawLog.logName : '无'}}
-        </div>
-        <div class="relation-logs event-log" @click="jumpToEvent(index)"
-             :title="item.eventLog ? item.eventLog.logName : '无'">
-          {{item.eventLog ? item.eventLog.logName : '无'}}
-        </div>
-        <div class="operations">
-          <i class="el-icon-setting" title="生成事件日志" v-on:click="transferToEvent(index)"></i>
-          <img class="download-btn" title="下载" src="static/img/cloud_download.svg"
-               @click="download(index)">
-          <i class="el-icon-share" v-show="item.normalLog.isShared==0" title="分享" @click="share(index)"></i>
-          <i class="el-icon-minus" v-show="item.normalLog.isShared!=0" title="取消分享" @click="share(index)"></i>
-          <i class="el-icon-delete" title="删除" @click="deleteLog(index)"></i>
+          </div>
+          <div class="date">
+            {{`${new Date(item.normalLog.createDate).getFullYear()}-${new Date(item.normalLog.createDate).getMonth() + 1}-${new Date(item.normalLog.createDate).getDate()}`}}
+          </div>
+          <div class="relation-logs raw-log" @click="jumpToRaw(index)" :title="item.rawLog ? item.rawLog.logName : '无'">
+            {{item.rawLog ? item.rawLog.logName : '无'}}
+          </div>
+          <div class="relation-logs event-log" @click="jumpToEvent(index)"
+               :title="item.eventLog ? item.eventLog.logName : '无'">
+            {{item.eventLog ? item.eventLog.logName : '无'}}
+          </div>
+          <div class="operations">
+            <i class="el-icon-setting" title="生成事件日志" v-on:click="transferToEvent(index)"></i>
+            <img class="download-btn" title="下载" src="static/img/cloud_download.svg"
+                 @click="download(index)">
+            <i class="el-icon-share" v-show="item.normalLog.isShared==0" title="分享" @click="share(index)"></i>
+            <i class="el-icon-minus" v-show="item.normalLog.isShared!=0" title="取消分享" @click="share(index)"></i>
+            <i class="el-icon-delete" title="删除" @click="deleteLog(index)"></i>
+          </div>
         </div>
       </div>
     </div>
     <div class="block pageDiv">
       <el-pagination
-        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
         :page-size="100"
-        layout="total, prev, pager, next, jumper"
+        layout=" prev, pager, next, jumper"
         :total="items.length">
       </el-pagination>
     </div>
@@ -68,7 +69,6 @@
 <style lang="less" scoped rel="stylesheet/less">
   @import '~assets/colors.less';
   @import "~assets/layout.less";
-
 
   .close-btn {
     position: relative;
@@ -86,8 +86,7 @@
     color: #b5b5b5;
   }
 
-
-  .list:hover {
+  .list-item:hover {
     background-color: @logList_Choose;
   }
 
@@ -102,7 +101,11 @@
     margin-left: 10px;
     margin-right: 10px;
     font-size: 14px;
-    .list {
+    .list{
+      height: 530px;
+      overflow: auto;
+    }
+    .list-item, .list-head {
       img {
         width: 12px;
         height: 12px;
@@ -131,7 +134,7 @@
           cursor: pointer;
           font-size: 18px;
         }
-        img{
+        img {
           width: 18px;
           height: 18px;
           position: relative;
@@ -173,10 +176,15 @@
         totalAmount: [],
         items: [],
         isSearching: false,
-        keyWord: ''
+        keyWord: '',
+        currentPage: 1,
+        total_items_num: 10
       }
     },
     created(){
+      if(this.$store.getters.selectedLog.type === 1){
+        this.currentPage = parseInt(this.$store.getters.selectedLog.page)
+      }
       this.getTotalItems()
     },
     computed: {
@@ -219,19 +227,33 @@
     },
     methods: {
       ...mapActions(['selectLog', 'changeFilePath']),
+      handleCurrentChange(val) {
+        this.currentPage = val
+        this.getTotalItems()
+      },
       isSelected(index){
         return this.$store.getters.selectedLog.type === 1 && this.items[index].normalLog.id === this.$store.getters.selectedLog.id
       },
       jumpToRaw(index){
+
         if (this.items[index].rawLog) {
-          this.selectLog({type: 0, id: this.items[index].rawLog.id})
-          this.changeFilePath('1-1')
+          this.$api({method: 'getRawLogPage', query: {id: this.items[index].rawLog.id}}).then( res => {
+            this.selectLog({type: 0, id: this.items[index].rawLog.id, page: res.data.page})
+            this.changeFilePath('1-1')
+          }, err => {
+            this.$hint('网络出错','error')
+          })
+
         }
       },
       jumpToEvent(index){
         if (this.items[index].eventLog) {
-          this.selectLog({type: 2, id: this.items[index].eventLog.id})
-          this.changeFilePath('1-3')
+          this.$api({method: 'getEventLogPage', query: {id: this.items[index].eventLog.id}}).then( res => {
+            this.selectLog({type: 2, id: this.items[index].eventLog.id, page: res.data.page})
+            this.changeFilePath('1-3')
+          }, err => {
+            this.$hint('网络出错', 'error')
+          })
         }
       },
       currClick: function (item, index) {
@@ -281,7 +303,7 @@
           }
         }, err => {
           console.log(err)
-          this.$hint(err.data.msg,'error')
+          this.$hint(err.data.msg, 'error')
         })
       },
 
@@ -319,9 +341,9 @@
           } else {
             this.$hint('不明原因失败，建议刷新', 'error')
           }
-          }, err => {
+        }, err => {
           console.log(err)
-          this.$hint(err.data.msg,'error')
+          this.$hint(err.data.msg, 'error')
         })
 
       },
@@ -345,7 +367,7 @@
           }
         }, err => {
           console.log(err)
-          this.$hint(err.data.msg,'error')
+          this.$hint(err.data.msg, 'error')
         })
 
       },
@@ -360,7 +382,7 @@
           }
         }, err => {
           console.log(err)
-          this.$hint(err.data.msg,'error')
+          this.$hint(err.data.msg, 'error')
         })
       },
       share(index){
@@ -374,7 +396,7 @@
             }
           }, err => {
             console.log(err)
-            this.$hint(err.data.msg,'error')
+            this.$hint(err.data.msg, 'error')
           })
         } else {
           this.$api({method: 'unShareNormalLog', body: {idList: [this.items[index].normalLog.id]}}).then(res => {
@@ -386,7 +408,7 @@
             }
           }, err => {
             console.log(err)
-            this.$hint(err.data.msg,'error')
+            this.$hint(err.data.msg, 'error')
           })
         }
       },
@@ -408,9 +430,10 @@
       },
       getTotalItems(){
         const _this = this
-        this.$api({method: 'getNormalLog'}).then((res) => {
+        this.$api({method: 'getNormalLog', query: {page: this.currentPage}}).then((res) => {
           console.log(res)
           _this.items = res.data.logGroups
+          _this.total_items_num = res.data.pageNum * 10
         })
       }
     },

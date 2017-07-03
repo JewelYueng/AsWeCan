@@ -30,7 +30,7 @@
     background-color: @light_theme;
     width: @left_side_width;
     min-width: 200px;
-    height: @main_height;
+    height: @main_height - 50px;
     box-sizing: border-box;
   }
 
@@ -41,7 +41,7 @@
 
   #right-window {
     width: @right_side_width;
-    height: @main_height - 30px;
+    height: @main_height;
     box-sizing: border-box;
     padding: 30px 30px 0 30px;
     overflow: auto;
@@ -56,6 +56,10 @@
     position: relative;
     height: 20px;
     top: 2px;
+  }
+
+  .selectedItem {
+    background-color: #cbd7ea;
   }
 
   .button {
@@ -118,10 +122,6 @@
     }
   }
   .pageDiv {
-    position: absolute;
-    bottom: 10px;
-    left: 0;
-    right: 0;
     display: flex;
     flex-direction: row;
     align-items: center;

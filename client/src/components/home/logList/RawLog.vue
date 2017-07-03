@@ -17,7 +17,7 @@
     </div>
     <div class='title'>所有文件已加载，共{{count}}个</div>
     <div id="log-list">
-      <div class="list" style="border-bottom: 0.8px solid #324157">
+      <div class="list-head" style="border-bottom: 0.8px solid #324157">
         <div class="log-head">
           <input type="checkbox" v-model="checkAll" id="文件名" value="文件名">
           <span class="log-name">文件名</span></div>
@@ -26,38 +26,40 @@
         <div class="event-log">事件日志</div>
         <div class="operations"></div>
       </div>
-      <div class="list" v-for="(item,index) in items" :class="{selectedItem: isSelected(index)}">
-        <div class="log-head">
-          <input type="checkbox" v-model="checked" :value="item.rawLog.id" @click="currClick(item,index)">
-          <span @click="showDetail(index)" class="log-name" :title="item.rawLog.logName">{{item.rawLog.logName}}</span>
-        </div>
-        <div class="date">
-          {{`${new Date(item.rawLog.createDate).getFullYear()}-${new Date(item.rawLog.createDate).getMonth() + 1}-${new Date(item.rawLog.createDate).getDate()}`}}
-        </div>
-        <div @click="jumpToNormal(index)" class="relation-logs normal-log"
-             :title="item.normalLog ? item.normalLog.logName : '无'">{{item.normalLog ? item.normalLog.logName : '无'}}
-        </div>
-        <div @click="jumpToEvent(index)" class="relation-logs event-log"
-             :title="item.eventLog ? item.eventLog.logName : '无'">{{item.eventLog ? item.eventLog.logName : '无'}}
-        </div>
-        <div class="operations">
-          <i class="el-icon-setting" title="生成规范化日志" v-on:click="transferToNormal(index)"></i>
-          <img class="download-btn" title="下载" src="static/img/cloud_download.svg"
-               @click="download(index)">
-          <i class="el-icon-share" v-show="item.rawLog.isShared==0" title="分享" @click="share(index)"></i>
-          <i class="el-icon-minus" v-show="item.rawLog.isShared!=0" title="取消分享" @click="share(index)"></i>
-          <i class="el-icon-delete" title="删除" @click="deleteLog(index)"></i>
+      <div class="list">
+        <div class="list-item" v-for="(item,index) in items" :class="{selectedItem: isSelected(index)}">
+          <div class="log-head">
+            <input type="checkbox" v-model="checked" :value="item.rawLog.id" @click="currClick(item,index)">
+            <span @click="showDetail(index)" class="log-name"
+                  :title="item.rawLog.logName">{{item.rawLog.logName}}</span>
+          </div>
+          <div class="date">
+            {{`${new Date(item.rawLog.createDate).getFullYear()}-${new Date(item.rawLog.createDate).getMonth() + 1}-${new Date(item.rawLog.createDate).getDate()}`}}
+          </div>
+          <div @click="jumpToNormal(index)" class="relation-logs normal-log"
+               :title="item.normalLog ? item.normalLog.logName : '无'">{{item.normalLog ? item.normalLog.logName : '无'}}
+          </div>
+          <div @click="jumpToEvent(index)" class="relation-logs event-log"
+               :title="item.eventLog ? item.eventLog.logName : '无'">{{item.eventLog ? item.eventLog.logName : '无'}}
+          </div>
+          <div class="operations">
+            <i class="el-icon-setting" title="生成规范化日志" v-on:click="transferToNormal(index)"></i>
+            <img class="download-btn" title="下载" src="static/img/cloud_download.svg"
+                 @click="download(index)">
+            <i class="el-icon-share" v-show="item.rawLog.isShared==0" title="分享" @click="share(index)"></i>
+            <i class="el-icon-minus" v-show="item.rawLog.isShared!=0" title="取消分享" @click="share(index)"></i>
+            <i class="el-icon-delete" title="删除" @click="deleteLog(index)"></i>
+          </div>
         </div>
       </div>
     </div>
     <div class="block pageDiv">
       <el-pagination
-        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
-        :page-size="100"
-        layout="total, prev, pager, next, jumper"
-        :total="items.length">
+        :page-size="10"
+        layout="prev, pager, next, jumper"
+        :total="total_items_num">
       </el-pagination>
     </div>
   </div>
@@ -67,7 +69,6 @@
   @import '~assets/colors.less';
   @import "~assets/layout.less";
 
-
   .title {
     position: absolute;
     right: 55px;
@@ -75,7 +76,7 @@
     color: #b5b5b5;
   }
 
-  .list:hover {
+  .list-item:hover {
     background-color: @logList_Choose;
   }
 
@@ -91,6 +92,10 @@
     margin-right: 10px;
     font-size: 14px;
     .list {
+      height: 530px;
+      overflow: auto;
+    }
+    .list-item, .list-head {
       img {
         width: 12px;
         height: 12px;
@@ -119,7 +124,7 @@
           cursor: pointer;
           font-size: 18px;
         }
-        img{
+        img {
           width: 18px;
           height: 18px;
           position: relative;
@@ -162,10 +167,15 @@
         checked: [],
         totalAmount: [],
         items: [],
-
+        currentPage: 1,
+        total_items_num: 10
       }
     },
     created(){
+      console.log(this.$store.getters.selectedLog.type,this.$store.getters.selectedLog.page)
+      if(this.$store.getters.selectedLog.type === 0){
+        this.currentPage = parseInt(this.$store.getters.selectedLog.page)
+      }
       this.getTotalItems()
     },
     computed: {
@@ -207,19 +217,32 @@
     },
     methods: {
       ...mapActions(['selectLog', 'changeFilePath']),
+      handleCurrentChange(val) {
+        this.currentPage = val
+        this.getTotalItems()
+      },
       isSelected(index){
         return this.$store.getters.selectedLog.type === 0 && this.items[index].rawLog.id === this.$store.getters.selectedLog.id
       },
       jumpToNormal(index){
         if (this.items[index].normalLog) {
-          this.selectLog({type: 1, id: this.items[index].normalLog.id})
-          this.changeFilePath('1-2')
+          this.$api({method: 'getNormalLogPage', query: {id: this.items[index].normalLog.id}}).then( res => {
+            this.selectLog({type: 1, id: this.items[index].normalLog.id, page: res.data.page})
+            this.changeFilePath('1-2')
+          }, err => {
+            this.$hint('网络出错','error')
+          })
+
         }
       },
       jumpToEvent(index){
         if (this.items[index].eventLog) {
-          this.selectLog({type: 2, id: this.items[index].eventLog.id})
-          this.changeFilePath('1-3')
+          this.$api({method: 'getEventLogPage', query: {id: this.items[index].eventLog.id}}).then( res => {
+            this.selectLog({type: 2, id: this.items[index].eventLog.id, page: res.data.page})
+            this.changeFilePath('1-3')
+          }, err => {
+            this.$hint('网络出错', 'error')
+          })
         }
       },
       shareSome(){
@@ -232,7 +255,7 @@
           }
         }, err => {
           console.log(err)
-          this.$hint(err.data.msg,'error')
+          this.$hint(err.data.msg, 'error')
         })
       },
       upload: function () {
@@ -257,7 +280,7 @@
           }
         }, err => {
           console.log(err)
-          this.$hint(err.data.msg,'error')
+          this.$hint(err.data.msg, 'error')
         })
       },
       deleteSome: function () {
@@ -279,7 +302,7 @@
           }
         }, err => {
           console.log(err)
-          this.$hint(err.data.msg,'error')
+          this.$hint(err.data.msg, 'error')
         })
 
       },
@@ -294,7 +317,7 @@
             }
           }, err => {
             console.log(err)
-            this.$hint(err.data.msg,'error')
+            this.$hint(err.data.msg, 'error')
           })
         } else {
           this.$api({method: 'unShareRawLog', body: {idList: [this.items[index].rawLog.id]}}).then(res => {
@@ -306,7 +329,7 @@
             }
           }, err => {
             console.log(err)
-            this.$hint(err.data.msg,'error')
+            this.$hint(err.data.msg, 'error')
           })
         }
       },
@@ -336,9 +359,10 @@
       },
       getTotalItems(){
         const _this = this
-        this.$api({method: 'getRawLog'}).then((res) => {
+        this.$api({method: 'getRawLog', query: {page: this.currentPage}}).then((res) => {
           console.log(res)
           _this.items = res.data.logGroups
+          _this.total_items_num = res.data.pageNum * 10
         })
       },
       close_search(){

@@ -1,9 +1,6 @@
 <template>
   <div class="sankey">
     <h1>Sankey Diagrams</h1>
-    <div class="show">
-    <el-button type="primary" @click="produceLayout()">展现桑基图</el-button>
-    </div>
     <svg class="chart">
     </svg>
   </div>
@@ -59,6 +56,9 @@ export default{
   created(){
     this.items.diagram = this.sankey
   },
+  mounted(){
+    this.produceLayout()
+  },
   methods: {
     produceLayout: function () {
       var margin = {
@@ -67,8 +67,8 @@ export default{
           bottom: 6,
           left: 1
         },
-        width = 960 - margin.left - margin.right,
-        height = 300 * (1 + parseInt(this.items.diagram.nodes.length / 10)) - margin.top - margin.bottom;
+        width = 1130 - margin.left - margin.right,
+        height = 680;
 
       var formatNumber = d3.format(",.0f"),
         format = function (d) {
