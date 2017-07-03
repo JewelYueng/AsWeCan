@@ -1,11 +1,11 @@
 <template>
   <div class="transition-system">
     <h1>Transition System</h1>
-    <el-button type="primary" @click="renderDiagraph(items.diagram, '#diagraph')">静态工作流图</el-button>
+    <el-button  v-show="see" type="primary" @click="renderDiagraph(items.diagram, '#diagraph')">静态工作流图</el-button>
     <div class="all" v-show="showTotalBtn" @click="runTotal">
       <span>全记录动画</span>
       <el-button type="primary" @click="runTotal()" id="all-trace-run">运行</el-button>
-      <el-button type="primary" @click="cleanTrace(2)" >清除</el-button>
+      <!--<el-button type="primary" @click="cleanTrace()" >清除</el-button>-->
     </div>
     <div class="simple" v-show="showSelector">
       <span>单记录动画</span>
@@ -18,7 +18,7 @@
         </el-option>
       </el-select>
       <el-button type="primary" @click="runTrace('#diagraph')" id="trace-submit">运行</el-button>
-      <el-button type="primary" @click="cleanTrace(1)">清除</el-button>
+      <el-button type="primary" @click="cleanTrace()">清除</el-button>
     </div>
     <svg id="diagraph" width="1000" height="450"></svg>
   </div>
@@ -72,6 +72,7 @@
     props: ['produce'],
     data(){
       return {
+        see:true,
         layout:null,
         traceGroup:null,
         g:null,
@@ -99,29 +100,37 @@
       this.items.diagram = JSON.parse( JSON.stringify(this.produce))
     },
     methods: {
-      cleanTrace(type){
-        debugger
+      cleanTrace(){
+
         const _this = this;
-        if (this.timers1 !== null && this.timers1.length !== 0) {
-          this.timers1.forEach(function (timer) {
-            clearTimeout(timer);
-          })}
-        if (this.timers2 !== null && this.timers2.length !== 0) {
-          this.timers2.forEach(function (timer) {
+        console.log(_this.timers1,_this.timers2)
+        if (_this.timers1 !== null && _this.timers1.length !== 0) {
+          _this.timers1.forEach(function (timer) {
             clearTimeout(timer);
           })
         }
+
         document.getElementsByClassName("trace-group").innerHTML = '';
         let groups = document.getElementsByClassName("trace-group")
         for(let i = 0; i < groups.length; i++){
           groups[i].innerHTML = ""
         }
-        if(type === 2) {
-          let links = d3.selectAll('.link')
-            .attr("stroke-width", (d) =>{
-              return _this.edgeWidthMap[d.v + ':' + d.w];
-            });
+        if (_this.timers2 !== null && _this.timers2.length !== 0) {
+          _this.timers2.forEach(function (timer) {
+            clearTimeout(timer);
+            debugger
+            let links = d3.selectAll('.link')
+              .attr("stroke-width", (d) =>{
+                return _this.edgeWidthMap[d.v + ':' + d.w];
+              });
+          })
         }
+//        if(type === 2) {
+//          let links = d3.selectAll('.link')
+//            .attr("stroke-width", (d) =>{
+//              return _this.edgeWidthMap[d.v + ':' + d.w];
+//            });
+//        }
       },
       runTrace(selector){
         const _this = this;
@@ -258,12 +267,14 @@
         _this.timers2 = traceTimers;
       },
       renderDiagraph: function (data, selector) {
+
         let params = {
           'radius': 10,
           'margin': 30
         };
 //debugger
         const _this = this;
+        _this.see=false;
         data.nodes.forEach(function (node) {
           _this.nodeValueMap[node.name] = 0;
           _this.nodeSizeMap[node.name] = params.radius;
