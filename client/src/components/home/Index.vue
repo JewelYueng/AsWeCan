@@ -107,7 +107,7 @@
         this.$api({method: 'logout'}).then(res => {
           if(res.status === 200){
             this.$hint('登出成功','success')
-            this.$router.push({name: 'login'})
+            window.location.href = '/home/loginPage'
           }
         })
       }

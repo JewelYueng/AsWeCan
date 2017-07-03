@@ -89,7 +89,7 @@
             this.$api({method: 'modifyPass', body: {password: this.ruleForm.new_pass}}).then( res => {
               if(res.data.code === 200){
                 this.$hint('修改成功,请重新登录','success')
-                this.$router.push({name:'login'})
+                window.location.href = '/home/loginPage'
               }
             })
           } else {
