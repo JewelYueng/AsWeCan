@@ -6,11 +6,13 @@ import org.k2.processmining.util.Message;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -25,13 +27,6 @@ import java.util.stream.Collectors;
  */
 @ControllerAdvice
 public class ExceptionController {
-
-    @ExceptionHandler(Exception.class)
-    public @ResponseBody
-    Object handleException(Exception e) {
-        e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(getRes(Message.INTERNAL_SERVER_ERROR));
-    }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public @ResponseBody
@@ -67,6 +62,14 @@ public class ExceptionController {
         return ResponseEntity.badRequest()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(getRes("Miss request parameter: " + e.getParameterName()));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public @ResponseBody
+    Object handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+        return ResponseEntity.badRequest()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(getRes("The request body is invalid"));
     }
 
     @ExceptionHandler(BadRequestException.class)

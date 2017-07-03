@@ -1,5 +1,7 @@
 package org.k2.processmining.model.log;
 
+import java.util.List;
+
 /**
  * Created by Aria on 2017/6/13.
  */
@@ -12,6 +14,7 @@ public class EventLog extends AbstractLog {
     private String eventNames;
     private String operatorNames;
     private String mergeRelation;
+    private List<EventLog> mergeRelationLogs;
 
     public EventLog() {
         super(LogType.EVENTLOG.value);
@@ -71,5 +74,13 @@ public class EventLog extends AbstractLog {
 
     public void setMergeRelation(String mergeRelation) {
         this.mergeRelation = mergeRelation;
+    }
+
+    public List<EventLog> getMergeRelationLogs() {
+        return mergeRelationLogs;
+    }
+
+    public void setMergeRelationLogs(List<EventLog> mergeRelationLogs) {
+        this.mergeRelationLogs = mergeRelationLogs;
     }
 }

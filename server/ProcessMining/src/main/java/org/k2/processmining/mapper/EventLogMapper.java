@@ -14,7 +14,7 @@ import java.util.Map;
  * Created by nyq on 2017/6/19.
  */
 @Repository
-public interface EventLogMapper {
+public interface EventLogMapper extends CommonLogMapper {
     EventLog getEventLogById(@Param("id") String id);
     void save(EventLog eventLog);
     List<LogGroup> listLogGroups(@Param("userId")String userId,
@@ -26,4 +26,7 @@ public interface EventLogMapper {
 
     @Update("UPDATE event_log SET state=2 WHERE normal_log_id=#{normalLogId}")
     void deleteEventLogByNormalLogId(@Param("normalLogId") String normalLogId);
+
+
+    List<EventLog> listEventLogByIds(@Param("ids") List<String> ids);
 }

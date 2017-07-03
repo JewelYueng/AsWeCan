@@ -122,6 +122,47 @@ public class RawLogServiceTest {
         System.out.println("normalizeTest: normalLog: " + toJSON(normalLog));
     }
 
+    @Test
+    public void getLogPageNumByUserIdTest() throws Exception {
+        System.out.println(rawLogService.getLogPageNumByUserId("1"));
+    }
+
+    @Test
+    public void getLogPageNumByUserIdAndKeyWordTest() throws Exception {
+        String userId = "1";
+        String keyWord = "t";
+        System.out.println(rawLogService.getLogPageNumByUserIdAndKeyWord(userId, keyWord));
+    }
+
+    @Test
+    public void getLogsByUserAndPageTest() throws Exception {
+        User user = new User();
+        user.setId("1");
+        int page = 2;
+        List<LogGroup> logGroups = rawLogService.getLogsByUser(user, page);
+        System.out.println("getLogsByUserAndPageTest.page: " + page);
+        System.out.println("getLogsByUserAndPageTest.logGroupsCount: " + logGroups.size());
+        System.out.println("getLogsByUserAndPageTest.logGroups: " + toJSON(logGroups));
+    }
+
+    @Test
+    public void getLogsByUserAndKeyWordAndPageTest() throws Exception {
+        User user = new User();
+        user.setId("1");
+        int page = 2;
+        String keyWord = "t";
+        List<LogGroup> logGroups = rawLogService.getLogsByUserAndKeyWord(user, keyWord, page);
+        System.out.println("getLogsByUserAndKeyWordAndPageTest.page: " + page);
+        System.out.println("getLogsByUserAndKeyWordAndPageTest.logGroupsCount: " + logGroups.size());
+        System.out.println("getLogsByUserAndKeyWordAndPageTest.logGroups: " + toJSON(logGroups));
+    }
+
+    @Test
+    public void getPageOfLogIdTest() throws Exception {
+        int page = rawLogService.getPageOfLogId("1", "382f75db-0e01-467a-b2a2-53d94b47a250");
+        System.out.println("getPageOfLogIdTest.page: " + page);
+    }
+
     private String toJSON(Object o) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(o);
     }

@@ -72,6 +72,48 @@
             </if>
     </select>
 
+    <select id="listLogGroupsPage" resultMap="logGroup">
+        SELECT
+            <include refid="addUserColumnIfUserIdIsNull"/>
+            <include refid="logGroupSelectColumns"/>
+        FROM
+            <include refid="rawNormalEventLeftJoin"/>
+            <if test="userId == null">
+                LEFT JOIN user ON RL.userid = user.id
+            </if>
+        ORDER BY RL.create_date DESC LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="countLogs" resultType="int">
+      SELECT
+        COUNT(*)
+      FROM raw_log
+      WHERE
+        <include refid="addUserIdIfNotNull"/>
+        state=#{state}
+        <include refid="addIsSharedIfNotMinus1"/>
+        <include refid="addKeyWordIfNotNull"/>
+
+    </select>
+
+    <select id="lineOfLogId" resultType="int">
+        set @line:=0;
+        SELECT
+          line
+        FROM
+          (SELECT
+            id, @line:=@line+1 as line
+          FROM
+            raw_log
+          WHERE
+            <include refid="addUserIdIfNotNull"/>
+            state=#{state}
+            <include refid="addIsSharedIfNotMinus1"/>
+          ORDER BY create_date DESC
+          ) as t
+        WHERE id=#{id}
+    </select>
+
     <select id="getRawLogById" resultMap="rawLog">
         SELECT * FROM raw_log WHERE id=#{id}
     </select>

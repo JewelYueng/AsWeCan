@@ -12,6 +12,11 @@ import java.util.List;
  * Created by Aria on 2017/6/13.
  */
 public interface EventLogService {
+
+    List<LogGroup> getLogGroups();
+    List<LogGroup> getLogGroupsByKeyWord(String keyWord);
+    void deleteByAdmin(List<String> ids);
+
     EventLog getEventLogById(String id);
     void save(EventLog log, InputStream inputForRemote, InputStream inputForSummarize) throws IOException;
     void save(EventLog log);

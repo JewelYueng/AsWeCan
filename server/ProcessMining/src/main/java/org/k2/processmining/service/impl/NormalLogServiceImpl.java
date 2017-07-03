@@ -3,6 +3,7 @@ package org.k2.processmining.service.impl;
 import org.deckfour.xes.model.XLog;
 import org.k2.processmining.exception.BadRequestException;
 import org.k2.processmining.exception.InternalServerErrorException;
+import org.k2.processmining.mapper.CommonLogMapper;
 import org.k2.processmining.mapper.EventLogMapper;
 import org.k2.processmining.mapper.NormalLogMapper;
 import org.k2.processmining.model.LogGroup;
@@ -11,6 +12,7 @@ import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.user.User;
+import org.k2.processmining.service.CommonLogService;
 import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.service.NormalLogService;
 import org.k2.processmining.storage.LogStorage;
@@ -37,7 +39,7 @@ import java.util.*;
  */
 
 @Service
-public class NormalLogServiceImpl implements NormalLogService {
+public class NormalLogServiceImpl extends CommonLogService implements NormalLogService {
 
     private static Logger LOGGER = LoggerFactory.getLogger(NormalLogServiceImpl.class);
 
@@ -52,6 +54,26 @@ public class NormalLogServiceImpl implements NormalLogService {
 
     @Autowired
     private EventLogMapper eventLogMapper;
+
+    @Autowired
+    public NormalLogServiceImpl(NormalLogMapper normalLogMapper) {
+        super(normalLogMapper);
+    }
+
+    @Override
+    public List<LogGroup> getLogGroups() {
+        return normalLogMapper.listLogGroups(null, LogState.ACTIVE.getValue(), -1, null);
+    }
+
+    @Override
+    public List<LogGroup> getLogGroupsByKeyWord(String keyWord) {
+        return normalLogMapper.listLogGroups(null, LogState.ACTIVE.getValue(), -1, null);
+    }
+
+    @Override
+    public void deleteByAdmin(List<String> ids) {
+        normalLogMapper.updateLogState(ids, LogState.DELETE.getValue(), null);
+    }
 
     @Override
     public EventLog transToEventLog(NormalLog normalLog) {

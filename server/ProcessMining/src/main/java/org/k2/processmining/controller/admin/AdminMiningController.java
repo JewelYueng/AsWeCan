@@ -1,7 +1,7 @@
 package org.k2.processmining.controller.admin;
 
-import org.apache.ibatis.annotations.Param;
 import org.k2.processmining.controller.IdListForm;
+import org.k2.processmining.controller.form.MethodJars;
 import org.k2.processmining.exception.BadRequestException;
 import org.k2.processmining.exception.InternalServerErrorException;
 import org.k2.processmining.model.MethodState;
@@ -14,15 +14,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +29,7 @@ import java.util.Map;
  * Created by nyq on 2017/6/28.
  */
 @Controller
+@Validated
 @RequestMapping("/admin/mining")
 public class AdminMiningController {
 
@@ -38,9 +38,27 @@ public class AdminMiningController {
     @Autowired
     private MiningMethodService miningMethodService;
 
+    @RequestMapping(value = "/method", method = RequestMethod.GET)
+    public @ResponseBody
+    Object getAllMethods() {
+        Map<String, Object> res = new HashMap<>();
+        List<Object> methodsConfigs = new LinkedList<>();
+        List<MiningMethod> methods = miningMethodService.getAllMethods();
+        for (MiningMethod method : methods) {
+            Map<String, Object> configs = miningMethodService.getMethodConfig(method);
+            if (configs != null && configs.size() > 0) {
+                configs.put("state", method.getState());
+                configs.put("id", method.getId());
+                methodsConfigs.add(configs);
+            }
+        }
+        res.put("methods", methodsConfigs);
+        return res;
+    }
+
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public @ResponseBody
-    Object addMiningMethod(@Param("files") MultipartFile[] files) {
+    Object addMiningMethod(@MethodJars @RequestParam("files") MultipartFile[] files) {
         if (files == null || files.length == 0) {
             throw new BadRequestException("At least one file!");
         }

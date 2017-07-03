@@ -55,6 +55,66 @@
         VALUES(#{id}, #{logName}, #{createDate}, #{userId}, #{format}, #{isShared}, #{state}, #{rawLogId})
     </insert>
 
+    <select id="listLogGroupsPage" resultMap="org.k2.processmining.mapper.RawLogMapper.logGroup">
+        SELECT
+        <include refid="org.k2.processmining.mapper.RawLogMapper.addUserColumnIfUserIdIsNull"/>
+        <include refid="org.k2.processmining.mapper.RawLogMapper.logGroupSelectColumns"/>
+        FROM
+            (SELECT * FROM normal_log WHERE
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
+                state=#{state}
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addKeyWordIfNotNull"/>
+            ) NL
+            LEFT JOIN
+            (SELECT * FROM event_log WHERE
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
+                normal_log_id IS NOT NULL AND
+                state=#{state}
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
+              ) EL ON EL.normal_log_id = NL.id
+              LEFT JOIN
+              (SELECT * FROM raw_log WHERE
+                  <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
+                  state=#{state}
+                  <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
+              ) RL ON NL.raw_log_id = RL.id
+            <if test="userId == null">
+                LEFT JOIN user ON NL.userid = user.id
+            </if>
+        ORDER BY NL.create_date LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="countLogs" resultType="int">
+      SELECT
+        COUNT(*)
+      FROM normal_log
+      WHERE
+        <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
+        state=#{state}
+        <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
+        <include refid="org.k2.processmining.mapper.RawLogMapper.addKeyWordIfNotNull"/>
+
+    </select>
+
+    <select id="lineOfLogId" resultType="int">
+        set @line:=0;
+        SELECT
+          line
+        FROM
+          (SELECT
+            id, @line:=@line+1 as line
+          FROM
+            normal_log
+          WHERE
+            <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
+            state=#{state}
+            <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
+          ORDER BY create_date DESC
+          ) as t
+        WHERE id=#{id}
+    </select>
+
     <resultMap id="normalLog" type="NormalLog">
         <id column="id" property="id"/>
         <result column="log_name" property="logName"/>
