@@ -1,5 +1,6 @@
 // const base_url = "/AssWeCan"
 const base_url = "http://116.56.129.93:8088/AssWeCan"
+// const base_url = "http://192.168.0.100:8080"
 
 const
   GET = "get",
@@ -54,4 +55,8 @@ export default {
 //  用户系统的接口
   "login": [POST, '/home/login'],
   "register": [POST,'/user/register'],
+  "getUser": [GET, '/user/getUser'],
+  "modifyPass": [POST, "user/password"],
+  "logout": [POST, '/home/logout'],
+  'checkOut': [POST, '/user/checkout']
 }

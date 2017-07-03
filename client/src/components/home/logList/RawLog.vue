@@ -42,7 +42,7 @@
         </div>
         <div class="operations">
           <i class="el-icon-setting" title="生成规范化日志" v-on:click="transferToNormal(index)"></i>
-          <img class="download-btn" title="下载" src="static/img/cloud_download.png"
+          <img class="download-btn" title="下载" src="static/img/cloud_download.svg"
                @click="download(index)">
           <i class="el-icon-share" v-show="item.rawLog.isShared==0" title="分享" @click="share(index)"></i>
           <i class="el-icon-minus" v-show="item.rawLog.isShared!=0" title="取消分享" @click="share(index)"></i>
@@ -56,7 +56,7 @@
         @current-change="handleCurrentChange"
         :current-page="currentPage"
         :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
+        layout="total, prev, pager, next, jumper"
         :total="items.length">
       </el-pagination>
     </div>
@@ -117,6 +117,13 @@
         i {
           margin: 0 5px;
           cursor: pointer;
+          font-size: 18px;
+        }
+        img{
+          width: 18px;
+          height: 18px;
+          position: relative;
+          top: 2px;
         }
       }
       .date {

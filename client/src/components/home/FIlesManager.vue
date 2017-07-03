@@ -29,6 +29,7 @@
   .left-side {
     background-color: @light_theme;
     width: @left_side_width;
+    min-width: 200px;
     height: @main_height;
     box-sizing: border-box;
   }
@@ -44,6 +45,7 @@
     box-sizing: border-box;
     padding: 30px 30px 0 30px;
     overflow: auto;
+    min-width: 1020px;
     position: relative;
   }
   .relation-logs{

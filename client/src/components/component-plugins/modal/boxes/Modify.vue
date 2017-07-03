@@ -1,7 +1,8 @@
 <template>
-  <div class="loading">
-    <img src="static/img/loading.gif" alt="请等待">
-    <div>加载中</div>
+  <div class="modify">
+    <el-form>
+
+    </el-form>
   </div>
 </template>
 <style rel="stylesheet/less" scoped lang="less">

@@ -50,6 +50,7 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     width: 100%;
+    min-width: 1200px;
     margin-left: auto;
     margin-right: auto;
 

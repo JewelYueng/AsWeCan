@@ -1,10 +1,13 @@
 <template>
   <div class="raw-log">
-    <div class="head"><input type="text" class="search" placeholder="请输入关键字" v-model="keyWord">
-      <div v-show="isSearching" class="img-button close-btn" @click="close_search">
-        <i class="el-icon-circle-cross"></i>
+    <div class="share-head">
+      <div class="search">
+        <input type="text"  placeholder="请输入关键字" v-model="keyWord">
+        <div v-show="isSearching" class="img-button close-btn" @click="close_search">
+          <i class="el-icon-circle-cross"></i>
+        </div>
+        <div v-show="!isSearching" class="search-button" @click="searchLog"><i class="el-icon-search"></i></div>
       </div>
-      <div v-show="!isSearching" id="search_button" @click="searchLog"><i class="el-icon-search"></i></div>
     </div>
     <div class='title'>所有文件已加载，共{{count}}个</div>
     <div id="log-list">
@@ -21,8 +24,12 @@
         <div class="date">
           {{`${new Date(item.rawLog.createDate).getFullYear()}-${new Date(item.rawLog.createDate).getMonth() + 1}-${new Date(item.rawLog.createDate).getDate()}`}}
         </div>
-        <div class="normal-log" :title="item.normalLog ? item.normalLog.logName : '无'">{{item.normalLog ? item.normalLog.logName : '无'}}</div>
-        <div class="event-log" :title="item.eventLog ? item.eventLog.logName : '无'">{{item.eventLog ? item.eventLog.logName : '无'}}</div>
+        <div class="normal-log" :title="item.normalLog ? item.normalLog.logName : '无'">
+          {{item.normalLog ? item.normalLog.logName : '无'}}
+        </div>
+        <div class="event-log" :title="item.eventLog ? item.eventLog.logName : '无'">
+          {{item.eventLog ? item.eventLog.logName : '无'}}
+        </div>
         <div class="operations">
           <img class="download_button" title="下载" src="static/img/cloud_download.png" @click="download(index)">
         </div>
@@ -35,12 +42,11 @@
   @import '~assets/colors.less';
   @import "~assets/layout.less";
 
-  .head {
+  .share-head {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    position: relative;
-    padding-bottom: 30px;
+    align-items: flex-end;
+    justify-content: flex-end;
   }
 
   .title {
@@ -50,39 +56,11 @@
     color: #b5b5b5;
   }
 
-  .close-btn {
-    position: relative;
-    right: 28px;
-    top: -5px;
-    i {
-      color: #5c8aac;
-    }
-  }
 
   .download_button {
     cursor: pointer;
   }
 
-  .search {
-    margin-left: 654px;
-    background-color: @tab_selected;
-    color: @dark_theme;
-    text-align: center;
-    width: @search_width;
-    height: @search_height;
-    border-radius: @search_border-radius;
-    border: none;
-    outline-style: none;
-  }
-
-  #search_button {
-    width: 20px;
-    height: 20px;
-    position: relative;
-    left: -50px;
-    top: 5px;
-    cursor: pointer;
-  }
 
   .list:hover {
     background-color: @logList_Choose;

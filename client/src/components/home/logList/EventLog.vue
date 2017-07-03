@@ -45,16 +45,16 @@
         </div>
         <div class="merge-relation">
           <div v-if="item.eventLog.mergeRelation" class="relation1" @click="selectedRel(index,0)"
-               :title="item.eventLog.mergeRelation.split(',')[0]">{{item.eventLog.mergeRelation.split(',')[0]}}
+               :title="item.eventLog.mergeRelation.split(',')[0]">{{getRelationName(index, 0)}}
           </div>
           <div v-if="item.eventLog.mergeRelation" class="relation2" @click="selectedRel(index,1)"
-               :title="item.eventLog.mergeRelation.split(',')[1]">{{item.eventLog.mergeRelation.split(',')[1]}}
+               :title="item.eventLog.mergeRelation.split(',')[1]">{{getRelationName(index, 1)}}
           </div>
           <div v-show="!item.eventLog.mergeRelation">没有融合来源</div>
         </div>
         <div class="operations">
           <i class="el-icon-setting" title="开始流程挖掘" v-on:click="processMining(index)"></i>
-          <img class="download-btn" title="下载" src="static/img/cloud_download.png"
+          <img class="download-btn" title="下载" src="static/img/cloud_download.svg"
                @click="download(index)">
           <i class="el-icon-share" v-show="item.eventLog.isShared==0" title="分享" @click="share(index)"></i>
           <i class="el-icon-minus" v-show="item.eventLog.isShared!=0" title="取消分享" @click="share(index)"></i>
@@ -68,7 +68,7 @@
         @current-change="handleCurrentChange"
         :current-page="currentPage"
         :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
+        layout="total, prev, pager, next, jumper"
         :total="items.length">
       </el-pagination>
     </div>
@@ -128,6 +128,13 @@
         i {
           margin: 0 5px;
           cursor: pointer;
+          font-size: 18px;
+        }
+        img {
+          width: 18px;
+          height: 18px;
+          position: relative;
+          top: 2px;
         }
       }
       .date {
@@ -149,12 +156,12 @@
         flex: 0 0 200px;
         .too-long-text;
         .relation1 {
-          width: 130px;
+          width: 200px;
           .too-long-text;
           cursor: pointer;
         }
         .relation2 {
-          width: 130px;
+          width: 200px;
           .too-long-text;
           cursor: pointer;
         }
@@ -234,6 +241,18 @@
       ...mapActions(['selectLog', 'changeFilePath', 'changeHomePath']),
       isSelected(index){
         return this.$store.getters.selectedLog.type === 2 && this.items[index].eventLog.id === this.$store.getters.selectedLog.id
+
+      },
+      getRelationName(index, rel_index){
+        if (this.items[index].eventLog.mergeRelation !== null) {
+          let log_index = this.items.findIndex(item => {
+            return item.eventLog.id === this.items[index].eventLog.mergeRelation.split(',')[rel_index]
+          })
+          console.log(log_index)
+          return this.items[log_index].eventLog.logName
+        }else{
+          return ''
+        }
 
       },
       jumpToNormal(index){

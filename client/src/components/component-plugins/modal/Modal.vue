@@ -79,6 +79,7 @@
   import Upload from './boxes/Upload.vue'
   import ShowLogs from './boxes/ShowLogs.vue'
   import Loading from './boxes/Loading.vue'
+  import Modify from './boxes/Modify.vue'
 
   export default {
     components: {
@@ -87,7 +88,8 @@
       LogDetail,
       Upload,
       ShowLogs,
-      Loading
+      Loading,
+      Modify
     },
     data(){
       return {
