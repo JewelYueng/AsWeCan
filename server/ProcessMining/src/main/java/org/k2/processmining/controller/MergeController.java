@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Aria on 2017/6/13.
@@ -63,6 +60,10 @@ public class MergeController {
         Map<String, Object> res = new HashMap<>();
         res.put("timeCost", result.getTime());
         res.put("eventLog", result.getResult());
+        System.out.println("result.getRelation:"+result.getResult().getMergeRelation());
+        res.put("relation",eventLogService.getMergeLogsByLogId(result.getResult().getMergeRelation().split(",")));
+//        res.put("relation",eventLogService.getMergeLogsByLogId()
+
         return res;
     }
 

@@ -33,6 +33,9 @@
             <tr>
                 <td><input type="checkbox" id="adminRemember" checked="checked">自动登录</td>
             </tr>
+            <tr>
+                <td><input type="button" id="btnVisitUser" onclick="visistUser()">访问不同权限</td>
+            </tr>
         </table>
     </form>
 
@@ -75,6 +78,19 @@
     function reloadCode() {
         var image = document.getElementById("codeImage");
         image.src = "/home/code?date="+Date();
+    }
+    function visistUser() {
+        $.ajax({
+            type:"GET",
+            url:'/home',
+            contentType: 'application/json',
+            dataType:'json',
+//            data:JSON.stringify(json),
+            success:function (result) {
+                console.log("ceshi");
+                console.log("result:"+result);
+            }
+        })
     }
 </script>
 

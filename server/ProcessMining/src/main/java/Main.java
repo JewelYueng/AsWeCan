@@ -1,3 +1,4 @@
+import org.k2.processmining.model.log.RawLog;
 import sun.misc.BASE64Encoder;
 
 import java.io.UnsupportedEncodingException;
@@ -5,6 +6,10 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by Aria on 2017/6/9.
@@ -12,9 +17,27 @@ import java.security.NoSuchAlgorithmException;
 public class Main {
 
     public static void main(String[] args) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        String s = "N+N7OtUqhB42haFS5lO/vQ==";
-        System.out.println(urlEncode(s));
-        System.out.println(urlDecode(urlEncode(s)));
+//        String s = "N+N7OtUqhB42haFS5lO/vQ==";
+//        System.out.println(urlEncode(s));
+//        System.out.println(urlDecode(urlEncode(s)));
+
+        Runnable r1 = () -> System.out.println("hello");
+        List<RawLog> list = new ArrayList<RawLog>();
+        Collections.sort(list, new Comparator<Object>() {
+            @Override
+            public int compare(Object o1, Object o2) {
+
+                return 1;
+            }
+        });
+
+        Collections.sort(list,(p1,p2)->{
+            p1.getIsShared();
+            return 1;
+
+                });
+
+//        String str = () -> System.out.println("???");
     }
     public static String encode(String str) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest md5 = MessageDigest.getInstance("MD5");

@@ -23,10 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by nyq on 2017/6/19.
@@ -82,6 +79,16 @@ public class EventLogServiceImpl implements EventLogService {
         List<LogGroup> logGroups = eventLogMapper.listLogGroups(null, LogState.ACTIVE.getValue(), LogShareState.SHARED.getValue(), keyWord);
         verifyLogGroupsIsShared(logGroups);
         return logGroups;
+    }
+
+    @Override
+    public List<EventLog> getMergeLogsByLogId(String []idList) {
+        List<EventLog> list = new ArrayList<>();
+        for (String id:idList){
+//            list.add(eventLogMapper.getEventLogById(id).getLogName());
+            list.add(eventLogMapper.getEventLogById(id));
+        }
+        return list;
     }
 
     @Override
