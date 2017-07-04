@@ -1,7 +1,5 @@
 package org.k2.processmining.controller;
 
-import org.apache.commons.io.IOUtils;
-import org.hibernate.validator.constraints.NotBlank;
 import org.k2.processmining.exception.InternalServerErrorException;
 import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.LogShareState;
@@ -65,11 +63,11 @@ public class RawLogController extends CommonLogController<RawLog>{
     public @ResponseBody
     Object normalize(@Valid @RequestBody NormalizeRawLogConfigForm form) {
         RawLog rawLog = rawLogService.getLogById(form.getRawLogId());
-        Map<String, Object> res = new HashMap<>();
         NormalLog normalLog = rawLogService.normalize(rawLog, form.toLogConfiguration());
         if (normalLog == null) {
             throw new InternalServerErrorException(Message.NORMALIZE_FAIL);
         }
+        Map<String, Object> res = new HashMap<>();
         res.put("code", 1);
         res.put("normalLog", normalLog);
         return res;

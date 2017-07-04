@@ -33,10 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by nyq on 2017/6/17.
@@ -113,22 +110,29 @@ public class MergeMethodServiceImpl implements MergeMethodService{
         String methodId = mergeMethod.getId();
         Algorithm<Merger> algorithm = MergerFactory.getInstance().getAlgorithm(methodId);
         if (algorithm == null || algorithm.getAlgorithm() == null) {
-            throw new BadRequestException("Algorithm is not exist!");
+            throw new BadRequestException(Message.METHOD_IS_NOT_EXIST);
         }
         XLog xLog1 = eventLogParse.eventLogParse(eventLog1);
         if (xLog1 == null) {
-            throw new BadRequestException("EventLog1 could not convert to XLog.");
+            throw new BadRequestException(Message.INVALID_EVENT_LOG);
         }
         XLog xLog2 = eventLogParse.eventLogParse(eventLog2);
         if (xLog2 == null) {
-            throw new BadRequestException("EventLog2 could not convert to XLog.");
+            throw new BadRequestException(Message.INVALID_EVENT_LOG);
         }
         TimeResult<EventLog> timeResult = new TimeResult<>();
         timeResult.start();
-        XLog resultXLog =  algorithm.getAlgorithm().merge(xLog1, xLog2, params);
+        XLog resultXLog;
+        try {
+            resultXLog = algorithm.getAlgorithm().merge(xLog1, xLog2, params);
+        }
+        catch (Exception e) {
+            LOGGER.error("Fail to merge eventLog<{}> and eventLog<{}>:", eventLog1.getId(), eventLog2.getId(), e);
+            throw new BadRequestException(Message.MERGE_FAIL);
+        }
         timeResult.stop();
         if (resultXLog == null) {
-            throw new BadRequestException("Could not merge two log. Check input.");
+            throw new BadRequestException(Message.MERGE_FAIL);
         }
         EventLog resultEventLog = new EventLog();
         resultEventLog.setId(Util.getUUIDString());
@@ -137,6 +141,7 @@ public class MergeMethodServiceImpl implements MergeMethodService{
         resultEventLog.setCreateDate(new Date());
         resultEventLog.setFormat("xes");
         resultEventLog.setMergeRelation(eventLog1.getId() + "," + eventLog2.getId());
+        resultEventLog.setMergeRelationLogs(Arrays.asList(eventLog1, eventLog2));
         try {
             logStorage.upload(resultEventLog, outputStream -> {
                 eventLogExport.convertXLog(resultXLog, outputStream);

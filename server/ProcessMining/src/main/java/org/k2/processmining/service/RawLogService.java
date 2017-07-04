@@ -17,8 +17,6 @@ import java.util.List;
  * Created by Aria on 2017/6/13.
  */
 public interface RawLogService extends CommonLogService<RawLog> {
-
-    @PreAuthorize("hasPermission(#rawLog, 'normalize')")
     @Transactional
     NormalLog normalize(RawLog rawLog, LogConfiguration lc);
 }

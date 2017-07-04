@@ -20,6 +20,9 @@ import org.k2.processmining.support.mining.Miner;
 import org.k2.processmining.support.mining.algorithm.heuristics.models.SimpleHeuristicsNet;
 import org.k2.processmining.support.mining.model.DiagramType;
 import org.k2.processmining.support.reflect.ReflectUtil;
+import org.k2.processmining.util.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -35,6 +38,8 @@ import java.util.Map;
  */
 @Service
 public class MiningMethodServiceImpl implements MiningMethodService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MiningMethodServiceImpl.class);
 
     @Autowired
     private MiningMethodService miningMethodService;
@@ -136,10 +141,10 @@ public class MiningMethodServiceImpl implements MiningMethodService {
     public TimeResult mining(EventLog eventLog, Algorithm<Miner> algorithm, Map<String,Object> params, DiagramType type) {
         XLog xLog = eventLogParse.eventLogParse(eventLog);
         if (xLog == null) {
-            throw new BadRequestException("Fail to parse eventLog! Please check your eventLog!");
+            throw new BadRequestException(Message.INVALID_EVENT_LOG);
         }
         if (algorithm == null) {
-            throw new BadRequestException("Algorithm is not exist.");
+            throw new BadRequestException(Message.METHOD_IS_NOT_EXIST);
         }
         TimeResult<Object> timeResult = new TimeResult<>();
         TimeResult<SimpleHeuristicsNet> netResult = miningMethodService.mining(algorithm, eventLog, xLog, params);
@@ -170,7 +175,14 @@ public class MiningMethodServiceImpl implements MiningMethodService {
     public TimeResult<SimpleHeuristicsNet> mining(Algorithm<Miner> algorithm, EventLog eventLog, XLog xLog, Map<String,Object> params) {
         TimeResult<SimpleHeuristicsNet> timeResult = new TimeResult<>();
         timeResult.start();
-        SimpleHeuristicsNet net = algorithm.getAlgorithm().mining(xLog, params);
+        SimpleHeuristicsNet net;
+        try {
+            net = algorithm.getAlgorithm().mining(xLog, params);
+        }
+        catch (Exception e) {
+            LOGGER.error("Fail to mining eventLog<{}> by algorithm<{}>", eventLog.getId(), algorithm.getId(), e);
+            throw new BadRequestException(Message.MINING_FAIL);
+        }
         timeResult.stop();
         timeResult.setResult(net);
         return timeResult;

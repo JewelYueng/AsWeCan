@@ -14,6 +14,7 @@ import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.event.parse.EventLogParse;
 import org.k2.processmining.support.event.parse.EventLogParseException;
 import org.k2.processmining.support.event.sumarise.Summarize;
+import org.k2.processmining.util.Message;
 import org.k2.processmining.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,7 +88,7 @@ public class EventLogServiceImpl extends CommonLogServiceImpl<EventLog> implemen
         }
         catch (EventLogParseException e) {
             LOGGER.error("Fail to parse eventLog:", e);
-            throw new BadRequestException("Fail to parse eventLog. Please check the content of eventLog");
+            throw new BadRequestException(Message.INVALID_EVENT_LOG);
         }
         eventLogMapper.save(log);
     }
