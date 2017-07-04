@@ -28,7 +28,7 @@ public abstract class CommonAdminLogController<T extends AbstractLog> {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public @ResponseBody
-    Object getAllRawLogs(@RequestParam("page") int page) {
+    Object getAllRawLogs(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
         int pageNum = logService.getLogPageNum();
         if (page > pageNum) {
             page = pageNum;

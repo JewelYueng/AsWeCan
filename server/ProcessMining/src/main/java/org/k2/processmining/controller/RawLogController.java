@@ -40,11 +40,13 @@ public class RawLogController extends CommonLogController<RawLog>{
     @Autowired
     private RawLogService rawLogService;
 
+    public static final String logType = "rawLog";
+
     private static Logger LOGGER = LoggerFactory.getLogger(RawLogController.class);
 
     @Autowired
     public RawLogController( CommonLogService<RawLog> logService, LogStorage logStorage) {
-        super("rawLog", logService, logStorage);
+        super(logType, logService, logStorage);
     }
 
     @Override

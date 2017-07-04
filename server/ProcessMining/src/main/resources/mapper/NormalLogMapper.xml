@@ -65,6 +65,7 @@
                 state=#{state}
                 <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
                 <include refid="org.k2.processmining.mapper.RawLogMapper.addKeyWordIfNotNull"/>
+            ORDER BY create_date DESC LIMIT #{offset}, #{size}
             ) NL
             LEFT JOIN
             (SELECT * FROM event_log WHERE
@@ -82,7 +83,6 @@
             <if test="userId == null">
                 LEFT JOIN user ON NL.userid = user.id
             </if>
-        ORDER BY NL.create_date LIMIT #{offset}, #{size}
     </select>
 
     <select id="countLogs" resultType="int">
@@ -98,21 +98,9 @@
     </select>
 
     <select id="lineOfLogId" resultType="int">
-        set @line:=0;
-        SELECT
-          line
-        FROM
-          (SELECT
-            id, @line:=@line+1 as line
-          FROM
-            normal_log
-          WHERE
-            <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
-            state=#{state}
-            <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
-          ORDER BY create_date DESC
-          ) as t
-        WHERE id=#{id}
+        <include refid="org.k2.processmining.mapper.RawLogMapper.lineOfLogIdSQL">
+            <property name="table" value="normal_log"/>
+        </include>
     </select>
 
     <resultMap id="normalLog" type="NormalLog">

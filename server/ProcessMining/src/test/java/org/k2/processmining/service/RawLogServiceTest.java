@@ -111,7 +111,7 @@ public class RawLogServiceTest {
         System.out.println("getSharedLogsByFuzzyNameTest: logGroups: " + toJSON(logGroups));
     }
 
-    @Test
+//    @Test
     public void normalizeTest() throws Exception {
         RawLog rawLog = rawLogService.getLogById("1");
         String formats = "[QC],ABCD,[Method],Incident:A-B-C-D,Plan:C/B/ATD,Task:A/B/CTD,DEFAULT:A-B-CTD,A-B-CTD";
@@ -124,18 +124,6 @@ public class RawLogServiceTest {
         NormalLog normalLog = rawLogService.normalize(rawLog, lc);
         Assert.assertNotNull(normalLog);
         System.out.println("normalizeTest: normalLog: " + toJSON(normalLog));
-    }
-
-    @Test
-    public void getLogPageNumByUserIdTest() throws Exception {
-        System.out.println(rawLogService.getLogPageNumByUserId("1"));
-    }
-
-    @Test
-    public void getLogPageNumByUserIdAndKeyWordTest() throws Exception {
-        String userId = "1";
-        String keyWord = "t";
-        System.out.println(rawLogService.getLogPageNumByUserIdAndKeyWord(userId, keyWord));
     }
 
     @Test
@@ -162,9 +150,60 @@ public class RawLogServiceTest {
     }
 
     @Test
+    public void getLogPageNumTest() throws Exception {
+        int page = rawLogService.getLogPageNum();
+        System.out.println("getLogPageNumTest.page: " + page);
+    }
+
+    @Test
+    public void getLogPageNumByKeyWordTest() throws Exception {
+        String keyWord = "t";
+        int page = rawLogService.getLogPageNumByKeyWord(keyWord);
+        System.out.println("getLogPageNumByKeyWordTest: {page: " + page + "},{keyWord: " + keyWord +"}");
+    }
+
+    @Test
+    public void getLogPageNumByUserIdTest() throws Exception {
+        String userId = "1";
+        int page = rawLogService.getLogPageNumByUserId(userId);
+        System.out.println("getLogPageNumByUserIdTest: {page: " + page + "},{userId: " + userId +"}");
+    }
+
+    @Test
+    public void getLogPageNumByUserIdAndKeyWordTest() throws Exception {
+        String userId = "1";
+        String keyWord = "t";
+        int page = rawLogService.getLogPageNumByUserIdAndKeyWord(userId, keyWord);
+        System.out.printf("getLogPageNumByUserIdAndKeyWordTest: " +
+                "{page: %d}, {userId: %s}, {keyWord: %s}\n", page, userId, keyWord);
+    }
+
+    @Test
+    public void getSharedLogPageNumTest() throws Exception {
+        int page = rawLogService.getSharedLogPageNum();
+        System.out.printf("getSharedLogPageNumTest: {page: %d}\n", page);
+    }
+
+    @Test
+    public void getSharedLogPageNumByKeyWordTest() throws Exception {
+        String keyWord = "t";
+        int page = rawLogService.getSharedLogPageNumByKeyWord(keyWord);
+        System.out.printf("getSharedLogPageNumByKeyWordTest: {page: %d}, {keyWord: %s}\n", page, keyWord);
+    }
+
+    @Test
     public void getPageOfLogIdTest() throws Exception {
-        int page = rawLogService.getPageOfLogId("1", "1");
-        System.out.println("getPageOfLogIdTest.page: " + page);
+        String userId = "1";
+        String logId = "1";
+        int page = rawLogService.getPageOfLogId(userId, logId);
+        System.out.printf("getPageOfLogIdTest: {page: %d}, {userId: %s}, {logId: %s}\n", page, userId, logId);
+    }
+
+    @Test
+    public void getPageOfSharedLogIdTest() throws Exception {
+        String id = "1";
+        int page = rawLogService.getPageOfSharedLogId(id);
+        System.out.printf("getPageOfSharedLogIdTest: {page; %d}, {id: %s}\n", page, id);
     }
 
     private String toJSON(Object o) throws JsonProcessingException {

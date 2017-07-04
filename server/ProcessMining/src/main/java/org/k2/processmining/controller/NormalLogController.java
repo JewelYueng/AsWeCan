@@ -40,12 +40,14 @@ public class NormalLogController extends CommonLogController<NormalLog> {
 
     private static Logger LOGGER = LoggerFactory.getLogger(NormalLogController.class);
 
+    public static final String logType = "normalLog";
+
     @Autowired
     private NormalLogService normalLogService;
 
     @Autowired
     public NormalLogController(CommonLogService<NormalLog> logService, LogStorage logStorage) {
-        super("normalLog", logService, logStorage);
+        super(logType, logService, logStorage);
     }
 
     @Override

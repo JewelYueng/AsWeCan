@@ -96,7 +96,7 @@
 
     </select>
 
-    <select id="lineOfLogId" resultType="int">
+    <sql id="lineOfLogIdSQL">
         set @line:=0;
         SELECT
           line
@@ -104,14 +104,20 @@
           (SELECT
             id, @line:=@line+1 as line
           FROM
-            raw_log
-          WHERE
-            <include refid="addUserIdIfNotNull"/>
-            state=#{state}
-            <include refid="addIsSharedIfNotMinus1"/>
-          ORDER BY create_date DESC
+            (SELECT * FROM ${table}
+            WHERE
+              <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
+              state=#{state}
+              <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
+            ORDER BY create_date DESC) nl
           ) as t
         WHERE id=#{id}
+    </sql>
+
+    <select id="lineOfLogId" resultType="int">
+        <include refid="lineOfLogIdSQL">
+            <property name="table" value="raw_log"/>
+        </include>
     </select>
 
     <select id="getLogById" resultMap="rawLog">
