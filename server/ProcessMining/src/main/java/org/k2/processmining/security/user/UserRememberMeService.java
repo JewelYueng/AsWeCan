@@ -35,7 +35,7 @@ public class UserRememberMeService extends TokenBasedRememberMeServices{
     protected boolean rememberMeRequested(HttpServletRequest request, String parameter) {
         if ("application/json".equals(request.getHeader("Content-Type"))){
             String isOk = (String) request.getAttribute(REMEMBER_ME_PARAMER);
-            System.out.println("userRemmber:"+isOk);
+            System.out.println("userRemember:"+isOk);
             if ("true".equalsIgnoreCase(isOk) || "yes".equalsIgnoreCase(isOk) || "on".equalsIgnoreCase(isOk) || "1".equalsIgnoreCase(isOk))
                 return true;
             else return false;

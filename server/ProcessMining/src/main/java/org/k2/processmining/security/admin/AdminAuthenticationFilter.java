@@ -1,5 +1,6 @@
 package org.k2.processmining.security.admin;
 
+import org.k2.processmining.util.Message;
 import org.k2.processmining.utils.GsonParser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -71,11 +72,11 @@ public class AdminAuthenticationFilter extends UsernamePasswordAuthenticationFil
             this.jsonUsername = adminForm.getWorkId();
             if ("".equals(adminForm.getValidateCode())){
                     System.out.println("admin validateCode null");
-                    throw new UsernameNotFoundException("validate code is null");
+                    throw new UsernameNotFoundException(Message.ADMIN_VALIDATECODE_NULL_CODE);
             }
             if (adminForm.getValidateCode().compareToIgnoreCase((String) session.getAttribute("validateCode"))!=0){
                 System.out.println("admin validateCode error");
-                throw new UsernameNotFoundException(AdminFailureHandler.ADMIN_VALIDATECODE_WRONG);
+                throw new UsernameNotFoundException(Message.ADMIN_VALIDATECODE_WRONG);
             }
 
             if ("".equals(adminForm.getAdminRemember())){

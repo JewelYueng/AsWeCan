@@ -1,5 +1,6 @@
 package org.k2.processmining.security.admin;
 
+import org.k2.processmining.util.Message;
 import org.k2.processmining.utils.GsonParser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -30,7 +31,7 @@ public class AdminSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
             /*
              * USED if you want to AVOID redirect to LoginSuccessful.htm in JSON authentication
              */
-            response.getWriter().print(GsonParser.parseToCodeAndMessage(ADMIN_LOGIN_SUCCESS_CODE,ADMIN_LOGIN_SUCCESS));
+            response.getWriter().print(GsonParser.parseToCodeAndMessage(Message.ADMIN_LOGIN_SUCCESS_CODE,Message.ADMIN_LOGIN_SUCCESS));
             response.getWriter().flush();
         } else {
             super.onAuthenticationSuccess(request, response, auth);

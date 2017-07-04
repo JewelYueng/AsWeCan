@@ -1,6 +1,7 @@
 package org.k2.processmining.security.user;
 
 import org.k2.processmining.security.admin.AdminRememberService;
+import org.k2.processmining.util.Message;
 import org.k2.processmining.utils.GsonParser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -70,12 +71,13 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
             this.jsonUsername = userForm.getEmail();
             if ("".equals(userForm.getValidateCode())){
                 System.out.println("user validateCode is null");
-                throw new UsernameNotFoundException(UserFailureHandler.USER_VALIDATECODE_NULL);
+                throw new UsernameNotFoundException(Message.USER_VALIDATECODE_NULL_CODE);
             }
             System.out.println("session.verCode:"+session.getAttribute("validateCode"));
             if (userForm.getValidateCode().compareToIgnoreCase((String) session.getAttribute("validateCode")) != 0){
                 System.out.println("validateCode is wrong"+userForm.getValidateCode());
-                throw new UsernameNotFoundException(UserFailureHandler.USER_VALIDATECODE_WRONG);
+//                throw new UsernameNotFoundException(UserFailureHandler.USER_VALIDATECODE_WRONG);
+                throw new UsernameNotFoundException(Message.USER_VALIDATECODE_WRONG_CODE);
             }
             if ("".equalsIgnoreCase(userForm.getUserRemember())){
                 System.out.println("rememberMe is null");

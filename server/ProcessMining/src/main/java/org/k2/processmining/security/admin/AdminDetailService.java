@@ -2,6 +2,7 @@ package org.k2.processmining.security.admin;
 
 import org.k2.processmining.model.user.Administrator;
 import org.k2.processmining.service.AdminService;
+import org.k2.processmining.util.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,7 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
  */
 public class AdminDetailService implements UserDetailsService{
 
-    public static String ADMIN_NOT_FOUND = "admin not found";
+//    public static String ADMIN_NOT_FOUND = "admin not found";
 
     @Autowired
     AdminService adminService;
@@ -24,7 +25,7 @@ public class AdminDetailService implements UserDetailsService{
 
         Administrator administrator = adminService.getAdminByWorkId(workId);
         if (administrator == null){
-            throw new UsernameNotFoundException(ADMIN_NOT_FOUND);
+            throw new UsernameNotFoundException(Message.ADMIN_NOT_FOUND_CODE);
         }
         AdminDetails adminDetails = new AdminDetails(administrator);
         adminDetails.addAuthority(AdminDetails.ROLE_ADMIN);

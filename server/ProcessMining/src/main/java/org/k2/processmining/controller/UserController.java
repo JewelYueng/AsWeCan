@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 /**
  * Created by Aria on 2017/6/13.
@@ -40,31 +42,62 @@ public class UserController {
         return map;
     }
 
-    @RequestMapping(value = "/active",method = RequestMethod.POST)
-    public @ResponseBody
-    Object activeUser(@Valid @RequestBody IdListForm idListForm){
-        Map map = new HashMap();
-        userService.updateStateByUserId(idListForm.getIdList(), UserState.ACTIVE.getValue());
-        map.put("code",200);
-        return map;
-    }
+//    @RequestMapping(value = "/active",method = RequestMethod.POST)
+//    public @ResponseBody
+//    Object activeUser(@Valid @RequestBody IdListForm idListForm){
+//        Map map = new HashMap();
+//        userService.updateStateByUserId(idListForm.getIdList(), UserState.ACTIVE.getValue());
+//        map.put("code",200);
+//        return map;
+//    }
 
-    @RequestMapping(value = "/freeze",method = RequestMethod.POST)
-    public @ResponseBody
-    Object freezeUser(@Valid @RequestBody IdListForm idListForm){
-        Map map = new HashMap();
-        userService.updateStateByUserId(idListForm.getIdList(),UserState.FREEZE.getValue());
-        map.put("code",200);
-        return map;
-    }
+//    @RequestMapping(value = "/freeze",method = RequestMethod.POST)
+//    public @ResponseBody
+//    Object freezeUser(@Valid @RequestBody IdListForm idListForm){
+//        Map map = new HashMap();
+//        userService.updateStateByUserId(idListForm.getIdList(),UserState.FREEZE.getValue());
+//        map.put("code",200);
+//        return map;
+//    }
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public @ResponseBody
-    Object register(@RequestBody User user){
-        Map result = new HashMap();
-            //注册操作
-            result.put("code",userService.addUser(user));
-        return result;
+    Object register(@RequestBody RegisterForm registerForm,HttpServletRequest request){
+
+        System.out.println(registerForm);
+        Map map = new HashMap();
+        HttpSession session = request.getSession();
+        System.out.println(session.getAttribute("validateCode"));
+        System.out.println("session:"+session.getAttribute("validateCode"));
+        if ("".equals(registerForm.getValidateCode())){
+            map.put("code",400); //验证码为空
+        }
+
+        else if (!registerForm.getValidateCode().equalsIgnoreCase((String) session.getAttribute("validateCode"))){
+            System.out.println(session.getAttribute("validateCode"));
+            System.out.println("session:"+session.getAttribute("validateCode"));
+            map.put("code",401);
+        }
+        else if ("".equals(registerForm.getPassword()) || "".equals(registerForm.getRePassword()) || !registerForm.getPassword().equals(registerForm.getRePassword())){
+            map.put("code",402); // 两次输入的密码不一致
+
+        }
+        else {
+            User user = new User();
+            user.setEmail(registerForm.getEmail());
+            user.setName(registerForm.getName());
+            user.setPassword(registerForm.getPassword());
+            map.put("code",userService.addUser(user));
+        }
+
+
+        return map;
+
+//        System.out.println("name:"+user.getName()+"  email:"+user.getEmail()+"  pwd:"+user.getPassword());
+//        Map result = new HashMap();
+//            //注册操作
+//            result.put("code",userService.addUser(user));
+//        return result;
     }
 
     @RequestMapping(value = "/register/activate",method = RequestMethod.GET)
@@ -77,20 +110,21 @@ public class UserController {
 //        return "index";
     }
 
-    @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
-    public @ResponseBody
-    Object delete(@RequestBody IdListForm ids){
-        Map map = new HashMap();
-        userService.deleteUserById(ids.getIdList());
-        map.put("code",200);
-        return map;
-    }
+//    @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
+//    public @ResponseBody
+//    Object delete(@RequestBody IdListForm ids){
+//        Map map = new HashMap();
+//        userService.deleteUserById(ids.getIdList());
+//        map.put("code",200);
+//        return map;
+//    }
 
     @RequestMapping(value = "/password",method = RequestMethod.POST)
     public @ResponseBody
     Object updatePassword(@RequestBody PwdForm pwdForm){
         Map map = new HashMap();
-        userService.updatePwdById(getUser().getId(),pwdForm.getPassword());
+        System.out.println("updatePassword");
+        userService.updatePwdById(getLoginUser().getId(),pwdForm.getPassword());
         map.put("code",200);
         return map;
     }
@@ -121,6 +155,7 @@ public class UserController {
     }
 
     private User getLoginUser(){
+        System.out.println("getLoginUser");
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof MyUserDetails){
             String email = ((MyUserDetails)principal).getUsername();
@@ -157,4 +192,59 @@ public class UserController {
         }
     }
 
+    public static class RegisterForm {
+        String email;
+        String name;
+        String password;
+        String rePassword;
+        String validateCode;
+
+        public RegisterForm(){}
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public void setValidateCode(String validateCode) {
+            this.validateCode = validateCode;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setRePassword(String rePassword) {
+            this.rePassword = rePassword;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public String getValidateCode() {
+            return validateCode;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getRePassword() {
+            return rePassword;
+        }
+
+        @Override
+        public String toString() {
+            return "email:"+email+" name:"+name+" password:"+password+" rePassword:"+rePassword+" validateCode:"+validateCode;
+//            return super.toString();
+        }
+    }
 }

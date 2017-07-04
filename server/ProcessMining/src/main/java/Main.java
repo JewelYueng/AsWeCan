@@ -69,4 +69,21 @@ public class Main {
         }
         return null;
     }
+
+    public static void shell_sort(int []array){
+        int length = array.length;
+        int step = length / 2;
+        int temp;
+
+        while (step > 0){
+            for (int i=step;i<length;i++){
+                temp = array[i];
+                int j = i - step;
+                while (j >=0 && temp < array[j]){
+                    array[j + step] = array[j];
+                    j -= step;
+                }
+            }
+        }
+    }
 }

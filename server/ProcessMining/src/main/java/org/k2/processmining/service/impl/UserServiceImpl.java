@@ -35,22 +35,20 @@ public class UserServiceImpl implements UserService{
     @Autowired
     LogStorage logStorage;
 
-    private static String serverUrl = "http://192.168.0.101:8080";
+    private static String serverUrl = "http://192.168.0.100:8080";
 
     @Override
     public int addUser(User newUser) {
-        if (newUser == null){
-            return 401;//用户为空
-        }
-        if (newUser.getEmail() == null){
-            return 402; //邮箱为空
+
+        if ("".equals(newUser.getEmail().trim())){
+            return 403; //邮箱为空
         }
         User oldUser=  userService.getUserByEmail(newUser.getEmail());
         if (oldUser != null && oldUser.getState() != 2){
-            return 403;//邮箱重复
+            return 404;//邮箱重复
         }
-        if (newUser.getName() == null){
-            return 404; //用户名为null
+        if ("".equals(newUser.getName().trim())){
+            return 405; //用户名为空
         }
         newUser.setId(Util.getUUIDString());
         newUser.setState(UserState.FREEZE.getValue());
@@ -144,14 +142,15 @@ public class UserServiceImpl implements UserService{
             e.printStackTrace();
         }
 
+        if (user == null){
+            return 400; //查无此用户
+        }
+
         if (new Date().after(getValidateDate(user.getRegisterDate()))){
             return 399; //激活邮件过期
         }
 
-        System.out.println("activateCode:"+decodeStr);
-        if (user == null){
-            return 400; //查无此用户
-        }
+
         if (!activateCode.equals(user.getActivateCode())){
             System.out.println("newUser.getActivateCode:"+user.getActivateCode());
             return 401; //验证码错误
