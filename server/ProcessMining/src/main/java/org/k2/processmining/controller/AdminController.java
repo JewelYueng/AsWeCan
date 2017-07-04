@@ -38,22 +38,22 @@ public class AdminController {
         return map;
     }
 
-    @RequestMapping(value = "")
-    public @ResponseBody
-    Object listAllAdmins(){
-        Map map = new HashMap();
-        map.put("admins",adminService.getAllAdmins());
-        return map;
-    }
+//    @RequestMapping(value = "")
+//    public @ResponseBody
+//    Object listAllAdmins(){
+//        Map map = new HashMap();
+//        map.put("admins",adminService.getAllAdmins());
+//        return map;
+//    }
 
-    @RequestMapping(value = "/login",method = RequestMethod.GET)
-    public @ResponseBody
-    Object adminLogin(@RequestParam(value = "error",required = false)String error, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        Map map = new HashMap();
-            request.getRequestDispatcher("/html/admin.html").forward(request,response);
-        return map;
-    }
+//    @RequestMapping(value = "/login",method = RequestMethod.GET)
+//    public @ResponseBody
+//    Object adminLogin(@RequestParam(value = "error",required = false)String error, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//
+//        Map map = new HashMap();
+//            request.getRequestDispatcher("/html/admin.html").forward(request,response);
+//        return map;
+//    }
 
     @RequestMapping(value = "/getAdmin",method = RequestMethod.GET)
     public @ResponseBody
@@ -65,12 +65,15 @@ public class AdminController {
 
 
     @RequestMapping(value = "/home")
-    public @ResponseBody
-    Object home(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
-        Map map = new HashMap();
-        request.getRequestDispatcher("/html/index.html").forward(request,response);
-        return map;
+    public void home(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/html/admin/index.html").forward(request,response);
     }
+
+    @RequestMapping(value = "/loginPage")
+    public void loginPage(HttpServletRequest request,HttpServletResponse response)throws ServletException,IOException{
+        request.getRequestDispatcher("/html/admin/login.html").forward(request,response);
+    }
+
 
     private Administrator getLoginAdmin(){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();

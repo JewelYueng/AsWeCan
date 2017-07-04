@@ -7,7 +7,7 @@
 		http://www.springframework.org/schema/security
 		http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <security:http pattern="/admin/login" security="none"/>
+    <security:http pattern="/admin/loginPage" security="none"/>
     <security:http pattern="/home/loginPage" security="none"/>
     <security:http pattern="/static/**" security="none"/>
     <security:http pattern="/js/**" security="none"/>
@@ -29,7 +29,7 @@
         <security:authentication-provider ref="adminRememberMeProvider"/>
     </security:authentication-manager>
     <bean id="adminEntryPoint" class="org.k2.processmining.security.admin.AdminLoginEntryPoint" >
-        <constructor-arg value="/admin/login"/>
+        <constructor-arg value="/admin/loginPage"/>
     </bean>
     <bean id="adminAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
         <property name="hideUserNotFoundExceptions" value="false"/>
@@ -46,13 +46,13 @@
         <property name="rememberMeServices" ref="adminRememberMeService"/>
     </bean>
     <bean id="adminSuccessHandler" class="org.k2.processmining.security.admin.AdminSuccessHandler">
-        <property name="defaultTargetUrl" value="/admin/" />
+        <property name="defaultTargetUrl" value="/admin/home" />
     </bean>
     <bean id="adminFailureHandler" class="org.k2.processmining.security.admin.AdminFailureHandler">
-        <property name="defaultFailureUrl" value="/admin/login" />
+        <property name="defaultFailureUrl" value="/admin/loginPage" />
     </bean>
     <bean id="adminLogoutSuccessHandler" class="org.k2.processmining.security.admin.AdminLogoutSuccessHandler">
-        <property name="defaultTargetUrl" value="/admin/login"/>
+        <property name="defaultTargetUrl" value="/admin/loginPage"/>
     </bean>
 
     <bean id="adminRememberMeFilter" class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
