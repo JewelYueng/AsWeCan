@@ -2,7 +2,7 @@
   <div class="transition-system">
     <h1>Transition System</h1>
     <el-button  v-show="see" type="primary" @click="renderDiagraph(items.diagram, '#diagraph')">静态工作流图</el-button>
-    <div class="all" v-show="showTotalBtn" @click="runTotal">
+    <div class="all" v-show="showTotalBtn">
       <span>全记录动画</span>
       <el-button type="primary" @click="runTotal()" id="all-trace-run">运行</el-button>
       <!--<el-button type="primary" @click="cleanTrace()" >清除</el-button>-->
@@ -20,7 +20,7 @@
       <el-button type="primary" @click="runTrace('#diagraph')" id="trace-submit">运行</el-button>
       <el-button type="primary" @click="cleanTrace()">清除</el-button>
     </div>
-    <svg id="diagraph" width="1000" height="450"></svg>
+    <svg id="diagraph" width="3500" height="450"></svg>
   </div>
 </template>
 
@@ -38,6 +38,7 @@
   }
 
   #diagraph  {
+
     circle{
       fill: steelblue;
     }
@@ -118,7 +119,7 @@
         if (_this.timers2 !== null && _this.timers2.length !== 0) {
           _this.timers2.forEach(function (timer) {
             clearTimeout(timer);
-            debugger
+
             let links = d3.selectAll('.link')
               .attr("stroke-width", (d) =>{
                 return _this.edgeWidthMap[d.v + ':' + d.w];
@@ -265,6 +266,7 @@
           });
         }, 100 * timerArr.length));
         _this.timers2 = traceTimers;
+
       },
       renderDiagraph: function (data, selector) {
 
@@ -377,9 +379,9 @@
 //        目前没有发现以下这一句修改类名的必要
         _this.svg = d3.select(selector).attr('class', 'daiding');
 
-        let svg = d3.select(selector)
+        let svg = d3.select(selector);
           let marker =
-          d3.select(selector).append("marker")
+            svg.append("marker")
             .attr("id", "arrow")
             .attr("markerUnits", "userSpaceOnUse")
             .attr("markerWidth", "12")
@@ -393,16 +395,18 @@
             .attr('fill', 'red'); //箭头颜色
 
 
-        _this.wrapper = d3.select(selector).append("g");
-        _this.g = d3.select(selector).append("g").append("g");
-        _this.traceGroup = d3.select(selector).append("g").append("g").attr("class", "trace-group");
-
+        _this.wrapper = svg.append("g");
+       let wrapper=svg.append("g");
+        _this.g = wrapper.append("g");
+        let g=wrapper.append("g");
+        _this.traceGroup = wrapper.append("g").attr("class", "trace-group");
+        let traceGroup=wrapper.append("g").attr("class", "trace-group");
         svg.call(d3.behavior.zoom()
           .scaleExtent([1 / 8, 8])
           .on("zoom", zoomed));
 
         function zoomed() {
-          svg.append("g").attr("transform",
+          wrapper.attr("transform",
             "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
         }
 
@@ -472,28 +476,8 @@
           })
 
 
-      },
+      }
 
-//      traceAniInit: function () {
-//        function cleanTrace() {
-//          if (this.timers1 !== undefined) {
-//            this.timers1.forEach(function (timer) {
-//              clearTimeout(timer);
-//            })
-//          }
-//
-//          document.getElementById('trace-submit').onclick = function () {
-//            cleanTrace();
-//
-//            let trace = document.getElementById("trace-input").value.split(",");
-//            timers1 = runTrace(trace);
-//          };
-//        }
-//
-//        return {
-//          Res: cleanTrace()
-//        }
-//      },
 
 
     }
