@@ -25,10 +25,10 @@
           <div class="date">
             {{`${new Date(item.normalLog.createDate).getFullYear()}-${new Date(item.normalLog.createDate).getMonth() + 1}-${new Date(item.normalLog.createDate).getDate()}`}}
           </div>
-          <div @click="jumpToRaw(index)" class="raw-log" :title="item.rawLog ? item.rawLog.logName : '无'">
+          <div @click="jumpToRaw(index)" class="raw-log relation-logs" :title="item.rawLog ? item.rawLog.logName : '无'">
             {{item.rawLog ? item.rawLog.logName : '无'}}
           </div>
-          <div  @click="jumpToEvent(index)" class="event-log" :title="item.eventLog ? item.eventLog.logName : '无'">
+          <div  @click="jumpToEvent(index)" class="event-log  relation-logs" :title="item.eventLog ? item.eventLog.logName : '无'">
             {{item.eventLog ? item.eventLog.logName : '无'}}
           </div>
           <div class="operations">
@@ -73,7 +73,7 @@
     cursor: pointer;
   }
 
-  .list:hover {
+  .list-item:hover {
     background-color: @logList_Choose;
   }
 
