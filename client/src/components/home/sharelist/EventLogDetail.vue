@@ -9,7 +9,7 @@
         <div v-show="!isSearching" class="search-button" @click="searchLog"><i class="el-icon-search"></i></div>
       </div>
     </div>
-    <div class='title'>所有文件已加载，共{{count}}个</div>
+    <div class='title'>所有文件已加载，共{{items.length}}个</div>
     <div id="log-list">
       <div class="list-head" style="border-bottom: 0.8px solid #324157">
         <div class="log-name">文件名</div>
@@ -29,10 +29,10 @@
           <div class="date">
             {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()}`}}
           </div>
-          <div  @click="jumpToRaw(index)" class="raw-log" :title="item.rawLog ? item.rawLog.logName : '无'">
+          <div  @click="jumpToRaw(index)" class="raw-log relation-logs" :title="item.rawLog ? item.rawLog.logName : '无'">
             {{item.rawLog ? item.rawLog.logName : '无'}}
           </div>
-          <div @click="jumpToNormal(index)" class="normal-log" :title="item.normalLog ? item.normalLog.logName : '无'">
+          <div @click="jumpToNormal(index)" class="normal-log relation-logs" :title="item.normalLog ? item.normalLog.logName : '无'">
             {{item.normalLog ? item.normalLog.logName : '无'}}
           </div>
           <div class="merge-relation">

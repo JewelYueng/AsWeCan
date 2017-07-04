@@ -25,10 +25,10 @@
           <div class="date">
             {{`${new Date(item.rawLog.createDate).getFullYear()}-${new Date(item.rawLog.createDate).getMonth() + 1}-${new Date(item.rawLog.createDate).getDate()}`}}
           </div>
-          <div @click="jumpToNormal(index)" class="normal-log" :title="item.normalLog ? item.normalLog.logName : '无'">
+          <div @click="jumpToNormal(index)" class="normal-log relation-logs" :title="item.normalLog ? item.normalLog.logName : '无'">
             {{item.normalLog ? item.normalLog.logName : '无'}}
           </div>
-          <div @click="jumpToEvent(index)" class="event-log" :title="item.eventLog ? item.eventLog.logName : '无'">
+          <div @click="jumpToEvent(index)" class="event-log relation-logs" :title="item.eventLog ? item.eventLog.logName : '无'">
             {{item.eventLog ? item.eventLog.logName : '无'}}
           </div>
           <div class="operations">
@@ -41,9 +41,9 @@
       <el-pagination
         @current-change="handleCurrentChange"
         :current-page="currentPage"
-        :page-size="100"
+        :page-size="10"
         layout=" prev, pager, next, jumper"
-        :total="items.length">
+        :total="total_items_num">
       </el-pagination>
     </div>
   </div>
@@ -150,7 +150,6 @@
         keyWord: '',
         currentPage: 1,
         total_items_num: 10
-
       }
     },
     created(){
@@ -205,9 +204,9 @@
       getTotalItems(){
         const _this = this
         this.$api({method: 'getShareRawLog', query: {page: this.currentPage}}).then((res) => {
-          console.log(res)
+          console.log(res.data.pageNum)
           _this.items = res.data.logGroups
-          _this.total_items_num = res.data.pageNum * 10
+          _this.total_items_num = parseInt(res.data.pageNum) * 10
         })
       },
       createAndDownloadFile(fileName, content) {

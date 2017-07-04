@@ -222,6 +222,7 @@
         this.getTotalItems()
       },
       isSelected(index){
+
         return this.$store.getters.selectedLog.type === 0 && this.items[index].rawLog.id === this.$store.getters.selectedLog.id
       },
       jumpToNormal(index){
