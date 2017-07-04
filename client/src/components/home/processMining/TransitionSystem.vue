@@ -121,8 +121,6 @@
             clearTimeout(timer);
           })
         }
-
-        document.getElementsByClassName("trace-group").innerHTML = '';
         let groups = document.getElementsByClassName("trace-group")
         for (let i = 0; i < groups.length; i++) {
           groups[i].innerHTML = ""
@@ -130,23 +128,16 @@
         if (_this.timers2 !== null && _this.timers2.length !== 0) {
           _this.timers2.forEach(function (timer) {
             clearTimeout(timer);
-
             let links = d3.selectAll('.link')
               .attr("stroke-width", (d) => {
                 return _this.edgeWidthMap[d.v + ':' + d.w];
               });
           })
         }
-//        if(type === 2) {
-//          let links = d3.selectAll('.link')
-//            .attr("stroke-width", (d) =>{
-//              return _this.edgeWidthMap[d.v + ':' + d.w];
-//            });
-//        }
       },
       runTrace(selector){
         const _this = this;
-        _this.cleanTrace(1);
+        _this.cleanTrace();
         let trace = _this.selectedTrace.split(",");
 
 
