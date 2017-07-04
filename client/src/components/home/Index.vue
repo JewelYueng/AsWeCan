@@ -99,8 +99,8 @@
         if(this.user){
           this.$modal({type: 'modify', data: {old_password: this.user.password}})
         }else{
-          this.$hint('请先登录', warn)
-          this.$router.push({name: 'login'})
+          this.$hint('请先登录', 'warn')
+          window.location.href = '/home/loginPage'
         }
       },
       logout(){

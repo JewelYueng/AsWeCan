@@ -169,7 +169,12 @@
       ...mapActions(['selectLog', 'changeFilePath']),
       handleCurrentChange(val) {
         this.currentPage = val
-        this.getTotalItems()
+        if(this.isSearching){
+          this.searchLog()
+        }else{
+          this.getTotalItems()
+        }
+
       },
       isSelected(index){
         return this.$store.getters.selectedLog.type === 3 && this.items[index].rawLog.id === this.$store.getters.selectedLog.id
@@ -221,9 +226,9 @@
         this.totalAmount = []
         this.checkedAll = false
         this.checked = []
-        this.$api({method: 'searchShareRawLog', query: {keyWord: this.keyWord}}).then(res => {
-          console.log(res)
+        this.$api({method: 'searchShareRawLog', query: {keyWord: this.keyWord, page: this.currentPage}}).then(res => {
           this.items = res.data.logGroups
+          this.total_items_num = res.data.pageNum * 10
           this.isSearching = true
         })
       },

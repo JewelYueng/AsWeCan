@@ -44,7 +44,7 @@
         :current-page="currentPage"
         :page-size="100"
         layout=" prev, pager, next, jumper"
-        :total="items.length">
+        :total="total_items_num">
       </el-pagination>
     </div>
   </div>
@@ -169,7 +169,11 @@
       ...mapActions(['selectLog', 'changeFilePath']),
       handleCurrentChange(val) {
         this.currentPage = val
-        this.getTotalItems()
+        if(this.isSearching){
+          this.searchLog()
+        }else{
+          this.getTotalItems()
+        }
       },
       isSelected(index){
         return this.$store.getters.selectedLog.type === 4 && this.items[index].normalLog.id === this.$store.getters.selectedLog.id
@@ -203,6 +207,7 @@
         this.$api({method: 'searchSharedNormalLog', query: {keyWord: this.keyWord}}).then(res => {
           console.log(res)
           this.items = res.data.logGroups
+          this.total_items_num = res.data.pageNum * 10
           this.isSearching = true
         })
       },

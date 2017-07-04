@@ -30,7 +30,7 @@
         <div class="list-item" v-for="(item,index) in items" :class="{selectedItem: isSelected(index)}">
           <div class="log-head">
             <input type="checkbox" v-model="checked" :value="item.rawLog.id" @click="currClick(item,index)">
-            <span @click="showDetail(index)" class="log-name"
+            <span class="log-name"
                   :title="item.rawLog.logName">{{item.rawLog.logName}}</span>
           </div>
           <div class="date">
@@ -219,7 +219,12 @@
       ...mapActions(['selectLog', 'changeFilePath']),
       handleCurrentChange(val) {
         this.currentPage = val
-        this.getTotalItems()
+        if(this.isSearching){
+          this.searchLog()
+        }else{
+          this.getTotalItems()
+        }
+
       },
       isSelected(index){
 
@@ -352,9 +357,9 @@
         this.totalAmount = []
         this.checkedAll = false
         this.checked = []
-        this.$api({method: 'searchRawLog', query: {keyWord: this.keyWord}}).then(res => {
-          console.log(res)
+        this.$api({method: 'searchRawLog', query: {keyWord: this.keyWord, page: this.currentPage}}).then(res => {
           this.items = res.data.logGroups
+          this.total_items_num = res.data.pageNum * 10
           this.isSearching = true
         })
       },

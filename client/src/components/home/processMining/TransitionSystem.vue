@@ -1,7 +1,6 @@
 <template>
   <div class="transition-system">
     <h1>Transition System</h1>
-    <el-button  v-show="see" type="primary" @click="renderDiagraph(items.diagram, '#diagraph')">静态工作流图</el-button>
     <div class="all" v-show="showTotalBtn">
       <span>全记录动画</span>
       <el-button type="primary" @click="runTotal()" id="all-trace-run">运行</el-button>
@@ -14,7 +13,8 @@
           v-for="item in items.diagram.traces"
           :key="item"
           :label="item"
-          :value="item">
+          :value="item"
+          :title="item">
         </el-option>
       </el-select>
       <el-button type="primary" @click="runTrace('#diagraph')" id="trace-submit">运行</el-button>
@@ -24,45 +24,50 @@
   </div>
 </template>
 
-<style lang="less" scoped rel="stylesheet/less">
-  .all {
-    margin-left: 50px;
-    text-align: left;
-    margin-bottom: 30px;
+<style lang="less" rel="stylesheet/less">
+  .el-select-dropdown__list {
+    max-width: 300px;
   }
-
-  .simple {
-    margin-left: 50px;
-    text-align: left;
-    margin-bottom: 20px;
-  }
-
-  #diagraph  {
-
-    circle{
-      fill: steelblue;
+  .transition-system {
+    .all {
+      margin-left: 50px;
+      text-align: left;
+      margin-bottom: 30px;
     }
 
-  }
-  #diagraph .edge {
-    stroke: #ccc;
-    fill: none;
-  }
-  #diagraph text {
-    fill: #333;
-  }
+    .simple {
+      margin-left: 50px;
+      text-align: left;
+      margin-bottom: 20px;
+    }
 
+    #diagraph {
+      circle {
+        fill: steelblue;
+      }
+      .trace-group circle{
+        fill: red;
+      }
+    }
+    #diagraph .edge {
+      stroke: red;
+      fill: none;
+    }
 
+    #diagraph text {
+      fill: #333;
+    }
 
-  .trace-input select {
-    display: inline-block;
-    max-width: 900px;
-    overflow: hidden;
-  }
+    .trace-input select {
+      display: inline-block;
+      max-width: 900px;
+      overflow: hidden;
+    }
 
-  .trace-input button {
-    display: inline-block;
-    width: 60px;
+    .trace-input button {
+      display: inline-block;
+      width: 60px;
+    }
   }
 </style>
 
@@ -73,17 +78,17 @@
     props: ['produce'],
     data(){
       return {
-        see:true,
-        layout:null,
-        traceGroup:null,
-        g:null,
-        svg:null,
-        wrapper:null,
-        nodeValueMap :{},
-      nodeSizeMap : {},
-      edgeValueMap : {},
-      edgeWidthMap : {},
-      linkMap : {},
+        see: true,
+        layout: null,
+        traceGroup: null,
+        g: null,
+        svg: null,
+        wrapper: null,
+        nodeValueMap: {},
+        nodeSizeMap: {},
+        edgeValueMap: {},
+        edgeWidthMap: {},
+        linkMap: {},
         showSelector: false,
         showTotalBtn: false,
 //        单记录运行的计时器
@@ -98,13 +103,16 @@
       }
     },
     created(){
-      this.items.diagram = JSON.parse( JSON.stringify(this.produce))
+      this.items.diagram = JSON.parse(JSON.stringify(this.produce))
+    },
+    mounted(){
+      this.renderDiagraph(this.items.diagram, '#diagraph')
     },
     methods: {
       cleanTrace(){
 
         const _this = this;
-        console.log(_this.timers1,_this.timers2)
+        console.log(_this.timers1, _this.timers2)
         if (_this.timers1 !== null && _this.timers1.length !== 0) {
           _this.timers1.forEach(function (timer) {
             clearTimeout(timer);
@@ -113,7 +121,7 @@
 
         document.getElementsByClassName("trace-group").innerHTML = '';
         let groups = document.getElementsByClassName("trace-group")
-        for(let i = 0; i < groups.length; i++){
+        for (let i = 0; i < groups.length; i++) {
           groups[i].innerHTML = ""
         }
         if (_this.timers2 !== null && _this.timers2.length !== 0) {
@@ -121,7 +129,7 @@
             clearTimeout(timer);
 
             let links = d3.selectAll('.link')
-              .attr("stroke-width", (d) =>{
+              .attr("stroke-width", (d) => {
                 return _this.edgeWidthMap[d.v + ':' + d.w];
               });
           })
@@ -139,9 +147,9 @@
         let trace = _this.selectedTrace.split(",");
 
 
-          let traceTimers = [];
-          let du = 1000;
-          let traceMap = {};
+        let traceTimers = [];
+        let du = 1000;
+        let traceMap = {};
         let line = d3.svg.line()
           .x(function (d) {
             return d.x;
@@ -150,78 +158,78 @@
             return d.y;
           })
           .interpolate("basis");
-          for (let i = 0; i !== trace.length; i++) {
-            let node = _this.layout.node(trace[i]);
-            if (node === undefined) {
-              console.log("没有找到节点");
-              return traceTimers;
-            }
-
-            if (i + 1 >= trace.length) {
-              (function () {
-                let tNode = node;
-
-                let t = setTimeout(function () {
-                  d3.select(selector).append("g").append("g").attr("class", "trace-group").append("circle")
-                    .attr('cx', tNode.x)
-                    .attr('cy', tNode.y)
-                    .attr('r', 5);
-                }, du * i);
-                traceTimers.push(t);
-              })();
-            } else {
-              let edge = _this.layout.edge({
-                v: trace[i],
-                w: trace[i + 1],
-              });
-              let str = trace[i] + '->' + trace[i + 1];
-              if (edge === undefined) {
-                console.log("没有找到边");
-                continue;
-              }
-
-              (function () {
-                let tEdge = edge;
-                let tNode = node;
-                let tIndex = i;
-                let tStr = str;
-
-                let t = setTimeout(function () {
-                  d3.select(selector).append("g").append("g").attr("class", "trace-group").append("circle")
-                    .attr('cx', tNode.x)
-                    .attr('cy', tNode.y)
-                    .attr('r', 5);
-
-                  let p = d3.select(selector).append("g").append("g").attr("class", "trace-group").append("path")
-                    .attr("class", "edge")
-                    .attr("fill","none")
-                    .attr("id", "trace-" + tIndex)
-
-                    .attr("d", line(tEdge.points))
-                    .attr("stroke-width", function (d) {
-                      return 2;
-                    })
-                    .attr("stroke", function (d) {
-                      if (traceMap[tStr] === undefined) {
-                        traceMap[tStr] = 1;
-                      } else {
-                        traceMap[tStr] += 1;
-                      }
-                      return traceMap[tStr] % 2 === 1 ? 'red' : 'blue';
-                    });
-
-                  let l = document.getElementById('trace-' + tIndex).getTotalLength();
-                  p.style("stroke-dasharray", l);
-                  p.style("stroke-dashoffset", l);
-                  p.transition()
-                    .style("stroke-dashoffset", 0)
-                    .duration(du);
-                }, du * i);
-                traceTimers.push(t);
-              })();
-            }
+        for (let i = 0; i !== trace.length; i++) {
+          let node = _this.layout.node(trace[i]);
+          if (node === undefined) {
+            console.log("没有找到节点");
+            return traceTimers;
           }
-          this.timers1=traceTimers;
+
+          if (i + 1 >= trace.length) {
+            (function () {
+              let tNode = node;
+
+              let t = setTimeout(function () {
+                d3.select(selector).append("g").append("g").attr("class", "trace-group").append("circle")
+                  .attr('cx', tNode.x)
+                  .attr('cy', tNode.y)
+                  .attr('r', 5);
+              }, du * i);
+              traceTimers.push(t);
+            })();
+          } else {
+            let edge = _this.layout.edge({
+              v: trace[i],
+              w: trace[i + 1],
+            });
+            let str = trace[i] + '->' + trace[i + 1];
+            if (edge === undefined) {
+              console.log("没有找到边");
+              continue;
+            }
+
+            (function () {
+              let tEdge = edge;
+              let tNode = node;
+              let tIndex = i;
+              let tStr = str;
+
+              let t = setTimeout(function () {
+                d3.select(selector).append("g").append("g").attr("class", "trace-group").append("circle")
+                  .attr('cx', tNode.x)
+                  .attr('cy', tNode.y)
+                  .attr('r', 5);
+
+                let p = d3.select(selector).append("g").append("g").attr("class", "trace-group").append("path")
+                  .attr("class", "edge")
+                  .attr("fill", "none")
+                  .attr("id", "trace-" + tIndex)
+
+                  .attr("d", line(tEdge.points))
+                  .attr("stroke-width", function (d) {
+                    return 2;
+                  })
+                  .attr("stroke", function (d) {
+                    if (traceMap[tStr] === undefined) {
+                      traceMap[tStr] = 1;
+                    } else {
+                      traceMap[tStr] += 1;
+                    }
+                    return traceMap[tStr] % 2 === 1 ? 'red' : 'blue';
+                  });
+
+                let l = document.getElementById('trace-' + tIndex).getTotalLength();
+                p.style("stroke-dasharray", l);
+                p.style("stroke-dashoffset", l);
+                p.transition()
+                  .style("stroke-dashoffset", 0)
+                  .duration(du);
+              }, du * i);
+              traceTimers.push(t);
+            })();
+          }
+        }
+        this.timers1 = traceTimers;
       },
       runTotal(){
         const _this = this;
@@ -276,7 +284,7 @@
         };
 //debugger
         const _this = this;
-        _this.see=false;
+        _this.see = false;
         data.nodes.forEach(function (node) {
           _this.nodeValueMap[node.name] = 0;
           _this.nodeSizeMap[node.name] = params.radius;
@@ -360,9 +368,6 @@
         });
 
 
-
-
-
         function Return_edgeWidthMap(d) {
           console.log(d)
           return _this.edgeWidthMap[d.v + ':' + d.w];
@@ -380,8 +385,8 @@
         _this.svg = d3.select(selector).attr('class', 'daiding');
 
         let svg = d3.select(selector);
-          let marker =
-            svg.append("marker")
+        let marker =
+          svg.append("marker")
             .attr("id", "arrow")
             .attr("markerUnits", "userSpaceOnUse")
             .attr("markerWidth", "12")
@@ -396,11 +401,11 @@
 
 
         _this.wrapper = svg.append("g");
-       let wrapper=svg.append("g");
+        let wrapper = svg.append("g");
         _this.g = wrapper.append("g");
-        let g=wrapper.append("g");
+        let g = wrapper.append("g");
         _this.traceGroup = wrapper.append("g").attr("class", "trace-group");
-        let traceGroup=wrapper.append("g").attr("class", "trace-group");
+        let traceGroup = wrapper.append("g").attr("class", "trace-group");
         svg.call(d3.behavior.zoom()
           .scaleExtent([1 / 8, 8])
           .on("zoom", zoomed));
@@ -415,7 +420,7 @@
           .enter()
           .append('g')
           .attr("class", "edge")
-          .attr("fill","none")
+          .attr("fill", "none")
 
 
         let links = edges.append("path")
@@ -429,7 +434,7 @@
           .attr('class', 'link')
           .attr('fill', 'none')
           .attr('stroke', '#a0a2a7')
-         .attr("marker-end", "url(#arrow)");
+          .attr("marker-end", "url(#arrow)");
 
 
         links.append("title")
@@ -477,7 +482,6 @@
 
 
       }
-
 
 
     }

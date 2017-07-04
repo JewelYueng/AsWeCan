@@ -183,7 +183,11 @@
       ...mapActions(['selectLog', 'changeFilePath']),
       handleCurrentChange(val) {
         this.currentPage = val
-        this.getTotalItems()
+        if(this.isSearching){
+          this.searchLog()
+        }else{
+          this.getTotalItems()
+        }
       },
       isSelected(index){
         return this.$store.getters.selectedLog.type === 5 && this.items[index].eventLog.id === this.$store.getters.selectedLog.id
@@ -226,6 +230,7 @@
         this.$api({method: 'searchSharedEventLog', query: {keyWord: this.keyWord}}).then(res => {
           console.log(res)
           this.items = res.data.logGroups
+          this.total_items_num = res.data.pageNum * 10
           this.isSearching = true
         })
       },

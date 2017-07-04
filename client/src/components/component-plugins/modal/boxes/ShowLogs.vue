@@ -24,13 +24,13 @@
        >
       </el-table-column>
       <el-table-column
-        property="rawLog.logName"
+        property="rawLog"
         label="原始日志"
         width="120" show-overflow-tooltip
         >
       </el-table-column>
       <el-table-column
-        property="normalLog.logName"
+        property="normalLog"
         label="规范化日志"
         width="120" show-overflow-tooltip
        >
@@ -42,6 +42,15 @@
         >
       </el-table-column>
     </el-table>
+    <div class="block pageDiv">
+      <el-pagination
+        @current-change="handleCurrentPageChange"
+        :current-page="currentPage"
+        :page-size="10"
+        layout="prev, pager, next, jumper"
+        :total="total_items_num">
+      </el-pagination>
+    </div>
     <div class="btn-group">
       <el-button type="primary" @click="sure()">确定</el-button>
       <el-button type="text" @click="cancel()">取消</el-button>
@@ -67,6 +76,10 @@
   .el-table__body tr.current-row>td{
     background-color: @light_silver;
   }
+
+  .pageDiv{
+    margin: 10px;
+  }
 </style>
 
 <script>
@@ -75,17 +88,28 @@
     data(){
       return {
         logs: [],
+        currentPage: 1,
+        total_items_num: 10,
         selectedLog: null
       }
     },
     mixins: [BaseBox],
     created(){
-      this.$api({method: 'getEventLog'}).then(res => {
-        console.log(res)
-        this.logs = res.data.logGroups
-      })
+      this.getTotalItems()
     },
     methods: {
+      handleCurrentPageChange(val) {
+        this.currentPage = val
+        this.getTotalItems()
+      },
+      getTotalItems(){
+        this.$api({method: 'getEventLog', query: {page: this.currentPage}}).then((res) => {
+          console.log(res)
+          this.logs = res.data.logGroups
+          this.resolveLogs()
+          this.total_items_num = res.data.pageNum * 10
+        })
+      },
       sure(){
         this.commit({
           id: this.selectedLog.eventLog.id,
@@ -100,6 +124,14 @@
       },
       back(){
         this.commit(true)
+      },
+      resolveLogs(){
+        this.logs.map(log => {
+          log.normalLog = log.normalLog ? log.normalLog.logName : '无'
+          log.rawLog = log.rawLog ? log.rawLog.logName : '无'
+          log.eventLog.mergeRelation = log.eventLog.mergeRelation ? `${log.eventLog.mergeRelationLogs[0].logName},${log.eventLog.mergeRelationLogs[1].logName}` : '无'
+        })
+
       }
     }
   }

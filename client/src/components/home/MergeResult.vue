@@ -54,7 +54,7 @@
   @import "~assets/layout.less";
 
   #merge-result{
-    background-color: @light_theme;
+    background-color: white;
     height: 100%;
     width: @major_width;
     padding: 10px;

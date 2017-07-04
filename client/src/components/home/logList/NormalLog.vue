@@ -229,7 +229,11 @@
       ...mapActions(['selectLog', 'changeFilePath']),
       handleCurrentChange(val) {
         this.currentPage = val
-        this.getTotalItems()
+        if(this.isSearching){
+          this.searchLog()
+        }else{
+          this.getTotalItems()
+        }
       },
       isSelected(index){
         return this.$store.getters.selectedLog.type === 1 && this.items[index].normalLog.id === this.$store.getters.selectedLog.id
@@ -420,6 +424,7 @@
         this.$api({method: 'searchNormalLog', query: {keyWord: this.keyWord}}).then(res => {
           console.log(res)
           this.items = res.data.logGroups
+          this.total_items_num = res.data.pageNum * 10
           this.isSearching = true
         })
       },
