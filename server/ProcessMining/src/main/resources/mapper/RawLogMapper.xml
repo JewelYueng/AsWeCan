@@ -114,7 +114,7 @@
         WHERE id=#{id}
     </select>
 
-    <select id="getRawLogById" resultMap="rawLog">
+    <select id="getLogById" resultMap="rawLog">
         SELECT * FROM raw_log WHERE id=#{id}
     </select>
 

@@ -94,8 +94,8 @@ public class MergeMethodServiceTest {
 
     @Test
     public void mergeTest() throws Exception {
-        EventLog eventLog1 = eventLogService.getEventLogById("1");
-        EventLog eventLog2 = eventLogService.getEventLogById("2");
+        EventLog eventLog1 = eventLogService.getLogById("1");
+        EventLog eventLog2 = eventLogService.getLogById("2");
         String methodId = activeMethod.getId();
         Map<String,Object> params = new HashMap<>();
         TimeResult<EventLog> result= mergeMethodService.merge(eventLog1, eventLog2, activeMethod, params);

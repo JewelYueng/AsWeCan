@@ -8,7 +8,14 @@ import java.util.List;
 /**
  * Created by nyq on 2017/7/3.
  */
-public interface CommonLogMapper {
+public interface CommonLogMapper<T> {
+
+    T getLogById(@Param("id") String id);
+    void save(T log);
+
+    void updateLogState(@Param("ids") List<String> ids, @Param("state") int state, @Param("userId") String userId);
+    void updateIsShared(@Param("ids") List<String> ids, @Param("isShared") int isShared, @Param("userId") String userId);
+
     List<LogGroup> listLogGroupsPage(@Param("userId")String userId,
                                      @Param("state") int state,
                                      @Param("isShared") int isShared,

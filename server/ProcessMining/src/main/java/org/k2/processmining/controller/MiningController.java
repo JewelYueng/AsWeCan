@@ -62,7 +62,7 @@ public class MiningController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public@ResponseBody Object mining(@Valid @RequestBody MiningForm form) {
         Map<String, Object> res = new HashMap<>();
-        EventLog eventLog = eventLogService.getEventLogById(form.getId());
+        EventLog eventLog = eventLogService.getLogById(form.getId());
         Algorithm<Miner> algorithm = miningMethodService.getAlgorithmById(form.getMethodId());
         TimeResult timeResult =  miningMethodService.mining(eventLog, algorithm, form.parameters, Util.toDiagramType(form.diagramType));
         res.put("timeCost", timeResult.getTime());

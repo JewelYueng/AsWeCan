@@ -56,7 +56,7 @@ public class NormalLogServiceWhiteBoxTest {
     @Test
     public void transToEventTest() throws Exception {
         // 2.3
-        NormalLog normalLog = normalLogService.getNormalLogById("1");
+        NormalLog normalLog = normalLogService.getLogById("1");
         EventLog eventLog = normalLogService.transToEventLog(normalLog);
         Assert.assertNotNull(eventLog);
 

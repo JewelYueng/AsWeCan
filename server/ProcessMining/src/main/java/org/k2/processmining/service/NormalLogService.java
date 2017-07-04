@@ -16,28 +16,9 @@ import java.util.List;
 /**
  * Created by Aria on 2017/6/13.
  */
-public interface NormalLogService {
-
-    List<LogGroup> getLogGroups();
-
-    List<LogGroup> getLogGroupsByKeyWord(String keyWord);
-
-    void deleteByAdmin(List<String> ids);
-
-    List<LogGroup> getLogGroupsByUserId(String userId);
-    List<LogGroup> getSharedLogGroups();
-    List<LogGroup> getLogByFuzzyName(String keyWord, User user);
-    List<LogGroup> getSharedLogsByFuzzyName(String keyWord);
-    NormalLog getNormalLogById(String id);
-    void save(NormalLog normalLog, InputStream inputStream) throws IOException;
-    void save(NormalLog normalLog);
+public interface NormalLogService extends CommonLogService<NormalLog> {
 
     @PreAuthorize("hasPermission(#normalLog, 'transToEvent')")
     @Transactional
     EventLog transToEventLog(NormalLog normalLog);
-    void updateShareStateByLogIdForUser(List<String> ids, int isShared, String userId);
-    void updateStateByLogIdForUser(List<String> ids, int state, String userId);
-
-//    @Transactional
-//    void afterSaveInLogStorageForTransToEventLog(EventLog eventLog, NormalLog normalLog, File file);
 }

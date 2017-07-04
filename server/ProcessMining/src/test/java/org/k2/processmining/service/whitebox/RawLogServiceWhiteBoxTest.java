@@ -14,6 +14,8 @@ import org.k2.processmining.model.log.RawLog;
 import org.k2.processmining.service.RawLogService;
 import org.k2.processmining.service.RawLogServiceTest;
 import org.k2.processmining.service.impl.RawLogServiceImpl;
+import org.k2.processmining.storage.LocalLogStorage;
+import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.normal.transform.LogConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -67,7 +69,7 @@ public class RawLogServiceWhiteBoxTest {
     @Test
     public void normalizeTest() throws Exception {
         // 1.3
-        RawLog rawLog = rawLogService.getRawLogById("1");
+        RawLog rawLog = rawLogService.getLogById("1");
         String formats = "[QC],ABCD,A-B-CTD,A-B-CTD";
         String timeNames = "[QC]";
         String dataNames = "[Method];[Status]:EventName,[FKPlanID]:FKPlanID,[PkIncidentID]:PkIncidentID,[PkTaskID]:PkTaskID,[PKPlanID]:PKPlanID;[FKIncidentID]:FKIncidentID";
@@ -93,7 +95,7 @@ public class RawLogServiceWhiteBoxTest {
 
     @Test
     public void verifyIsActive() throws Exception {
-        RawLogServiceImpl rawLogService = new RawLogServiceImpl();
+        RawLogServiceImpl rawLogService = new RawLogServiceImpl(null, null);
         Class<?> clazz = rawLogService.getClass();
         Method verifyLogGroupsIsActive  = clazz.getDeclaredMethod("verifyLogGroupsIsActive", List.class);
         verifyLogGroupsIsActive.setAccessible(true);
@@ -106,7 +108,7 @@ public class RawLogServiceWhiteBoxTest {
 
     @Test
     public void verifyIsShared() throws Exception {
-        RawLogServiceImpl rawLogService = new RawLogServiceImpl();
+        RawLogServiceImpl rawLogService = new RawLogServiceImpl(null, null);
         Class<?> clazz = rawLogService.getClass();
         Method verifyLogGroupsIsShared = clazz.getDeclaredMethod("verifyLogGroupsIsShared", List.class);
         verifyLogGroupsIsShared.setAccessible(true);

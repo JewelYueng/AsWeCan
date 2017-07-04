@@ -1,9 +1,7 @@
 package org.k2.processmining.service.impl;
 
-import org.k2.processmining.config.AppConfig;
 import org.k2.processmining.exception.InternalServerErrorException;
 import org.k2.processmining.exception.BadRequestException;
-import org.k2.processmining.mapper.CommonLogMapper;
 import org.k2.processmining.mapper.NormalLogMapper;
 import org.k2.processmining.mapper.RawLogMapper;
 import org.k2.processmining.model.LogGroup;
@@ -12,7 +10,7 @@ import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.NormalLog;
 import org.k2.processmining.model.log.RawLog;
 import org.k2.processmining.model.user.User;
-import org.k2.processmining.service.CommonLogService;
+import org.k2.processmining.service.CommonLogServiceImpl;
 import org.k2.processmining.service.NormalLogService;
 import org.k2.processmining.service.RawLogService;
 import org.k2.processmining.storage.LogStorage;
@@ -34,7 +32,7 @@ import java.util.*;
  * Created by nyq on 2017/6/17.
  */
 @Service
-public class RawLogServiceImpl extends CommonLogService implements RawLogService {
+public class RawLogServiceImpl extends CommonLogServiceImpl<RawLog> implements RawLogService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RawLogServiceImpl.class);
 
@@ -45,46 +43,11 @@ public class RawLogServiceImpl extends CommonLogService implements RawLogService
     private LogStorage logStorage;
 
     @Autowired
-    private RawLogMapper rawLogMapper;
-
-    @Autowired
     private NormalLogMapper normalLogMapper;
 
     @Autowired
-    public RawLogServiceImpl(RawLogMapper rawLogMapper) {
-        super(rawLogMapper);
-    }
-
-    @Override
-    public List<LogGroup> getLogGroups() {
-        List<LogGroup> logGroups = rawLogMapper.listLogGroups(null, LogState.ACTIVE.getValue(), -1, null);
-        verifyLogGroupsIsActive(logGroups);
-        return logGroups;
-    }
-
-    @Override
-    public List<LogGroup> getLogGroupsByKeyWord(String keyWord) {
-        List<LogGroup> logGroups = rawLogMapper.listLogGroups(null, LogState.ACTIVE.getValue(), -1, keyWord);
-        verifyLogGroupsIsActive(logGroups);
-        return logGroups;
-    }
-
-    @Override
-    public void deleteByAdmin(List<String> ids) {
-        rawLogMapper.updateLogState(ids, LogState.DELETE.getValue(), null);
-    }
-
-    @Override
-    public RawLog getRawLogById(String id) {
-        return rawLogMapper.getRawLogById(id);
-    }
-
-    @Override
-//    @Cacheable(value = CacheConfig.RAW_LOG_CACHE, key = "'userId_'+#user.id")
-    public List<LogGroup> getLogsByUser(User user) {
-        List<LogGroup> logGroups = rawLogMapper.listLogGroups(user.getId(), LogState.ACTIVE.getValue(),-1,null);
-        verifyLogGroupsIsActive(logGroups);
-        return logGroups;
+    public RawLogServiceImpl(RawLogMapper rawLogMapper, LogStorage logStorage) {
+        super(rawLogMapper, logStorage);
     }
 
     @Override
@@ -111,52 +74,8 @@ public class RawLogServiceImpl extends CommonLogService implements RawLogService
     @Override
     public List<LogGroup> getSharedLogsByKeyWord(String keyWord, int page) {
         List<LogGroup> logGroups = super.getSharedLogsByKeyWord(keyWord, page);
-        return logGroups;
-    }
-
-    public List<LogGroup> getSharedLogs() {
-        List<LogGroup> logGroups = rawLogMapper.listLogGroups(null,LogState.ACTIVE.getValue(), LogShareState.SHARED.getValue(), null);
         verifyLogGroupsIsShared(logGroups);
         return logGroups;
-    }
-
-    /**
-     * 通过关键字搜索日志
-     * @param keyWord
-     * @param user
-     * @return
-     */
-    @Override
-    public List<LogGroup> getLogByFuzzyName(String keyWord,User user) {
-        List<LogGroup> logGroups = rawLogMapper.listLogGroups(user.getId(), LogState.ACTIVE.getValue(), -1, keyWord);
-        verifyLogGroupsIsActive(logGroups);
-        return logGroups;
-    }
-
-    @Override
-    public List<LogGroup> getSharedLogsByFuzzyName(String keyWord) {
-        List<LogGroup> logGroups = rawLogMapper.listLogGroups(null,
-                                                        LogState.ACTIVE.getValue(),
-                                                        LogShareState.SHARED.getValue(),
-                                                        keyWord);
-        verifyLogGroupsIsShared(logGroups);
-        return logGroups;
-    }
-
-    @Override
-    public void save(RawLog log, InputStream inputStream) throws IOException {
-        logStorage.upload(log, inputStream);
-        rawLogMapper.save(log);
-    }
-
-    @Override
-    public void updateShareStateByLogIdForUser(List<String> ids, int isShared, String userId) {
-        rawLogMapper.updateIsShared(ids, isShared, userId);
-    }
-
-    @Override
-    public void updateStateByLogIdForUser(List<String> ids, int state, String userId) {
-        rawLogMapper.updateLogState(ids, state, userId);
     }
 
     @Override

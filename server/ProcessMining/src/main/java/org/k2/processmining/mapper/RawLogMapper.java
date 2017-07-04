@@ -15,11 +15,7 @@ import java.util.Map;
  * Created by nyq on 2017/6/18.
  */
 @Repository
-public interface RawLogMapper extends CommonLogMapper{
-    RawLog getRawLogById(@Param("id") String id);
-    void save(RawLog log);
-    Integer updateLogState(@Param("ids") List<String> ids, @Param("state") int state, @Param("userId") String userId);
-    Integer updateIsShared(@Param("ids") List<String> ids, @Param("isShared") int isShared, @Param("userId") String userId);
+public interface RawLogMapper extends CommonLogMapper<RawLog> {
 
     // userId is null : get all user
     // userId is not null : where userid=userId

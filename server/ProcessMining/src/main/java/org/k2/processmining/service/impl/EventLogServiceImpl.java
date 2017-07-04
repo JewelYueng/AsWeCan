@@ -1,22 +1,18 @@
 package org.k2.processmining.service.impl;
 
 import org.deckfour.xes.model.XLog;
-import org.k2.processmining.config.AppConfig;
 import org.k2.processmining.exception.BadRequestException;
-import org.k2.processmining.mapper.CommonLogMapper;
 import org.k2.processmining.mapper.EventLogMapper;
 import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.LogShareState;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.EventLog;
-import org.k2.processmining.model.log.RawLog;
 import org.k2.processmining.model.user.User;
-import org.k2.processmining.service.CommonLogService;
+import org.k2.processmining.service.CommonLogServiceImpl;
 import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.event.parse.EventLogParse;
 import org.k2.processmining.support.event.parse.EventLogParseException;
-import org.k2.processmining.support.event.sumarise.EventLogSummary;
 import org.k2.processmining.support.event.sumarise.Summarize;
 import org.k2.processmining.util.Util;
 import org.slf4j.Logger;
@@ -32,7 +28,7 @@ import java.util.*;
  * Created by nyq on 2017/6/19.
  */
 @Service
-public class EventLogServiceImpl extends CommonLogService implements EventLogService {
+public class EventLogServiceImpl extends CommonLogServiceImpl<EventLog> implements EventLogService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventLogServiceImpl.class);
 
@@ -46,23 +42,8 @@ public class EventLogServiceImpl extends CommonLogService implements EventLogSer
     private EventLogParse eventLogParse;
 
     @Autowired
-    public EventLogServiceImpl(EventLogMapper eventLogMapper) {
-        super(eventLogMapper);
-    }
-
-    @Override
-    public List<LogGroup> getLogGroups() {
-        return eventLogMapper.listLogGroups(null, LogState.ACTIVE.getValue(), -1, null);
-    }
-
-    @Override
-    public List<LogGroup> getLogGroupsByKeyWord(String keyWord) {
-        return eventLogMapper.listLogGroups(null, LogState.ACTIVE.getValue(), -1, keyWord);
-    }
-
-    @Override
-    public void deleteByAdmin(List<String> ids) {
-        eventLogMapper.updateLogState(ids, LogState.DELETE.getValue(), null);
+    public EventLogServiceImpl(EventLogMapper eventLogMapper, LogStorage logStorage) {
+        super(eventLogMapper, logStorage);
     }
 
     @Override
@@ -98,65 +79,6 @@ public class EventLogServiceImpl extends CommonLogService implements EventLogSer
     }
 
     @Override
-    public EventLog getEventLogById(String id) {
-        return eventLogMapper.getEventLogById(id);
-    }
-
-    @Override
-    public List<LogGroup> getLogsByUserId(String userId) {
-        List<LogGroup> logGroups = eventLogMapper.listLogGroups(userId, LogState.ACTIVE.getValue(), -1, null);
-        verifyLogGroupsIsActive(logGroups);
-        return logGroups;
-    }
-
-    @Override
-    public List<LogGroup> getSharedLogs() {
-        List<LogGroup> logGroups = eventLogMapper.listLogGroups(null, LogState.ACTIVE.getValue(), LogShareState.SHARED.getValue(), null);
-        verifyLogGroupsIsShared(logGroups);
-        return logGroups;
-    }
-
-    /**
-     * 根据关键字搜索日志
-     * @param keyWord
-     * @param user
-     * @return
-     */
-    @Override
-    public List<LogGroup> getLogByFuzzyName(String keyWord, User user) {
-        List<LogGroup> logGroups = eventLogMapper.listLogGroups(user.getId(), LogState.ACTIVE.getValue(), -1, keyWord);
-        verifyLogGroupsIsActive(logGroups);
-        return logGroups;
-    }
-
-    @Override
-    public List<LogGroup> getSharedLogsByFuzzyName(String keyWord) {
-        List<LogGroup> logGroups = eventLogMapper.listLogGroups(null, LogState.ACTIVE.getValue(), LogShareState.SHARED.getValue(), keyWord);
-        verifyLogGroupsIsShared(logGroups);
-        return logGroups;
-    }
-
-    @Override
-    public List<EventLog> getMergeLogsByLogId(String []idList) {
-        List<EventLog> list = new ArrayList<>();
-        for (String id:idList){
-//            list.add(eventLogMapper.getEventLogById(id).getLogName());
-            list.add(eventLogMapper.getEventLogById(id));
-        }
-        return list;
-    }
-
-    @Override
-    public void updateShareStateByLogIdForUser(List<String> ids, int isShared, String userId) {
-        eventLogMapper.updateIsShared(ids, isShared, userId);
-    }
-
-    @Override
-    public void updateStateByLogIdForUser(List<String> ids, int state, String userId) {
-        eventLogMapper.updateLogState(ids, state, userId);
-    }
-
-    @Override
     public void save(EventLog log, InputStream inputForRemote, InputStream inputForSummarize) throws IOException {
         logStorage.upload(log, inputForRemote);
         try {
@@ -171,8 +93,13 @@ public class EventLogServiceImpl extends CommonLogService implements EventLogSer
     }
 
     @Override
-    public void save(EventLog log) {
-        eventLogMapper.save(log);
+    public void save(EventLog log, InputStream inputStream) throws IOException {
+        throw new UnsupportedOperationException("may implement later, but not now");
+    }
+
+    @Override
+    public List<EventLog> getEventLogsByIds(List<String> ids) {
+        return eventLogMapper.listEventLogByIds(ids);
     }
 
     private void verifyLogGroupsIsActive(List<LogGroup> logGroups) {
@@ -217,6 +144,7 @@ public class EventLogServiceImpl extends CommonLogService implements EventLogSer
                 mergeEventLogIds.addAll(Arrays.asList(mergeRelations.split(",")));
             }
         }
+        if (mergeEventLogIds.isEmpty()) return;
         List<EventLog> eventLogs = eventLogMapper.listEventLogByIds(new ArrayList<>(mergeEventLogIds));
         Map<String,EventLog> map = new HashMap<>();
         eventLogs.forEach(eventLog -> map.put(eventLog.getId(), eventLog));

@@ -62,7 +62,7 @@ public class EventLogServiceWhiteBoxTest {
 
     @Test
     public void verifyIsActive() throws Exception {
-        EventLogServiceImpl eventLogService = new EventLogServiceImpl();
+        EventLogServiceImpl eventLogService = new EventLogServiceImpl(null, null);
         Class<?> clazz = eventLogService.getClass();
         Method method = clazz.getDeclaredMethod("verifyLogGroupsIsActive", List.class);
         method.setAccessible(true);
@@ -74,7 +74,7 @@ public class EventLogServiceWhiteBoxTest {
 
     @Test
     public void verifyIsShared() throws Exception {
-        EventLogServiceImpl eventLogService = new EventLogServiceImpl();
+        EventLogServiceImpl eventLogService = new EventLogServiceImpl(null, null);
         Class<?> clazz = eventLogService.getClass();
         Method method = clazz.getDeclaredMethod("verifyLogGroupsIsShared", List.class);
         method.setAccessible(true);
