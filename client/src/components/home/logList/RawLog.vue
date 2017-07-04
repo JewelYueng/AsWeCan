@@ -246,7 +246,8 @@
             this.selectLog({type: 1, id: this.items[index].normalLog.id, page: res.data.page})
             this.changeFilePath('1-2')
           }, err => {
-            this.$hint('网络出错','error')
+            console.log(err)
+            this.$hint(err.data.msg, 'error')
           })
 
         }
@@ -257,7 +258,8 @@
             this.selectLog({type: 2, id: this.items[index].eventLog.id, page: res.data.page})
             this.changeFilePath('1-3')
           }, err => {
-            this.$hint('网络出错', 'error')
+            console.log(err)
+            this.$hint(err.data.msg, 'error')
           })
         }
       },

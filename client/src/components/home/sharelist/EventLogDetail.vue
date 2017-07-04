@@ -200,7 +200,8 @@
             this.selectLog({type: 4, id: this.items[index].normalLog.id, page: res.data.page})
             this.changeFilePath('2-2')
           }, err => {
-            this.$hint('网络出错','error')
+            console.log(err)
+            this.$hint(err.data.msg, 'error')
           })
         }
       },
@@ -210,7 +211,8 @@
             this.selectLog({type: 3, id: this.items[index].rawLog.id, page: res.data.page})
             this.changeFilePath('2-1')
           }, err => {
-            this.$hint('网络出错','error')
+            console.log(err)
+            this.$hint(err.data.msg, 'error')
           })
         }
       },
@@ -221,7 +223,8 @@
             this.selectLog({type: 5, id: relation_id, page: res.data.page})
             this.currentPage = res.data.page
           }, err => {
-            this.$hint('网络出错', 'error')
+            console.log(err)
+            this.$hint(err.data.msg, 'error')
           })
         }
       },

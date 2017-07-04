@@ -252,7 +252,8 @@
             this.selectLog({type: 0, id: this.items[index].rawLog.id, page: res.data.page})
             this.changeFilePath('1-1')
           }, err => {
-            this.$hint('网络出错','error')
+            console.log(err)
+            this.$hint(err.data.msg, 'error')
           })
 
         }
@@ -263,7 +264,8 @@
             this.selectLog({type: 2, id: this.items[index].eventLog.id, page: res.data.page})
             this.changeFilePath('1-3')
           }, err => {
-            this.$hint('网络出错', 'error')
+            console.log(err)
+            this.$hint(err.data.msg, 'error')
           })
         }
       },
@@ -389,7 +391,7 @@
             this.$hint('分享成功', 'success')
             this.getTotalItems()
           } else {
-            this.$hint('分享失败', 'warn')
+            this.$hint('不明原因失败，建议刷新', 'error')
           }
         }, err => {
           console.log(err)

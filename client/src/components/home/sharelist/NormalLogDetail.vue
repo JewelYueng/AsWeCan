@@ -190,9 +190,9 @@
             this.selectLog({type: 3, id: this.items[index].rawLog.id, page: res.data.page})
             this.changeFilePath('2-1')
           }, err => {
-            this.$hint('网络出错','error')
-          })
-
+          console.log(err)
+          this.$hint(err.data.msg, 'error')
+        })
         }
       },
       jumpToEvent(index){
@@ -201,7 +201,8 @@
             this.selectLog({type: 5, id: this.items[index].eventLog.id, page: res.data.page})
             this.changeFilePath('2-3')
           }, err => {
-            this.$hint('网络出错', 'error')
+            console.log(err)
+            this.$hint(err.data.msg, 'error')
           })
         }
       },
