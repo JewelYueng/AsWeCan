@@ -20,7 +20,7 @@
       <el-button type="primary" @click="runTrace('#diagraph')" id="trace-submit">运行</el-button>
       <el-button type="primary" @click="cleanTrace()">清除</el-button>
     </div>
-    <svg id="diagraph" width="3500" height="450"></svg>
+    <svg id="diagraph" width="900" height="450"></svg>
   </div>
 </template>
 
@@ -28,6 +28,7 @@
   .el-select-dropdown__list {
     max-width: 300px;
   }
+
   .transition-system {
     .all {
       margin-left: 50px;
@@ -42,10 +43,11 @@
     }
 
     #diagraph {
+      position: relative;
       circle {
         fill: steelblue;
       }
-      .trace-group circle{
+      .trace-group circle {
         fill: red;
       }
     }
@@ -107,6 +109,7 @@
     },
     mounted(){
       this.renderDiagraph(this.items.diagram, '#diagraph')
+
     },
     methods: {
       cleanTrace(){
@@ -170,7 +173,8 @@
               let tNode = node;
 
               let t = setTimeout(function () {
-                d3.select(selector).append("g").append("g").attr("class", "trace-group").append("circle")
+                d3.select(".trace-group")
+                  .append("circle")
                   .attr('cx', tNode.x)
                   .attr('cy', tNode.y)
                   .attr('r', 5);
@@ -195,12 +199,14 @@
               let tStr = str;
 
               let t = setTimeout(function () {
-                d3.select(selector).append("g").append("g").attr("class", "trace-group").append("circle")
+                d3.select('.trace-group')
+                  .append("circle")
                   .attr('cx', tNode.x)
                   .attr('cy', tNode.y)
                   .attr('r', 5);
 
-                let p = d3.select(selector).append("g").append("g").attr("class", "trace-group").append("path")
+                let p = d3.select('.trace-group')
+                  .append("path")
                   .attr("class", "edge")
                   .attr("fill", "none")
                   .attr("id", "trace-" + tIndex)
@@ -400,22 +406,18 @@
             .attr('fill', 'red'); //箭头颜色
 
 
-        _this.wrapper = svg.append("g");
         let wrapper = svg.append("g");
-        _this.g = wrapper.append("g");
         let g = wrapper.append("g");
-        _this.traceGroup = wrapper.append("g").attr("class", "trace-group");
         let traceGroup = wrapper.append("g").attr("class", "trace-group");
         svg.call(d3.behavior.zoom()
           .scaleExtent([1 / 8, 8])
           .on("zoom", zoomed));
-
         function zoomed() {
           wrapper.attr("transform",
             "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
         }
 
-        let edges = d3.select(selector).append("g").append("g").selectAll(".edge")
+        let edges = g.selectAll(".edge")
           .data(_this.layout.edges())
           .enter()
           .append('g')
@@ -442,7 +444,7 @@
             return _this.edgeValueMap[d.v + ':' + d.w];
           });
 
-        let nodes = d3.select(selector).append("g").append("g").selectAll(".node")
+        let nodes = g.selectAll(".node")
           .data(_this.layout.nodes())
           .enter()
           .append('g')
