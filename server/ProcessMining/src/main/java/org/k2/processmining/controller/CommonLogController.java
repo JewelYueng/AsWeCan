@@ -176,7 +176,7 @@ public abstract class CommonLogController<T extends AbstractLog> {
 
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     public @ResponseBody
-    Object getPageOfLogId(@RequestParam("id") String id) {
+    Object getPageOfLogId(@NotBlank(message = "The logId should not be empty.")@RequestParam("id") String id) {
         User user = getUser();
         int page = logService.getPageOfLogId(user.getId(), id);
         return new HashMap<String,Object>(){{put("page", page);}};
@@ -184,7 +184,7 @@ public abstract class CommonLogController<T extends AbstractLog> {
 
     @RequestMapping(value = "/sharedLogs/page")
     public @ResponseBody
-    Object getPageOfSharedLogId(@RequestParam("id") String id) {
+    Object getPageOfSharedLogId(@NotBlank(message = "The logId should not be empty.")@RequestParam("id") String id) {
         int page = logService.getPageOfSharedLogId(id);
         return new HashMap<String,Object>(){{put("page", page);}};
     }

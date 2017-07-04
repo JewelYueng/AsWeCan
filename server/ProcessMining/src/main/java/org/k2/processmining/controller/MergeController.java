@@ -2,6 +2,8 @@ package org.k2.processmining.controller;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.k2.processmining.exception.BadRequestException;
+import org.k2.processmining.model.LogState;
+import org.k2.processmining.model.MethodState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.mergemethod.MergeMethod;
 import org.k2.processmining.model.user.User;
@@ -54,6 +56,10 @@ public class MergeController {
         MergeMethod mergeMethod = mergeMethodService.getMethodById(form.methodId);
         EventLog eventLog1 = eventLogService.getLogById(form.getEventLogId1());
         EventLog eventLog2 = eventLogService.getLogById(form.getEventLogId2());
+        if (mergeMethod == null || !MethodState.isActive(mergeMethod.getState()))  throw new BadRequestException("Method is not exist.");
+        if (eventLog1 == null || !LogState.isActive(eventLog1.getState())) throw new BadRequestException("EventLog1 is not exist.");
+        if (eventLog2 == null || !LogState.isActive(eventLog2.getState())) throw new BadRequestException("EventLog2 is not exist.");
+        if (eventLog1.getId().equals(eventLog2.getId())) throw new BadRequestException("Please use different eventLogs");
         TimeResult<EventLog> result = mergeMethodService.merge(eventLog1, eventLog2, mergeMethod, form.parameters);
         if (result == null) {
             throw new BadRequestException(Message.MERGE_FAIL);

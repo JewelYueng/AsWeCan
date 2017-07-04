@@ -92,21 +92,9 @@
     </select>
 
     <select id="lineOfLogId" resultType="int">
-        set @line:=0;
-        SELECT
-          line
-        FROM
-            (SELECT
-              id, @line:=@line+1 as line
-            FROM
-              event_log
-            WHERE
-              <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
-              state=#{state}
-              <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
-              ORDER BY create_date DESC
-              ) as t
-        WHERE id=#{id}
+        <include refid="org.k2.processmining.mapper.RawLogMapper.lineOfLogIdSQL">
+            <property name="table" value="event_log"/>
+        </include>
     </select>
 
     <select id="listEventLogByIds" resultMap="eventLog">
