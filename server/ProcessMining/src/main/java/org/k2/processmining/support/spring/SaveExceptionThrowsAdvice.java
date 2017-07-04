@@ -38,6 +38,7 @@ public class SaveExceptionThrowsAdvice{
         } catch (Throwable throwable) {
             Object[] objects = joinPoint.getArgs();
             if (objects.length > 0 && objects[0] instanceof AbstractLog) {
+                LOGGER.error("Fail to save {}, delete from LogStorage.", ((AbstractLog)objects[0]).getType(), throwable);
                 logStorage.delete((AbstractLog) objects[0]);
             }
             throw throwable;
@@ -46,43 +47,40 @@ public class SaveExceptionThrowsAdvice{
 
     @Around("execution(public * org.k2.processmining.service.MergeMethodService.addMethod(..))")
     public Object deleteMergeMethod(ProceedingJoinPoint joinPoint) throws Throwable {
-        Object[] objects = joinPoint.getArgs();
-        Object o = null;
-        if (objects.length > 0 && objects[0] instanceof MergeMethod) {
-            MergeMethod mergeMethod = (MergeMethod) objects[0];
-            try {
-                o = joinPoint.proceed();
-            }
-            catch (Throwable throwable) {
-                LOGGER.error("fail to add MergeMethod");
+        try {
+            return joinPoint.proceed();
+        }
+        catch (Throwable throwable) {
+            LOGGER.error("Fail to add MergeMethod, delete from MergerFactory and MethodManage.", throwable);
+            Object[] objects = joinPoint.getArgs();
+            if (objects.length > 0 && objects[0] instanceof MergeMethod) {
+                MergeMethod mergeMethod = (MergeMethod) objects[0];
                 ReflectUtil.getInstance().closeClassLoader(mergeMethod.getId());
                 System.gc();
                 MergerFactory.getInstance().deleteAlgorithm(mergeMethod.getId());
                 methodManage.deleteMerger(mergeMethod.getId());
-                throw throwable;
             }
+            throw throwable;
         }
-        return o;
+
     }
 
     @Around("execution(public * org.k2.processmining.service.MiningMethodService.addMethod(..))")
     public Object deleteMinerMethod(ProceedingJoinPoint joinPoint) throws Throwable {
-        Object[] objects = joinPoint.getArgs();
-        Object o = null;
-        if (objects.length > 0 && objects[0] instanceof MiningMethod) {
-            MiningMethod miningMethod = (MiningMethod) objects[0];
-            try {
-                o = joinPoint.proceed();
-            }
-            catch (Throwable throwable) {
-                LOGGER.error("fail to create MiningMethod");
+        try {
+            return joinPoint.proceed();
+        }
+        catch (Throwable throwable) {
+            LOGGER.error("Fail to add MiningMethod, delete from MinerFactory and MethodManage.", throwable);
+            Object[] objects = joinPoint.getArgs();
+            if (objects.length > 0 && objects[0] instanceof MiningMethod) {
+                MiningMethod miningMethod = (MiningMethod) objects[0];
                 ReflectUtil.getInstance().closeClassLoader(miningMethod.getId());
                 System.gc();
                 MinerFactory.getInstance().deleteAlgorithm(miningMethod.getId());
                 methodManage.deleteMiner(miningMethod.getId());
-                throw throwable;
             }
+            throw throwable;
         }
-        return o;
     }
 }

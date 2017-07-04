@@ -1,5 +1,7 @@
 package org.k2.processmining.model.miningmethod;
 
+import org.k2.processmining.model.MethodState;
+
 import java.io.Serializable;
 
 /**
@@ -8,7 +10,7 @@ import java.io.Serializable;
 public class MiningMethod implements Serializable{
     private String methodName;
     private String id;
-    private int state = 1;
+    private int state = MethodState.ACTIVE.getValue();
 
     public void setState(int state) {
         this.state = state;

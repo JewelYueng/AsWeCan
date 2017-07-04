@@ -9,6 +9,7 @@ import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.AbstractLog;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.storage.LogStorage;
+import org.k2.processmining.util.Message;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -142,7 +143,7 @@ public abstract class CommonLogServiceImpl<T extends AbstractLog> implements Com
         Integer line = mapper.lineOfLogId(id, userId,
                 LogState.ACTIVE.getValue(), -1);
         if (line == null) {
-            throw new BadRequestException("The log is not exist");
+            throw new BadRequestException(Message.LOG_IS_NOT_EXIST);
         }
         return AppConfig.pageNum(line);
     }
@@ -151,7 +152,7 @@ public abstract class CommonLogServiceImpl<T extends AbstractLog> implements Com
         Integer line = mapper.lineOfLogId(id, null,
                 LogState.ACTIVE.getValue(), LogShareState.SHARED.getValue());
         if (line == null) {
-            throw new BadRequestException("The log is not exist");
+            throw new BadRequestException(Message.LOG_IS_NOT_EXIST);
         }
         return AppConfig.pageNum(line);
     }
