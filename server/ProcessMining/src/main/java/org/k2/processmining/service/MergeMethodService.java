@@ -25,9 +25,6 @@ public interface MergeMethodService {
     boolean isActive(String id);
     boolean isActive(MergeMethod mergeMethod);
 
-    @PreAuthorize("#eventLog1!=null and #eventLog2!=null and #mergeMethod!=null" +
-            " and hasPermission(#eventLog1, 'owner') and hasPermission(#eventLog2, 'owner')" +
-            " and #mergeMethod.state==T(org.k2.processmining.model.MethodState).ACTIVE.value")
     TimeResult<EventLog> merge(EventLog eventLog1, EventLog eventLog2, MergeMethod mergeMethod, Map<String, Object> params);
     MergeMethod addMethod(MergeMethod mergeMethod, MultipartFile[] multipartFiles) throws IOException, LoadMethodException;
     void setMethodState(List<String> ids, int state);

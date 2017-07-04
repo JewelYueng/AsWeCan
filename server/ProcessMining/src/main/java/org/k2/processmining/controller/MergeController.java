@@ -56,16 +56,10 @@ public class MergeController {
         MergeMethod mergeMethod = mergeMethodService.getMethodById(form.methodId);
         EventLog eventLog1 = eventLogService.getLogById(form.getEventLogId1());
         EventLog eventLog2 = eventLogService.getLogById(form.getEventLogId2());
-        if (mergeMethod == null || !MethodState.isActive(mergeMethod.getState()))  throw new BadRequestException("Method is not exist.");
-        if (eventLog1 == null || !LogState.isActive(eventLog1.getState())) throw new BadRequestException("EventLog1 is not exist.");
-        if (eventLog2 == null || !LogState.isActive(eventLog2.getState())) throw new BadRequestException("EventLog2 is not exist.");
-        if (eventLog1.getId().equals(eventLog2.getId())) throw new BadRequestException("Please use different eventLogs");
         TimeResult<EventLog> result = mergeMethodService.merge(eventLog1, eventLog2, mergeMethod, form.parameters);
         if (result == null) {
             throw new BadRequestException(Message.MERGE_FAIL);
         }
-        List<EventLog> eventLogs = eventLogService.getEventLogsByIds(Arrays.asList(result.getResult().getMergeRelation().split(",")));
-        result.getResult().setMergeRelationLogs(eventLogs);
         Map<String, Object> res = new HashMap<>();
         res.put("timeCost", result.getTime());
         res.put("eventLog", result.getResult());

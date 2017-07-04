@@ -65,13 +65,13 @@ public class NormalLogController extends CommonLogController<NormalLog> {
     @RequestMapping(value = "/toEventLog", method = RequestMethod.POST)
     public @ResponseBody
     Object transToEvent(@Valid @RequestParam("id")
-                        @NotBlank(message = "EventLogId should not be empty.") String id) {
+                        @NotBlank(message = "The logId should not be empty.") String id) {
         NormalLog normalLog = normalLogService.getLogById(id);
-        Map<String, Object> res = new HashMap<>();
         EventLog eventLog = normalLogService.transToEventLog(normalLog);
         if (eventLog == null) {
             throw new InternalServerErrorException(Message.TRANS_TO_EVENT_LOG_FAIL);
         }
+        Map<String, Object> res = new HashMap<>();
         res.put("code", 1);
         res.put("eventLog",eventLog);
         return res;
