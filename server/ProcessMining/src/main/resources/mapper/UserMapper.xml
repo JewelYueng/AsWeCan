@@ -35,19 +35,15 @@
         SELECT * FROM user WHERE id = #{id}
     </select>
 
-    <select id="getUserByEmail" resultMap="user">
-        SELECT * FROM user WHERE email = #{email}
-    </select>
-
     <select id="getUserByEmailAndPwd" resultType="user">
-        SELECT * FROM user WHERE email = #{email} AND password = #{password}
+        SELECT * FROM user WHERE email = #{email} <if test="password != null"> AND password = #{password}</if>
     </select>
 
     <update id="updatePwdById" >
         UPDATE user SET password = #{password} WHERE id = #{id}
     </update>
 
-    <update id="updateUserByUserEmail" parameterType="User">
+    <update id="updateUserByUserEmail">
         UPDATE user SET username = #{name},password = #{password},state = #{state},registerdate = #{registerDate}
         ,activatecode = #{activateCode}
         WHERE email = #{email}
@@ -80,7 +76,6 @@
             #{item}
         </foreach>
     </update>
-
 
     <update id="updateRegisterDateByEmail">
         UPDATE user SET registerdate = #{date} WHERE email = #{email}

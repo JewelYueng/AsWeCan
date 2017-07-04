@@ -66,12 +66,12 @@ public class AdminController {
 
     @RequestMapping(value = "/home")
     public void home(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/html/admin/index.html").forward(request,response);
+        request.getRequestDispatcher("/html/admin.html").forward(request,response);
     }
 
     @RequestMapping(value = "/loginPage")
     public void loginPage(HttpServletRequest request,HttpServletResponse response)throws ServletException,IOException{
-        request.getRequestDispatcher("/html/admin/login.html").forward(request,response);
+        request.getRequestDispatcher("/html/admin.html").forward(request,response);
     }
 
 

@@ -29,6 +29,22 @@ public class Message {
     public static final String USER_LOGOUT_SUCCESS = "用户登出成功！";
     public static final String USER_LOGOUT_SUCCESS_CODE = "200";
 
+    //用户注册
+    public static final String REGISTER_VALIDATECODE_NULL = "验证码为空！";
+    public static final String REGISTER_VALIDATECODE_NULL_CODE = "400";
+    public static final String REGISTER_VALIDATECODE_WRONG = "验证码错误！";
+    public static final String REGISTER_VALIDATECODE_WRONG_CODE = "401";
+    public static final String REGISTER_PASSWORD_INCONSISTENT = "两次输入的密码不一致！";
+    public static final String REGISTER_PASSWORD_INCONSISTENT_CODE = "402";
+    public static final String REGISTER_EMAIL_NULL = "邮箱为空！";
+    public static final String REGISTER_EMAIL_NULL_CODE = "403";
+    public static final String REGISTER_EMAIL_REPEAT = "该邮箱已被注册！";
+    public static final String REGISTER_EMAIL_REPEAT_CODE = "404";
+    public static final String REGISTER_NAME_NULL = "用户名为空！";
+    public static final String REGISTER_NAME_NULL_CODE = "405";
+    public static final String REGISTER_SUCCESS = "注册成功！";
+    public static final String REGISTER_SUCCESS_CODE = "200";
+
 
     //管理员登录
     public static final String ADMIN_LOGIN_SUCCESS = "管理员登录成功";

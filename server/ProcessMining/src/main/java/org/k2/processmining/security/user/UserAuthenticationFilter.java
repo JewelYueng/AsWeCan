@@ -64,7 +64,6 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
                 e.printStackTrace();
             }
             System.out.println(buffer.toString());
-            System.out.println("session:"+session.getAttribute("validateCode"));
             System.out.println("json:"+buffer.toString());
             UserForm userForm = GsonParser.fromJson(buffer.toString(),UserForm.class);
             this.jsonPassword = userForm.getPassword();

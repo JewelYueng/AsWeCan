@@ -5,6 +5,8 @@ import org.k2.processmining.model.UserState;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.security.user.MyUserDetails;
 import org.k2.processmining.service.UserService;
+import org.k2.processmining.util.Message;
+import org.omg.CORBA.MARSHAL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -62,42 +64,40 @@ public class UserController {
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public @ResponseBody
-    Object register(@RequestBody RegisterForm registerForm,HttpServletRequest request){
+    Object register(@RequestBody RegisterForm registerForm,HttpServletRequest request,HttpServletResponse response){
 
-        System.out.println(registerForm);
+        response.setHeader("Content-type", "application/json;charset=UTF-8");
         Map map = new HashMap();
         HttpSession session = request.getSession();
-        System.out.println(session.getAttribute("validateCode"));
+        String code = null,message = null;
         System.out.println("session:"+session.getAttribute("validateCode"));
         if ("".equals(registerForm.getValidateCode())){
-            map.put("code",400); //验证码为空
+            code = Message.REGISTER_VALIDATECODE_NULL_CODE;
+            message = Message.REGISTER_VALIDATECODE_NULL;
         }
-
         else if (!registerForm.getValidateCode().equalsIgnoreCase((String) session.getAttribute("validateCode"))){
-            System.out.println(session.getAttribute("validateCode"));
             System.out.println("session:"+session.getAttribute("validateCode"));
-            map.put("code",401);
+            code = Message.REGISTER_VALIDATECODE_WRONG_CODE;
+            message = Message.REGISTER_VALIDATECODE_WRONG;
         }
         else if ("".equals(registerForm.getPassword()) || "".equals(registerForm.getRePassword()) || !registerForm.getPassword().equals(registerForm.getRePassword())){
-            map.put("code",402); // 两次输入的密码不一致
-
+            code = Message.REGISTER_PASSWORD_INCONSISTENT_CODE;
+            message = Message.REGISTER_PASSWORD_INCONSISTENT;
+            // 两次输入的密码不一致
         }
         else {
             User user = new User();
             user.setEmail(registerForm.getEmail());
             user.setName(registerForm.getName());
             user.setPassword(registerForm.getPassword());
-            map.put("code",userService.addUser(user));
+            Map temp  = userService.addUser(user);
+            code = (String) temp.get("code");
+            message = (String) temp.get("message");
         }
-
-
+        map.put("code",code);
+        map.put("message",message);
         return map;
 
-//        System.out.println("name:"+user.getName()+"  email:"+user.getEmail()+"  pwd:"+user.getPassword());
-//        Map result = new HashMap();
-//            //注册操作
-//            result.put("code",userService.addUser(user));
-//        return result;
     }
 
     @RequestMapping(value = "/register/activate",method = RequestMethod.GET)
@@ -139,15 +139,11 @@ public class UserController {
 
     @RequestMapping(value = "/getUser",method = RequestMethod.GET)
     public @ResponseBody
-    Object getUser(HttpServletRequest request,HttpServletResponse response){
-        Map map = new HashMap();
-        User user = getLoginUser();
-//        User user = userService.getUserByEmail(getUser().getEmail());
-        map.put("user",user);
-        return map;
+    Object getUser(){
+        return new HashMap<Object,User>(){{put("user",getLoginUser());}};
     }
 
-    public User getUser(){
+    public User getUser(int temp){
         User user = new User();
         user.setId("1");
         user.setEmail("1@1.com");

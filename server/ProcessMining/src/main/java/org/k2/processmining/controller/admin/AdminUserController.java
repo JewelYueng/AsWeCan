@@ -34,11 +34,11 @@ public class AdminUserController {
         return map;
     }
 
-    @RequestMapping(value = "/freeze",method = RequestMethod.POST)
+    @RequestMapping(value = "/forbid",method = RequestMethod.POST)
     public @ResponseBody
     Object freezeUser(@Valid @RequestBody IdListForm idListForm){
         Map map = new HashMap();
-        userService.updateStateByUserId(idListForm.getIdList(),UserState.FREEZE.getValue());
+        userService.updateStateByUserId(idListForm.getIdList(),UserState.FORBIDDEN.getValue());
         map.put("code",200);
         return map;
     }

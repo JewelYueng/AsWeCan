@@ -15,10 +15,6 @@ import java.io.IOException;
  */
 public class AdminSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    public static final String ADMIN_LOGIN_SUCCESS = "admin login success";
-    public static final int ADMIN_LOGIN_SUCCESS_CODE = 200;
-
-
     @Override
     public void onAuthenticationSuccess(
             HttpServletRequest request,

@@ -15,16 +15,6 @@ import java.io.IOException;
  */
 public class AdminFailureHandler extends SimpleUrlAuthenticationFailureHandler{
 
-//    public static final String ADMIN_NOT_FOUND = "workId is not found!";
-//    public static final int ADMIN_NOT_FOUND_CODE = 401;
-//    public static final String ADMIN_PASSWORD_WRONG = "the password is error!";
-//    public static final int ADMIN_PASSWORD_WRONG_CODE = 402;
-//    public static final String ADMIN_VALIDATECODE_NULL = "the validateCode is null!";
-//    public static final int ADMIN_VALIDATECODE_NULL_CODE = 403;
-//    public static final String ADMIN_VALIDATECODE_WRONG = "the validateCode is error";
-//    public static final int ADMIN_VALIDATECODE_WRONG_CODE = 404;
-
-
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 
