@@ -19,6 +19,7 @@ export default {
   },
   actions: {
     selectLog({commit}, item) {
+      console.log(item)
       commit('SET_SELECTED', { item })
     }
   },

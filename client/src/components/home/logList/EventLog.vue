@@ -204,9 +204,6 @@
       }
       this.getTotalItems()
     },
-    destroyed(){
-      this.selectLog({type: -1, id: null})
-    },
     computed: {
       count: function (item, index) {
         let sum = this.items.length;
@@ -267,6 +264,7 @@
       jumpToRaw(index){
         if (this.items[index].rawLog) {
           this.$api({method: 'getRawLogPage', query: {id: this.items[index].rawLog.id}}).then( res => {
+            debugger
             this.selectLog({type: 0, id: this.items[index].rawLog.id, page: res.data.page})
             this.changeFilePath('1-1')
           }, err => {
