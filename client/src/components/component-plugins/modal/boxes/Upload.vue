@@ -7,9 +7,9 @@
       　　<div class="file">
       <div class="userdefined-file">
         　　<input type="text" name="userdefinedFile" id="userdefinedFile" :value="fileName">
-        　　<button type="button">选择文件</button>
+        　　<label type="button" for="file">选择文件</label>
       </div>
-      <input type="file" name="file" id="file" v-on:change="fileChange" ref="file">
+      <input type="file" name="file" id="file" ref="file" v-on:change="fileChange">
       　　</div>
     </form>
     <div style="padding: 20px">
@@ -75,7 +75,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .userdefined-file button {
+  .userdefined-file label {
     display: inline-block;
     vertical-align: middle;
     width: 80px;
@@ -83,9 +83,9 @@
     height: 40px;
     line-height: 40px;
     font-size: 14px;
-    background-color: #c8c8c8;
+    background-color: #20A0FF;
     border: none;
-    color: black;
+    color: white;
     cursor: pointer;
   }
   .file input[type="file"] {
