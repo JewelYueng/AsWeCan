@@ -12,7 +12,7 @@ public class GsonParser {
         return gson.fromJson(json,clazz);
     }
 
-    public static String parseToCodeAndMessage(int code,String message){
+    public static String parseToCodeAndMessage(String code,String message){
         return "{\"code\":"+code+",\"message\":\""+message+"\"}";
     }
 }

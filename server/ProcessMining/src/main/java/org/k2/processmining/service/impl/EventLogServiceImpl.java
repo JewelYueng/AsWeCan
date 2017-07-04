@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * Created by nyq on 2017/6/19.
@@ -158,5 +159,6 @@ public class EventLogServiceImpl extends CommonLogServiceImpl<EventLog> implemen
                 logGroup.getEventLog().setMergeRelationLogs(mergeEventLogs);
             }
         }
+
     }
 }

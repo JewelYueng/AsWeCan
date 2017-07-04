@@ -13,10 +13,10 @@
     <security:http pattern="/js/**" security="none"/>
     <security:http pattern="/home/code" security="none"/>
     <security:http pattern="/user/register/**" security="none"/>
-    <security:http pattern="login" security="none"/>
+    <!--<security:http pattern="login" security="none"/>-->
 
     <security:http auto-config="false" pattern="/admin/**" entry-point-ref="adminEntryPoint">
-        <security:intercept-url pattern="/admin/**" access="permitAll"/>
+        <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
         <security:custom-filter ref="adminFilter"  position="FORM_LOGIN_FILTER"/>
         <security:custom-filter ref="adminRememberMeFilter" position="REMEMBER_ME_FILTER"/>
         <security:logout logout-url="/admin/logout" delete-cookies="JSESSIONID,adminRememberMe" success-handler-ref="adminLogoutSuccessHandler" />
