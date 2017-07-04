@@ -27,7 +27,7 @@
         <div class="operations"></div>
       </div>
       <div class="list">
-        <div class="list-item" v-for="(item,index) in items" :class="{selectedItem: isSelected(index)}">
+        <div class="list-item" v-for="(item,index) in items" :class="{selectedItem: isSelected(index)}" @hover="hoverItem(index)">
           <div class="log-head">
             <input type="checkbox" v-model="checked" :value="item.rawLog.id" @click="currClick(item,index)">
             <span class="log-name"
@@ -106,18 +106,21 @@
       padding: 10px 0px 10px 0px;
       border-bottom: 0.5px solid @light_theme;
       .log-head {
-        flex: 0 0 200px;
+        flex: 0 0 25%;
         text-align: left;
         display: flex;
         flex-direction: row;
+        min-width: 220px;
         .log-name {
           cursor: pointer;
-          width: 180px;
+          width: 100%;
+          min-width: 200px;
           .too-long-text;
         }
       }
       .operations {
-        flex: 0 0 150px;
+        flex: 0 0 15%;
+        min-width: 150px;
         color: @dark_theme;
         i {
           margin: 0 5px;
@@ -132,19 +135,23 @@
         }
       }
       .date {
-        flex: 0 0 120px;
+        flex: 0 0 10%;
+        min-width: 120px;
         .too-long-text;
       }
       .raw-log {
-        flex: 0 0 250px;
+        flex: 0 0 22%;
+        min-width: 210px;
         .too-long-text;
       }
       .normal-log {
-        flex: 0 0 250px;
+        flex: 0 0 22%;
+        min-width: 220px;
         .too-long-text;
       }
       .event-log {
-        flex: 0 0 250px;
+        flex: 0 0 22%;
+        min-width: 220px;
         .too-long-text;
       }
     }
@@ -168,7 +175,8 @@
         totalAmount: [],
         items: [],
         currentPage: 1,
-        total_items_num: 10
+        total_items_num: 10,
+        hoveringIndex: -1
       }
     },
     created(){
@@ -224,7 +232,9 @@
         }else{
           this.getTotalItems()
         }
-
+      },
+      hoverItem(index){
+        this.hoveringIndex = index
       },
       isSelected(index){
 

@@ -76,7 +76,7 @@
     },
     created(){
       this.changeHomePath('/mining')
-      this.resource = this.$route.params.resource_data
+      this.resource = this.resource_data
       this.getDiagramData('PetriNet')
       this.getDiagramData('Sankey')
       this.getDiagramData('TransitionSystem')
@@ -84,6 +84,7 @@
     destroyed(){
       this.changeDiagramPath('1')
     },
+    props: ['resource_data','raw_data'],
     methods: {
       ...mapActions(['changeHomePath','changeDiagramPath']),
       handleSelect(key, keyPath) {
@@ -97,7 +98,7 @@
           'TransitionSystem': 'produce',
           'ResourceRelation': 'resource'
         }
-        let mining_params = this.$route.params.raw_data
+        let mining_params = this.raw_data
         this.$api({
           method: 'mining',
           body: _.extend({

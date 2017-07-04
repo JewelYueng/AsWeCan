@@ -117,18 +117,20 @@
       padding: 10px 0px 10px 0px;
       border-bottom: 0.5px solid @light_theme;
       .log-head {
-        flex: 0 0 200px;
+        flex: 0 0 20%;
+        min-width: 200px;
         display: flex;
         flex-direction: row;
         text-align: left;
         .log-name {
           cursor: pointer;
-          width: 180px;
+          min-width: 175px;
           .too-long-text;
         }
       }
       .operations {
-        flex: 0 0 150px;
+        flex: 0 0 15%;
+        min-width: 150px;
         color: @dark_theme;
         i {
           margin: 0 5px;
@@ -143,14 +145,17 @@
         }
       }
       .date {
-        flex: 0 0 120px;
+        flex: 0 0 10%;
+        min-width: 94px;
       }
       .raw-log {
-        flex: 0 0 150px;
+        flex: 0 0 18%;
+        min-width: 160px;
         .too-long-text;
       }
       .normal-log {
-        flex: 0 0 150px;
+        flex: 0 0 18%;
+        min-width: 160px;
         .too-long-text;
       }
       .event-log {
@@ -158,15 +163,16 @@
         .too-long-text;
       }
       .merge-relation {
-        flex: 0 0 200px;
+        flex: 0 0 18%;
+        min-width: 160px;
         .too-long-text;
         .relation1 {
-          width: 200px;
+          min-width: 180px;
           .too-long-text;
           cursor: pointer;
         }
         .relation2 {
-          width: 200px;
+          min-width: 180px;
           .too-long-text;
           cursor: pointer;
         }

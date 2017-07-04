@@ -25,7 +25,7 @@
           <div class="img-button log-name" @click="showDetail(index)" :title="item.eventLog.logName">
             {{item.eventLog.logName}}
           </div>
-          <div class="uploader">{{item.eventLog.userId}}</div>
+          <div class="uploader">{{item.user.name}}</div>
           <div class="date">
             {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()}`}}
           </div>
@@ -113,13 +113,14 @@
       border-bottom: 0.5px solid @light_theme;
       .log-name {
         cursor: pointer;
-        max-width: 200px;
-        flex: 0 0 170px;
+        min-width: 190px;
+        flex: 0 0 20%;
         .too-long-text;
         text-align: left;
       }
       .operations {
-        flex: 0 0 40px;
+        flex: 0 0 10%;
+        min-width: 40px;
         img {
           width: 18px;
           height: 18px;
@@ -128,26 +129,27 @@
         }
       }
       .uploader {
-        flex: 0 0 90px
+        flex: 0 0 8%;
+        min-width: 80px;
       }
       .date {
-        flex: 0 0 120px;
+        flex: 0 0 10%;
+        min-width: 90px;
         .too-long-text;
       }
       .raw-log {
-        flex: 0 0 150px;
+        flex: 0 0 17%;
+        min-width: 170px;
         .too-long-text;
       }
       .normal-log {
-        flex: 0 0 150px;
-        .too-long-text;
-      }
-      .event-log {
-        flex: 0 0 200px;
+        flex: 0 0 17%;
+        min-width: 170px;
         .too-long-text;
       }
       .merge-relation {
-        flex: 0 0 250px;
+        flex: 0 0 17%;
+        min-width: 170px;
       }
     }
   }

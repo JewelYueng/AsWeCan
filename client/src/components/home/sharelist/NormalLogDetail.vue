@@ -21,7 +21,7 @@
       <div class="list">
         <div class="list-item" v-for="(item,index) in items" :class="{selectedItem: isSelected(index)}">
           <div class="log-name" :title="item.normalLog.logName">{{item.normalLog.logName}}</div>
-          <div class="uploader">{{item.normalLog.userId}}</div>
+          <div class="uploader">{{item.user.name}}</div>
           <div class="date">
             {{`${new Date(item.normalLog.createDate).getFullYear()}-${new Date(item.normalLog.createDate).getMonth() + 1}-${new Date(item.normalLog.createDate).getDate()}`}}
           </div>
@@ -105,13 +105,14 @@
       border-bottom: 0.5px solid @light_theme;
       .log-name {
         cursor: pointer;
-        max-width: 200px;
-        flex: 0 0 250px;
+        min-width: 250px;
+        flex: 0 0 25%;
         .too-long-text;
         text-align: left;
       }
       .operations {
-        flex: 0 0 40px;
+        flex: 0 0 5%;
+        min-width: 40px;
         img {
           width: 18px;
           height: 18px;
@@ -120,18 +121,22 @@
         }
       }
       .uploader {
-        flex: 0 0 90px
+        flex: 0 0 8%;
+        min-width: 80px;
       }
       .date {
-        flex: 0 0 120px;
+        flex: 0 0 10%;
+        min-width: 90px;
         .too-long-text;
       }
       .raw-log {
-        flex: 0 0 250px;
+        flex: 0 0 25%;
+        min-width: 250px;
         .too-long-text;
       }
       .event-log {
-        flex: 0 0 250px;
+        flex: 0 0 25%;
+        min-width: 250px;
         .too-long-text;
       }
     }

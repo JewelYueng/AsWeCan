@@ -8,7 +8,6 @@ import ProcessMining from "components/home/ProcessMining/ProcessMining"
 import Login from "components/login/index"
 import Register from "components/register/index"
 import Home from "components/home/index"
-import MiningResult from "components/home/processMining/Index"
 
 Vue.use(Router)
 
@@ -47,12 +46,6 @@ export default new Router({
           path: "/mining",
           name: 'mining',
           component: ProcessMining
-
-        },
-        {
-          path: "/miningResult",
-          name: 'miningResult',
-          component: MiningResult
 
         }
       ]

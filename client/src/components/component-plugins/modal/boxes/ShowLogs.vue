@@ -68,6 +68,9 @@
     background-color: white;
     box-shadow: 0 0 3px 0 #324157;
     border-radius: 5px;
+    .pageDiv{
+      margin: 20px;
+    }
   }
 
   .btn-group{
@@ -77,9 +80,7 @@
     background-color: @light_silver;
   }
 
-  .pageDiv{
-    margin: 10px;
-  }
+
 </style>
 
 <script>

@@ -1,43 +1,47 @@
 <template>
-  <div class="mining-list">
-    <div class="title">流程挖掘</div>
-    <hr>
-    <div class="file_choose">
-      <el-button type="primary" @click="chooseLog()">选择文件</el-button>
-      <span>{{log.name}}</span>
-    </div>
-    <hr>
-    <div class="algorithm_choose">
-      <el-select v-model="selectedId" placeholder="请选择算法类型">
-        <el-option
-          v-for="item in methods"
-          :key="item.id"
-          :label="item.name"
-          :value="item.id">
-        </el-option>
-      </el-select>
-    </div>
-
-    <div class="para" v-for="(item,itemIndex) in methods" v-if="item.id === selectedId">
-      <div v-for="params in item.paramters">
-        <br>{{params.name}}:
-        <el-input size="small" type="number" v-if="params.type!='Enum'" :min="params.minVal" :max="params.maxVal"
-                  v-model="send_params_arr[itemIndex][params.key]"
-                  @blur="change(itemIndex, params.key, params.minVal,params.maxVal)">
-        </el-input>
-        <el-select v-model="send_params_arr[itemIndex][params.key]" v-if="params.type=='Enum'">
+  <transition>
+    <div class="mining-list" v-if="!hasMined">
+      <div class="title">流程挖掘</div>
+      <hr>
+      <div class="file_choose">
+        <el-button type="primary" @click="chooseLog()">选择文件</el-button>
+        <span>{{log.name}}</span>
+      </div>
+      <hr>
+      <div class="algorithm_choose">
+        <el-select v-model="selectedId" placeholder="请选择算法类型">
           <el-option
-            v-for="item in params.values"
-            :key="item"
-            :label="item"
-            :value="item"></el-option>
+            v-for="item in methods"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
+          </el-option>
         </el-select>
       </div>
-      <br>
-      <el-button type="primary" @click="mining()">开始挖掘</el-button>
-    </div>
 
-  </div>
+      <div class="para" v-for="(item,itemIndex) in methods" v-if="item.id === selectedId">
+        <div v-for="params in item.paramters">
+          <br>{{params.name}}:
+          <el-input size="small" type="number" v-if="params.type!='Enum'" :min="params.minVal" :max="params.maxVal"
+                    v-model="send_params_arr[itemIndex][params.key]"
+                    @blur="change(itemIndex, params.key, params.minVal,params.maxVal)">
+          </el-input>
+          <el-select v-model="send_params_arr[itemIndex][params.key]" v-if="params.type=='Enum'">
+            <el-option
+              v-for="item in params.values"
+              :key="item"
+              :label="item"
+              :value="item"></el-option>
+          </el-select>
+        </div>
+        <br>
+        <el-button type="primary" @click="mining()">开始挖掘</el-button>
+      </div>
+    </div>
+    <div v-if="hasMined">
+      <Result :resource_data="resource_data" :raw_data="raw_data"></Result>
+    </div>
+  </transition>
 </template>
 <style lang="less" scoped rel="stylesheet/less">
   @import "~assets/colors.less";
@@ -56,6 +60,15 @@
     text-decoration: none;
     text-align: left;
 
+  }
+
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s
+  }
+
+  .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */
+  {
+    opacity: 0
   }
 
   .button {
@@ -84,7 +97,7 @@
     text-align: left;
   }
 
-  .file_choose{
+  .file_choose {
     margin-left: 30px;
     margin-top: 5px;
     margin-bottom: 10px;
@@ -102,6 +115,7 @@
 
 <script>
   import {mapActions} from 'vuex'
+  import Result from './Index.vue'
   export default{
     data(){
       return {
@@ -110,7 +124,10 @@
         msg: 'hello vue',
         send_params_arr: [],
         log: {},
-        methods: []
+        methods: [],
+        hasMined: false,
+        resource_data: null,
+        raw_data: null
       }
     },
     methods: {
@@ -129,7 +146,7 @@
         }
       },
       mining: function () {
-        let selectedIndex = this.methods.findIndex( method => {
+        let selectedIndex = this.methods.findIndex(method => {
           return method.id === this.selectedId
         })
         let body_raw = {
@@ -145,30 +162,33 @@
             diagramType: 'ResourceRelation',
             parameters: this.send_params_arr[selectedIndex]
           }
-        }).then( res => {
+        }).then(res => {
           if (res.status === 200) {
             console.log(res)
-            this.$router.push({name: "miningResult", params: {raw_data: body_raw, resource_data: res.data.diagram}})
-            this.$hint(`挖掘成功,耗时${parseInt(res.data.timeCost)/1000}秒`,'success')
-          }else{
-            this.$hint('不明原因失败，建议刷新','error')
+//            this.$router.push({name: "miningResult", params: {raw_data: body_raw, resource_data: res.data.diagram}})
+            this.raw_data = body_raw
+            this.resource_data = res.data.diagram
+            this.$hint(`挖掘成功,耗时${parseInt(res.data.timeCost)}毫秒`, 'success')
+            this.hasMined = true
+          } else {
+            this.$hint('不明原因失败，建议刷新', 'error')
           }
         }, err => {
           console.log(err)
-          this.$hint(err.data.msg,'error')
+          this.$hint(err.data.msg, 'error')
         })
       },
       chooseLog(index){
-        this.$modal({type: 'show-logs'}).then((res)=>{
+        this.$modal({type: 'show-logs'}).then((res) => {
           this.log = res
         })
 
       }
     },
-    components: {},
+    components: { Result },
     created(){
       this.changeHomePath('/mining')
-      this.$api({method: 'getMiningMethods'}).then( res => {
+      this.$api({method: 'getMiningMethods'}).then(res => {
         console.log(res)
         this.methods = res.data.methods
         this.methods.map((method) => {
