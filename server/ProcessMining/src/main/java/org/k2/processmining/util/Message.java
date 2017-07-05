@@ -46,6 +46,8 @@ public class Message {
     public static final String REGISTER_EMAIL_REPEAT_CODE = "404";
     public static final String REGISTER_NAME_NULL = "用户名为空！";
     public static final String REGISTER_NAME_NULL_CODE = "405";
+    public static final String REGISTER_EMAIL_WRONG = "邮箱不合法！";
+    public static final String REGISTER_EMAIL_WRONG_CODE = "406";
     public static final String REGISTER_SUCCESS = "注册成功！";
     public static final String REGISTER_SUCCESS_CODE = "200";
 

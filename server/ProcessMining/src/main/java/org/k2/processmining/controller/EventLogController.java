@@ -65,7 +65,8 @@ public class EventLogController extends CommonLogController<EventLog> {
                   @RequestParam(value = "isShare", defaultValue = "0") int isShare,
                   @RequestParam("file") @NotNull(message = "File should not be empty.") CommonsMultipartFile file) {
 
-        User user = getUser();
+//        User user = getUser();
+        User user = Util.getLoginUser();
         if (!LogShareState.isValid(isShare)) {
             isShare = LogShareState.UNSHARED.getValue();
         }

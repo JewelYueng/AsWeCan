@@ -65,4 +65,8 @@ public class AdminDetails implements UserDetails{
     public void addAuthority(String Role){
         this.authorities.add(new SimpleGrantedAuthority(Role));
     }
+
+    public Administrator getAdmin() {
+        return admin;
+    }
 }

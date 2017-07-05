@@ -84,7 +84,7 @@ public class UserServiceTest {
 
     @Test
     public void getUserByEmailTest() throws Exception{
-        String email = "1@1.com";
+        String email = "574335078@qq.com";
         User user = userService.getUserByEmail(email);
         System.out.println(toJSON(user));
     }

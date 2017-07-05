@@ -10,6 +10,5 @@ import java.util.List;
 public interface AdminService {
 
     int checkoutAdminByWorkIdAndPwd(String workId,String password);
-    List<Administrator> getAllAdmins();
     Administrator getAdminByWorkId(String workId);
 }

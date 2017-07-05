@@ -5,8 +5,16 @@ import org.k2.processmining.model.LogShareState;
 import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.log.AbstractLog;
 import org.k2.processmining.model.log.LogType;
+import org.k2.processmining.model.user.Administrator;
 import org.k2.processmining.model.user.User;
+import org.k2.processmining.security.admin.AdminDetails;
+import org.k2.processmining.security.user.MyUserDetails;
+import org.k2.processmining.service.AdminService;
+import org.k2.processmining.service.UserService;
 import org.k2.processmining.support.mining.model.DiagramType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
@@ -17,6 +25,7 @@ import java.util.UUID;
  * Created by nyq on 2017/6/19.
  */
 public class Util {
+
     public static String getUUIDString() {
         return UUID.randomUUID().toString();
     }
@@ -104,4 +113,14 @@ public class Util {
         String requestedWithHeader = request.getHeader("X-Requested-With");
         return "XMLHttpRequest".equals(requestedWithHeader);
     }
+
+    public static User getLoginUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof MyUserDetails){
+            User user = ((MyUserDetails)principal).getUser();
+            return user;
+        }
+        return null;
+    }
+
 }

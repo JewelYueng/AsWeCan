@@ -31,11 +31,11 @@
         SELECT * FROM user
     </select>
 
-    <select id="getUserByUserId" resultType="user">
+    <select id="getUserByUserId" resultMap="user">
         SELECT * FROM user WHERE id = #{id}
     </select>
 
-    <select id="getUserByEmailAndPwd" resultType="user">
+    <select id="getUserByEmailAndPwd" resultMap="user">
         SELECT * FROM user WHERE email = #{email} <if test="password != null"> AND password = #{password}</if>
     </select>
 

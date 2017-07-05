@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService{
     @Autowired
     LogStorage logStorage;
 
-    private static String serverUrl = "http://192.168.0.100:8080";
+    private static String serverUrl = "http://116.56.129.93:8088/AssWeCan";
 
     @Override
     public Map addUser(User newUser) {
@@ -44,6 +44,11 @@ public class UserServiceImpl implements UserService{
             map.put("code",Message.REGISTER_EMAIL_NULL_CODE);
             map.put("message",Message.REGISTER_EMAIL_NULL);
             return map; //邮箱为空
+        }
+        if (!checkEmail(newUser.getEmail())){
+            map.put("code",Message.REGISTER_EMAIL_WRONG_CODE);
+            map.put("message",Message.REGISTER_EMAIL_WRONG);
+            return map;
         }
         User oldUser=  userService.getUserByEmail(newUser.getEmail());
         if (oldUser != null && oldUser.getState() != 2){
@@ -113,7 +118,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User getUserByEmail(String email) {
-        return userMapper.getUserByEmailAndPwd(email,null);
+
+        User user = userMapper.getUserByEmailAndPwd(email,null);
+        return user;
     }
 
     @Override
@@ -206,5 +213,10 @@ public class UserServiceImpl implements UserService{
                 iterator.remove();
             }
         }
+    }
+
+    public boolean checkEmail(String email){
+        String regex = "^([a-zA-Z0-9]*[-_]?[a-zA-Z0-9]+)*@([a-zA-Z0-9]*[-_]?[a-zA-Z0-9]+)+[\\\\.][A-Za-z]{2,3}([\\\\.][A-Za-z]{2})?$";
+        return email.matches(regex);
     }
 }

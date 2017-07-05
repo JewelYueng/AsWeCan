@@ -6,6 +6,7 @@ import org.k2.processmining.model.user.User;
 import org.k2.processmining.security.user.MyUserDetails;
 import org.k2.processmining.service.UserService;
 import org.k2.processmining.util.Message;
+import org.k2.processmining.util.Util;
 import org.omg.CORBA.MARSHAL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,23 +45,6 @@ public class UserController {
         return map;
     }
 
-//    @RequestMapping(value = "/active",method = RequestMethod.POST)
-//    public @ResponseBody
-//    Object activeUser(@Valid @RequestBody IdListForm idListForm){
-//        Map map = new HashMap();
-//        userService.updateStateByUserId(idListForm.getIdList(), UserState.ACTIVE.getValue());
-//        map.put("code",200);
-//        return map;
-//    }
-
-//    @RequestMapping(value = "/freeze",method = RequestMethod.POST)
-//    public @ResponseBody
-//    Object freezeUser(@Valid @RequestBody IdListForm idListForm){
-//        Map map = new HashMap();
-//        userService.updateStateByUserId(idListForm.getIdList(),UserState.FREEZE.getValue());
-//        map.put("code",200);
-//        return map;
-//    }
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public @ResponseBody
@@ -107,24 +91,15 @@ public class UserController {
         int code = userService.activateAccountByEmailAndCode(email,activateCode);
         System.out.println("code:"+code);
         request.getRequestDispatcher("/html/activateSuccess.html").forward(request,response);
-//        return "index";
     }
 
-//    @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
-//    public @ResponseBody
-//    Object delete(@RequestBody IdListForm ids){
-//        Map map = new HashMap();
-//        userService.deleteUserById(ids.getIdList());
-//        map.put("code",200);
-//        return map;
-//    }
 
     @RequestMapping(value = "/password",method = RequestMethod.POST)
     public @ResponseBody
     Object updatePassword(@RequestBody PwdForm pwdForm){
         Map map = new HashMap();
         System.out.println("updatePassword");
-        userService.updatePwdById(getLoginUser().getId(),pwdForm.getPassword());
+        userService.updatePwdById(Util.getLoginUser().getId(),pwdForm.getPassword());
         map.put("code",200);
         return map;
     }
@@ -140,28 +115,7 @@ public class UserController {
     @RequestMapping(value = "/getUser",method = RequestMethod.GET)
     public @ResponseBody
     Object getUser(){
-        return new HashMap<Object,User>(){{put("user",getLoginUser());}};
-    }
-
-    public User getUser(int temp){
-        User user = new User();
-        user.setId("1");
-        user.setEmail("1@1.com");
-        return user;
-    }
-
-    private User getLoginUser(){
-        System.out.println("getLoginUser");
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof MyUserDetails){
-            String email = ((MyUserDetails)principal).getUsername();
-            System.out.println(email);
-            User user = userService.getUserByEmail(email);
-            return user;
-        }else if (principal instanceof UserDetails){
-            System.out.println("userDetails");
-        }
-        return null;
+        return new HashMap<Object,User>(){{put("user", Util.getLoginUser());}};
     }
 
     public static class PwdForm{
@@ -243,4 +197,5 @@ public class UserController {
 //            return super.toString();
         }
     }
+
 }

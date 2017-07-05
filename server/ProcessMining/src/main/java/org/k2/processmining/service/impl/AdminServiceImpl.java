@@ -32,11 +32,6 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
-    public List<Administrator> getAllAdmins() {
-        return adminMapper.listAllAdmins();
-    }
-
-    @Override
     public Administrator getAdminByWorkId(String workId) {
         return adminMapper.getAdminByWorkId(workId);
     }

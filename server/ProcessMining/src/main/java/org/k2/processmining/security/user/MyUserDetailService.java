@@ -24,18 +24,16 @@ public class MyUserDetailService implements UserDetailsService{
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         User user = userService.getUserByEmail(email);
+        System.out.println("loadUserByUsername  name:"+user.getName());
 
         if (user == null || user.getState() == UserState.DELETE.getValue()){
             //查无此账号
-//            throw new UsernameNotFoundException(UserFailureHandler.USER_NAME_NOT_FOUND);
             throw new UsernameNotFoundException(Message.USER_NAME_NOT_FOUND_CODE);
         }
         if (user.getState() == UserState.FREEZE.getValue()){
-//            throw new UsernameNotFoundException(UserFailureHandler.USER_EMAIL_FREEZE);//该账号未激活
             throw new UsernameNotFoundException(Message.USER_EMAIL_FREEZE_CODE);
         }
         if (user.getState() == UserState.FORBIDDEN.getValue()){
-//            throw new UsernameNotFoundException(UserFailureHandler.USER_FORBINDDEN); //该账号被禁用
             throw new UsernameNotFoundException(Message.USER_FORBIDDEN_CODE);
         }
         System.out.println(user.getEmail()+"   "+user.getPassword());

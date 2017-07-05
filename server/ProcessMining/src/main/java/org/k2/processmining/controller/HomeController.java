@@ -77,14 +77,5 @@ public class HomeController {
         throw new ForbiddenException("Attempted to access the protected resource!");
     }
 
-//    @RequestMapping(value = "/login",method = RequestMethod.POST)
-//    public void testLogin(@RequestBody Map map){
-//        map.forEach(new BiConsumer() {
-//            @Override
-//            public void accept(Object o, Object o2) {
-//                System.out.println("o:"+o+"   o2:"+o2);
-//            }
-//        });
-//    }
 
 }

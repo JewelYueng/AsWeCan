@@ -38,23 +38,6 @@ public class AdminController {
         return map;
     }
 
-//    @RequestMapping(value = "")
-//    public @ResponseBody
-//    Object listAllAdmins(){
-//        Map map = new HashMap();
-//        map.put("admins",adminService.getAllAdmins());
-//        return map;
-//    }
-
-//    @RequestMapping(value = "/login",method = RequestMethod.GET)
-//    public @ResponseBody
-//    Object adminLogin(@RequestParam(value = "error",required = false)String error, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//
-//        Map map = new HashMap();
-//            request.getRequestDispatcher("/html/admin.html").forward(request,response);
-//        return map;
-//    }
-
     @RequestMapping(value = "/getAdmin",method = RequestMethod.GET)
     public @ResponseBody
     Object getAdmin(){
@@ -62,7 +45,6 @@ public class AdminController {
         map.put("admin",getLoginAdmin());
         return map;
     }
-
 
     @RequestMapping(value = "/home")
     public void home(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
@@ -78,10 +60,7 @@ public class AdminController {
     private Administrator getLoginAdmin(){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof AdminDetails){
-            String workId = ((AdminDetails)principal).getUsername();
-            System.out.println(workId);
-            Administrator administrator = adminService.getAdminByWorkId(workId);
-            return administrator;
+            return ((AdminDetails)principal).getAdmin();
         }
         return null;
     }
