@@ -62,6 +62,10 @@ public class MyUserDetails implements UserDetails{
 //                user.getState() == UserState.FREEZE.getValue();
     }
 
+    public void setPassword(String password){
+        user.setPassword(password);
+    }
+
 
     public void addAuthority(String Role){
         this.authorities.add(new SimpleGrantedAuthority(Role));

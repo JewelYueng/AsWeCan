@@ -76,7 +76,7 @@ public class AdminAuthenticationFilter extends UsernamePasswordAuthenticationFil
             }
             if (adminForm.getValidateCode().compareToIgnoreCase((String) session.getAttribute("validateCode"))!=0){
                 System.out.println("admin validateCode error");
-                throw new UsernameNotFoundException(Message.ADMIN_VALIDATECODE_WRONG);
+                throw new UsernameNotFoundException(Message.ADMIN_VALIDATECODE_WRONG_CODE);
             }
 
             if ("".equals(adminForm.getAdminRemember())){

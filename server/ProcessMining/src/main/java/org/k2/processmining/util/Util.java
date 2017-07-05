@@ -13,18 +13,27 @@ import org.k2.processmining.service.AdminService;
 import org.k2.processmining.service.UserService;
 import org.k2.processmining.support.mining.model.DiagramType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import sun.misc.BASE64Encoder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 /**
  * Created by nyq on 2017/6/19.
  */
+
+
 public class Util {
+
+
+    static Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
 
     public static String getUUIDString() {
         return UUID.randomUUID().toString();
@@ -122,5 +131,12 @@ public class Util {
         }
         return null;
     }
+
+    public static String encryptStr(String str){
+        if ("".equals(str))
+            return null;
+        return md5PasswordEncoder.encodePassword(str,"666");
+    }
+
 
 }

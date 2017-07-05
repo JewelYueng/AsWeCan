@@ -13,8 +13,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
  */
 public class AdminDetailService implements UserDetailsService{
 
-//    public static String ADMIN_NOT_FOUND = "admin not found";
-
     @Autowired
     AdminService adminService;
 

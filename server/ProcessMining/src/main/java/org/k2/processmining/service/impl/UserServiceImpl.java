@@ -65,6 +65,7 @@ public class UserServiceImpl implements UserService{
         newUser.setState(UserState.FREEZE.getValue());
         newUser.setRegisterDate(new Date());
         newUser.setActivateCode(SendEmail.getValCode(newUser.getEmail()));
+        newUser.setPassword(Util.encryptStr(newUser.getPassword()));
         if (oldUser!=null){
             userMapper.updateUserByUserEmail(newUser.getEmail(),
                     newUser.getName(),
@@ -105,7 +106,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void updatePwdById(String userId,String password) {
-        userMapper.updatePwdById(userId,password);
+        userMapper.updatePwdById(userId,Util.encryptStr(password));
     }
 
     @Override
@@ -129,7 +130,7 @@ public class UserServiceImpl implements UserService{
         if (userMapper.getUserByEmailAndPwd(email,null) == null){
             return 400; //邮箱不存在
         }
-        if (userMapper.getUserByEmailAndPwd(email,password) == null){
+        if (userMapper.getUserByEmailAndPwd(email,Util.encryptStr(password)) == null){
             return 401; //密码错误
         }
         return 200; //邮箱密码正确
