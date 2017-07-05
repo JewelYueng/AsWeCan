@@ -29,10 +29,12 @@
           <div class="date">
             {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()}`}}
           </div>
-          <div  @click="jumpToRaw(index)" class="raw-log relation-logs" :title="item.rawLog ? item.rawLog.logName : '无'">
+          <div  @click="jumpToRaw(index)" class="raw-log relation-logs" :class="{pointer: item.rawLog}"
+                :title="item.rawLog ? item.rawLog.logName : '无'">
             {{item.rawLog ? item.rawLog.logName : '无'}}
           </div>
-          <div @click="jumpToNormal(index)" class="normal-log relation-logs" :title="item.normalLog ? item.normalLog.logName : '无'">
+          <div @click="jumpToNormal(index)" class="normal-log relation-logs" :class="{pointer: item.normalLog}"
+               :title="item.normalLog ? item.normalLog.logName : '无'">
             {{item.normalLog ? item.normalLog.logName : '无'}}
           </div>
           <div class="merge-relation">

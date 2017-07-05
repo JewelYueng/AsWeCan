@@ -6,13 +6,13 @@
     <form action="" class="activityForm">
       　　<div class="file">
       <div class="userdefined-file">
-        　　<input type="text" name="userdefinedFile" id="userdefinedFile" :value="fileName">
-        　　<label type="button" for="file">选择文件</label>
+        　　<label class="button" for="file">选择文件</label>
+        <label class="text" name="userdefinedFile" id="userdefinedFile" >{{fileName}}</label>
       </div>
       <input type="file" name="file" id="file" ref="file" v-on:change="fileChange">
       　　</div>
     </form>
-    <div style="padding: 20px">
+    <div style="padding: 20px;margin-top: 20px" class="btns">
       是否分享
       <el-switch
         v-model="share_status"
@@ -21,7 +21,7 @@
         :disabled="is_uploading">
       </el-switch>
     </div>
-    <div>
+    <div class="btns">
       <el-button type="primary" v-on:click="upload">上传</el-button>
       <el-button v-on:click="cancel">取消</el-button>
     </div>
@@ -31,15 +31,15 @@
 
 <style scoped lang="less" rel="stylesheet/less">
   .upload {
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
     position: relative;
     background-color: white;
     width: 500px;
     box-shadow: 0 0 3px 0 #324157;
     border-radius: 5px;
     padding: 20px;
-    div {
-      margin: 20px;
-    }
   }
 
   .file {
@@ -50,7 +50,11 @@
   .file label {
     display: inline-block;
   }
+
   .userdefined-file {
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
     position: absolute;
     top: 0;
     left: 20px;
@@ -60,25 +64,23 @@
     line-height: 30px;
     font-size: 0;  /*应对子元素为 inline-block 引起的外边距*/
   }
-  .userdefined-file input[type="text"] {
+  .text {
     display: inline-block;
     vertical-align: middle;
-    padding-right: 14px;
-    padding-left: 14px;
-    width: 300px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    height: 40px;
+    width: 450px;
+    height: 50px;
     line-height: 40px;
     font-size: 14px;
-    overflow: hidden;
+    text-align: left;
     text-overflow: ellipsis;
     white-space: nowrap;
+    border: none;
   }
-  .userdefined-file label {
+  .button {
     display: inline-block;
     vertical-align: middle;
     width: 80px;
+    border-radius: 5px;
     text-align: center;
     height: 40px;
     line-height: 40px;
@@ -94,6 +96,7 @@
     left: 60px;
     z-index: 3;
     opacity: 0;
+    visibility: hidden;
     width: 300px;
     height: 40px;
     line-height: 40px;
