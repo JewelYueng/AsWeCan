@@ -71,14 +71,15 @@
     .pageDiv{
       margin: 20px;
     }
+    .el-table__body tr.current-row>td{
+      background-color: @light_silver;
+    }
   }
 
   .btn-group{
     margin-top: 20px;
   }
-  .el-table__body tr.current-row>td{
-    background-color: @light_silver;
-  }
+
 
 
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="fram">
+  <div class="normal-fram">
     <button @click="back" style="position: absolute;right: 0px;top: 5px;
        color: #324157;background-color: white;z-index: 100;border: none;cursor: pointer"><i class="el-icon-close"></i>
     </button>
@@ -22,7 +22,7 @@
   @import "~assets/colors.less";
   @import "~assets/layout.less";
 
-  .fram {
+  .normal-fram {
     padding: 20px;
     max-height: 600px;
     width: 700px;
@@ -31,23 +31,25 @@
     overflow: auto;
     background-color: white;
     position: relative;
+    .el-button + .el-button {
+      margin-left: 0;
+    }
+    .el-table .cell, .el-table th>div{
+      padding: 5px;
+      textarea{
+        border: none;
+        height: 100%;
+      }
   }
 
-  .el-button + .el-button {
-    margin-left: 0;
-  }
+
 
   .add-btn {
     text-align: left;
     margin: 15px 35px;
   }
 
-  .el-table .cell, .el-table th>div{
-    padding: 5px;
-    textarea{
-      border: none;
-      height: 100%;
-    }
+
   }
 
 </style>

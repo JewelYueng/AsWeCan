@@ -123,7 +123,7 @@
         isActive: true,
         msg: 'hello vue',
         send_params_arr: [],
-        log: {},
+        log: null,
         methods: [],
         hasMined: false,
         resource_data: null,
