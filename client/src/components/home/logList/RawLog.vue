@@ -269,6 +269,10 @@
         }
       },
       shareSome(){
+        if(this.checked.length==0){
+          this.$hint('请选择至少一个日志分享', 'error')
+        }
+        else{
         this.$api({method: 'shareRawLog', body: {idList: this.checked}}).then(res => {
           if (res.data.code === 1) {
             this.$hint('分享成功', 'success')
@@ -279,7 +283,7 @@
         }, err => {
           console.log(err)
           this.$hint(err.data.msg, 'error')
-        })
+        })}
       },
       upload: function () {
         this.$modal({type: 'upload', data: {type: 'raw'}}).then((res) => {
@@ -307,6 +311,10 @@
         })
       },
       deleteSome: function () {
+        if(this.checked.length==0){
+          this.$hint('请选择至少一个日志删除', 'error')
+        }
+        else{
         this.$api({
           method: 'deleteRawLog',
           opts: {body: {idList: this.checked}}
@@ -326,7 +334,7 @@
         }, err => {
           console.log(err)
           this.$hint(err.data.msg, 'error')
-        })
+        })}
 
       },
       share(index){
