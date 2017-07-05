@@ -49,6 +49,22 @@ public class EventLogServiceImpl extends CommonLogServiceImpl<EventLog> implemen
     }
 
     @Override
+    public List<LogGroup> getLogGroups(int page) {
+        List<LogGroup> logGroups = super.getLogGroups(page);
+        verifyLogGroupsIsActive(logGroups);
+        addMergeRelationEventLogs(logGroups);
+        return logGroups;
+    }
+
+    @Override
+    public List<LogGroup> getLogGroupsByKeyWord(String keyWord, int page) {
+        List<LogGroup> logGroups = super.getLogGroupsByKeyWord(keyWord, page);
+        verifyLogGroupsIsActive(logGroups);
+        addMergeRelationEventLogs(logGroups);
+        return logGroups;
+    }
+
+    @Override
     public List<LogGroup> getLogsByUser(User user, int page) {
         List<LogGroup> logGroups = super.getLogsByUser(user, page);
         verifyLogGroupsIsActive(logGroups);

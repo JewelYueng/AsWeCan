@@ -148,6 +148,15 @@ public abstract class CommonLogServiceImpl<T extends AbstractLog> implements Com
         return AppConfig.pageNum(line);
     }
 
+    @Override
+    public int getPageOfLogId(String id) {
+        Integer line = mapper.lineOfLogId(id, null, LogState.ACTIVE.getValue(), -1);
+        if (line == null) {
+            throw new BadRequestException(Message.LOG_IS_NOT_EXIST);
+        }
+        return AppConfig.pageNum(line);
+    }
+
     public int getPageOfSharedLogId(String id) {
         Integer line = mapper.lineOfLogId(id, null,
                 LogState.ACTIVE.getValue(), LogShareState.SHARED.getValue());

@@ -20,20 +20,18 @@ public interface CommonLogService<T> {
     void updateShareStateByLogIdForUser(List<String> ids, int isShared, String userId);
     void updateStateByLogIdForUser(List<String> ids, int state, String userId);
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     List<LogGroup> getLogGroups(int page);
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     List<LogGroup> getLogGroupsByKeyWord(String keyWord, int page);
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     void deleteByAdmin(List<String> ids);
+    int getLogPageNum();
+    int getLogPageNumByKeyWord(String keyWord);
+    int getPageOfLogId(String id);
 
     List<LogGroup> getLogsByUser(User user, int page);
     List<LogGroup> getLogsByUserAndKeyWord(User user, String keyWord, int page);
     List<LogGroup> getSharedLogs(int page);
     List<LogGroup> getSharedLogsByKeyWord(String keyWord, int page);
 
-    int getLogPageNum();
-    int getLogPageNumByKeyWord(String keyWord);
     int getLogPageNumByUserId(String userId);
     int getLogPageNumByUserIdAndKeyWord(String userId, String keyWord);
     int getSharedLogPageNum();

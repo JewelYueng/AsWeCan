@@ -62,4 +62,11 @@ public abstract class CommonAdminLogController<T extends AbstractLog> {
         logService.deleteByAdmin(form.getIdList());
         return new HashMap<String,Object>(){{put("code", 1);}};
     }
+
+    @RequestMapping(value = "/page", method = RequestMethod.GET)
+    public @ResponseBody
+    Object getPageOfLogId(@NotBlank(message = "The logId should not be empty.")@RequestParam("id") String id) {
+        int page = logService.getPageOfLogId(id);
+        return new HashMap<String,Object>(){{put("page", page);}};
+    }
 }
