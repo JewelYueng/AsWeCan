@@ -305,7 +305,7 @@
         this.totalAmount = []
         this.checkedAll = false
         this.checked = []
-        this.$api({method: 'searchEventLog', query: {keyWord: this.keyWord}}).then(res => {
+        this.$api({method: 'searchEventLog', query: {keyWord: this.keyWord, page: this.currentPage}}).then(res => {
           console.log(res)
           this.items = res.data.logGroups
           this.total_items_num = res.data.pageNum * 10
