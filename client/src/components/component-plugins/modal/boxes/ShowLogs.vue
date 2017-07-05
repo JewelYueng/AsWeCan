@@ -113,10 +113,14 @@
         })
       },
       sure(){
-        this.commit({
-          id: this.selectedLog.eventLog.id,
-          name: this.selectedLog.eventLog.logName,
-        })
+        if(this.selectedLog.eventLog) {
+          this.commit({
+            id: this.selectedLog.eventLog.id,
+            logName: this.selectedLog.eventLog.logName,
+          })
+        }else{
+          this.$hint('请选择一个事件日志','warn')
+        }
       },
       cancel(){
         this.commit(true)
