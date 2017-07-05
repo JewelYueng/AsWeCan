@@ -5,7 +5,7 @@
       <hr>
       <div class="file_choose">
         <el-button type="primary" @click="chooseLog()">选择文件</el-button>
-        <span>{{log.name}}</span>
+        <span>{{log.logName}}</span>
       </div>
       <hr>
       <div class="algorithm_choose">
@@ -13,7 +13,7 @@
           <el-option
             v-for="item in methods"
             :key="item.id"
-            :label="item.name"
+            :label="item.logName"
             :value="item.id">
           </el-option>
         </el-select>
@@ -123,11 +123,11 @@
         isActive: true,
         msg: 'hello vue',
         send_params_arr: [],
-        log: {},
         methods: [],
         hasMined: false,
         resource_data: null,
-        raw_data: null
+        raw_data: null,
+        log: {}
       }
     },
     methods: {
@@ -202,6 +202,7 @@
       if(this.$route.params.log){
         this.log = this.$route.params.log
       }
+
     }
 
 

@@ -119,8 +119,8 @@
       width: 100%;
       padding: 10px 0px 10px 0px;
       border-bottom: 0.5px solid @light_theme;
-      justify-content: flex-start;
-      align-items: center;
+      justify-content: center;
+      align-items: flex-start;
       .log-head {
         flex: 0 0 20%;
         min-width: 210px;
