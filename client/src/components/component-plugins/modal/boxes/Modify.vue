@@ -14,14 +14,14 @@
       <el-form-item label="确认密码" prop="check_pass">
         <el-input type="password" v-model="ruleForm.check_pass" auto-complete="off"></el-input>
       </el-form-item>
-      <el-form-item>
+      <el-form-item class="submit-btns">
         <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
         <el-button @click="resetForm('ruleForm')">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
-<style rel="stylesheet/less" scoped lang="less">
+<style rel="stylesheet/less" lang="less">
   .modify {
     position: relative;
     background-color: white;
@@ -33,6 +33,15 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    .el-form-item__label{
+      text-align: left;
+    }
+    .submit-btns{
+      margin: 0 30px;
+      position: relative;
+      left: -30px;
+      top: 10px;
+    }
   }
 </style>
 <script>
@@ -43,6 +52,8 @@
       let validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入密码'));
+        } else if(value.length < 6 || value.length > 20){
+          callback(new Error('请输入6-20位密码'));
         } else {
           if (this.ruleForm.check_pass !== '') {
             this.$refs.ruleForm.validateField('check_pass');
@@ -101,7 +112,7 @@
               }
             })
           } else {
-            console.log('error submit!!');
+            console.log('请正确填写密码信息');
             return false;
           }
         });
