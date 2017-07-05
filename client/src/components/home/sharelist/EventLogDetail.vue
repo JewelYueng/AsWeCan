@@ -111,6 +111,8 @@
       width: 100%;
       padding: 10px 0px 10px 0px;
       border-bottom: 0.5px solid @light_theme;
+      justify-content: flex-start;
+      align-items: center;
       .log-name {
         cursor: pointer;
         min-width: 190px;

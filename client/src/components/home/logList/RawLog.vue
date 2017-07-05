@@ -105,15 +105,20 @@
       width: 100%;
       padding: 10px 0px 10px 0px;
       border-bottom: 0.5px solid @light_theme;
+      justify-content: flex-start;
+      align-items: center;
+
       .log-head {
         flex: 0 0 25%;
         text-align: left;
         display: flex;
         flex-direction: row;
         min-width: 220px;
+        justify-content: center;
+        align-items: center;
         .log-name {
           cursor: pointer;
-          width: 100%;
+          flex: 0 0 20%;
           min-width: 200px;
           .too-long-text;
         }
