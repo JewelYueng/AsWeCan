@@ -199,6 +199,9 @@
           this.send_params_arr.push(param)
         })
       })
+      if(this.$route.params.log){
+        this.log = this.$route.params.log
+      }
     }
 
 

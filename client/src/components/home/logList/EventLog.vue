@@ -411,7 +411,7 @@
 
       },
       processMining(index){
-        this.$router.push({name: 'mining', params: {log_id: this.items[index].eventLog.id}})
+        this.$router.push({name: 'mining', params: {log: this.items[index].eventLog}})
       },
       getTotalItems(){
         const _this = this
