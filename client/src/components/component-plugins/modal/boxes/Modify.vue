@@ -1,5 +1,9 @@
 <template>
   <div class="modify">
+    <button @click="cancel" style="position: absolute;right: 0px;top: 5px;
+       color: #324157;background-color: white;border: none;cursor: pointer">
+      <i class="el-icon-close"></i>
+    </button>
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm">
       <el-form-item label="旧密码" prop="old">
         <el-input type="password" v-model="ruleForm.old" auto-complete="off"></el-input>
@@ -19,6 +23,7 @@
 </template>
 <style rel="stylesheet/less" scoped lang="less">
   .modify {
+    position: relative;
     background-color: white;
     border-radius: 20px;
     overflow: hidden;
@@ -83,6 +88,9 @@
       }
     },
     methods: {
+      cancel(){
+        this.commit(true)
+      },
       submitForm(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {

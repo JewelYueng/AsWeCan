@@ -62,7 +62,7 @@ export default {
   "login": [POST, '/home/login'],
   "register": [POST,'/user/register'],
   "getUser": [GET, '/user/getUser'],
-  "modifyPass": [POST, "user/password"],
+  "modifyPass": [POST, "/user/password"],
   "logout": [POST, '/home/logout'],
   'checkOut': [POST, '/user/checkout']
 }

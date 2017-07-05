@@ -100,14 +100,14 @@
           this.$modal({type: 'modify', data: {old_password: this.user.password}})
         }else{
           this.$hint('请先登录', 'warn')
-          window.location.href = '/home/loginPage'
+          window.location.href = '/AssWeCan/home/loginPage'
         }
       },
       logout(){
         this.$api({method: 'logout'}).then(res => {
           if(res.status === 200){
             this.$hint('登出成功','success')
-            window.location.href = '/home/loginPage'
+            window.location.href = '/AssWeCan/home/loginPage'
           }
         })
       }
