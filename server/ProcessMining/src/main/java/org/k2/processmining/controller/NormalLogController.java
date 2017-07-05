@@ -76,11 +76,4 @@ public class NormalLogController extends CommonLogController<NormalLog> {
         res.put("eventLog",eventLog);
         return res;
     }
-
-    private User getUser() {
-        User user = new User();
-        user.setId("1");
-        user.setName("y2k");
-        return user;
-    }
 }

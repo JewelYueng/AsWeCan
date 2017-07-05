@@ -64,8 +64,6 @@ public class EventLogController extends CommonLogController<EventLog> {
     Object upload(@RequestParam("format") @NotBlank(message = "Format should not be empty.") String format,
                   @RequestParam(value = "isShare", defaultValue = "0") int isShare,
                   @RequestParam("file") @NotNull(message = "File should not be empty.") CommonsMultipartFile file) {
-
-//        User user = getUser();
         User user = Util.getLoginUser();
         if (!LogShareState.isValid(isShare)) {
             isShare = LogShareState.UNSHARED.getValue();
@@ -83,13 +81,5 @@ public class EventLogController extends CommonLogController<EventLog> {
         res.put("code", 1);
         res.put(logType, log);
         return res;
-    }
-
-    private User getUser() {
-        User user = new User();
-        user.setId("1");
-        user.setName("y2k");
-        return user;
-//        return ((IUserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
     }
 }

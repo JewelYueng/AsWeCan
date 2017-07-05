@@ -50,8 +50,6 @@ public abstract class CommonLogController<T extends AbstractLog> {
     Object upload(@RequestParam("format") @NotBlank(message = "Format should not be empty.") String format,
                   @RequestParam(value = "isShare", defaultValue = "0") int isShare,
                   @RequestParam("file") @NotNull(message = "File should not be empty.") CommonsMultipartFile file) {
-
-//        User user = getUser();
         User user = Util.getLoginUser();
         if (!LogShareState.isValid(isShare)) {
             isShare = LogShareState.UNSHARED.getValue();
@@ -92,7 +90,6 @@ public abstract class CommonLogController<T extends AbstractLog> {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public @ResponseBody
     Object getLogsByUserId(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
-//        User user = getUser();
         User user = Util.getLoginUser();
         int pageNum = logService.getLogPageNumByUserId(user.getId());
         if (page > pageNum) {
@@ -123,7 +120,6 @@ public abstract class CommonLogController<T extends AbstractLog> {
     @RequestMapping(value = "/share",method = RequestMethod.POST)
     public @ResponseBody
     Object shareLogs(@Valid @RequestBody IdListForm form){
-//        User user = getUser();
         User user = Util.getLoginUser();
         logService.updateShareStateByLogIdForUser(form.getIdList(), LogShareState.SHARED.getValue(), user.getId());
         return new HashMap<String,Object>(){{put("code", 1);}};
@@ -132,7 +128,6 @@ public abstract class CommonLogController<T extends AbstractLog> {
     @RequestMapping(value = "/unShare",method = RequestMethod.POST)
     public @ResponseBody
     Object unShareRawLogs(@Valid @RequestBody IdListForm form){
-//        User user = getUser();
         User user = Util.getLoginUser();
         logService.updateShareStateByLogIdForUser(form.getIdList(), LogShareState.UNSHARED.getValue(), user.getId());
         return new HashMap<String,Object>(){{put("code", 1);}};
@@ -142,7 +137,6 @@ public abstract class CommonLogController<T extends AbstractLog> {
     public @ResponseBody
     Object deleteByLogId(@Valid @RequestBody IdListForm form){
         Map<String, Object> res = new HashMap<>();
-//        User user = getUser();
         User user = Util.getLoginUser();
         logService.updateStateByLogIdForUser(form.getIdList(), LogState.DELETE.getValue(), user.getId());
         res.put("code", 1);
@@ -153,7 +147,6 @@ public abstract class CommonLogController<T extends AbstractLog> {
     public @ResponseBody
     Object getLogByKeyWord(@NotBlank(message = "The key word is invalid.") @RequestParam("keyWord") String keyWord,
                              @RequestParam(value = "page", required = false, defaultValue = "1") int page){
-//        User user = getUser();
         User user = Util.getLoginUser();
         int pageNum = logService.getLogPageNumByUserIdAndKeyWord(user.getId(), keyWord);
         if (page > pageNum) page = pageNum;
@@ -183,7 +176,6 @@ public abstract class CommonLogController<T extends AbstractLog> {
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     public @ResponseBody
     Object getPageOfLogId(@NotBlank(message = "The logId should not be empty.")@RequestParam("id") String id) {
-//        User user = getUser();
         User user = Util.getLoginUser();
         int page = logService.getPageOfLogId(user.getId(), id);
         return new HashMap<String,Object>(){{put("page", page);}};
@@ -195,17 +187,6 @@ public abstract class CommonLogController<T extends AbstractLog> {
         int page = logService.getPageOfSharedLogId(id);
         return new HashMap<String,Object>(){{put("page", page);}};
     }
-
-    private User getUser() {
-        User user = new User();
-        user.setId("1");
-        user.setName("y2k");
-        return user;
-//        return ((IUserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
-    }
-
-
-
     public abstract T createLog(String id, String userId, String format,
                                 Date createDate, String logName, int isShare);
 }

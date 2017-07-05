@@ -24,7 +24,6 @@ public class MyUserDetailService implements UserDetailsService{
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         User user = userService.getUserByEmail(email);
-        System.out.println("loadUserByUsername  name:"+user.getName());
 
         if (user == null || user.getState() == UserState.DELETE.getValue()){
             //查无此账号

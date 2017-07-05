@@ -31,7 +31,7 @@ public class ExceptionController {
     @ExceptionHandler(ConstraintViolationException.class)
     public @ResponseBody
     Object handleConstraintViolationException(ConstraintViolationException e) {
-        Map<String, Object> res = getRes("Invalid request parameters");
+        Map<String, Object> res = getRes(Message.INVALID_PARAMS);
         List<Map<String,String >> fieldErrors = new LinkedList<>();
         for (ConstraintViolation<?> constraintViolation : e.getConstraintViolations()) {
             Map<String,String> fieldError = new HashMap<>();
@@ -53,7 +53,7 @@ public class ExceptionController {
         return ResponseEntity
                 .badRequest()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new ErrorResource("Invalid request parameters", filedErrorResources));
+                .body(new ErrorResource(Message.INVALID_PARAMS, filedErrorResources));
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
@@ -61,7 +61,7 @@ public class ExceptionController {
     Object handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
         return ResponseEntity.badRequest()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(getRes("Miss request parameter: " + e.getParameterName()));
+                .body(getRes(Message.MISS_PARAM + ":" + e.getParameterName()));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
@@ -69,7 +69,7 @@ public class ExceptionController {
     Object handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         return ResponseEntity.badRequest()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(getRes("The request body is invalid"));
+                .body(getRes(Message.INVALID_PARAMS));
     }
 
     @ExceptionHandler(BadRequestException.class)

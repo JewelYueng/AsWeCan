@@ -53,7 +53,7 @@ public class AdminController {
 
     @RequestMapping(value = "/loginPage")
     public void loginPage(HttpServletRequest request,HttpServletResponse response)throws ServletException,IOException{
-        request.getRequestDispatcher("/html/admin.html").forward(request,response);
+        request.getRequestDispatcher("/html/admin_login.html").forward(request,response);
     }
 
 

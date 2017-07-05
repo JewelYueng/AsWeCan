@@ -72,12 +72,4 @@ public class RawLogController extends CommonLogController<RawLog>{
         res.put("normalLog", normalLog);
         return res;
     }
-
-    private User getUser() {
-        User user = new User();
-        user.setId("1");
-        user.setName("y2k");
-        return user;
-//        return ((IUserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
-    }
 }

@@ -23,6 +23,7 @@ public class AdminFailureHandler extends SimpleUrlAuthenticationFailureHandler{
             /*
              * USED if you want to AVOID redirect to LoginSuccessful.htm in JSON authentication
              */
+            response.setHeader("Content-type", "application/json;charset=UTF-8");
             System.out.println(exception.getMessage());
             if (exception.getMessage().equals(Message.ADMIN_NOT_FOUND_CODE)){
                 response.getWriter().print(GsonParser.parseToCodeAndMessage(Message.ADMIN_NOT_FOUND_CODE,Message.ADMIN_NOT_FOUND));
