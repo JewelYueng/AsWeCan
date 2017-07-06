@@ -67,4 +67,6 @@ public class Message {
     public static final String ADMIN_VALIDATECODE_WRONG_CODE = "404";
     public static final String ADMIN_LOGOUT_SUCCESS = "管理员登出成功！";
     public static final String ADMIN_LOGOUT_SUCCESS_CODE = "200";
+    public static final String ACCESSDENIED = "你没有权限访问该页面";
+    public static final String ACCESSDENIED_CODE = "403";
 }

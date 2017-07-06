@@ -90,7 +90,7 @@ public class UserController {
         System.out.println("######################activateAccount#####################");
         int code = userService.activateAccountByEmailAndCode(email,activateCode);
         System.out.println("code:"+code);
-        request.getRequestDispatcher("/html/activateSuccess.html").forward(request,response);
+        request.getRequestDispatcher("/html/registerSuccess.html").forward(request,response);
     }
 
 
@@ -115,7 +115,17 @@ public class UserController {
     @RequestMapping(value = "/getUser",method = RequestMethod.GET)
     public @ResponseBody
     Object getUser(){
-        return new HashMap<Object,User>(){{put("user", Util.getLoginUser());}};
+
+        Map<String,Object>map = new HashMap<String,Object>();
+        User user = Util.getLoginUser();
+        if (user == null){
+            map.put("code","404");
+        }else {
+            map.put("code","200");
+        }
+        map.put("user",user);
+
+        return map;
     }
 
     public static class PwdForm{

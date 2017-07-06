@@ -41,8 +41,14 @@ public class AdminController {
     @RequestMapping(value = "/getAdmin",method = RequestMethod.GET)
     public @ResponseBody
     Object getAdmin(){
-        Map map = new HashMap();
-        map.put("admin",getLoginAdmin());
+        Map<String,Object> map = new HashMap<String,Object>();
+        Administrator administrator = getLoginAdmin();
+        if (administrator == null){
+            map.put("code","404");
+        }else {
+            map.put("code","200");
+        }
+        map.put("admin",administrator);
         return map;
     }
 
@@ -54,6 +60,13 @@ public class AdminController {
     @RequestMapping(value = "/loginPage")
     public void loginPage(HttpServletRequest request,HttpServletResponse response)throws ServletException,IOException{
         request.getRequestDispatcher("/html/admin_login.html").forward(request,response);
+//        request.getRequestDispatcher("/html/admin.html").forward(request,response);
+    }
+
+    @RequestMapping(value = "/accessDeniedPage")
+    public void accessDeniedPage(HttpServletRequest request,HttpServletResponse response)throws ServletException,IOException{
+        System.out.println("admin AccessDenied");
+        request.getRequestDispatcher("/html/admin_403.html").forward(request,response);
     }
 
 
