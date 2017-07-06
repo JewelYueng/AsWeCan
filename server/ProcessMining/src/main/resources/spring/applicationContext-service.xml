@@ -21,7 +21,6 @@
     <context:component-scan base-package="org.k2.processmining">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
         <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
-        <context:exclude-filter type="regex" expression="org\.k2\.processmining\.security\.config\..*"/>
     </context:component-scan>
 
     <aop:aspectj-autoproxy proxy-target-class="true"/>

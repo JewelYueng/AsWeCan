@@ -1,7 +1,7 @@
 package org.k2.processmining.controller.admin;
 
 import org.k2.processmining.controller.IdListForm;
-import org.k2.processmining.controller.form.MethodJars;
+import org.k2.processmining.controller.annotion.MethodJars;
 import org.k2.processmining.exception.BadRequestException;
 import org.k2.processmining.exception.InternalServerErrorException;
 import org.k2.processmining.model.MethodState;

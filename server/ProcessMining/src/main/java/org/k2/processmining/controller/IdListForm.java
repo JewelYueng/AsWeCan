@@ -1,6 +1,6 @@
 package org.k2.processmining.controller;
 
-import org.k2.processmining.controller.form.NotEmptyFields;
+import org.k2.processmining.controller.annotion.NotEmptyFields;
 
 import java.util.List;
 

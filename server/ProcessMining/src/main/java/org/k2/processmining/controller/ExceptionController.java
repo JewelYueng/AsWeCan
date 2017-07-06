@@ -84,12 +84,6 @@ public class ExceptionController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(getRes(e.getMessage()));
     }
 
-    public @ResponseBody
-    @ExceptionHandler(ForbiddenException.class)
-    Object handleForbidden(ForbiddenException e) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(getRes(e.getMessage()));
-    }
-
     private Map<String, Object> getRes(String msg) {
         Map<String, Object> res = new HashMap<>();
         res.put("code", 0);

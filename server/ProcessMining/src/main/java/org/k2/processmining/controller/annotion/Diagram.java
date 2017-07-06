@@ -1,4 +1,4 @@
-package org.k2.processmining.controller.form;
+package org.k2.processmining.controller.annotion;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
