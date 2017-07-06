@@ -365,31 +365,38 @@
 
       },
       deleteSome: function () {
-
-        this.$api({
-          method: 'deleteNormalLog',
-          opts: {body: {idList: this.checked}}
-        }).then((res) => {
-          console.log(res.data)
-          if (res.data.code === 1) {
-            this.$hint('删除成功', 'success')
-            this.getTotalItems()
-            this.checked = [];
-            this.totalAmount = [];
-            this.items.forEach(function (item, index) {
-              item.checked = false;
-            });
-          } else {
-            this.$hint('不明原因失败，建议刷新', 'error')
-          }
-        }, err => {
-          console.log(err)
-          this.$hint(err.data.msg, 'error')
-        })
-
+        if(this.checked.length==0){
+          this.$hint('请选择至少一个日志删除', 'error')
+        }
+        else {
+          this.$api({
+            method: 'deleteNormalLog',
+            opts: {body: {idList: this.checked}}
+          }).then((res) => {
+            console.log(res.data)
+            if (res.data.code === 1) {
+              this.$hint('删除成功', 'success')
+              this.getTotalItems()
+              this.checked = [];
+              this.totalAmount = [];
+              this.items.forEach(function (item, index) {
+                item.checked = false;
+              });
+            } else {
+              this.$hint('不明原因失败，建议刷新', 'error')
+            }
+          }, err => {
+            console.log(err)
+            this.$hint(err.data.msg, 'error')
+          })
+        }
       },
 
       shareSome(){
+        if(this.checked.length==0){
+          this.$hint('请选择至少一个日志分享', 'error')
+        }
+        else{
         this.$api({method: 'shareNormalLog', body: {idList: this.checked}}).then(res => {
           if (res.data.code === 1) {
             this.$hint('分享成功', 'success')
@@ -400,7 +407,7 @@
         }, err => {
           console.log(err)
           this.$hint(err.data.msg, 'error')
-        })
+        })}
       },
       share(index){
         if (this.items[index].normalLog.isShared === 0) {

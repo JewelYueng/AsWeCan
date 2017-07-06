@@ -1,6 +1,7 @@
 <template>
   <div class="sankey">
     <h1>Sankey Diagrams</h1>
+    <el-button type="primary" @click="DownloadImage">xiazai</el-button>
     <svg class="chart">
     </svg>
   </div>
@@ -60,6 +61,39 @@ export default{
     this.produceLayout()
   },
   methods: {
+    DownloadImage(){
+      let svg = d3.select('.chart');
+      var margin = {
+          top: 1,
+          right: 1,
+          bottom: 6,
+          left: 1
+        },
+        width = 1130 - margin.left - margin.right,
+        height = 680;
+      var serializer = new XMLSerializer();
+      var source = serializer.serializeToString(svg.node());
+
+      source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+      var url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
+      document.write('<img src="' + url + '"/>');
+
+      var canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+
+      var context = canvas.getContext("2d");
+      var image = new Image;
+      image.src = document.getElementsByTagName('img')[0].src;
+      image.onload = function() {
+        context.drawImage(image, 0, 0);
+
+        var a = document.createElement("a");
+        a.download = "fallback.png";
+        a.href = canvas.toDataURL("image/png");
+        a.click();
+      };
+    },
     produceLayout: function () {
       var margin = {
           top: 1,
@@ -76,7 +110,7 @@ export default{
         },
         color = d3.scale.category20();
 
-      var svg = d3.select(".chart").attr("class", "sankey")
+      var svg = d3.select(".chart").attr("style", " display: flex; flex-direction: column;")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
@@ -157,7 +191,7 @@ export default{
       var link = svg.append("g").selectAll(".link")
         .data(nGraph.links)
         .enter().append("path")
-        .attr("class", "link")
+        .attr("style", " fill: none;stroke: #000;stroke-opacity: .2;")
         .attr("d", path)
         .attr("stroke-width", function(d) { return Math.max(1, d.dy); })
         .sort(function(a, b) { return b.dy - a.dy; })
@@ -182,7 +216,7 @@ export default{
       var node = svg.append("g").selectAll(".node")
         .data(nGraph.nodes)
         .enter().append("g")
-        .attr("class", "node")
+        .attr("style", "cursor: move;fill-opacity: .9;shape-rendering: crispEdges;pointer-events: none;text-shadow: 0 1px 0 #fff;")
         .attr("transform", function(d) {
           return "translate(" + d.x + "," + d.y + ")"; })
         .call(d3.behavior.drag()
