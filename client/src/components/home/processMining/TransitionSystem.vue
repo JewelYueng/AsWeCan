@@ -1,7 +1,5 @@
 <template>
   <div class="transition-system">
-    <h1>Transition System</h1>
-    <el-button type="primary" @click="DownloadImage">下载</el-button>
     <div class="all" v-show="showTotalBtn">
       <span>全记录动画</span>
       <el-button type="primary" @click="runTotal()" id="all-trace-run">运行</el-button>
@@ -22,12 +20,17 @@
       <el-button type="primary" @click="cleanTrace()">清除</el-button>
     </div>
     <svg id="diagraph" width="900" height="450"></svg>
+    <div class="download"><el-button type="primary" @click="downloadImage" icon="download">下载</el-button></div>
   </div>
 </template>
 
 <style lang="less" rel="stylesheet/less">
   .el-select-dropdown__list {
     max-width: 300px;
+  }
+
+  .download{
+    margin: 10px auto;
   }
 
   .transition-system {
