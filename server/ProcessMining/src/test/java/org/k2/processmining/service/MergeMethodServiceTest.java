@@ -5,25 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.k2.processmining.mapper.EventLogMapper;
-import org.k2.processmining.mapper.RawLogMapper;
-import org.k2.processmining.model.LogState;
 import org.k2.processmining.model.MethodState;
 import org.k2.processmining.model.log.EventLog;
-import org.k2.processmining.model.log.NormalLog;
-import org.k2.processmining.model.log.RawLog;
 import org.k2.processmining.model.mergemethod.MergeMethod;
-import org.k2.processmining.service.impl.MergeMethodServiceImpl;
 import org.k2.processmining.support.algorithm.MergerFactory;
-import org.k2.processmining.support.spring.SaveExceptionThrowsAdvice;
 import org.k2.processmining.util.Util;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.*;
 
@@ -108,7 +99,7 @@ public class MergeMethodServiceTest {
         MockMultipartFile multipartFile = new MockMultipartFile("file", "aia-k2.jar", "", inputStream);
         MergeMethod mergeMethod = new MergeMethod();
         mergeMethod.setId(Util.getUUIDString());
-        mergeMethodService.addMethod(mergeMethod, new MultipartFile[]{ multipartFile });
+        mergeMethodService.saveMethod(mergeMethod, new MultipartFile[]{ multipartFile });
         Assert.assertNotNull(mergeMethod);
         Map<String,Object> configs = mergeMethodService.getMethodConfig(mergeMethod);
         System.out.println(toJSON(configs));
@@ -119,12 +110,12 @@ public class MergeMethodServiceTest {
     @Test
     public void setMethodStateTest() throws Exception {
         List<String> ids = Arrays.asList("1", "2");
-        mergeMethodService.setMethodState(ids, MethodState.FREEZE.getValue());
+        mergeMethodService.updateMethodState(ids, MethodState.FREEZE.getValue());
         for (String id : ids) {
             MergeMethod mergeMethod = mergeMethodService.getMethodById(id);
             Assert.assertEquals(MethodState.FREEZE.getValue(), mergeMethod.getState());
         }
-        mergeMethodService.setMethodState(ids, MethodState.ACTIVE.getValue());
+        mergeMethodService.updateMethodState(ids, MethodState.ACTIVE.getValue());
         for (String id : ids) {
             MergeMethod mergeMethod = mergeMethodService.getMethodById(id);
             Assert.assertEquals(MethodState.ACTIVE.getValue(), mergeMethod.getState());

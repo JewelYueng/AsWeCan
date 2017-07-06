@@ -42,12 +42,13 @@ public class MethodManage {
     @Value("${algorithm.adapter.jar.suffix}")
     private String algorithmAdapterJarSuffix;
 
+    @Value("${algorithm.jars.path}")
     private String rootPath;
 
     public MethodManage() {}
 
     public void init() {
-        rootPath = this.getClass().getResource("/").getPath().replaceAll("/classes", "");
+//        rootPath = this.getClass().getResource("/").getPath().replaceAll("/classes", "");
 //        rootPath = "E:/IdeaProjects/AsWeCan/server/ProcessMining/src/main/webapp/WEB-INF";
     }
 
@@ -71,7 +72,7 @@ public class MethodManage {
 
     private void saveJar(String outputPath, InputStream inputStream) throws IOException {
         File file = new File(outputPath);
-        if ((!file.getParentFile().isDirectory() && !file.getParentFile().mkdir())) {
+        if ((!file.getParentFile().isDirectory() && !file.getParentFile().mkdirs())) {
             throw new IOException("fail to make dirs to save jars");
         }
         try (BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputPath))){

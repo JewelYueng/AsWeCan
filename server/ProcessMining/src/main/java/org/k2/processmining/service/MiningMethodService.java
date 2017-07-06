@@ -32,9 +32,8 @@ public interface MiningMethodService {
     TimeResult mining(EventLog eventLog, Algorithm<Miner> algorithm, Map<String,Object> params, DiagramType type);
     TimeResult<SimpleHeuristicsNet> mining(Algorithm<Miner> algorithm, EventLog eventLog, XLog xLog, Map<String,Object> params);
 
-    MiningMethod addMethod(MiningMethod miningMethod, MultipartFile[] multipartFiles) throws IOException, LoadMethodException;
-    void setMethodState(List<String> ids, int state);
+    MiningMethod saveMethod(MiningMethod miningMethod, MultipartFile[] multipartFiles) throws IOException, LoadMethodException;
+    void updateMethodState(List<String> ids, int state);
 
-    @Transactional
     void delete(List<String> ids);
 }

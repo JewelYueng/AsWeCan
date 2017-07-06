@@ -106,7 +106,7 @@ public class MiningMethodServiceImpl implements MiningMethodService {
     }
 
     @Override
-    public MiningMethod addMethod(MiningMethod miningMethod, MultipartFile[] multipartFiles) throws IOException, LoadMethodException {
+    public MiningMethod saveMethod(MiningMethod miningMethod, MultipartFile[] multipartFiles) throws IOException, LoadMethodException {
         for (MultipartFile file : multipartFiles) {
             try (InputStream inputStream = file.getInputStream()){
                 methodManage.saveMinerJar(miningMethod.getId(), file.getOriginalFilename(), inputStream);
@@ -120,7 +120,7 @@ public class MiningMethodServiceImpl implements MiningMethodService {
     }
 
     @Override
-    public void setMethodState(List<String> ids, int state) {
+    public void updateMethodState(List<String> ids, int state) {
         miningMethodMapper.updateState(ids, state);
     }
 

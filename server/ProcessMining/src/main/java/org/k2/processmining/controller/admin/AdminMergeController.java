@@ -67,7 +67,7 @@ public class AdminMergeController {
         MergeMethod mergeMethod = new MergeMethod();
         mergeMethod.setId(Util.getUUIDString());
         try {
-            mergeMethodService.addMethod(mergeMethod, files);
+            mergeMethodService.saveMethod(mergeMethod, files);
             res.put("state", mergeMethod.getState());
             res.put("id", mergeMethod.getId());
             res.put("configs", mergeMethodService.getMethodConfig(mergeMethod));
@@ -96,7 +96,7 @@ public class AdminMergeController {
     }
 
     private Map<String,Object> setMethodState(List<String> ids, int state) {
-        mergeMethodService.setMethodState(ids, state);
+        mergeMethodService.updateMethodState(ids, state);
         Map<String,Object> res = new HashMap<>();
         res.put("code", 1);
         return res;

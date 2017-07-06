@@ -105,7 +105,7 @@ public class MiningMethodServiceTest {
         MockMultipartFile multipartFile = new MockMultipartFile("file", "heuristics-k2.jar", "", inputStream);
         MiningMethod miningMethod = new MiningMethod();
         miningMethod.setId(Util.getUUIDString());
-        miningMethod = miningMethodService.addMethod(miningMethod, new MultipartFile[]{ multipartFile });
+        miningMethod = miningMethodService.saveMethod(miningMethod, new MultipartFile[]{ multipartFile });
         Assert.assertNotNull(miningMethod);
         Map<String,Object> configs = miningMethodService.getMethodConfig(miningMethod);
         System.out.println(toJSON(configs));
@@ -116,12 +116,12 @@ public class MiningMethodServiceTest {
     @Test
     public void setMethodState() throws Exception {
         List<String> ids = Arrays.asList("1");
-        miningMethodService.setMethodState(ids, MethodState.FREEZE.getValue());
+        miningMethodService.updateMethodState(ids, MethodState.FREEZE.getValue());
         for (String id : ids) {
             MiningMethod miningMethod = miningMethodService.getMethodById(id);
             Assert.assertEquals(MethodState.FREEZE.getValue(), miningMethod.getState());
         }
-        miningMethodService.setMethodState(ids, MethodState.ACTIVE.getValue());
+        miningMethodService.updateMethodState(ids, MethodState.ACTIVE.getValue());
         for (String id : ids) {
             MiningMethod miningMethod = miningMethodService.getMethodById(id);
             Assert.assertEquals(MethodState.ACTIVE.getValue(), miningMethod.getState());

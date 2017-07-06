@@ -66,7 +66,7 @@ public class AdminMiningController {
         MiningMethod miningMethod = new MiningMethod();
         miningMethod.setId(Util.getUUIDString());
         try {
-            miningMethodService.addMethod(miningMethod, files);
+            miningMethodService.saveMethod(miningMethod, files);
             res.put("state", miningMethod.getState());
             res.put("id", miningMethod.getId());
             res.put("configs", miningMethodService.getMethodConfig(miningMethod));
@@ -95,7 +95,7 @@ public class AdminMiningController {
     }
 
     private Map<String,Object> setMethodState(List<String> ids, int state) {
-        miningMethodService.setMethodState(ids, state);
+        miningMethodService.updateMethodState(ids, state);
         Map<String,Object> res = new HashMap<>();
         res.put("code", 1);
         return res;

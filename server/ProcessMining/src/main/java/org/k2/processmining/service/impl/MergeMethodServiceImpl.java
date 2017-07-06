@@ -159,7 +159,7 @@ public class MergeMethodServiceImpl implements MergeMethodService{
     }
 
     @Override
-    public MergeMethod addMethod(MergeMethod mergeMethod, MultipartFile[] multipartFiles) throws IOException, LoadMethodException {
+    public MergeMethod saveMethod(MergeMethod mergeMethod, MultipartFile[] multipartFiles) throws IOException, LoadMethodException {
 
         for (MultipartFile file : multipartFiles) {
             try (InputStream inputStream = file.getInputStream()){
@@ -174,7 +174,7 @@ public class MergeMethodServiceImpl implements MergeMethodService{
     }
 
     @Override
-    public void setMethodState(List<String> ids, int state) {
+    public void updateMethodState(List<String> ids, int state) {
         mergeMethodMapper.updateState(ids, state);
     }
 

@@ -31,7 +31,7 @@ public class SaveExceptionThrowsAdvice{
     @Autowired
     private MethodManage methodManage;
 
-    @Around("execution(public * org.k2.processmining.service.*.save(..))")
+    @Around("execution(public * org.k2.processmining.service.*Log*.save(..))")
     public Object deleteLog(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
             return joinPoint.proceed();
@@ -45,7 +45,7 @@ public class SaveExceptionThrowsAdvice{
         }
     }
 
-    @Around("execution(public * org.k2.processmining.service.MergeMethodService.addMethod(..))")
+    @Around("execution(public * org.k2.processmining.service.MergeMethodService.saveMethod(..))")
     public Object deleteMergeMethod(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
             return joinPoint.proceed();
@@ -65,7 +65,7 @@ public class SaveExceptionThrowsAdvice{
 
     }
 
-    @Around("execution(public * org.k2.processmining.service.MiningMethodService.addMethod(..))")
+    @Around("execution(public * org.k2.processmining.service.MiningMethodService.saveMethod(..))")
     public Object deleteMinerMethod(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
             return joinPoint.proceed();
