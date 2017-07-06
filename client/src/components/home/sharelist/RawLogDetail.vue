@@ -25,10 +25,12 @@
           <div class="date">
             {{`${new Date(item.rawLog.createDate).getFullYear()}-${new Date(item.rawLog.createDate).getMonth() + 1}-${new Date(item.rawLog.createDate).getDate()}`}}
           </div>
-          <div @click="jumpToNormal(index)" class="normal-log relation-logs" :title="item.normalLog ? item.normalLog.logName : '无'">
+          <div @click="jumpToNormal(index)" class="normal-log relation-logs" :class="{pointer: item.normalLog}"
+               :title="item.normalLog ? item.normalLog.logName : '无'">
             {{item.normalLog ? item.normalLog.logName : '无'}}
           </div>
-          <div @click="jumpToEvent(index)" class="event-log relation-logs" :title="item.eventLog ? item.eventLog.logName : '无'">
+          <div @click="jumpToEvent(index)" class="event-log relation-logs" :class="{pointer: item.eventLog}"
+               :title="item.eventLog ? item.eventLog.logName : '无'">
             {{item.eventLog ? item.eventLog.logName : '无'}}
           </div>
           <div class="operations">
@@ -105,7 +107,6 @@
       justify-content: flex-start;
       align-items: center;
       .log-name {
-        cursor: pointer;
         min-width: 250px;
         flex: 0 0 25%;
         .too-long-text;

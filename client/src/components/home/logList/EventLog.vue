@@ -37,18 +37,21 @@
           <div class="date">
             {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()}`}}
           </div>
-          <div @click="jumpToRaw(index)" class="relation-logs raw-log" :title="item.rawLog ? item.rawLog.logName : '无'">
+          <div @click="jumpToRaw(index)" class="relation-logs raw-log" :class="{pointer: item.rawLog}"
+               :title="item.rawLog ? item.rawLog.logName : '无'">
             {{item.rawLog ? item.rawLog.logName : '无'}}
           </div>
-          <div @click="jumpToNormal(index)" class="relation-logs normal-log"
+          <div @click="jumpToNormal(index)" class="relation-logs normal-log" :class="{pointer: item.normalLog}"
                :title="item.normalLog ? item.normalLog.logName : '无'">
             {{item.normalLog ? item.normalLog.logName : '无'}}
           </div>
           <div class="merge-relation">
-            <div v-if="item.eventLog.mergeRelation" class="relation1" @click="selectedRel(index,0)"
+            <div v-if="item.eventLog.mergeRelation" class="relation1" :class="{pointer: item.eventLog}"
+                 @click="selectedRel(index,0)"
                  :title="item.eventLog.mergeRelationLogs[0].logName">{{item.eventLog.mergeRelationLogs[0].logName}}
             </div>
-            <div v-if="item.eventLog.mergeRelation" class="relation2" @click="selectedRel(index,1)"
+            <div v-if="item.eventLog.mergeRelation" class="relation2" :class="{pointer: item.eventLog}"
+                 @click="selectedRel(index,1)"
                  :title="item.eventLog.mergeRelationLogs[1].logName">{{item.eventLog.mergeRelationLogs[1].logName}}
             </div>
             <div v-show="!item.eventLog.mergeRelation">没有融合来源</div>
@@ -116,8 +119,8 @@
       width: 100%;
       padding: 10px 0px 10px 0px;
       border-bottom: 0.5px solid @light_theme;
-      justify-content: flex-start;
-      align-items: center;
+      justify-content: center;
+      align-items: flex-start;
       .log-head {
         flex: 0 0 20%;
         min-width: 210px;

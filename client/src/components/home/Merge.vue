@@ -4,11 +4,11 @@
     <hr>
     <div class="file1_choose">
       <el-button type="primary" @click="chooseLog(1)">选择文件1</el-button>
-      <span>{{log1.name}}</span>
+      <span>{{log1.logName}}</span>
     </div>
     <div class="file2_choose">
       <el-button type="primary" @click="chooseLog(2)">选择文件2</el-button>
-      <span>{{log2.name}}</span>
+      <span>{{log2.logName}}</span>
     </div>
     <hr>
     <div class="algorithm_choose">

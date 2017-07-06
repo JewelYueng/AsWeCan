@@ -48,9 +48,7 @@
     min-width: 1020px;
     position: relative;
   }
-  .relation-logs{
-    cursor: pointer;
-  }
+
   input[type='checkbox']{
     width: 20px;
     position: relative;

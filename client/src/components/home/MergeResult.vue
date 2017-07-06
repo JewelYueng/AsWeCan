@@ -34,7 +34,9 @@
         <div class="result-name result-item">
           <div class="key">mergeRelation</div>
           <div class="relations">
-          <div class="value" v-for="log in result.relation" @click="jumpTo">{{log.logName}}</div>
+            <div class="value" v-for="(log,index) in result.eventLog.mergeRelationLogs" @click="jumpToEvent(index)">
+              {{log.logName}}
+            </div>
           </div>
         </div>
       </div>
@@ -53,7 +55,7 @@
   @import "~assets/colors.less";
   @import "~assets/layout.less";
 
-  #merge-result{
+  #merge-result {
     background-color: white;
     height: 100%;
     width: @major_width;
@@ -76,26 +78,25 @@
       width: 100%;
       padding: 10px;
       box-sizing: border-box;
-      .result-item{
+      .result-item {
         display: flex;
         flex-direction: row;
         width: 96%;
         border-bottom: @dark_theme 1px solid;
-        padding: 20px  ;
-        .key{
+        padding: 20px;
+        .key {
           text-align: left;
           flex: 0 0 20%;
         }
-        .value{
+        .value {
           text-align: left;
           flex: 0 0 80%;
         }
-        .relations{
+        .relations {
           display: flex;
           flex-direction: row;
-
+          cursor: pointer;
         }
-
 
       }
     }
@@ -138,7 +139,7 @@
       }
     },
     methods: {
-      ...mapActions(['jumpView']),
+      ...mapActions(['selectLog', 'changeFilePath']),
       backToMerge: function () {
 //        this.jumpView('/home/merge')
         this.$router.push({name: 'merge'})
@@ -147,7 +148,19 @@
       },
       jumpToMining: function () {
 //        this.jumpView('/home/mining'
-        this.$router.push({name: 'mining'})
+        this.$router.push({name: 'mining', params: {log: this.result.eventLog}})
+      },
+      jumpToEvent(index){
+        if (this.result.eventLog.mergeRelationLogs) {
+          this.$api({method: 'getEventLogPage', query: {id: this.result.eventLog.mergeRelationLogs[index].id}}).then(res => {
+            this.selectLog({type: 2, id: this.result.eventLog.mergeRelationLogs[index].id, page: res.data.page})
+            this.changeFilePath('1-3')
+            this.$router.push({name: 'home'})
+          }, err => {
+            console.log(err)
+            this.$hint(err.data.msg, 'error')
+          })
+        }
       }
     }
   }
