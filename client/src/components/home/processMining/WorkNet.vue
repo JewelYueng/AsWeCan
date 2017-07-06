@@ -1,8 +1,10 @@
 <template>
   <div class="workNet">
     <h1>Work Flow Net</h1>
+    <el-button type="primary" @click="DownloadImage">下载</el-button>
     <svg class="chart" width="1130" height="500">
-    </svg>
+
+        </svg>
   </div>
 </template>
 
@@ -64,150 +66,7 @@
         items: {
 
           "timeCost": 439,
-          "diagram": {
-            "netElementList": [
-              {
-                "element": "Activity0",
-                "isEnd": "false",
-                "isStart": "false",
-                "name": "time-out X",
-                "output": ["decide"],
-                "subnetList": [1],
-                "subnetNum": 1,
-                "time": "439"
-              },
-              {
-                "element": "Activity1",
-                "isEnd": "false",
-                "isStart": "false",
-                "name": "collect reviews",
-                "output": ["collect reviews", "decide"],
-                "subnetList": [2],
-                "subnetNum": 1,
-                "time": "439"
-              },
-              {
-                "element": "Activity2",
-                "isEnd": "false",
-                "isStart": "false",
-                "name": "decide",
-                "output": ["accept", "decide", "invite additional reviewer", "reject"],
-                "subnetList": [4],
-                "subnetNum": 1,
-                "time": "439"
-              },
-              {
-                "element": "Activity3",
-                "isEnd": "false",
-                "isStart": "false",
-                "name": "get review 1",
-                "output": ["collect reviews"],
-                "subnetList": [1],
-                "subnetNum": 1,
-                "time": "439"
-              },
-              {
-                "element": "Activity4",
-                "isEnd": "false",
-                "isStart": "false",
-                "name": "get review 2",
-                "output": ["collect reviews"],
-                "subnetList": [1],
-                "subnetNum": 1,
-                "time": "439"
-              },
-              {
-                "element": "Activity5",
-                "isEnd": "false",
-                "isStart": "false",
-                "name": "get review 3",
-                "output": ["collect reviews"],
-                "subnetList": [1],
-                "subnetNum": 1,
-                "time": "439"
-              },
-              {
-                "element": "Activity6",
-                "isEnd": "false",
-                "isStart": "false",
-                "name": "get review X",
-                "output": ["decide"],
-                "subnetList": [1],
-                "subnetNum": 1,
-                "time": "439"
-              },
-              {
-                "element": "Activity7",
-                "isEnd": "false",
-                "isStart": "false",
-                "name": "invite additional reviewer",
-                "output": ["get review X", "invite additional reviewer", "time-out X"],
-                "subnetList": [3],
-                "subnetNum": 1,
-                "time": "439"
-              },
-              {
-                "element": "Activity8",
-                "isEnd": "true",
-                "isStart": "false",
-                "name": "accept",
-                "output": ["accept"],
-                "subnetList": [1],
-                "subnetNum": 1,
-                "time": "439"
-              },
-              {
-                "element": "Activity9",
-                "isEnd": "true",
-                "isStart": "false",
-                "name": "reject",
-                "output": ["reject"],
-                "subnetList": [1],
-                "subnetNum": 1,
-                "time": "439"
-              },
-              {
-                "element": "Activity10",
-                "isEnd": "false",
-                "isStart": "false",
-                "name": "time-out 1",
-                "output": ["collect reviews"],
-                "subnetList": [1],
-                "subnetNum": 1,
-                "time": "439"
-              },
-              {
-                "element": "Activity11",
-                "isEnd": "false",
-                "isStart": "false",
-                "name": "time-out 2",
-                "output": ["collect reviews"],
-                "subnetList": [1],
-                "subnetNum": 1,
-                "time": "439"
-              },
-              {
-                "element": "Activity12",
-                "isEnd": "false",
-                "isStart": "false",
-                "name": "time-out 3",
-                "output": ["collect reviews"],
-                "subnetList": [1],
-                "subnetNum": 1,
-                "time": "439"
-              },
-              {
-                "element": "Activity13",
-                "isEnd": "false",
-                "isStart": "true",
-                "name": "invite reviewers",
-                "output": ["get review 1", "invite reviewers", "time-out 1", "get review 2", "invite reviewers", "time-out 2", "get review 3", "invite reviewers", "time-out 3"],
-                "subnetList": [3, 3, 3],
-                "subnetNum": 3,
-                "time": "439"
-              }
-            ]
-          }
+          "diagram": null
         }
       }
     },
@@ -219,6 +78,31 @@
       this.renderWorkflow()
     },
     methods: {
+      DownloadImage(){
+        let svg = d3.select('.chart');
+        var serializer = new XMLSerializer();
+        var source = serializer.serializeToString(svg.node());
+
+        source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+        var url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
+        document.write('<img src="' + url + '"/>');
+
+        var canvas = document.createElement("canvas");
+        canvas.width = 1130;
+        canvas.height = 500;
+
+        var context = canvas.getContext("2d");
+        var image = new Image;
+        image.src = document.getElementsByTagName('img')[0].src;
+        image.onload = function() {
+          context.drawImage(image, 0, 0);
+
+          var a = document.createElement("a");
+          a.download = "fallback.png";
+          a.href = canvas.toDataURL("image/png");
+          a.click();
+        };
+      },
       renderWorkflow(){
 // Create a new directed graph
         let g = new dagreD3.graphlib.Graph().setGraph({
