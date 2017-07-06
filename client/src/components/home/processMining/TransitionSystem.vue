@@ -1,6 +1,7 @@
 <template>
   <div class="transition-system">
     <h1>Transition System</h1>
+    <el-button type="primary" @click="DownloadImage">xiazai</el-button>
     <div class="all" v-show="showTotalBtn">
       <span>全记录动画</span>
       <el-button type="primary" @click="runTotal()" id="all-trace-run">运行</el-button>
@@ -112,6 +113,33 @@
 
     },
     methods: {
+      DownloadImage(){
+        let svg = d3.select("#diagraph");
+        let width=900;
+        let height=450;
+        var serializer = new XMLSerializer();
+        var source = serializer.serializeToString(svg.node());
+
+        source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+        var url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
+        document.write('<img src="' + url + '"/>');
+
+        var canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+
+        var context = canvas.getContext("2d");
+        var image = new Image;
+        image.src = document.getElementsByTagName('img')[0].src;
+        image.onload = function() {
+          context.drawImage(image, 0, 0);
+
+          var a = document.createElement("a");
+          a.download = "fallback.png";
+          a.href = canvas.toDataURL("image/png");
+          a.click();
+        };
+      },
       cleanTrace(){
 
         const _this = this;
@@ -198,7 +226,7 @@
 
                 let p = d3.select('.trace-group')
                   .append("path")
-                  .attr("class", "edge")
+                  .attr("style", "stroke: red;fill: none;")
                   .attr("fill", "none")
                   .attr("id", "trace-" + tIndex)
 
@@ -399,7 +427,7 @@
 
         let wrapper = svg.append("g");
         let g = wrapper.append("g");
-        let traceGroup = wrapper.append("g").attr("class", "trace-group");
+        let traceGroup = wrapper.append("g").attr("style", " fill: red;");
         svg.call(d3.behavior.zoom()
           .scaleExtent([1 / 8, 8])
           .on("zoom", zoomed));
@@ -412,7 +440,7 @@
           .data(_this.layout.edges())
           .enter()
           .append('g')
-          .attr("class", "edge")
+          .attr("style", "stroke: red;fill: none;")
           .attr("fill", "none")
 
 

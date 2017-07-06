@@ -1,6 +1,7 @@
 <template>
   <div class="resource-relation">
 <h1>Resource-Relation Diagram</h1>
+    <el-button v-show="state==1" type="primary" @click="DownloadImage" >xiazai</el-button>
     <div>
       <el-select v-model="selectedAttr" placeholder="请选择" @change="produceLayout()">
         <el-option
@@ -11,8 +12,8 @@
         </el-option>
       </el-select>
     </div>
-    <div class="chart" v-for="item in items.diagram" v-if="item.resourceAttr === selectedAttr">
-    </div>
+    <svg class="chart" v-for="item in items.diagram" v-if="item.resourceAttr === selectedAttr">
+    </svg>
   </div>
 </template>
 
@@ -36,6 +37,7 @@
     props: ['resource'],
     data(){
       return {
+        state:0,
         selectedAttr:"",
 //        nGraph:{
 //          "links":[],
@@ -96,8 +98,41 @@
       this.items.diagram = this.resource
     },
     methods:{
+      DownloadImage(){
+        let svg = d3.select(".chart");
+        let width = 5000;
+        let height = 5000;
+
+        var serializer = new XMLSerializer();
+
+        var source = serializer.serializeToString(svg.node());
+
+
+
+        source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+        var url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
+        document.write('<img src="' + url + '"/>');
+
+        var canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+
+        var context = canvas.getContext("2d");
+        var image = new Image;
+        image.src = document.getElementsByTagName('img')[0].src;
+        image.onload = function() {
+          context.drawImage(image, 0, 0);
+
+          var a = document.createElement("a");
+          a.download = "fallback.png";
+          a.href = canvas.toDataURL("image/png");
+          a.click();
+        };
+      },
       produceLayout:function () {
+
         var _this = this;
+        _this.state=1;
 //        var canvas = document.querySelector("canvas"),
 //          context = canvas.getContext("2d"),
 //          width = canvas.width,
@@ -137,7 +172,7 @@
         console.log(nGraph)
 
         var svg = d3.select(".chart")
-          .append("svg")
+//          .append("svg")
           .attr("width",width)
           .attr("height",height);
         var color = d3.scale.category20();
@@ -159,7 +194,7 @@
           .on("zoom", zoomed));
 
         var links = g.append("g")
-          .attr("class", "links");
+          .attr("style", "fill: none;stroke: #666;stroke-width: 1.5px;");
 
         var link = links.selectAll("line")
           .data(nGraph.links)
