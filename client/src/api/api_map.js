@@ -1,6 +1,7 @@
 // const base_url = ""
 const base_url = "http://116.56.129.93:8088/AssWeCan"
 // const base_url = "http://192.168.0.100:8080"
+// const base_url = "http://" + window.location.host + "/AssWeCan"
 
 const
   GET = "get",

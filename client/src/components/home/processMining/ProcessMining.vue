@@ -13,7 +13,7 @@
           <el-option
             v-for="item in methods"
             :key="item.id"
-            :label="item.logName"
+            :label="item.name"
             :value="item.id">
           </el-option>
         </el-select>
