@@ -41,8 +41,14 @@ public class AdminController {
     @RequestMapping(value = "/getAdmin",method = RequestMethod.GET)
     public @ResponseBody
     Object getAdmin(){
-        Map map = new HashMap();
-        map.put("admin",getLoginAdmin());
+        Map<String,Object> map = new HashMap<String,Object>();
+        Administrator administrator = getLoginAdmin();
+        if (administrator == null){
+            map.put("code","404");
+        }else {
+            map.put("code","200");
+        }
+        map.put("admin",administrator);
         return map;
     }
 

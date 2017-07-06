@@ -73,7 +73,7 @@
 
 
     <security:http auto-config="false" pattern="/**" entry-point-ref="userEntryPoint">
-        <security:intercept-url pattern="/**" access="permitAll"/>
+        <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
         <security:custom-filter ref="userFilter" position="FORM_LOGIN_FILTER"/>
         <security:custom-filter ref="userRememberMeFilter" position="REMEMBER_ME_FILTER"/>
         <security:logout logout-url="/home/logout" delete-cookies="JSESSIONID,userRememberMe" success-handler-ref="userLogoutSuccessHandler"/>
