@@ -4,37 +4,39 @@
       <div class="header">融合结果</div>
       <div class="result-body">
         <div class="result-name result-item">
-          <div class="key">logName</div>
+          <div class="key">日志名称</div>
           <div class="value">{{result.eventLog.logName}}</div>
         </div>
         <div class="result-name result-item">
-          <div class="key">createDate</div>
+          <div class="key">创建日期</div>
           <div class="value">{{new Date(result.eventLog.createDate).toString()}}</div>
         </div>
         <div class="result-name result-item">
-          <div class="key">caseNumber</div>
+          <div class="key">实例数量</div>
           <div class="value">{{result.eventLog.caseNumber}}</div>
         </div>
         <div class="result-name result-item">
-          <div class="key">eventNumber</div>
+          <div class="key">事件数量</div>
           <div class="value">{{result.eventLog.eventNumber}}</div>
         </div>
         <div class="result-name result-item">
-          <div class="key">perEventInCase</div>
+          <div class="key">每实例中的事件数</div>
           <div class="value">{{result.eventLog.perEventInCase}}</div>
         </div>
         <div class="result-name result-item">
-          <div class="key">eventNames</div>
+          <div class="key">事件名</div>
           <div class="value">{{result.eventLog.eventNames}}</div>
         </div>
         <div class="result-name result-item">
-          <div class="key">operatorNames</div>
+          <div class="key">操作人</div>
           <div class="value">{{result.eventLog.operatorNames}}</div>
         </div>
         <div class="result-name result-item">
-          <div class="key">mergeRelation</div>
+          <div class="key">融合来源</div>
           <div class="relations">
-          <div class="value" v-for="log in result.relation" @click="jumpTo">{{log.logName}}</div>
+            <div class="value" v-for="(log,index) in result.eventLog.mergeRelationLogs" @click="jumpToEvent(index)">
+              {{log.logName}}
+            </div>
           </div>
         </div>
       </div>
@@ -53,7 +55,7 @@
   @import "~assets/colors.less";
   @import "~assets/layout.less";
 
-  #merge-result{
+  #merge-result {
     background-color: white;
     height: 100%;
     width: @major_width;
@@ -76,26 +78,25 @@
       width: 100%;
       padding: 10px;
       box-sizing: border-box;
-      .result-item{
+      .result-item {
         display: flex;
         flex-direction: row;
         width: 96%;
         border-bottom: @dark_theme 1px solid;
-        padding: 20px  ;
-        .key{
+        padding: 20px;
+        .key {
           text-align: left;
           flex: 0 0 20%;
         }
-        .value{
+        .value {
           text-align: left;
           flex: 0 0 80%;
         }
-        .relations{
+        .relations {
           display: flex;
           flex-direction: row;
-
+          cursor: pointer;
         }
-
 
       }
     }
@@ -138,7 +139,7 @@
       }
     },
     methods: {
-      ...mapActions(['jumpView']),
+      ...mapActions(['selectLog', 'changeFilePath']),
       backToMerge: function () {
 //        this.jumpView('/home/merge')
         this.$router.push({name: 'merge'})
@@ -147,7 +148,19 @@
       },
       jumpToMining: function () {
 //        this.jumpView('/home/mining'
-        this.$router.push({name: 'mining'})
+        this.$router.push({name: 'mining', params: {log: this.result.eventLog}})
+      },
+      jumpToEvent(index){
+        if (this.result.eventLog.mergeRelationLogs) {
+          this.$api({method: 'getEventLogPage', query: {id: this.result.eventLog.mergeRelationLogs[index].id}}).then(res => {
+            this.selectLog({type: 2, id: this.result.eventLog.mergeRelationLogs[index].id, page: res.data.page})
+            this.changeFilePath('1-3')
+            this.$router.push({name: 'home'})
+          }, err => {
+            console.log(err)
+            this.$hint(err.data.msg, 'error')
+          })
+        }
       }
     }
   }

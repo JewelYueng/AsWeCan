@@ -4,13 +4,15 @@
        color: #324157;background-color: white;border: none;cursor: pointer"><i class="el-icon-close"></i>
     </button>
     <form action="" class="activityForm">
-      　　<div class="file">
-      <div class="userdefined-file">
-        　　<label class="button" for="file">选择文件</label>
-        <label class="text" name="userdefinedFile" id="userdefinedFile" >{{fileName}}</label>
+      　　
+      <div class="file">
+        <div class="userdefined-file">
+          　　<label class="button" for="file">选择文件</label>
+          <label class="text" name="userdefinedFile" id="userdefinedFile">{{fileName}}</label>
+        </div>
+        <input type="file" name="file" id="file" ref="file" v-on:change="fileChange">
+        　　
       </div>
-      <input type="file" name="file" id="file" ref="file" v-on:change="fileChange">
-      　　</div>
     </form>
     <div style="padding: 20px;margin-top: 20px" class="btns">
       是否分享
@@ -47,6 +49,7 @@
     height: 40px;
     line-height: 40px;
   }
+
   .file label {
     display: inline-block;
   }
@@ -62,8 +65,9 @@
     width: 380px;
     height: 30px;
     line-height: 30px;
-    font-size: 0;  /*应对子元素为 inline-block 引起的外边距*/
+    font-size: 0; /*应对子元素为 inline-block 引起的外边距*/
   }
+
   .text {
     display: inline-block;
     vertical-align: middle;
@@ -76,6 +80,7 @@
     white-space: nowrap;
     border: none;
   }
+
   .button {
     display: inline-block;
     vertical-align: middle;
@@ -90,6 +95,7 @@
     color: white;
     cursor: pointer;
   }
+
   .file input[type="file"] {
     position: absolute;
     top: 0;
@@ -108,8 +114,8 @@
 <script>
   import BaseBox from './BaseBox'
   const base_url = 'http://116.56.129.93:8088/AssWeCan'
-//  const base_url = ""
-//  const base_url = "http://192.168.0.100:8080"
+  //  const base_url = ""
+  //  const base_url = "http://192.168.0.100:8080"
   const type_map = {
     'raw': base_url + '/rawLog/upload',
     'normal': base_url + '/normalLog/upload',
@@ -128,7 +134,7 @@
     mixins: [BaseBox],
     methods: {
       fileChange(){
-        this.fileName= this.$refs.file.value
+        this.fileName = this.$refs.file.value
       },
       upload(){
         let file_info = new FormData()
@@ -141,7 +147,7 @@
           contentType: 'multipart/form-data',
           progress(e) {
             if (e.lengthComputable) {
-              _this.progress = parseInt(e.loaded / e.total  * 100);
+              _this.progress = parseInt(e.loaded / e.total * 100);
             }
           }
 
@@ -150,12 +156,12 @@
 //          this.checkedAll=false
 //          this.checked=[]
           console.log('success', res)
-          if (res.body.code === 1){
+          if (res.body.code === 1) {
             this.commit(true)
           }
         }, err => {
           console.log(err)
-          this.$hint(err.data.msg,'error')
+          this.$hint(err.data.msg, 'error')
         })
       },
       cancel(){
