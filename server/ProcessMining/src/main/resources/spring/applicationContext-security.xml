@@ -19,7 +19,6 @@
         <security:custom-filter ref="adminFilter"  position="FORM_LOGIN_FILTER"/>
         <security:custom-filter ref="adminRememberMeFilter" position="REMEMBER_ME_FILTER"/>
         <security:logout logout-url="/admin/logout" delete-cookies="JSESSIONID,adminRememberMe" success-handler-ref="adminLogoutSuccessHandler" />
-        <security:access-denied-handler error-page="/home/accessDeniedJSON" />
         <security:csrf disabled="true"/>
     </security:http>
 
@@ -77,7 +76,6 @@
         <security:custom-filter ref="userFilter" position="FORM_LOGIN_FILTER"/>
         <security:custom-filter ref="userRememberMeFilter" position="REMEMBER_ME_FILTER"/>
         <security:logout logout-url="/home/logout" delete-cookies="JSESSIONID,userRememberMe" success-handler-ref="userLogoutSuccessHandler"/>
-        <security:access-denied-handler error-page="/home/accessDeniedJSON"/>
         <security:csrf disabled="true"/>
     </security:http>
 
@@ -133,19 +131,5 @@
 
     <bean id="md5PwdEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/>
     <bean id="customSaltSource" class="org.k2.processmining.security.CustomSaltSource"/>
-
-    <!--<bean id="logPermissionEvaluator" class="org.k2.processmining.security.LogPermissionEvaluator"/>-->
-
-    <!--<bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">-->
-        <!--<property name="permissionEvaluator" ref="logPermissionEvaluator"/>-->
-    <!--</bean>-->
-
-    <!--<security:global-method-security pre-post-annotations="enabled">-->
-        <!--<security:expression-handler ref="expressionHandler"/>-->
-    <!--</security:global-method-security>-->
-
-    <!--<bean id="rememberMeFilter" class=""-->
-
-
 
 </beans>

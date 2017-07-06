@@ -1,29 +1,21 @@
 package org.k2.processmining.controller;
 
-import org.apache.ibatis.annotations.Param;
 import org.hibernate.validator.constraints.NotBlank;
-import org.k2.processmining.controller.form.Diagram;
-import org.k2.processmining.model.MethodState;
+import org.k2.processmining.controller.annotion.Diagram;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.miningmethod.MiningMethod;
-import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.service.MiningMethodService;
 import org.k2.processmining.service.TimeResult;
 import org.k2.processmining.support.algorithm.Algorithm;
-import org.k2.processmining.support.algorithm.LoadMethodException;
 import org.k2.processmining.support.mining.Miner;
 import org.k2.processmining.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
