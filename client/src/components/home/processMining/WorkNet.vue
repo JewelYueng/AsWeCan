@@ -16,21 +16,6 @@
       text-align: center;
     }
 
-    .node rect {
-      cursor: move;
-      stroke: #333;
-      fill: #fff;
-    }
-
-    .node text {
-      pointer-events: none;
-      color: #82a6da;
-      text-shadow: 0 1px 0 #fff;
-    }
-
-    circle {
-      fill: #c0c0c0;
-    }
 
     .link {
       fill: none;
@@ -39,14 +24,9 @@
     }
 
     .link:hover {
-      stroke-opacity: .5;
+      stroke-opacity: .3;
     }
 
-    .edgePath path {
-      stroke: #516082;
-      fill: #516082;
-      stroke-width: 2px;
-    }
 
     path:hover {
       stroke-opacity: 0.9;
@@ -71,32 +51,32 @@
     },
     created(){
 //      深复制
-      this.items.diagram = JSON.parse( JSON.stringify(this.petri))
+      this.items.diagram = JSON.parse(JSON.stringify(this.petri))
     },
     mounted(){
       this.renderWorkflow()
     },
     methods: {
-      DownloadImage(){
-        let svg = d3.select('.chart');
-        var serializer = new XMLSerializer();
-        var source = serializer.serializeToString(svg.node());
+      downloadImage(){
+        let svg = d3.select('.chart')
+          .attr('background-color', 'white')
+        let serializer = new XMLSerializer();
+        let source = serializer.serializeToString(svg.node());
 
         source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
-        var url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
-        document.write('<img src="' + url + '"/>');
+        let url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
 
-        var canvas = document.createElement("canvas");
+        let canvas = document.createElement("canvas");
         canvas.width = 1130;
-        canvas.height = 500;
+        canvas.height = 650;
 
-        var context = canvas.getContext("2d");
-        var image = new Image;
-        image.src = document.getElementsByTagName('img')[0].src;
-        image.onload = function() {
+        let context = canvas.getContext("2d");
+        let image = new Image;
+        image.src = url;
+        image.onload = function () {
           context.drawImage(image, 0, 0);
 
-          var a = document.createElement("a");
+          let a = document.createElement("a");
           a.download = "fallback.png";
           a.href = canvas.toDataURL("image/png");
           a.click();
@@ -177,7 +157,7 @@
           for (let i = 0; i < col; i++) {
             let arr2 = [];
             for (let j = 0; j < row[i]; j++) {
-              if (arr != null)
+              if (arr !== null)
                 arr2[j] = arr.shift();
             }
             arr1.push(arr2);
@@ -212,7 +192,30 @@
           .translate([(svg.attr("width") - g.graph().width * initialScale) / 2, 150])
           .scale(initialScale)
           .event(svg);
-        svg.attr('height', 700);
+        svg.attr('height', 650);
+
+        d3.selectAll('rect')
+          .attr({
+            'cursor': 'move',
+            'stroke': '#333',
+            'fill': '#fff'
+          })
+        d3.selectAll('.node text')
+          .attr({
+            'pointer-events': 'none',
+            'color': '#82a6da',
+            'text-shadow': '0 1px 0 #fff'
+          })
+        d3.selectAll('circle')
+          .attr({
+            'fill': '#c0c0c0'
+          })
+        d3.selectAll('.edgePath path')
+          .attr({
+            'stroke': '#516082',
+            'fill': '#516082',
+            'stroke-width': '2px'
+          })
       }
 
     }

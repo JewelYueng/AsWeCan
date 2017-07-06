@@ -60,41 +60,40 @@ export default{
     this.produceLayout()
   },
   methods: {
-    DownloadImage(){
-      let svg = d3.select('.chart');
-      var margin = {
+    downloadImg(){
+      let svg = d3.select('svg');
+      let margin = {
           top: 1,
           right: 1,
           bottom: 6,
           left: 1
         },
         width = 1130 - margin.left - margin.right,
-        height = 680;
-      var serializer = new XMLSerializer();
-      var source = serializer.serializeToString(svg.node());
+        height = 700;
+      let serializer = new XMLSerializer();
+      let source = serializer.serializeToString(svg.node());
 
       source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
-      var url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
-      document.write('<img src="' + url + '"/>');
+      let url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
 
-      var canvas = document.createElement("canvas");
+      let canvas = document.createElement("canvas");
       canvas.width = width;
       canvas.height = height;
 
-      var context = canvas.getContext("2d");
-      var image = new Image;
-      image.src = document.getElementsByTagName('img')[0].src;
+      let context = canvas.getContext("2d");
+      let image = new Image;
+      image.src = url
       image.onload = function() {
         context.drawImage(image, 0, 0);
 
-        var a = document.createElement("a");
+        let a = document.createElement("a");
         a.download = "fallback.png";
         a.href = canvas.toDataURL("image/png");
         a.click();
       };
     },
     produceLayout: function () {
-      var margin = {
+      let margin = {
           top: 1,
           right: 1,
           bottom: 6,
@@ -103,44 +102,44 @@ export default{
         width = 1130 - margin.left - margin.right,
         height = 680;
 
-      var formatNumber = d3.format(",.0f"),
+      let formatNumber = d3.format(",.0f"),
         format = function (d) {
           return formatNumber(d) + " 次";
         },
         color = d3.scale.category20();
 
-      var svg = d3.select(".chart").attr("style", " display: flex; flex-direction: column;")
+      let svg = d3.select(".chart").attr("class", "sankey")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      var sankey = d3.sankey()
+      let sankey = d3.sankey()
         .nodeWidth(15)
         .nodePadding(10)
         .size([width, height]);
 
-      var path = sankey.link();
+      let path = sankey.link();
 
 
-      var kimap = {};
-      var outEdgeCountMap = {};
-      var inEdgeCountMap = {};
-      var nGraph = {
+      let kimap = {};
+      let outEdgeCountMap = {};
+      let inEdgeCountMap = {};
+      let nGraph = {
         nodes: [],
         links: []
       }
 
-      for (var i = 0; i !== this.items.diagram.nodes.length; i++) {
+      for (let i = 0; i !== this.items.diagram.nodes.length; i++) {
         kimap[this.items.diagram.nodes[i].name] = i;
         outEdgeCountMap[this.items.diagram.nodes[i].name] = 1;
         inEdgeCountMap[this.items.diagram.nodes[i].name] = 1;
       }
 
-      var posMap = {};
-      for (var j = 0; j !== this.items.diagram.links.length; j++) {
-        var s = this.items.diagram.links[j].source;
-        var t = this.items.diagram.links[j].target;
+      let posMap = {};
+      for (let j = 0; j !== this.items.diagram.links.length; j++) {
+        let s = this.items.diagram.links[j].source;
+        let t = this.items.diagram.links[j].target;
         if (posMap[s] !== undefined) {
           posMap[t] = posMap[s] + outEdgeCountMap[s];
           outEdgeCountMap[s]++;
@@ -160,13 +159,13 @@ export default{
         return posMap[a.name] - posMap[b.name];
       });
 
-      for (var i = 0; i !== nGraph.nodes.length; i++) {
+      for (let i = 0; i !== nGraph.nodes.length; i++) {
         kimap[nGraph.nodes[i].name] = i;
       }
 
-      for (var i = 0; i !== this.items.diagram.links.length; i++) {
-        var s = kimap[this.items.diagram.links[i].source];
-        var t = kimap[this.items.diagram.links[i].target];
+      for (let i = 0; i !== this.items.diagram.links.length; i++) {
+        let s = kimap[this.items.diagram.links[i].source];
+        let t = kimap[this.items.diagram.links[i].target];
         if (s > t) {
           continue;
         }
@@ -187,10 +186,10 @@ export default{
         .layout(32);
 
 // add in the links
-      var link = svg.append("g").selectAll(".link")
+      let link = svg.append("g").selectAll(".link")
         .data(nGraph.links)
         .enter().append("path")
-        .attr("style", " fill: none;stroke: #000;stroke-opacity: .2;")
+        .attr("class", "link")
         .attr("d", path)
         .attr("stroke-width", function(d) { return Math.max(1, d.dy); })
         .sort(function(a, b) { return b.dy - a.dy; })
@@ -212,10 +211,10 @@ export default{
 
 
 // add in the nodes
-      var node = svg.append("g").selectAll(".node")
+      let node = svg.append("g").selectAll(".node")
         .data(nGraph.nodes)
         .enter().append("g")
-        .attr("style", "cursor: move;fill-opacity: .9;shape-rendering: crispEdges;pointer-events: none;text-shadow: 0 1px 0 #fff;")
+        .attr("class", "node")
         .attr("transform", function(d) {
           return "translate(" + d.x + "," + d.y + ")"; })
         .call(d3.behavior.drag()
