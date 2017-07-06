@@ -20,7 +20,7 @@
       <el-button type="primary" @click="cleanTrace()">清除</el-button>
     </div>
     <svg id="diagraph" width="900" height="450"></svg>
-    <div class="download"><el-button type="primary" @click="DownloadImage" icon="download">下载</el-button></div>
+    <div class="download"><el-button type="primary" @click="downloadImage" icon="download">下载</el-button></div>
   </div>
 </template>
 

@@ -3,7 +3,7 @@
     <svg class="chart" width="1130" height="500">
 
         </svg>
-    <div class="download"><el-button type="primary" @click="DownloadImage" icon="download">下载</el-button></div>
+    <div class="download"><el-button type="primary" @click="downloadImage" icon="download">下载</el-button></div>
   </div>
 </template>
 
