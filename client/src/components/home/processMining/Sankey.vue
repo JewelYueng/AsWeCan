@@ -1,9 +1,8 @@
 <template>
   <div class="sankey">
-    <h1>Sankey Diagrams</h1>
-    <el-button type="primary" @click="DownloadImage">xiazai</el-button>
     <svg class="chart">
     </svg>
+    <div class="download"><el-button type="primary" @click="DownloadImage" icon="download">下载</el-button></div>
   </div>
 </template>
 

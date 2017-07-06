@@ -1,10 +1,9 @@
 <template>
   <div class="workNet">
-    <h1>Work Flow Net</h1>
-    <el-button type="primary" @click="DownloadImage">下载</el-button>
     <svg class="chart" width="1130" height="500">
 
         </svg>
+    <div class="download"><el-button type="primary" @click="DownloadImage" icon="download">下载</el-button></div>
   </div>
 </template>
 
