@@ -80,6 +80,7 @@
   import ShowLogs from './boxes/ShowLogs.vue'
   import Loading from './boxes/Loading.vue'
   import Modify from './boxes/Modify.vue'
+  import FreezeWarn from './boxes/freezeWarn.vue'
 
   export default {
     components: {
@@ -89,7 +90,8 @@
       Upload,
       ShowLogs,
       Loading,
-      Modify
+      Modify,
+      FreezeWarn
     },
     data(){
       return {
