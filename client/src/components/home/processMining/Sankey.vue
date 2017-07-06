@@ -1,7 +1,7 @@
 <template>
   <div class="sankey">
     <h1>Sankey Diagrams</h1>
-    <el-button type="primary" @click="DownloadImage">xiazai</el-button>
+    <el-button type="primary" @click="DownloadImage">下载</el-button>
     <svg class="chart">
     </svg>
   </div>
@@ -63,20 +63,15 @@ export default{
   methods: {
     DownloadImage(){
       let svg = d3.select('.chart');
-      var margin = {
-          top: 1,
-          right: 1,
-          bottom: 6,
-          left: 1
-        },
-        width = 1130 - margin.left - margin.right,
-        height = 680;
+
+        let width = 1130;
+       let height = 680;
       var serializer = new XMLSerializer();
       var source = serializer.serializeToString(svg.node());
 
       source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
       var url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
-      document.write('<img src="' + url + '"/>');
+
 
       var canvas = document.createElement("canvas");
       canvas.width = width;
@@ -84,7 +79,7 @@ export default{
 
       var context = canvas.getContext("2d");
       var image = new Image;
-      image.src = document.getElementsByTagName('img')[0].src;
+      image.src = url;
       image.onload = function() {
         context.drawImage(image, 0, 0);
 

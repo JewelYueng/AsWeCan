@@ -1,7 +1,7 @@
 <template>
   <div class="resource-relation">
 <h1>Resource-Relation Diagram</h1>
-    <el-button v-show="state==1" type="primary" @click="DownloadImage" >xiazai</el-button>
+    <el-button v-show="state==1" type="primary" @click="DownloadImage()" >下载</el-button>
     <div>
       <el-select v-model="selectedAttr" placeholder="请选择" @change="produceLayout()">
         <el-option
@@ -111,7 +111,7 @@
 
         source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
         var url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
-        document.write('<img src="' + url + '"/>');
+
 
         var canvas = document.createElement("canvas");
         canvas.width = width;
@@ -119,7 +119,7 @@
 
         var context = canvas.getContext("2d");
         var image = new Image;
-        image.src = document.getElementsByTagName('img')[0].src;
+        image.src = url;
         image.onload = function() {
           context.drawImage(image, 0, 0);
 
