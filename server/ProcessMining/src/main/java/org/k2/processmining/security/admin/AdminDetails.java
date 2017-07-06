@@ -1,12 +1,10 @@
 package org.k2.processmining.security.admin;
 
 import org.k2.processmining.model.user.Administrator;
-import org.k2.processmining.security.config.AdminDetail;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.beans.SimpleBeanInfo;
 import java.util.ArrayList;
 import java.util.Collection;
 

@@ -124,12 +124,17 @@ public class Util {
     }
 
     public static User getLoginUser() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof MyUserDetails){
-            User user = ((MyUserDetails)principal).getUser();
-            return user;
-        }
-        return null;
+//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        if (principal instanceof MyUserDetails){
+//            User user = ((MyUserDetails)principal).getUser();
+//            return user;
+//        }
+//        return null;
+        User user = new User();
+        user.setId("1");
+        user.setEmail("y2k@y2k.com");
+        user.setName("y2k");
+        return user;
     }
 
     public static String encryptStr(String str){
@@ -137,6 +142,7 @@ public class Util {
             return null;
         return md5PasswordEncoder.encodePassword(str,"666");
     }
+
 
 
 }

@@ -29,18 +29,19 @@ public class HomeController {
     public void
     homeForUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/html/login.html").forward(request,response);
+//        request.getRequestDispatcher("/html/exampleLogin.html").forward(request,response);
     }
 
+    @RequestMapping(value = "/accessDeniedPage",method = RequestMethod.GET)
+    public void accessDeniedPage(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("user AccessDenied");
+        request.getRequestDispatcher("/html/user_403.html").forward(request,response);
+    }
 
     @RequestMapping(value = "",method = RequestMethod.GET)
-    public void homePage(HttpServletRequest request,HttpServletResponse response){
-        try {
+    public void homePage(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
             request.getRequestDispatcher("/html/index.html").forward(request,response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @RequestMapping(value = "/code",method = RequestMethod.GET)
