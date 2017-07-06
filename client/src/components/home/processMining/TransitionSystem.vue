@@ -20,7 +20,7 @@
       <el-button type="primary" @click="cleanTrace()">清除</el-button>
     </div>
     <svg id="diagraph" width="900" height="450"></svg>
-    <div class="download"><el-button type="primary" @click="downloadImage" icon="download">下载</el-button></div>
+    <div class="download"><el-button type="primary" @click="downloadImage">下载</el-button></div>
   </div>
 </template>
 
@@ -116,7 +116,7 @@
 
     },
     methods: {
-      DownloadImage(){
+      downloadImage(){
         let svg = d3.select("#diagraph");
         let width=900;
         let height=450;
@@ -138,7 +138,7 @@
           context.drawImage(image, 0, 0);
 
           var a = document.createElement("a");
-          a.download = "fallback.png";
+          a.download = "flow-chart.png";
           a.href = canvas.toDataURL("image/png");
           a.click();
         };

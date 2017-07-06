@@ -166,7 +166,7 @@
         }).then(res => {
           console.log(res)
           if(res.status === 200) {
-            this.$hint('融合成功','success')
+            this.$hint(`融合成功,耗时${parseInt(res.data.timeCost)/1000}秒`,'success')
             this.$router.push({name: 'mergeResult', params: {log: res.data}})
           }
         }, err => {

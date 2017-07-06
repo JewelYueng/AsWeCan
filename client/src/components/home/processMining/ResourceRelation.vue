@@ -12,7 +12,7 @@
     </div>
     <svg class="chart" v-for="item in items.diagram" v-if="item.resourceAttr === selectedAttr">
     </svg>
-    <el-button class="download" v-show="state==1" type="primary" @click="DownloadImage" icon="download">下载</el-button>
+    <el-button class="download" v-show="state==1" type="primary" @click="DownloadImage" >下载</el-button>
   </div>
 </template>
 
@@ -126,7 +126,7 @@
           context.drawImage(image, 0, 0);
 
           var a = document.createElement("a");
-          a.download = "fallback.png";
+          a.download = "resourceRelation.png";
           a.href = canvas.toDataURL("image/png");
           a.click();
         };
