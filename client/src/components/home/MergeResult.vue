@@ -4,35 +4,35 @@
       <div class="header">融合结果</div>
       <div class="result-body">
         <div class="result-name result-item">
-          <div class="key">logName</div>
+          <div class="key">日志名称</div>
           <div class="value">{{result.eventLog.logName}}</div>
         </div>
         <div class="result-name result-item">
-          <div class="key">createDate</div>
+          <div class="key">创建日期</div>
           <div class="value">{{new Date(result.eventLog.createDate).toString()}}</div>
         </div>
         <div class="result-name result-item">
-          <div class="key">caseNumber</div>
+          <div class="key">实例数量</div>
           <div class="value">{{result.eventLog.caseNumber}}</div>
         </div>
         <div class="result-name result-item">
-          <div class="key">eventNumber</div>
+          <div class="key">事件数量</div>
           <div class="value">{{result.eventLog.eventNumber}}</div>
         </div>
         <div class="result-name result-item">
-          <div class="key">perEventInCase</div>
+          <div class="key">每实例中的事件数</div>
           <div class="value">{{result.eventLog.perEventInCase}}</div>
         </div>
         <div class="result-name result-item">
-          <div class="key">eventNames</div>
+          <div class="key">事件名</div>
           <div class="value">{{result.eventLog.eventNames}}</div>
         </div>
         <div class="result-name result-item">
-          <div class="key">operatorNames</div>
+          <div class="key">操作人</div>
           <div class="value">{{result.eventLog.operatorNames}}</div>
         </div>
         <div class="result-name result-item">
-          <div class="key">mergeRelation</div>
+          <div class="key">融合来源</div>
           <div class="relations">
             <div class="value" v-for="(log,index) in result.eventLog.mergeRelationLogs" @click="jumpToEvent(index)">
               {{log.logName}}
