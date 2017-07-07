@@ -10,7 +10,7 @@
         </el-option>
       </el-select>
     </div>
-    <svg class="chart" v-for="item in items.diagram" v-if="item.resourceAttr === selectedAttr">
+    <svg width="1000" height="450" class="chart" v-for="item in items.diagram" v-if="item.resourceAttr === selectedAttr">
     </svg>
     <el-button class="download" v-show="state==1" type="primary" @click="DownloadImage" >下载</el-button>
   </div>
@@ -35,8 +35,8 @@
 
 
 <script>
-//  import * as d3 from "d3"
-//  import { forceSimulation,forceCenter, forceLink } from 'd3-force'
+  //  import * as d3 from "d3"
+  //  import { forceSimulation,forceCenter, forceLink } from 'd3-force'
   export default{
     props: ['resource'],
     data(){
@@ -73,26 +73,26 @@
                     {"name":"[Pete, Sara, Mary, Sam, Pam, John, Carol]"}
                   ]},
               { "resourceAttr":"test3",
-                  "links":
-                    [
-                      {"source":"[__INVALID__]","target":"[Anne, Mike]","value":136},
-                      {"source":"[__INVALID__]","target":"[Wil]","value":526},
-                      {"source":"[Anne, Mike]","target":"[Pete, Sara, Mary, Sam, Pam, John, Carol]","value":526},
-                      {"source":"[Wil]","target":"[Anne, Mike]","value":1252},
-                      {"source":"[Anne, Mike]","target":"[Wil]","value":200},
-                      {"source":"[Pete, Mary, Sara, Sam, Pam, John, Carol]","target":"[Anne, Mike]","value":64},
-                      {"source":"[Pete, Sara, Mary, Sam, Pam, John, Carol]","target":"[Wil]","value":526},
-                      {"source":"[Anne, Mike]","target":"[Pete, Mary, Sara, Sam, Pam, John, Carol]","value":108},
-                      {"source":"[Anne, Mike]","target":"[__INVALID__]","value":618}
-                    ],
-                  "nodes":
-                    [
-                      {"name":"[__INVALID__]"},
-                      {"name":"[Wil]"},
-                      {"name":"[Anne, Mike]"},
-                      {"name":"[Pete, Mary, Sara, Sam, Pam, John, Carol]"},
-                      {"name":"[Pete, Sara, Mary, Sam, Pam, John, Carol]"}
-                    ]}
+                "links":
+                  [
+                    {"source":"[__INVALID__]","target":"[Anne, Mike]","value":136},
+                    {"source":"[__INVALID__]","target":"[Wil]","value":526},
+                    {"source":"[Anne, Mike]","target":"[Pete, Sara, Mary, Sam, Pam, John, Carol]","value":526},
+                    {"source":"[Wil]","target":"[Anne, Mike]","value":1252},
+                    {"source":"[Anne, Mike]","target":"[Wil]","value":200},
+                    {"source":"[Pete, Mary, Sara, Sam, Pam, John, Carol]","target":"[Anne, Mike]","value":64},
+                    {"source":"[Pete, Sara, Mary, Sam, Pam, John, Carol]","target":"[Wil]","value":526},
+                    {"source":"[Anne, Mike]","target":"[Pete, Mary, Sara, Sam, Pam, John, Carol]","value":108},
+                    {"source":"[Anne, Mike]","target":"[__INVALID__]","value":618}
+                  ],
+                "nodes":
+                  [
+                    {"name":"[__INVALID__]"},
+                    {"name":"[Wil]"},
+                    {"name":"[Anne, Mike]"},
+                    {"name":"[Pete, Mary, Sara, Sam, Pam, John, Carol]"},
+                    {"name":"[Pete, Sara, Mary, Sam, Pam, John, Carol]"}
+                  ]}
 
             ]}
 
@@ -134,7 +134,7 @@
         };
       },
       produceLayout:function () {
-
+        debugger
         var _this = this;
         _this.state=1;
 //        var canvas = document.querySelector("canvas"),
@@ -144,8 +144,8 @@
         console.log(_this.selectedAttr)
 
         let targetObject=_this.items.diagram.find(_this.findObject);
-        let width = 1000;
-        let height = 1000;
+//        let width = 1000;
+//        let height = 1000;
 
         console.log(targetObject.nodes.length)
 
@@ -174,11 +174,14 @@
         }
 
         console.log(nGraph)
-
-        var svg = d3.select(".chart")
+//        let width = +svg.attr("width");
+//         let height = +svg.attr("height");
+        var svg = d3.select(".chart");
+        let width = +svg.attr("width");
+        let height = +svg.attr("height");
 //          .append("svg")
-          .attr("width",width)
-          .attr("height",height);
+//          .attr("width",width)
+//          .attr("height",height);
         var color = d3.scale.category20();
 
 
@@ -207,7 +210,7 @@
             return Math.sqrt(d.value) > 10 ? 10 : Math.sqrt(d.value);
           })
           .style("stroke","#333")
-          ;
+        ;
 
         link.append("title")
           .text(function (d) {

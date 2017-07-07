@@ -25,11 +25,11 @@
           <div class="date">
             {{`${new Date(item.normalLog.createDate).getFullYear()}-${new Date(item.normalLog.createDate).getMonth() + 1}-${new Date(item.normalLog.createDate).getDate()}`}}
           </div>
-          <div @click="jumpToRaw(index)" class="raw-log relation-logs" :class="{pointer: item.rawLog}"
+          <div @click="jumpToRaw(index)" class="raw-log" :class="{pointer: item.rawLog}"
                :title="item.rawLog ? item.rawLog.logName : '无'">
             {{item.rawLog ? item.rawLog.logName : '无'}}
           </div>
-          <div  @click="jumpToEvent(index)" class="event-log  relation-logs" :class="{pointer: item.eventlog}"
+          <div  @click="jumpToEvent(index)" class="event-log" :class="{pointer: item.eventlog}"
                 :title="item.eventLog ? item.eventLog.logName : '无'">
             {{item.eventLog ? item.eventLog.logName : '无'}}
           </div>
@@ -69,10 +69,6 @@
     right: 55px;
     font-size: 14px;
     color: #b5b5b5;
-  }
-
-  .img-button {
-    cursor: pointer;
   }
 
   .list-item:hover {
@@ -117,6 +113,7 @@
         flex: 0 0 5%;
         min-width: 40px;
         img {
+          cursor: pointer;
           width: 18px;
           height: 18px;
           position: relative;

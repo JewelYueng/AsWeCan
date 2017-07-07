@@ -49,6 +49,7 @@
     position: relative;
   }
 
+
   input[type='checkbox']{
     width: 20px;
     position: relative;
@@ -80,6 +81,8 @@
       left: -5px;
     }
   }
+
+  .pointer{cursor: pointer;}
 
   .head {
     display: flex;

@@ -130,7 +130,6 @@
         justify-content: center;
         align-items: center;
         .log-name {
-          cursor: pointer;
           flex: 0 0 17%;
           min-width: 175px;
           .too-long-text;
@@ -146,11 +145,15 @@
           font-size: 18px;
         }
         img {
+          cursor: pointer;
           width: 18px;
           height: 18px;
           position: relative;
           top: 2px;
         }
+      }
+      .list-item .log-name{
+        cursor: pointer;
       }
       .date {
         flex: 0 0 10%;
