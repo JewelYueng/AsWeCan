@@ -33,10 +33,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    .el-form-item__label{
+    .el-form-item__label {
       text-align: left;
     }
-    .submit-btns{
+    .submit-btns {
       margin: 0 30px;
       position: relative;
       left: -30px;
@@ -52,7 +52,7 @@
       let validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入密码'));
-        } else if(value.length < 6 || value.length > 20){
+        } else if (value.length < 6 || value.length > 20) {
           callback(new Error('请输入6-20位密码'));
         } else {
           if (this.ruleForm.check_pass !== '') {
@@ -73,8 +73,6 @@
       let validateOld = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入旧密码'));
-        } else if (value !== this.data.old_password) {
-          callback(new Error('旧密码输入错误!'));
         } else {
           callback();
         }
@@ -87,13 +85,13 @@
         },
         rules: {
           new_pass: [
-            { validator: validatePass, trigger: 'blur' }
+            {validator: validatePass, trigger: 'blur'}
           ],
           check_pass: [
-            { validator: validatePass2, trigger: 'blur' }
+            {validator: validatePass2, trigger: 'blur'}
           ],
           old: [
-            { validator: validateOld, trigger: 'blur' }
+            {validator: validateOld, trigger: 'blur'}
           ]
         }
       }
@@ -105,10 +103,18 @@
       submitForm(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.$api({method: 'modifyPass', body: {password: this.ruleForm.new_pass}}).then( res => {
-              if(res.data.code === 200){
-                this.$hint('修改成功,请重新登录','success')
+            this.$api({
+              method: 'modifyPass', body: {
+                oldPassword: this.ruleForm.old,
+                newPassword: this.ruleForm.new_pass,
+                rePassword: this.ruleForm.check_pass
+              }
+            }).then(res => {
+              if (res.data.code === "200") {
+                this.$hint('修改成功,请重新登录', 'success')
                 window.location.href = '/AssWeCan/home/loginPage'
+              }else{
+                this.$hint(res.data.message, 'error')
               }
             })
           } else {
