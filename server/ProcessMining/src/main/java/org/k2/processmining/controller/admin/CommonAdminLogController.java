@@ -28,7 +28,7 @@ public abstract class CommonAdminLogController<T extends AbstractLog> {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public @ResponseBody
-    Object getAllRawLogs(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+    Object getAllLogs(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
         int pageNum = logService.getLogPageNum();
         if (page > pageNum) {
             page = pageNum;
@@ -43,7 +43,7 @@ public abstract class CommonAdminLogController<T extends AbstractLog> {
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public @ResponseBody
-    Object getRawLogsByKeyWord(@Valid @RequestParam("keyWord")
+    Object getLogsByKeyWord(@Valid @RequestParam("keyWord")
                                @NotBlank(message = "Key word should not be empty.")String keyWord,
                                @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
         int pageNum = logService.getLogPageNumByKeyWord(keyWord);
@@ -58,7 +58,7 @@ public abstract class CommonAdminLogController<T extends AbstractLog> {
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     public @ResponseBody
-    Object deleteRawLogs(@Valid @RequestBody IdListForm form) {
+    Object deleteLogs(@Valid @RequestBody IdListForm form) {
         logService.deleteByAdmin(form.getIdList());
         return new HashMap<String,Object>(){{put("code", 1);}};
     }

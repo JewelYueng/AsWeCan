@@ -127,7 +127,7 @@ public abstract class CommonLogController<T extends AbstractLog> {
 
     @RequestMapping(value = "/unShare",method = RequestMethod.POST)
     public @ResponseBody
-    Object unShareRawLogs(@Valid @RequestBody IdListForm form){
+    Object unShareLogs(@Valid @RequestBody IdListForm form){
         User user = Util.getLoginUser();
         logService.updateShareStateByLogIdForUser(form.getIdList(), LogShareState.UNSHARED.getValue(), user.getId());
         return new HashMap<String,Object>(){{put("code", 1);}};

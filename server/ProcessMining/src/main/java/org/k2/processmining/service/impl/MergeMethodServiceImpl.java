@@ -137,7 +137,7 @@ public class MergeMethodServiceImpl implements MergeMethodService{
         EventLog resultEventLog = new EventLog();
         resultEventLog.setId(Util.getUUIDString());
         resultEventLog.setUserId(eventLog1.getUserId());
-        resultEventLog.setLogName(Util.getMergeName(eventLog1.getLogName(), eventLog2.getLogName()));
+        resultEventLog.setLogName(Util.getMergeName(eventLog1.getLogName(), eventLog2.getLogName(), mergeMethod.getMethodName()));
         resultEventLog.setCreateDate(new Date());
         resultEventLog.setFormat("xes");
         resultEventLog.setMergeRelation(eventLog1.getId() + "," + eventLog2.getId());

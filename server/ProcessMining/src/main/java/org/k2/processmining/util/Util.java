@@ -41,7 +41,7 @@ public class Util {
         return UUID.randomUUID().toString();
     }
 
-    public static String getMergeName(String eventLog1Name, String eventLog2Name) {
+    public static String getMergeName(String eventLog1Name, String eventLog2Name, String mergeMethodName) {
         int i = eventLog1Name.lastIndexOf(".");
         int j = eventLog2Name.lastIndexOf(".");
         if (i != -1) {
@@ -50,7 +50,7 @@ public class Util {
         if (j != -1) {
             eventLog2Name = eventLog2Name.substring(0, j);
         }
-        return eventLog1Name + "-" + eventLog2Name + "-merge.xes";
+        return mergeMethodName + "-" + eventLog1Name + "-" + eventLog2Name + ".xes";
     }
 
     public static String getNormalizeName(String rawLogName) {
