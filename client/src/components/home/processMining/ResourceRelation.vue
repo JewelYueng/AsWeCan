@@ -10,7 +10,7 @@
         </el-option>
       </el-select>
     </div>
-    <svg class="chart" v-for="item in items.diagram" v-if="item.resourceAttr === selectedAttr">
+    <svg width="1000" height="450" class="chart" v-for="item in items.diagram" v-if="item.resourceAttr === selectedAttr">
     </svg>
     <el-button class="download" v-show="state==1" type="primary" @click="DownloadImage" >下载</el-button>
   </div>
@@ -28,6 +28,8 @@
 
   .chart {
     height: 500px;
+    display:block;
+    margin: 0 auto;
   }
 </style>
 
@@ -142,8 +144,8 @@ debugger
         console.log(_this.selectedAttr)
 
         let targetObject=_this.items.diagram.find(_this.findObject);
-        let width = 1000;
-        let height = 1000;
+//        let width = 1000;
+//        let height = 1000;
 
         console.log(targetObject.nodes.length)
 
@@ -172,11 +174,14 @@ debugger
         }
 
         console.log(nGraph)
-
-        var svg = d3.select(".chart")
+//        let width = +svg.attr("width");
+//         let height = +svg.attr("height");
+        var svg = d3.select(".chart");
+        let width = +svg.attr("width");
+        let height = +svg.attr("height");
 //          .append("svg")
-          .attr("width",width)
-          .attr("height",height);
+//          .attr("width",width)
+//          .attr("height",height);
         var color = d3.scale.category20();
 
 
