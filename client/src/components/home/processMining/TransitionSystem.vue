@@ -7,7 +7,7 @@
     </div>
     <div class="simple" v-show="showSelector">
       <span>单记录动画</span>
-      <el-select v-model="selectedTrace" placeholder="请选择轨迹" id="trace-input">
+      <el-select v-model="selectedTrace" placeholder="请选择轨迹" id="trace-input" size="large">
         <el-option
           v-for="item in items.diagram.traces"
           :key="item"
@@ -19,7 +19,7 @@
       <el-button type="primary" @click="runTrace('#diagraph')" id="trace-submit">运行</el-button>
       <el-button type="primary" @click="cleanTrace()">清除</el-button>
     </div>
-    <svg id="diagraph" width="900" height="450"></svg>
+    <svg id="diagraph" width="5000" height="5000"></svg>
     <div class="download"><el-button type="primary" @click="downloadImage" icon="download">下载</el-button></div>
   </div>
 </template>
@@ -116,10 +116,10 @@
 
     },
     methods: {
-      DownloadImage(){
+      downloadImage(){
         let svg = d3.select("#diagraph");
-        let width=900;
-        let height=450;
+        let width=5000;
+        let height=5000;
         var serializer = new XMLSerializer();
         var source = serializer.serializeToString(svg.node());
 

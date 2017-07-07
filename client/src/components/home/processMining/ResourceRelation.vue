@@ -132,7 +132,7 @@
         };
       },
       produceLayout:function () {
-
+debugger
         var _this = this;
         _this.state=1;
 //        var canvas = document.querySelector("canvas"),
