@@ -2,7 +2,7 @@
   <div class="sankey">
     <svg class="chart">
     </svg>
-    <div class="download"><el-button type="primary" @click="downloadImg" icon="download">下载</el-button></div>
+    <div class="download"><el-button type="primary" @click="downloadImg">下载</el-button></div>
   </div>
 </template>
 
@@ -14,12 +14,14 @@
     .show{
       text-align: center;
     }
+
+    .node rect {
+      cursor: move;
+      fill-opacity: .9;
+      shape-rendering: crispEdges;
+    }
   }
-  .node rect {
-    cursor: move;
-    fill-opacity: .9;
-    shape-rendering: crispEdges;
-  }
+
 
   .node text {
     pointer-events: none;
@@ -87,7 +89,7 @@ export default{
         context.drawImage(image, 0, 0);
 
         let a = document.createElement("a");
-        a.download = "fallback.png";
+        a.download = "sankey.png";
         a.href = canvas.toDataURL("image/png");
         a.click();
       };

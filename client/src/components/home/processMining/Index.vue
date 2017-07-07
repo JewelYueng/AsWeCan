@@ -1,17 +1,20 @@
 <template>
   <div class="diagram-list">
-    <div class="left-side">
-      <el-menu :default-active="current_index" class="el-menu-vertical-demo" @select="handleSelect">
-        <el-menu-item index="1">力导向图</el-menu-item>
-        <el-submenu index="2">
-          <template slot="title">流程模型</template>
-          <el-menu-item index="2-1">流程图</el-menu-item>
-          <el-menu-item index="2-2">工作流图</el-menu-item>
-        </el-submenu>
-        <el-menu-item index="3">桑基图</el-menu-item>
-      </el-menu>
-    </div>
+    <transition name="slide">
+      <div class="left-side" v-show="is_showing">
+        <el-menu :default-active="current_index" class="el-menu-vertical-demo" @select="handleSelect">
+          <el-menu-item index="1">力导向图</el-menu-item>
+          <el-submenu index="2">
+            <template slot="title">流程模型</template>
+            <el-menu-item index="2-1">流程图</el-menu-item>
+            <el-menu-item index="2-2">工作流图</el-menu-item>
+          </el-submenu>
+          <el-menu-item index="3">桑基图</el-menu-item>
+        </el-menu>
+      </div>
+    </transition>
     <div id="right-window">
+      <div @click="hideLeft"><</div>
       <component :is="current_view" :sankey="sankey" :petri="petri" :produce="produce" :resource="resource"></component>
     </div>
   </div>
@@ -40,8 +43,17 @@
     padding: 30px 30px 0 30px;
     overflow: auto;
   }
-  .relation-logs{
+
+  .relation-logs {
     cursor: pointer;
+  }
+
+  .slide-enter-active, .slide-leave-active {
+    transition: left 1s;
+  }
+
+  .slide-enter, .slide-leave-active {
+    transform: translateX(-@left_side_width);
   }
 </style>
 
@@ -59,19 +71,20 @@
         msg: 'leftSide',
         active_index: '1',
         view_dict: {
-          "1":ResourceRelation,
-          "2-1":TransitionSystem,
+          "1": ResourceRelation,
+          "2-1": TransitionSystem,
           "2-2": WorkNet,
           "3": Sankey
         },
         sankey: {},
         petri: {},
         resource: {},
-        produce: {}
+        produce: {},
+        is_showing: true
       }
     },
     components: {
-        Sankey,
+      Sankey,
       ResourceRelation
     },
     created(){
@@ -84,12 +97,15 @@
     destroyed(){
       this.changeDiagramPath('1')
     },
-    props: ['resource_data','raw_data'],
+    props: ['resource_data', 'raw_data'],
     methods: {
-      ...mapActions(['changeHomePath','changeDiagramPath']),
+      ...mapActions(['changeHomePath', 'changeDiagramPath']),
       handleSelect(key, keyPath) {
         this.active_index = key
         this.changeDiagramPath(key)
+      },
+      hideLeft(){
+        this.is_showing = !this.is_showing
       },
       getDiagramData(diagram_type){
         const diagram_dict = {
@@ -103,14 +119,14 @@
           method: 'mining',
           body: _.extend({
             diagramType: diagram_type,
-          },mining_params)
-        }).then( res => {
+          }, mining_params)
+        }).then(res => {
           if (res.status === 200) {
             this[diagram_dict[diagram_type]] = res.data.diagram
           }
         }, err => {
           console.log(err)
-          this.$hint(err.data.msg,'error')
+          this.$hint(err.data.msg, 'error')
         })
       }
     },

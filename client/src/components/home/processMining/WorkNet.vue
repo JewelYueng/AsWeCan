@@ -2,8 +2,11 @@
   <div class="workNet">
     <svg class="chart" width="1130" height="500">
 
-        </svg>
-    <div class="download"><el-button type="primary" @click="downloadImage" icon="download">下载</el-button></div>
+    </svg>
+    <div class="download">
+      <el-button type="primary" @click="downloadImage">下载</el-button>
+    </div>
+
   </div>
 </template>
 
@@ -16,7 +19,6 @@
       text-align: center;
     }
 
-
     .link {
       fill: none;
       stroke: #ffa21d;
@@ -26,7 +28,6 @@
     .link:hover {
       stroke-opacity: .3;
     }
-
 
     path:hover {
       stroke-opacity: 0.9;
@@ -67,9 +68,11 @@
         let url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
 
         let canvas = document.createElement("canvas");
-        canvas.width = 1130;
-        canvas.height = 650;
+        canvas.width = 5000;
+        canvas.height = 700;
 
+        console.log(d3.select('.svg-body').attr('width'), d3.select('.svg-body').attr('height'))
+        debugger
         let context = canvas.getContext("2d");
         let image = new Image;
         image.src = url;
@@ -77,7 +80,7 @@
           context.drawImage(image, 0, 0);
 
           let a = document.createElement("a");
-          a.download = "fallback.png";
+          a.download = "worknet.png";
           a.href = canvas.toDataURL("image/png");
           a.click();
         };
@@ -170,13 +173,14 @@
 
 // Set up an SVG group so that we can translate the final graph.
         let svg = d3.select('svg'),
-          inner = svg.append("g");
+          inner = svg.append("g")
+            .attr('class', 'svg-body')
 
 
 // Set up zoom support
         let zoom = d3.behavior.zoom().on("zoom", function () {
           inner.attr("transform", "translate(" + d3.event.translate + ")" +
-            "scale(" + d3.event.scale + ")");
+            "scale(" + d3.event.scale + ")")
         });
         svg.call(zoom).on("dblclick.zoom", null);
 

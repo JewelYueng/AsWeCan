@@ -7,7 +7,7 @@
     </div>
     <div class="simple" v-show="showSelector">
       <span>单记录动画</span>
-      <el-select v-model="selectedTrace" placeholder="请选择轨迹" id="trace-input" size="large">
+      <el-select v-model="selectedTrace" placeholder="请选择轨迹" id="trace-input">
         <el-option
           v-for="item in items.diagram.traces"
           :key="item"
@@ -19,8 +19,8 @@
       <el-button type="primary" @click="runTrace('#diagraph')" id="trace-submit">运行</el-button>
       <el-button type="primary" @click="cleanTrace()">清除</el-button>
     </div>
-    <svg id="diagraph" width="5000" height="5000"></svg>
-    <div class="download"><el-button type="primary" @click="downloadImage" icon="download">下载</el-button></div>
+    <svg id="diagraph" width="900" height="450"></svg>
+    <div class="download"><el-button type="primary" @click="downloadImage">下载</el-button></div>
   </div>
 </template>
 
@@ -118,8 +118,8 @@
     methods: {
       downloadImage(){
         let svg = d3.select("#diagraph");
-        let width=5000;
-        let height=5000;
+        let width=900;
+        let height=450;
         var serializer = new XMLSerializer();
         var source = serializer.serializeToString(svg.node());
 
@@ -138,7 +138,7 @@
           context.drawImage(image, 0, 0);
 
           var a = document.createElement("a");
-          a.download = "fallback.png";
+          a.download = "flow-chart.png";
           a.href = canvas.toDataURL("image/png");
           a.click();
         };
@@ -229,7 +229,11 @@
 
                 let p = d3.select('.trace-group')
                   .append("path")
-                  .attr("style", "stroke: red;fill: none;")
+                  .attr('class', 'edge')
+                  .attr({
+                    "stroke": "red",
+                    "fill": "none"
+                  })
                   .attr("fill", "none")
                   .attr("id", "trace-" + tIndex)
 
@@ -430,7 +434,11 @@
 
         let wrapper = svg.append("g");
         let g = wrapper.append("g");
-        let traceGroup = wrapper.append("g").attr("style", " fill: red;");
+        let traceGroup = wrapper.append("g")
+          .attr('class', 'trace-group')
+          .attr({
+            "fill": "red"
+          });
         svg.call(d3.behavior.zoom()
           .scaleExtent([1 / 8, 8])
           .on("zoom", zoomed));
@@ -443,7 +451,11 @@
           .data(_this.layout.edges())
           .enter()
           .append('g')
-          .attr("style", "stroke: red;fill: none;")
+          .attr('class', 'edge')
+          .attr({
+            "stroke": "red",
+            "fill": "none"
+          })
           .attr("fill", "none")
 
 
