@@ -17,7 +17,7 @@
       </el-menu>
     </div>
     <div id="right-window">
-      <component :is="current_view"></component>
+      <component :is="current_view" id="logs-window"></component>
     </div>
   </div>
 </template>
@@ -49,6 +49,9 @@
     position: relative;
   }
 
+  #logs-window{
+    width: 100%;
+  }
 
   input[type='checkbox']{
     width: 20px;
@@ -181,7 +184,7 @@
         return this.view_dict[this.$store.getters.file_path || '1-1']
       },
       current_index(){
-        return this.$store.getters.file_path
+        return this.$store.getters.file_path || '1-1'
       }
     }
   }
