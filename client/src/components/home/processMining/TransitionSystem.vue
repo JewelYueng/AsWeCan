@@ -229,7 +229,11 @@
 
                 let p = d3.select('.trace-group')
                   .append("path")
-                  .attr("style", "stroke: red;fill: none;")
+                  .attr('class', 'edge')
+                  .attr({
+                    "stroke": "red",
+                    "fill": "none"
+                  })
                   .attr("fill", "none")
                   .attr("id", "trace-" + tIndex)
 
@@ -430,7 +434,11 @@
 
         let wrapper = svg.append("g");
         let g = wrapper.append("g");
-        let traceGroup = wrapper.append("g").attr("style", " fill: red;");
+        let traceGroup = wrapper.append("g")
+          .attr('class', 'trace-group')
+          .attr({
+            "fill": "red"
+          });
         svg.call(d3.behavior.zoom()
           .scaleExtent([1 / 8, 8])
           .on("zoom", zoomed));
@@ -443,7 +451,11 @@
           .data(_this.layout.edges())
           .enter()
           .append('g')
-          .attr("style", "stroke: red;fill: none;")
+          .attr('class', 'edge')
+          .attr({
+            "stroke": "red",
+            "fill": "none"
+          })
           .attr("fill", "none")
 
 

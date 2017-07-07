@@ -2,8 +2,11 @@
   <div class="workNet">
     <svg class="chart" width="1130" height="500">
 
-        </svg>
-    <div class="download"><el-button type="primary" @click="downloadImage" >下载</el-button></div>
+    </svg>
+    <div class="download">
+      <el-button type="primary" @click="downloadImage">下载</el-button>
+    </div>
+
   </div>
 </template>
 
@@ -16,7 +19,6 @@
       text-align: center;
     }
 
-
     .link {
       fill: none;
       stroke: #ffa21d;
@@ -26,7 +28,6 @@
     .link:hover {
       stroke-opacity: .3;
     }
-
 
     path:hover {
       stroke-opacity: 0.9;
@@ -67,7 +68,7 @@
         let url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
 
         let canvas = document.createElement("canvas");
-        canvas.width = 1130;
+        canvas.width = 5000;
         canvas.height = 700;
 
         console.log(d3.select('.svg-body').attr('width'), d3.select('.svg-body').attr('height'))
@@ -173,7 +174,7 @@
 // Set up an SVG group so that we can translate the final graph.
         let svg = d3.select('svg'),
           inner = svg.append("g")
-            .attr('class','svg-body')
+            .attr('class', 'svg-body')
 
 
 // Set up zoom support
