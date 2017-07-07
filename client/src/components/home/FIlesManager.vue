@@ -82,6 +82,8 @@
     }
   }
 
+  .mergeCss{text-decoration: line-through;}
+
   .pointer{cursor: pointer;}
 
   .head {

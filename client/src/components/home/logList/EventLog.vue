@@ -46,11 +46,13 @@
             {{item.normalLog ? item.normalLog.logName : '无'}}
           </div>
           <div class="merge-relation">
-            <div v-if="item.eventLog.mergeRelation" class="relation1" :class="{pointer: item.eventLog}"
+            <div v-if="item.eventLog.mergeRelation" class="relation1"
+                 :class="{'pointer': item.eventLog,'mergeCss':item.eventLog.mergeRelationLogs[0].state==2}"
                  @click="selectedRel(index,0)"
                  :title="item.eventLog.mergeRelationLogs[0].logName">{{item.eventLog.mergeRelationLogs[0].logName}}
             </div>
-            <div v-if="item.eventLog.mergeRelation" class="relation2" :class="{pointer: item.eventLog}"
+            <div v-if="item.eventLog.mergeRelation" class="relation2"
+                 :class="{'pointer': item.eventLog,'mergeCss':item.eventLog.mergeRelationLogs[1].state==2}"
                  @click="selectedRel(index,1)"
                  :title="item.eventLog.mergeRelationLogs[1].logName">{{item.eventLog.mergeRelationLogs[1].logName}}
             </div>
@@ -180,12 +182,12 @@
         .relation1 {
           min-width: 180px;
           .too-long-text;
-          cursor: pointer;
+         // cursor: pointer;
         }
         .relation2 {
           min-width: 180px;
           .too-long-text;
-          cursor: pointer;
+          //cursor: pointer;
         }
       }
     }

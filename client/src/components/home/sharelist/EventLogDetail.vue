@@ -39,9 +39,11 @@
           </div>
           <div class="merge-relation">
             <div v-if="item.eventLog.mergeRelation" class="relation1" @click="selectedRel(index,0)"
+                 :class="{'pointer': item.eventLog,'mergeCss':item.eventLog.mergeRelationLogs[0].isShared==0}"
                  :title="item.eventLog.mergeRelationLogs[0].logName">{{item.eventLog.mergeRelationLogs[0].logName}}
             </div>
             <div v-if="item.eventLog.mergeRelation" class="relation2" @click="selectedRel(index,1)"
+                 :class="{'pointer': item.eventLog,'mergeCss':item.eventLog.mergeRelationLogs[1].isShared==0}"
                  :title="item.eventLog.mergeRelationLogs[1].logName">{{item.eventLog.mergeRelationLogs[1].logName}}
             </div>
             <div v-show="!item.eventLog.mergeRelation">没有融合来源</div>
@@ -220,7 +222,7 @@
       },
       selectedRel(log_index, index){
         let relation_id = this.items[log_index].eventLog.mergeRelationLogs[index].id
-        let relation_state = this.items[log_index].eventLog.mergeRelationLogs[index].state
+        let relation_state = this.items[log_index].eventLog.mergeRelationLogs[index].isShared
 
         if (relation_id && relation_state === 1) {
           this.$api({method: 'getShareEventPage', query: {id: relation_id}}).then( res => {
@@ -231,7 +233,7 @@
             this.$hint(err.data.msg, 'error')
           })
         } else{
-          this.$hint('该日志不存在', 'warn')
+          this.$hint('融合来源没有被分享', 'warn')
         }
       },
       searchLog(){
