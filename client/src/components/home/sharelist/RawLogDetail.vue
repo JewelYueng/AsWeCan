@@ -25,11 +25,11 @@
           <div class="date">
             {{`${new Date(item.rawLog.createDate).getFullYear()}-${new Date(item.rawLog.createDate).getMonth() + 1}-${new Date(item.rawLog.createDate).getDate()}`}}
           </div>
-          <div @click="jumpToNormal(index)" class="normal-log relation-logs" :class="{pointer: item.normalLog}"
+          <div @click="jumpToNormal(index)" class="normal-log" :class="{pointer: item.normalLog}"
                :title="item.normalLog ? item.normalLog.logName : '无'">
             {{item.normalLog ? item.normalLog.logName : '无'}}
           </div>
-          <div @click="jumpToEvent(index)" class="event-log relation-logs" :class="{pointer: item.eventLog}"
+          <div @click="jumpToEvent(index)" class="event-log" :class="{pointer: item.eventLog}"
                :title="item.eventLog ? item.eventLog.logName : '无'">
             {{item.eventLog ? item.eventLog.logName : '无'}}
           </div>
@@ -70,10 +70,6 @@
     color: #b5b5b5;
   }
 
-  .download_button {
-    cursor: pointer;
-  }
-
   .list-item:hover {
     background-color: @logList_Choose;
   }
@@ -94,11 +90,6 @@
       overflow: auto;
     }
     .list-item, .list-head{
-      img {
-        width: 12px;
-        height: 12px;
-        margin-right: 10px;
-      }
       display: flex;
       flex-direction: row;
       width: 100%;
@@ -116,6 +107,7 @@
         flex: 0 0 5%;
         min-width: 40px;
         img {
+          cursor: pointer;
           width: 18px;
           height: 18px;
           position: relative;

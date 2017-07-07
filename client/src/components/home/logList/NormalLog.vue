@@ -107,10 +107,6 @@
       overflow: auto;
     }
     .list-item, .list-head {
-      img {
-        width: 12px;
-        height: 12px;
-      }
       display: flex;
       flex-direction: row;
       width: 100%;
@@ -142,6 +138,7 @@
           font-size: 18px;
         }
         img {
+          cursor: pointer;
           width: 18px;
           height: 18px;
           position: relative;

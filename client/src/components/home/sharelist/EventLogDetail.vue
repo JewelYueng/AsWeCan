@@ -29,11 +29,11 @@
           <div class="date">
             {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()}`}}
           </div>
-          <div  @click="jumpToRaw(index)" class="raw-log relation-logs" :class="{pointer: item.rawLog}"
+          <div  @click="jumpToRaw(index)" class="raw-log " :class="{pointer: item.rawLog}"
                 :title="item.rawLog ? item.rawLog.logName : '无'">
             {{item.rawLog ? item.rawLog.logName : '无'}}
           </div>
-          <div @click="jumpToNormal(index)" class="normal-log relation-logs" :class="{pointer: item.normalLog}"
+          <div @click="jumpToNormal(index)" class="normal-log " :class="{pointer: item.normalLog}"
                :title="item.normalLog ? item.normalLog.logName : '无'">
             {{item.normalLog ? item.normalLog.logName : '无'}}
           </div>
@@ -103,11 +103,6 @@
       overflow: auto;
     }
     .list-item, .list-head{
-      img {
-        width: 12px;
-        height: 12px;
-        margin-right: 10px;
-      }
       display: flex;
       flex-direction: row;
       width: 100%;
@@ -116,7 +111,6 @@
       justify-content: flex-start;
       align-items: center;
       .log-name {
-        cursor: pointer;
         min-width: 190px;
         flex: 0 0 20%;
         .too-long-text;
@@ -126,11 +120,15 @@
         flex: 0 0 10%;
         min-width: 40px;
         img {
+          cursor: pointer;
           width: 18px;
           height: 18px;
           position: relative;
           top: 2px;
         }
+      }
+      .list-item .log-name{
+        cursor: pointer;
       }
       .uploader {
         flex: 0 0 8%;
