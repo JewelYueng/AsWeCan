@@ -1,6 +1,7 @@
 <template>
   <div class="transition-system">
     <div class="all" v-show="showTotalBtn">
+      <div class="download"><el-button type="primary" @click="downloadImage">下载</el-button></div>
       <span>全记录动画</span>
       <el-button type="primary" @click="runTotal()" id="all-trace-run">运行</el-button>
       <!--<el-button type="primary" @click="cleanTrace()" >清除</el-button>-->
@@ -19,8 +20,8 @@
       <el-button type="primary" @click="runTrace('#diagraph')" id="trace-submit">运行</el-button>
       <el-button type="primary" @click="cleanTrace()">清除</el-button>
     </div>
-    <svg id="diagraph" width="900" height="450"></svg>
-    <div class="download"><el-button type="primary" @click="downloadImage" icon="download">下载</el-button></div>
+    <svg id="diagraph" height="500"></svg>
+
   </div>
 </template>
 
@@ -30,7 +31,7 @@
   }
 
   .download{
-    margin: 10px auto;
+    text-align: left;
   }
 
   .transition-system {
@@ -116,7 +117,7 @@
 
     },
     methods: {
-      DownloadImage(){
+      downloadImage(){
         let svg = d3.select("#diagraph");
         let width=900;
         let height=450;
@@ -125,20 +126,20 @@
 
         source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
         var url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
-        document.write('<img src="' + url + '"/>');
+
 
         var canvas = document.createElement("canvas");
-        canvas.width = width;
-        canvas.height = height;
+        canvas.width = document.body.clientWidth - 20;
+        canvas.height = 700;
 
         var context = canvas.getContext("2d");
         var image = new Image;
-        image.src = document.getElementsByTagName('img')[0].src;
+        image.src = url;
         image.onload = function() {
           context.drawImage(image, 0, 0);
 
           var a = document.createElement("a");
-          a.download = "fallback.png";
+          a.download = "flow-chart.png";
           a.href = canvas.toDataURL("image/png");
           a.click();
         };
@@ -229,7 +230,11 @@
 
                 let p = d3.select('.trace-group')
                   .append("path")
-                  .attr("style", "stroke: red;fill: none;")
+                  .attr('class', 'edge')
+                  .attr({
+                    "stroke": "red",
+                    "fill": "none"
+                  })
                   .attr("fill", "none")
                   .attr("id", "trace-" + tIndex)
 
@@ -412,7 +417,9 @@
 //        目前没有发现以下这一句修改类名的必要
         _this.svg = d3.select(selector).attr('class', 'daiding');
 
-        let svg = d3.select(selector);
+        let width = document.body.clientWidth - 20
+        let svg = d3.select(selector)
+          .attr('width', width)
         let marker =
           svg.append("marker")
             .attr("id", "arrow")
@@ -430,7 +437,11 @@
 
         let wrapper = svg.append("g");
         let g = wrapper.append("g");
-        let traceGroup = wrapper.append("g").attr("style", " fill: red;");
+        let traceGroup = wrapper.append("g")
+          .attr('class', 'trace-group')
+          .attr({
+            "fill": "red"
+          });
         svg.call(d3.behavior.zoom()
           .scaleExtent([1 / 8, 8])
           .on("zoom", zoomed));
@@ -443,7 +454,11 @@
           .data(_this.layout.edges())
           .enter()
           .append('g')
-          .attr("style", "stroke: red;fill: none;")
+          .attr('class', 'edge')
+          .attr({
+            "stroke": "red",
+            "fill": "none"
+          })
           .attr("fill", "none")
 
 

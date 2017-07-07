@@ -1,8 +1,9 @@
 <template>
   <div class="sankey">
+    <div class="download"><el-button type="primary" @click="downloadImg">下载</el-button></div>
     <svg class="chart">
     </svg>
-    <div class="download"><el-button type="primary" @click="downloadImg" icon="download">下载</el-button></div>
+
   </div>
 </template>
 
@@ -14,12 +15,14 @@
     .show{
       text-align: center;
     }
+
+    .node rect {
+      cursor: move;
+      fill-opacity: .9;
+      shape-rendering: crispEdges;
+    }
   }
-  .node rect {
-    cursor: move;
-    fill-opacity: .9;
-    shape-rendering: crispEdges;
-  }
+
 
   .node text {
     pointer-events: none;
@@ -68,7 +71,7 @@ export default{
           bottom: 6,
           left: 1
         },
-        width = 1130 - margin.left - margin.right,
+        width = document.body.clientWidth - 20 - margin.left - margin.right,
         height = 700;
       let serializer = new XMLSerializer();
       let source = serializer.serializeToString(svg.node());
@@ -87,7 +90,7 @@ export default{
         context.drawImage(image, 0, 0);
 
         let a = document.createElement("a");
-        a.download = "fallback.png";
+        a.download = "sankey.png";
         a.href = canvas.toDataURL("image/png");
         a.click();
       };
@@ -99,7 +102,7 @@ export default{
           bottom: 6,
           left: 1
         },
-        width = 1130 - margin.left - margin.right,
+        width = document.body.clientWidth - 20 - margin.left - margin.right,
         height = 680;
 
       let formatNumber = d3.format(",.0f"),

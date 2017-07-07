@@ -113,7 +113,7 @@
         })
       },
       sure(){
-        if(this.selectedLog.eventLog) {
+        if(this.selectedLog) {
           this.commit({
             id: this.selectedLog.eventLog.id,
             logName: this.selectedLog.eventLog.logName,
