@@ -70,7 +70,6 @@ public class Message {
     public static final String ACCESSDENIED = "你没有权限访问该页面";
     public static final String ACCESSDENIED_CODE = "403";
 
-
     //密码验证
     public static final String PASSWORD_WRONG = "原密码错误！";
     public static final String PASSWORD_WRONG_CODE = "400";

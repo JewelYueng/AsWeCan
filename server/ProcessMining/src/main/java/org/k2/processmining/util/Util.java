@@ -18,7 +18,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import sun.misc.BASE64Encoder;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
@@ -144,6 +146,21 @@ public class Util {
         return md5PasswordEncoder.encodePassword(str,"666");
     }
 
+    public static Cookie getCookie(Cookie[] cookies, String cookieName){
+        for (Cookie cookie:cookies){
+            if (cookie.getName().equals(cookieName))
+                return cookie;
+        }
+        return null;
+    }
 
+    public static void delCookie(HttpServletResponse response, Cookie cookie){
+        if (cookie!=null){
+            cookie.setPath("/");
+            cookie.setMaxAge(0);
+            cookie.setValue(null);
+            response.addCookie(cookie);
+        }
+    }
 
 }

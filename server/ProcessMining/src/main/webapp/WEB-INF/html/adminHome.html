@@ -1,0 +1,58 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>adminHome</title>
+</head>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<body>
+<div>
+
+
+</div>
+<button onclick="clickme(2)" >瞎几把访问
+</button>
+</body>
+
+<script>
+    function clickme(username) {
+        var json = {
+            workId: "1",
+            password: "1"
+        };
+        $.ajax({
+            type:"POST",
+            url:'/admin/checkout',
+            contentType: 'application/json',
+            dataType:'json',
+            data:JSON.stringify(json),
+            success:function (result) {
+                console.log("ceshi");
+                console.log("result:"+result);
+            }
+
+        });
+    }
+    function logout() {
+        $.ajax({
+            type: "POST",
+            url: "/home/logout",
+            contentType: "application/json",
+            dataType: "json"
+        })
+    }
+
+    function reloadCode() {
+        var image = document.getElementById("codeImage");
+        image.src = "/home/code?date="+Date();
+    }
+    function visitAdmin() {
+        $.ajax({
+            type: "GET",
+            url: "/admin/home",
+            contentType: "application/json",
+            dataType: "json"
+        })
+    }
+</script>
+
+</html>

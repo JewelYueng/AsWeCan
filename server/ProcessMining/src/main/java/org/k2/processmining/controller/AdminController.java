@@ -6,6 +6,9 @@ import org.k2.processmining.security.admin.AdminDetails;
 import org.k2.processmining.security.admin.AdminFailureHandler;
 import org.k2.processmining.security.user.MyUserDetails;
 import org.k2.processmining.service.AdminService;
+import org.k2.processmining.util.Message;
+import org.k2.processmining.util.Util;
+import org.k2.processmining.utils.GsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,7 +33,7 @@ public class AdminController {
     @Autowired
     AdminService adminService;
 
-    @RequestMapping(value = "/checkout")
+    @RequestMapping(value = "/checkout",method = RequestMethod.POST)
     public @ResponseBody
     Object checkout(@RequestBody Administrator administrator){
         Map map = new HashMap();
@@ -52,21 +55,40 @@ public class AdminController {
         return map;
     }
 
-    @RequestMapping(value = "/home")
+    @RequestMapping(value = "/home",method = RequestMethod.GET)
     public void home(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/html/admin_index.html").forward(request,response);
+//        request.getRequestDispatcher("/html/admin_index.html").forward(request,response);
+        request.getRequestDispatcher("/html/adminHome.html").forward(request,response);
     }
 
-    @RequestMapping(value = "/loginPage")
+    @RequestMapping(value = "/loginPage",method = RequestMethod.GET)
     public void loginPage(HttpServletRequest request,HttpServletResponse response)throws ServletException,IOException{
 //        request.getRequestDispatcher("/html/admin_login.html").forward(request,response);
         request.getRequestDispatcher("/html/admin.html").forward(request,response);
     }
 
-    @RequestMapping(value = "/accessDeniedPage")
+    @RequestMapping(value = "/accessDeniedPage",method = RequestMethod.GET)
     public void accessDeniedPage(HttpServletRequest request,HttpServletResponse response)throws ServletException,IOException{
         System.out.println("admin AccessDenied");
         request.getRequestDispatcher("/html/admin_403.html").forward(request,response);
+    }
+
+    @RequestMapping(value = "/hasLogoutPage",method = RequestMethod.GET)
+    public @ResponseBody
+    Map hasLogoutPage(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("admin hasLogoutPage");
+        Util.delCookie(response,Util.getCookie(request.getCookies(),"adminRememberMe"));
+
+        if ("application/json".equals(request.getHeader("Content-Type"))){
+            response.setHeader("Content-type", "application/json;charset=UTF-8");
+            response.setStatus(405);
+//            response.getWriter().print(GsonParser.parseToCodeAndMessage("405","你的账号已经被踢出！"));
+            Map map = new HashMap();
+            map.put("errorMessage","账号被踢出");
+            return map;
+        }
+        request.getRequestDispatcher("/html/admin_403.html").forward(request,response);
+        return null;
     }
 
 

@@ -15,15 +15,13 @@ import java.io.IOException;
  */
 public class UserSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 
-//    public static final String USER_LOGIN_SUCCESS = "user login success";
-//    public static final int USER_LOGIN_SUCCESS_CODE = 200;
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
         System.out.println("UserSuccessHandler");
 
         if ("application/json".equals(request.getHeader("Content-Type"))) {
+            response.setHeader("Content-type", "application/json;charset=UTF-8");
             /*
              * USED if you want to AVOID redirect to LoginSuccessful.htm in JSON authentication
              */

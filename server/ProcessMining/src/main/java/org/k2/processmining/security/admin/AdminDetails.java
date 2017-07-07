@@ -76,9 +76,9 @@ public class AdminDetails implements UserDetails{
     @Override
     public boolean equals(Object obj) {
         System.out.println("AdminDetails equals");
-        if (obj instanceof Administrator){
+        if (obj instanceof AdminDetails){
             System.out.println("obj instanceof Administrator");
-            return admin.getWorkId().equals(((Administrator)obj).getWorkId());
+            return admin.getWorkId().equals(((AdminDetails)obj).getAdmin().getWorkId());
         }
         return super.equals(obj);
     }

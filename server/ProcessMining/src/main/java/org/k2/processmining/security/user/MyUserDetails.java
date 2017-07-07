@@ -72,4 +72,17 @@ public class MyUserDetails implements UserDetails{
     public User getUser() {
         return user;
     }
+
+    @Override
+    public int hashCode() {
+        return user.getEmail().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof MyUserDetails){
+            return user.getEmail().equals((((MyUserDetails) obj).getUser().getEmail()));
+        }
+        return super.equals(obj);
+    }
 }

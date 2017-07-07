@@ -15,18 +15,19 @@
     <security:http pattern="/user/register/**" security="none"/>
     <security:http pattern="/home/accessDeniedPage" security="none"/>
     <security:http pattern="/admin/accessDeniedPage" security="none"/>
+    <security:http pattern="/admin/hasLogoutPage" security="none"/>
+    <security:http pattern="/home/hasLogoutPage" security="none"/>
 
     <security:http auto-config="false" pattern="/admin/**" entry-point-ref="adminEntryPoint">
         <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+        <!--<security:intercept-url pattern="/admin/**" access="permitAll"/>-->
+        <security:custom-filter ref="adminConcurrencyFilter" position="CONCURRENT_SESSION_FILTER"/>
         <security:custom-filter ref="adminFilter"  position="FORM_LOGIN_FILTER"/>
         <security:custom-filter ref="adminRememberMeFilter" position="REMEMBER_ME_FILTER"/>
-        <security:custom-filter ref="concurrencyFilter" position="CONCURRENT_SESSION_FILTER"/>
         <security:logout logout-url="/admin/logout" delete-cookies="JSESSIONID,adminRememberMe" success-handler-ref="adminLogoutSuccessHandler" />
         <security:csrf disabled="true"/>
         <security:access-denied-handler ref="adminAccessDeniedHandler"/>
-        <security:session-management
-                invalid-session-url="/admin/loginPage"
-                session-authentication-strategy-ref="adminAuthenticationStrategy" />
+        <security:session-management session-authentication-strategy-ref="sas" />
     </security:http>
 
     <security:authentication-manager id="adminAuthenticationManager" erase-credentials="false">
@@ -51,7 +52,7 @@
         <property name="authenticationSuccessHandler" ref="adminSuccessHandler"/>
         <property name="authenticationFailureHandler" ref="adminFailureHandler"/>
         <property name="rememberMeServices" ref="adminRememberMeService"/>
-        <property name="sessionAuthenticationStrategy" ref="adminAuthenticationStrategy"/>
+        <property name="sessionAuthenticationStrategy" ref="sas"/>
     </bean>
     <bean id="adminSuccessHandler" class="org.k2.processmining.security.admin.AdminSuccessHandler">
         <property name="defaultTargetUrl" value="/admin/home" />
@@ -62,7 +63,6 @@
     <bean id="adminLogoutSuccessHandler" class="org.k2.processmining.security.admin.AdminLogoutSuccessHandler">
         <property name="defaultTargetUrl" value="/admin/loginPage"/>
     </bean>
-
     <bean id="adminRememberMeFilter" class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
         <constructor-arg ref="adminAuthenticationManager"/>
         <constructor-arg ref="adminRememberMeService"/>
@@ -81,34 +81,28 @@
     <bean id="adminAccessDeniedHandler" class="org.k2.processmining.security.CustomAccessDeniedHandler">
         <property name="errorPage" value="/admin/accessDeniedPage"/>
     </bean>
-    <bean id="adminAuthenticationStrategy" class="org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy">
-        <constructor-arg ref="sessionRegistry"/>
-        <property name="maximumSessions" value="1"/>
-        <property name="exceptionIfMaximumExceeded" value="true"/>
-    </bean>
-    <bean id="sessionRegistry" class="org.k2.processmining.security.admin.AdminSessionRegistryImpl"/>
-    <bean id="concurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+    <bean id="adminConcurrencyFilter"
+          class="org.springframework.security.web.session.ConcurrentSessionFilter">
         <constructor-arg name="sessionRegistry" ref="sessionRegistry"/>
-        <constructor-arg name="expiredUrl" value="/admin/loginPage"/>
-
+        <constructor-arg name="sessionInformationExpiredStrategy" ref="adminSessionInformationExpiredStrategy"/>
     </bean>
-
+    <bean id="adminSessionInformationExpiredStrategy" class="org.k2.processmining.security.admin.AdminSessionInformationExpiredStrategy"/>
 
 
 
 
 
     <security:http auto-config="false" pattern="/**" entry-point-ref="userEntryPoint">
-        <security:intercept-url pattern="/**" access="permitAll"/>
-        <!--<security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>-->
+        <!--<security:intercept-url pattern="/**" access="permitAll"/>-->
+        <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
+        <security:custom-filter ref="userConcurrencyFilter" position="CONCURRENT_SESSION_FILTER"/>
         <security:custom-filter ref="userFilter" position="FORM_LOGIN_FILTER"/>
         <security:custom-filter ref="userRememberMeFilter" position="REMEMBER_ME_FILTER"/>
         <security:logout logout-url="/home/logout" delete-cookies="JSESSIONID,userRememberMe" success-handler-ref="userLogoutSuccessHandler"/>
         <security:csrf disabled="true"/>
         <security:access-denied-handler ref="userAccessDeniedHandler"/>
+        <security:session-management session-authentication-strategy-ref="sas"/>
     </security:http>
-
-
     <security:authentication-manager id="userAuthenticationManager">
         <security:authentication-provider ref="userAuthenticationProvider"/>
         <security:authentication-provider ref="userRememberMeProvider"/>
@@ -121,6 +115,7 @@
         <property name="authenticationSuccessHandler" ref="userSuccessHandler"/>
         <property name="authenticationFailureHandler" ref="userFailureHanlder"/>
         <property name="rememberMeServices" ref="userRememberMeService"/>
+        <property name="sessionAuthenticationStrategy" ref="sas"/>
     </bean>
     <bean id="userEntryPoint" class="org.k2.processmining.security.user.UserLoginEntryPoint">
         <constructor-arg value="/home/loginPage"/>
@@ -158,9 +153,32 @@
     <bean id="userAccessDeniedHandler" class="org.k2.processmining.security.CustomAccessDeniedHandler">
         <property name="errorPage" value="/home/accessDeniedPage"/>
     </bean>
+    <bean id="userConcurrencyFilter"
+          class="org.springframework.security.web.session.ConcurrentSessionFilter">
+        <constructor-arg name="sessionRegistry" ref="sessionRegistry"/>
+        <constructor-arg name="sessionInformationExpiredStrategy" ref="userSessionInformationExpiredStrategy"/>
+    </bean>
+    <bean id="userSessionInformationExpiredStrategy" class="org.k2.processmining.security.user.UserSessionInformationExpiredStrategy"/>
+
 
 
     <bean id="md5PwdEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/>
     <bean id="customSaltSource" class="org.k2.processmining.security.CustomSaltSource"/>
+    <bean id="sas" class="org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy">
+        <constructor-arg>
+            <list>
+                <bean class="org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy">
+                    <constructor-arg ref="sessionRegistry"/>
+                    <property name="maximumSessions" value="1" />
+                </bean>
+                <bean class="org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy">
+                </bean>
+                <bean class="org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy">
+                    <constructor-arg ref="sessionRegistry"/>
+                </bean>
+            </list>
+        </constructor-arg>
+    </bean>
+    <bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl"/>
 
 </beans>

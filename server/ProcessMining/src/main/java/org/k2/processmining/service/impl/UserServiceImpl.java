@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService{
         if (!userService.getUserById(userId).getPassword().equals(Util.encryptStr(pwdForm.getOldPassword()))){
             return 400; //密码错误
         }
-        if (!pwdForm.getNewPassword().equals(pwdForm.getRePassword())){
+        if ("".equals(pwdForm.getNewPassword()) || !pwdForm.getNewPassword().equals(pwdForm.getRePassword())){
             return 401; //两次输入的密码不一致
         }
         userMapper.updatePwdById(userId,Util.encryptStr(pwdForm.getNewPassword()));
