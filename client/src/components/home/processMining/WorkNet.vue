@@ -1,11 +1,11 @@
 <template>
   <div class="workNet">
-    <svg class="chart" width="1130" height="500">
-
-    </svg>
     <div class="download">
       <el-button type="primary" @click="downloadImage">下载</el-button>
     </div>
+    <svg class="chart" width="1130" height="500">
+
+    </svg>
 
   </div>
 </template>

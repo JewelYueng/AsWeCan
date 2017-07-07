@@ -1,8 +1,9 @@
 <template>
   <div class="sankey">
+    <div class="download"><el-button type="primary" @click="downloadImg">下载</el-button></div>
     <svg class="chart">
     </svg>
-    <div class="download"><el-button type="primary" @click="downloadImg">下载</el-button></div>
+
   </div>
 </template>
 

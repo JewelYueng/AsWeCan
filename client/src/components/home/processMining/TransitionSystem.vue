@@ -1,6 +1,7 @@
 <template>
   <div class="transition-system">
     <div class="all" v-show="showTotalBtn">
+      <div class="download"><el-button type="primary" @click="downloadImage">下载</el-button></div>
       <span>全记录动画</span>
       <el-button type="primary" @click="runTotal()" id="all-trace-run">运行</el-button>
       <!--<el-button type="primary" @click="cleanTrace()" >清除</el-button>-->
@@ -19,8 +20,8 @@
       <el-button type="primary" @click="runTrace('#diagraph')" id="trace-submit">运行</el-button>
       <el-button type="primary" @click="cleanTrace()">清除</el-button>
     </div>
-    <svg id="diagraph" height="650"></svg>
-    <div class="download"><el-button type="primary" @click="downloadImage">下载</el-button></div>
+    <svg id="diagraph" height="500"></svg>
+
   </div>
 </template>
 
@@ -30,7 +31,7 @@
   }
 
   .download{
-    margin: 10px auto;
+    text-align: left;
   }
 
   .transition-system {

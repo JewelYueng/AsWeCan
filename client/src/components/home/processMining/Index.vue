@@ -56,7 +56,6 @@
     }
     .svg-div{
       flex: 1;
-      overflow-x: hidden;
     }
   }
 
