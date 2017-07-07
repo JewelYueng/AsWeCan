@@ -69,4 +69,13 @@ public class Message {
     public static final String ADMIN_LOGOUT_SUCCESS_CODE = "200";
     public static final String ACCESSDENIED = "你没有权限访问该页面";
     public static final String ACCESSDENIED_CODE = "403";
+
+
+    //密码验证
+    public static final String PASSWORD_WRONG = "原密码错误！";
+    public static final String PASSWORD_WRONG_CODE = "400";
+    public static final String NEWPASSWORD_INCONSISTENT = "两次输入的密码不一致";
+    public static final String NEWPASSWORD_INCONSISTENT_CODE = "401";
+    public static final String CHANGE_SUCCESS = "修改密码成功！";
+    public static final String CHANGE_SUCCESS_CODE = "200";
 }

@@ -21,7 +21,7 @@ public class AdminLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler{
             /*
              * USED if you want to AVOID redirect to LoginSuccessful.htm in JSON authentication
              */
-            System.out.println("json");
+            response.setHeader("Content-type", "application/json;charset=UTF-8");
             response.getWriter().print(GsonParser.parseToCodeAndMessage(Message.ADMIN_LOGOUT_SUCCESS_CODE,Message.ADMIN_LOGOUT_SUCCESS));
             response.getWriter().flush();
         } else {

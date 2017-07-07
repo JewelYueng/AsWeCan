@@ -96,11 +96,23 @@ public class UserController {
 
     @RequestMapping(value = "/password",method = RequestMethod.POST)
     public @ResponseBody
-    Object updatePassword(@RequestBody PwdForm pwdForm){
+    Object updatePassword(@RequestBody PwdForm pwdForm,HttpServletResponse response){
+        response.setHeader("Content-type", "application/json;charset=UTF-8");
         Map map = new HashMap();
-        System.out.println("updatePassword");
-        userService.updatePwdById(Util.getLoginUser().getId(),pwdForm.getPassword());
-        map.put("code",200);
+        switch (userService.updatePwdById(Util.getLoginUser().getId(),pwdForm)){
+            case 400:
+                map.put("code",Message.PASSWORD_WRONG_CODE);
+                map.put("message",Message.PASSWORD_WRONG);
+                break;
+            case 401:
+                map.put("code",Message.NEWPASSWORD_INCONSISTENT_CODE);
+                map.put("message",Message.NEWPASSWORD_INCONSISTENT);
+                break;
+            case 200:
+                map.put("code",Message.CHANGE_SUCCESS_CODE);
+                map.put("message",Message.CHANGE_SUCCESS);
+                break;
+        }
         return map;
     }
 
@@ -129,14 +141,32 @@ public class UserController {
     }
 
     public static class PwdForm{
-        private String password;
+        private String oldPassword;
+        private String newPassword;
+        private String rePassword;
 
-        public void setPassword(String password) {
-            this.password = password;
+        public void setRePassword(String rePassword) {
+            this.rePassword = rePassword;
         }
 
-        public String getPassword() {
-            return password;
+        public void setNewPassword(String newPassword) {
+            this.newPassword = newPassword;
+        }
+
+        public void setOldPassword(String oldPassword) {
+            this.oldPassword = oldPassword;
+        }
+
+        public String getRePassword() {
+            return rePassword;
+        }
+
+        public String getNewPassword() {
+            return newPassword;
+        }
+
+        public String getOldPassword() {
+            return oldPassword;
         }
     }
 

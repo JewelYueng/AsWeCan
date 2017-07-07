@@ -17,12 +17,16 @@
     <security:http pattern="/admin/accessDeniedPage" security="none"/>
 
     <security:http auto-config="false" pattern="/admin/**" entry-point-ref="adminEntryPoint">
-        <security:intercept-url pattern="/admin/**" access="permitAll"/>
+        <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
         <security:custom-filter ref="adminFilter"  position="FORM_LOGIN_FILTER"/>
         <security:custom-filter ref="adminRememberMeFilter" position="REMEMBER_ME_FILTER"/>
+        <security:custom-filter ref="concurrencyFilter" position="CONCURRENT_SESSION_FILTER"/>
         <security:logout logout-url="/admin/logout" delete-cookies="JSESSIONID,adminRememberMe" success-handler-ref="adminLogoutSuccessHandler" />
         <security:csrf disabled="true"/>
         <security:access-denied-handler ref="adminAccessDeniedHandler"/>
+        <security:session-management
+                invalid-session-url="/admin/loginPage"
+                session-authentication-strategy-ref="adminAuthenticationStrategy" />
     </security:http>
 
     <security:authentication-manager id="adminAuthenticationManager" erase-credentials="false">
@@ -47,6 +51,7 @@
         <property name="authenticationSuccessHandler" ref="adminSuccessHandler"/>
         <property name="authenticationFailureHandler" ref="adminFailureHandler"/>
         <property name="rememberMeServices" ref="adminRememberMeService"/>
+        <property name="sessionAuthenticationStrategy" ref="adminAuthenticationStrategy"/>
     </bean>
     <bean id="adminSuccessHandler" class="org.k2.processmining.security.admin.AdminSuccessHandler">
         <property name="defaultTargetUrl" value="/admin/home" />
@@ -61,6 +66,7 @@
     <bean id="adminRememberMeFilter" class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
         <constructor-arg ref="adminAuthenticationManager"/>
         <constructor-arg ref="adminRememberMeService"/>
+
     </bean>
     <bean id="adminRememberMeService" class="org.k2.processmining.security.admin.AdminRememberService">
         <constructor-arg ref="adminUserDetailsService"/>
@@ -75,11 +81,26 @@
     <bean id="adminAccessDeniedHandler" class="org.k2.processmining.security.CustomAccessDeniedHandler">
         <property name="errorPage" value="/admin/accessDeniedPage"/>
     </bean>
+    <bean id="adminAuthenticationStrategy" class="org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy">
+        <constructor-arg ref="sessionRegistry"/>
+        <property name="maximumSessions" value="1"/>
+        <property name="exceptionIfMaximumExceeded" value="true"/>
+    </bean>
+    <bean id="sessionRegistry" class="org.k2.processmining.security.admin.AdminSessionRegistryImpl"/>
+    <bean id="concurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+        <constructor-arg name="sessionRegistry" ref="sessionRegistry"/>
+        <constructor-arg name="expiredUrl" value="/admin/loginPage"/>
+
+    </bean>
+
+
+
+
 
 
     <security:http auto-config="false" pattern="/**" entry-point-ref="userEntryPoint">
-        <!--<security:intercept-url pattern="/**" access="permitAll"/>-->
         <security:intercept-url pattern="/**" access="permitAll"/>
+        <!--<security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>-->
         <security:custom-filter ref="userFilter" position="FORM_LOGIN_FILTER"/>
         <security:custom-filter ref="userRememberMeFilter" position="REMEMBER_ME_FILTER"/>
         <security:logout logout-url="/home/logout" delete-cookies="JSESSIONID,userRememberMe" success-handler-ref="userLogoutSuccessHandler"/>

@@ -27,6 +27,7 @@ public class AdminSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
             /*
              * USED if you want to AVOID redirect to LoginSuccessful.htm in JSON authentication
              */
+            response.setHeader("Content-type", "application/json;charset=UTF-8");
             response.getWriter().print(GsonParser.parseToCodeAndMessage(Message.ADMIN_LOGIN_SUCCESS_CODE,Message.ADMIN_LOGIN_SUCCESS));
             response.getWriter().flush();
         } else {

@@ -1,5 +1,6 @@
 package org.k2.processmining.service.impl;
 
+import org.k2.processmining.controller.UserController;
 import org.k2.processmining.mapper.UserMapper;
 import org.k2.processmining.model.UserState;
 import org.k2.processmining.model.user.User;
@@ -105,8 +106,16 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void updatePwdById(String userId,String password) {
-        userMapper.updatePwdById(userId,Util.encryptStr(password));
+    public int updatePwdById(String userId, UserController.PwdForm pwdForm) {
+
+        if (!userService.getUserById(userId).getPassword().equals(Util.encryptStr(pwdForm.getOldPassword()))){
+            return 400; //密码错误
+        }
+        if (!pwdForm.getNewPassword().equals(pwdForm.getRePassword())){
+            return 401; //两次输入的密码不一致
+        }
+        userMapper.updatePwdById(userId,Util.encryptStr(pwdForm.getNewPassword()));
+        return 200;
     }
 
     @Override

@@ -58,8 +58,6 @@ public class MyUserDetails implements UserDetails{
     @Override
     public boolean isEnabled() {
         return true;
-//        return user.getState() == UserState.ACTIVE.getValue() ||
-//                user.getState() == UserState.FREEZE.getValue();
     }
 
     public void setPassword(String password){

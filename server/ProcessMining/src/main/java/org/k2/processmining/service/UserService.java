@@ -1,5 +1,6 @@
 package org.k2.processmining.service;
 
+import org.k2.processmining.controller.UserController;
 import org.k2.processmining.model.user.User;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +18,7 @@ public interface UserService {
     User getUserByEmail(String email);
     void updateStateByUserId(List<String>ids,int state);
     void updateStateByUserEmail(List<String> emailList,int state);
-    void updatePwdById(String userId,String password);
+    int updatePwdById(String userId, UserController.PwdForm pwdForm);
     int checkoutUserByEmailAndPwd(String email,String password);
     int sendActivateEmail(String email, String activateCode);
     int activateAccountByEmailAndCode(String email,String activateCode);

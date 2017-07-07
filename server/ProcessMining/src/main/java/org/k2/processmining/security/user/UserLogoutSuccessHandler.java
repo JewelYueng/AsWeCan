@@ -20,10 +20,11 @@ public class UserLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler{
         System.out.println("UserLogoutSuccessHandler");
 
         if ("application/json".equals(request.getHeader("Content-Type"))) {
+
             /*
              * USED if you want to AVOID redirect to LoginSuccessful.htm in JSON authentication
              */
-            System.out.println("json");
+            response.setHeader("Content-type", "application/json;charset=UTF-8");
             response.getWriter().print("{\"code\":"+ Message.USER_LOGOUT_SUCCESS_CODE +",\"message\":\""+Message.USER_LOGOUT_SUCCESS +"\"}");
             response.getWriter().flush();
         } else {

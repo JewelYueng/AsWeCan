@@ -19,19 +19,6 @@ public class UserRememberMeService extends TokenBasedRememberMeServices{
     }
 
     @Override
-    protected UserDetails processAutoLoginCookie(String[] cookieTokens, HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("UserRememberService");
-
-        UserDetails details = super.processAutoLoginCookie(cookieTokens, request, response);
-        if (details == null) {
-            System.out.println("details is null");
-        }else {
-            System.out.println("processAutoLoginCookie:name:"+details.getUsername()+"   pwd:"+details.getPassword());
-        }
-        return details;
-    }
-
-    @Override
     protected boolean rememberMeRequested(HttpServletRequest request, String parameter) {
         if ("application/json".equals(request.getHeader("Content-Type"))){
             String isOk = (String) request.getAttribute(REMEMBER_ME_PARAMER);

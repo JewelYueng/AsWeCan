@@ -18,7 +18,7 @@ public class AdminFailureHandler extends SimpleUrlAuthenticationFailureHandler{
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 
-        System.out.println("AdminFailureHandler");
+        System.out.println("AdminFailureHandler:"+exception.getMessage());
         if ("application/json".equals(request.getHeader("Content-Type"))) {
             /*
              * USED if you want to AVOID redirect to LoginSuccessful.htm in JSON authentication

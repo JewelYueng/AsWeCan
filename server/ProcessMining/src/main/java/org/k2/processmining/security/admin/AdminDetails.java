@@ -67,4 +67,19 @@ public class AdminDetails implements UserDetails{
     public Administrator getAdmin() {
         return admin;
     }
+
+    @Override
+    public int hashCode() {
+        return admin.getWorkId().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        System.out.println("AdminDetails equals");
+        if (obj instanceof Administrator){
+            System.out.println("obj instanceof Administrator");
+            return admin.getWorkId().equals(((Administrator)obj).getWorkId());
+        }
+        return super.equals(obj);
+    }
 }
