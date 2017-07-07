@@ -294,7 +294,9 @@
       },
       selectedRel(log_index, index){
         let relation_id = this.items[log_index].eventLog.mergeRelationLogs[index].id
-        if (relation_id) {
+        let relation_state = this.items[log_index].eventLog.mergeRelationLogs[index].state
+
+        if (relation_id && relation_state === 1) {
           this.$api({method: 'getEventLogPage', query: {id: relation_id}}).then( res => {
             this.selectLog({type: 2, id: relation_id, page: res.data.page})
             this.currentPage = res.data.page
@@ -302,6 +304,8 @@
             console.log(err)
             this.$hint(err.data.msg, 'error')
           })
+        }else{
+          this.$hint('该日志不存在', 'warn')
         }
       },
       searchLog(){
