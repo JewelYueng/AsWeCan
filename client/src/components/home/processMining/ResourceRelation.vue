@@ -26,9 +26,7 @@
 
   }
 
-  .chart {
-    height: 500px;
-  }
+
 </style>
 
 
@@ -102,8 +100,8 @@
     methods:{
       DownloadImage(){
         let svg = d3.select(".chart");
-        let width = 5000;
-        let height = 5000;
+        let width = document.body.clientWidth - 20;
+        let height = 600;
 
         var serializer = new XMLSerializer();
 
@@ -142,8 +140,8 @@
         console.log(_this.selectedAttr)
 
         let targetObject=_this.items.diagram.find(_this.findObject);
-        let width = 1000;
-        let height = 1000;
+        let width =  document.body.clientWidth - 20;
+        let height = 600;
 
         console.log(targetObject.nodes.length)
 

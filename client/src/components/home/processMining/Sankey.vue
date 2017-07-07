@@ -70,7 +70,7 @@ export default{
           bottom: 6,
           left: 1
         },
-        width = 1130 - margin.left - margin.right,
+        width = document.body.clientWidth - 20 - margin.left - margin.right,
         height = 700;
       let serializer = new XMLSerializer();
       let source = serializer.serializeToString(svg.node());
@@ -101,7 +101,7 @@ export default{
           bottom: 6,
           left: 1
         },
-        width = 1130 - margin.left - margin.right,
+        width = document.body.clientWidth - 20 - margin.left - margin.right,
         height = 680;
 
       let formatNumber = d3.format(",.0f"),

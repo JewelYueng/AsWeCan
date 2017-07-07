@@ -19,7 +19,7 @@
       <el-button type="primary" @click="runTrace('#diagraph')" id="trace-submit">运行</el-button>
       <el-button type="primary" @click="cleanTrace()">清除</el-button>
     </div>
-    <svg id="diagraph" width="900" height="450"></svg>
+    <svg id="diagraph" height="650"></svg>
     <div class="download"><el-button type="primary" @click="downloadImage">下载</el-button></div>
   </div>
 </template>
@@ -128,8 +128,8 @@
 
 
         var canvas = document.createElement("canvas");
-        canvas.width = width;
-        canvas.height = height;
+        canvas.width = document.body.clientWidth - 20;
+        canvas.height = 700;
 
         var context = canvas.getContext("2d");
         var image = new Image;
@@ -416,7 +416,9 @@
 //        目前没有发现以下这一句修改类名的必要
         _this.svg = d3.select(selector).attr('class', 'daiding');
 
-        let svg = d3.select(selector);
+        let width = document.body.clientWidth - 20
+        let svg = d3.select(selector)
+          .attr('width', width)
         let marker =
           svg.append("marker")
             .attr("id", "arrow")

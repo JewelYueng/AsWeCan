@@ -68,7 +68,7 @@
         let url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
 
         let canvas = document.createElement("canvas");
-        canvas.width = 5000;
+        canvas.width = document.body.clientWidth - 20;
         canvas.height = 700;
 
         console.log(d3.select('.svg-body').attr('width'), d3.select('.svg-body').attr('height'))
@@ -170,10 +170,11 @@
 
 // Create the renderer
         let render = new dagreD3.render();
-
+        let width = document.body.clientWidth - 20
 // Set up an SVG group so that we can translate the final graph.
-        let svg = d3.select('svg'),
-          inner = svg.append("g")
+        let svg = d3.select('svg')
+          .attr('width', width)
+        let inner = svg.append("g")
             .attr('class', 'svg-body')
 
 
@@ -196,7 +197,7 @@
           .translate([(svg.attr("width") - g.graph().width * initialScale) / 2, 150])
           .scale(initialScale)
           .event(svg);
-        svg.attr('height', 650);
+        svg.attr('height', 700);
 
         d3.selectAll('rect')
           .attr({

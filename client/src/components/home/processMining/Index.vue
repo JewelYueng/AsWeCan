@@ -14,8 +14,8 @@
       </div>
     </transition>
     <div id="right-window">
-      <div @click="hideLeft"><</div>
-      <component :is="current_view" :sankey="sankey" :petri="petri" :produce="produce" :resource="resource"></component>
+      <div @click="hideLeft" class="hide"><i class="el-icon-d-arrow-left"></i></div>
+      <component :is="current_view" :sankey="sankey" :petri="petri" :produce="produce" :resource="resource" class="svg-div"></component>
     </div>
   </div>
 </template>
@@ -26,7 +26,7 @@
 
   .left-side {
     background-color: @light_theme;
-    width: @left_side_width;
+    width: 200px;
     height: @main_height;
     box-sizing: border-box;
   }
@@ -37,11 +37,27 @@
   }
 
   #right-window {
-    width: @right_side_width;
+    flex: 1 1 @right_side_width;
     height: @main_height - 30px;
     box-sizing: border-box;
     padding: 30px 30px 0 30px;
     overflow: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    .hide{
+      cursor: pointer;
+      flex: 0 0 20px;
+      font-size: 16px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+    .svg-div{
+      flex: 1;
+      overflow-x: hidden;
+    }
   }
 
   .relation-logs {
@@ -49,11 +65,11 @@
   }
 
   .slide-enter-active, .slide-leave-active {
-    transition: left 1s;
+    transition: all 1s ease;
   }
 
   .slide-enter, .slide-leave-active {
-    transform: translateX(-@left_side_width);
+    transform: translateX(-200px);
   }
 </style>
 
