@@ -2,6 +2,7 @@ package org.k2.processmining.security.user;
 
 import org.k2.processmining.util.Message;
 import org.k2.processmining.utils.GsonParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 

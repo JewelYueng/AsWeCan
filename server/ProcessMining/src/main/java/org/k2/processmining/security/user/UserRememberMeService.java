@@ -1,5 +1,6 @@
 package org.k2.processmining.security.user;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
@@ -27,5 +28,10 @@ public class UserRememberMeService extends TokenBasedRememberMeServices{
                 return true;
             else return false;
         }else return super.rememberMeRequested(request,parameter);
+    }
+
+    @Override
+    public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+        super.logout(request, response, authentication);
     }
 }

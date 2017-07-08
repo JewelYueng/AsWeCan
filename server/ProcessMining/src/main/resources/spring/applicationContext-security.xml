@@ -23,8 +23,7 @@
         <!--<security:intercept-url pattern="/admin/**" access="permitAll"/>-->
         <security:custom-filter ref="adminConcurrencyFilter" position="CONCURRENT_SESSION_FILTER"/>
         <security:custom-filter ref="adminFilter"  position="FORM_LOGIN_FILTER"/>
-        <security:custom-filter ref="adminRememberMeFilter" position="REMEMBER_ME_FILTER"/>
-        <security:logout logout-url="/admin/logout" delete-cookies="JSESSIONID,adminRememberMe" success-handler-ref="adminLogoutSuccessHandler" />
+        <security:logout logout-url="/admin/logout" delete-cookies="JSESSIONID" success-handler-ref="adminLogoutSuccessHandler" />
         <security:csrf disabled="true"/>
         <security:access-denied-handler ref="adminAccessDeniedHandler"/>
         <security:session-management session-authentication-strategy-ref="sas" />
@@ -32,7 +31,7 @@
 
     <security:authentication-manager id="adminAuthenticationManager" erase-credentials="false">
         <security:authentication-provider ref="adminAuthenticationProvider"/>
-        <security:authentication-provider ref="adminRememberMeProvider"/>
+        <!--<security:authentication-provider ref="adminRememberMeProvider"/>-->
     </security:authentication-manager>
     <bean id="adminEntryPoint" class="org.k2.processmining.security.admin.AdminLoginEntryPoint" >
         <constructor-arg value="/admin/loginPage"/>
@@ -51,7 +50,6 @@
         <property name="passwordParameter" value="password"/>
         <property name="authenticationSuccessHandler" ref="adminSuccessHandler"/>
         <property name="authenticationFailureHandler" ref="adminFailureHandler"/>
-        <property name="rememberMeServices" ref="adminRememberMeService"/>
         <property name="sessionAuthenticationStrategy" ref="sas"/>
     </bean>
     <bean id="adminSuccessHandler" class="org.k2.processmining.security.admin.AdminSuccessHandler">
@@ -63,21 +61,20 @@
     <bean id="adminLogoutSuccessHandler" class="org.k2.processmining.security.admin.AdminLogoutSuccessHandler">
         <property name="defaultTargetUrl" value="/admin/loginPage"/>
     </bean>
-    <bean id="adminRememberMeFilter" class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
-        <constructor-arg ref="adminAuthenticationManager"/>
-        <constructor-arg ref="adminRememberMeService"/>
-
-    </bean>
-    <bean id="adminRememberMeService" class="org.k2.processmining.security.admin.AdminRememberService">
-        <constructor-arg ref="adminUserDetailsService"/>
-        <constructor-arg value="000016aad72443b3b78af239a0b6bd7c"/>
-        <property name="parameter" value="adminRemember"/>
-        <property name="tokenValiditySeconds" value="25200"/>
-        <property name="cookieName" value="adminRememberMe"/>
-    </bean>
-    <bean id="adminRememberMeProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
-        <constructor-arg value="000016aad72443b3b78af239a0b6bd7c"/>
-    </bean>
+    <!--<bean id="adminRememberMeFilter" class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">-->
+        <!--<constructor-arg ref="adminAuthenticationManager"/>-->
+        <!--<constructor-arg ref="adminRememberMeService"/>-->
+    <!--</bean>-->
+    <!--<bean id="adminRememberMeService" class="org.k2.processmining.security.admin.AdminRememberService">-->
+        <!--<constructor-arg ref="adminUserDetailsService"/>-->
+        <!--<constructor-arg value="000016aad72443b3b78af239a0b6bd7c"/>-->
+        <!--<property name="parameter" value="adminRemember"/>-->
+        <!--<property name="tokenValiditySeconds" value="25200"/>-->
+        <!--<property name="cookieName" value="adminRememberMe"/>-->
+    <!--</bean>-->
+    <!--<bean id="adminRememberMeProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">-->
+        <!--<constructor-arg value="000016aad72443b3b78af239a0b6bd7c"/>-->
+    <!--</bean>-->
     <bean id="adminAccessDeniedHandler" class="org.k2.processmining.security.CustomAccessDeniedHandler">
         <property name="errorPage" value="/admin/accessDeniedPage"/>
     </bean>
@@ -92,13 +89,14 @@
 
 
 
+
     <security:http auto-config="false" pattern="/**" entry-point-ref="userEntryPoint">
         <!--<security:intercept-url pattern="/**" access="permitAll"/>-->
         <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
         <security:custom-filter ref="userConcurrencyFilter" position="CONCURRENT_SESSION_FILTER"/>
         <security:custom-filter ref="userFilter" position="FORM_LOGIN_FILTER"/>
         <security:custom-filter ref="userRememberMeFilter" position="REMEMBER_ME_FILTER"/>
-        <security:logout logout-url="/home/logout" delete-cookies="JSESSIONID,userRememberMe" success-handler-ref="userLogoutSuccessHandler"/>
+        <security:custom-filter ref="userLogoutFilter" position="LOGOUT_FILTER"/>
         <security:csrf disabled="true"/>
         <security:access-denied-handler ref="userAccessDeniedHandler"/>
         <security:session-management session-authentication-strategy-ref="sas"/>
@@ -139,21 +137,15 @@
     <bean id="userRememberMeProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
         <constructor-arg value="111116aad72443b3b78af239a0b6bd7c"/>
     </bean>
-    <!--<bean id="userRememberMeService" class="org.k2.processmining.security.user.UserRememberMeService">-->
-        <!--<constructor-arg ref="userDetailsService"/>-->
-        <!--<constructor-arg value="111116aad72443b3b78af239a0b6bd7c"/>-->
-        <!--<property name="parameter" value="userRemember"/>-->
-        <!--<property name="tokenValiditySeconds" value="25200"/>-->
-        <!--<property name="cookieName" value="userRememberMe"/>-->
-    <!--</bean>-->
     <bean id="userRememberMeService" class="org.k2.processmining.security.user.UserPersistentRememberMeService">
         <constructor-arg name="key" value="123"/>
         <constructor-arg name="userDetailsService" ref="userDetailsService"/>
         <constructor-arg name="tokenRepository" ref="tokenRepository"/>
     </bean>
+
     <bean id="tokenRepository" class="org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl">
         <property name="dataSource" ref="dataSource"/>
-        <property name="createTableOnStartup" value="true"/>
+        <!--<property name="createTableOnStartup" value="true"/>-->
     </bean>
     <bean id="userRememberMeFilter" class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
         <constructor-arg ref="userAuthenticationManager"/>
@@ -166,8 +158,23 @@
           class="org.springframework.security.web.session.ConcurrentSessionFilter">
         <constructor-arg name="sessionRegistry" ref="sessionRegistry"/>
         <constructor-arg name="sessionInformationExpiredStrategy" ref="userSessionInformationExpiredStrategy"/>
+        <!--<property name="logoutHandlers" ref="userLogoutHandlers"/>-->
     </bean>
     <bean id="userSessionInformationExpiredStrategy" class="org.k2.processmining.security.user.UserSessionInformationExpiredStrategy"/>
+    <bean id="userLogoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+        <constructor-arg name="logoutSuccessHandler" ref="userLogoutSuccessHandler"/>
+        <constructor-arg name="handlers" ref="userLogoutHandlers"/>
+        <property name="filterProcessesUrl" value="/home/logout"/>
+    </bean>
+    <bean id="userLogoutHandlers" class="org.springframework.security.web.authentication.logout.CompositeLogoutHandler">
+        <constructor-arg name="logoutHandlers">
+            <list>
+                <bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler"/>
+                <ref bean="userRememberMeService"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
 
 
 

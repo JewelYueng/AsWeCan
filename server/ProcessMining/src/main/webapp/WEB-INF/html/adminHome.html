@@ -9,8 +9,8 @@
 
 
 </div>
-<button onclick="clickme(2)" >瞎几把访问
-</button>
+<button onclick="clickme(2)" >瞎几把访问</button>
+    <button onclick="logout()">登出</button>
 </body>
 
 <script>
@@ -35,7 +35,7 @@
     function logout() {
         $.ajax({
             type: "POST",
-            url: "/home/logout",
+            url: "/admin/logout",
             contentType: "application/json",
             dataType: "json"
         })

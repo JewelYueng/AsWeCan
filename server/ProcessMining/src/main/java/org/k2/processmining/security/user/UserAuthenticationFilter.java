@@ -73,7 +73,8 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
                 throw new UsernameNotFoundException(Message.USER_VALIDATECODE_NULL_CODE);
             }
             System.out.println("session.verCode:"+session.getAttribute("validateCode"));
-            if (userForm.getValidateCode().compareToIgnoreCase((String) session.getAttribute("validateCode")) != 0){
+            String verCode = (String) session.getAttribute("validateCode");
+            if (!verCode.equalsIgnoreCase(userForm.getValidateCode())){
                 System.out.println("validateCode is wrong"+userForm.getValidateCode());
                 throw new UsernameNotFoundException(Message.USER_VALIDATECODE_WRONG_CODE);
             }

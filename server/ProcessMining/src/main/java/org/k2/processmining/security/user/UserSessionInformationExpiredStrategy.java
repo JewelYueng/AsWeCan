@@ -18,8 +18,8 @@ public class UserSessionInformationExpiredStrategy implements SessionInformation
     public void onExpiredSessionDetected(SessionInformationExpiredEvent sessionInformationExpiredEvent) throws IOException, ServletException {
         HttpServletRequest request = sessionInformationExpiredEvent.getRequest();
         HttpServletResponse response = sessionInformationExpiredEvent.getResponse();
-        Util.delCookie(response,Util.getCookie(request.getCookies(),"userRememberMe"));
-        Util.delCookie(response,Util.getCookie(request.getCookies(),"JSESSIONID"));
+//        Util.delCookie(response,Util.getCookie(request.getCookies(),"userRememberMe"));
+//        Util.delCookie(response,Util.getCookie(request.getCookies(),"JSESSIONID"));
         if ("application/json".equals(request.getHeader("Content-Type"))){
             response.setHeader("Content-type", "application/json;charset=UTF-8");
             response.setStatus(444);
