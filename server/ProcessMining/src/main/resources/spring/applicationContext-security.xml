@@ -139,12 +139,21 @@
     <bean id="userRememberMeProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
         <constructor-arg value="111116aad72443b3b78af239a0b6bd7c"/>
     </bean>
-    <bean id="userRememberMeService" class="org.k2.processmining.security.user.UserRememberMeService">
-        <constructor-arg ref="userDetailsService"/>
-        <constructor-arg value="111116aad72443b3b78af239a0b6bd7c"/>
-        <property name="parameter" value="userRemember"/>
-        <property name="tokenValiditySeconds" value="25200"/>
-        <property name="cookieName" value="userRememberMe"/>
+    <!--<bean id="userRememberMeService" class="org.k2.processmining.security.user.UserRememberMeService">-->
+        <!--<constructor-arg ref="userDetailsService"/>-->
+        <!--<constructor-arg value="111116aad72443b3b78af239a0b6bd7c"/>-->
+        <!--<property name="parameter" value="userRemember"/>-->
+        <!--<property name="tokenValiditySeconds" value="25200"/>-->
+        <!--<property name="cookieName" value="userRememberMe"/>-->
+    <!--</bean>-->
+    <bean id="userRememberMeService" class="org.k2.processmining.security.user.UserPersistentRememberMeService">
+        <constructor-arg name="key" value="123"/>
+        <constructor-arg name="userDetailsService" ref="userDetailsService"/>
+        <constructor-arg name="tokenRepository" ref="tokenRepository"/>
+    </bean>
+    <bean id="tokenRepository" class="org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="createTableOnStartup" value="true"/>
     </bean>
     <bean id="userRememberMeFilter" class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
         <constructor-arg ref="userAuthenticationManager"/>
