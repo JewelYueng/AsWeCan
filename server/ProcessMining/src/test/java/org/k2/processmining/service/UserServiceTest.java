@@ -40,6 +40,12 @@ public class UserServiceTest {
     }
 
     @Test
+    public void getAllUsersTest()throws Exception{
+        List<User> users = userService.getAllUsers();
+        System.out.println(toJSON(users));
+    }
+
+    @Test
     public void updateStateByUserIdTest() throws Exception{
         List<String> ids = Arrays.asList("1","2");
         int state = UserState.FREEZE.getValue();
@@ -67,18 +73,10 @@ public class UserServiceTest {
     }
 
     @Test
-    public void getAllUsersTest()throws Exception{
-        List<User> users = userService.getAllUsers();
-        for (User user:users){
-            System.out.println("getAllUsersTest:user:"+toJSON(user  ));
-        }
-    }
-
-    @Test
     public void updatePwdByIdTest()throws Exception{
 //        String userId = "1";
 //        String password = "newPwd";
-//        userService.updatePwdById(userId,password);
+//        userService.updatePwdByIdAndPwd(userId,password);
 //        Assert.assertEquals(password,userService.getUserById(userId).getPassword());
     }
 

@@ -56,15 +56,15 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/home",method = RequestMethod.GET)
-    public void home(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
-//        request.getRequestDispatcher("/html/admin_index.html").forward(request,response);
-        request.getRequestDispatcher("/html/adminHome.html").forward(request,response);
+    public void homePage(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/html/admin_index.html").forward(request,response);
+//        request.getRequestDispatcher("/html/adminHome.html").forward(request,response);
     }
 
     @RequestMapping(value = "/loginPage",method = RequestMethod.GET)
     public void loginPage(HttpServletRequest request,HttpServletResponse response)throws ServletException,IOException{
-//        request.getRequestDispatcher("/html/admin_login.html").forward(request,response);
-        request.getRequestDispatcher("/html/admin.html").forward(request,response);
+        request.getRequestDispatcher("/html/admin_login.html").forward(request,response);
+//        request.getRequestDispatcher("/html/admin.html").forward(request,response);
     }
 
     @RequestMapping(value = "/accessDeniedPage",method = RequestMethod.GET)
@@ -79,14 +79,6 @@ public class AdminController {
         System.out.println("admin hasLogoutPage");
         Util.delCookie(response,Util.getCookie(request.getCookies(),"adminRememberMe"));
 
-        if ("application/json".equals(request.getHeader("Content-Type"))){
-            response.setHeader("Content-type", "application/json;charset=UTF-8");
-            response.setStatus(405);
-//            response.getWriter().print(GsonParser.parseToCodeAndMessage("405","你的账号已经被踢出！"));
-            Map map = new HashMap();
-            map.put("errorMessage","账号被踢出");
-            return map;
-        }
         request.getRequestDispatcher("/html/admin_403.html").forward(request,response);
         return null;
     }

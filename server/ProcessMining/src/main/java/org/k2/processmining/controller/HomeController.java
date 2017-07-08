@@ -29,9 +29,9 @@ public class HomeController {
      */
     @RequestMapping(value = "/loginPage",method = RequestMethod.GET)
     public void
-    homeForUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        request.getRequestDispatcher("/html/login.html").forward(request,response);
-        request.getRequestDispatcher("/html/exampleLogin.html").forward(request,response);
+    loginPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/html/login.html").forward(request,response);
+//        request.getRequestDispatcher("/html/exampleLogin.html").forward(request,response);
     }
 
     @RequestMapping(value = "/accessDeniedPage",method = RequestMethod.GET)
@@ -48,8 +48,8 @@ public class HomeController {
 
     @RequestMapping(value = "",method = RequestMethod.GET)
     public void homePage(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
-//            request.getRequestDispatcher("/html/index.html").forward(request,response);
-            request.getRequestDispatcher("/html/exampleHome.html").forward(request,response);
+            request.getRequestDispatcher("/html/index.html").forward(request,response);
+//            request.getRequestDispatcher("/html/exampleHome.html").forward(request,response);
     }
 
     @RequestMapping(value = "/code",method = RequestMethod.GET)

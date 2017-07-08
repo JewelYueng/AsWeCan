@@ -19,13 +19,13 @@ public class AdminSessionInformationExpiredStrategy implements SessionInformatio
         HttpServletRequest request = sessionInformationExpiredEvent.getRequest();
         HttpServletResponse response = sessionInformationExpiredEvent.getResponse();
         Util.delCookie(response,Util.getCookie(request.getCookies(),"adminRememberMe"));
-
+        Util.delCookie(response,Util.getCookie(request.getCookies(),"JSESSIONID"));
         if ("application/json".equals(request.getHeader("Content-Type"))){
             response.setHeader("Content-type", "application/json;charset=UTF-8");
             response.setStatus(444);
             response.getWriter().print(GsonParser.parseToCodeAndMessage("405","你的账号已经被踢出！"));
         }else {
-            request.getRequestDispatcher("/html/admin_403.html").forward(request,response);
+            request.getRequestDispatcher("/html/admin_login.html").forward(request,response);
         }
     }
 }

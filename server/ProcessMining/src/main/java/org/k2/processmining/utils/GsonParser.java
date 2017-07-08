@@ -13,6 +13,6 @@ public class GsonParser {
     }
 
     public static String parseToCodeAndMessage(String code,String message){
-        return "{\"code\":"+code+",\"message\":\""+message+"\"}";
+        return "{\"code\":\""+code+"\",\"message\":\""+message+"\"}";
     }
 }

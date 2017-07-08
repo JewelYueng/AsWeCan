@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
  * Created by nyq on 2017/7/4.
  */
 @Aspect
-//@Component
+@Component
 public class PermissionAdvice {
 
     @Around("execution(public * org.k2.processmining.service.RawLogService.normalize(..)) " +

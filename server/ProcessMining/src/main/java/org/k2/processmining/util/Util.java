@@ -156,7 +156,8 @@ public class Util {
 
     public static void delCookie(HttpServletResponse response, Cookie cookie){
         if (cookie!=null){
-            cookie.setPath("/");
+//            cookie.setPath("/");
+//            System.out.println("delCookie:"+cookie);
             cookie.setMaxAge(0);
             cookie.setValue(null);
             response.addCookie(cookie);

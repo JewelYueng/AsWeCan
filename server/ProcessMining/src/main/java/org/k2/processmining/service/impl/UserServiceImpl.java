@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -114,7 +115,7 @@ public class UserServiceImpl implements UserService{
         if ("".equals(pwdForm.getNewPassword()) || !pwdForm.getNewPassword().equals(pwdForm.getRePassword())){
             return 401; //两次输入的密码不一致
         }
-        userMapper.updatePwdById(userId,Util.encryptStr(pwdForm.getNewPassword()));
+        userMapper.updatePwdByIdAndPwd(userId,Util.encryptStr(pwdForm.getNewPassword()));
         return 200;
     }
 
@@ -228,5 +229,44 @@ public class UserServiceImpl implements UserService{
     public boolean checkEmail(String email){
         String regex = "^([a-zA-Z0-9]*[-_]?[a-zA-Z0-9]+)*@([a-zA-Z0-9]*[-_]?[a-zA-Z0-9]+)+[\\\\.][A-Za-z]{2,3}([\\\\.][A-Za-z]{2})?$";
         return email.matches(regex);
+    }
+
+    public static class UserForm{
+        private String id;
+        private String name;
+        private String email;
+        private int state;
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public void setState(int state) {
+            this.state = state;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public int getState() {
+            return state;
+        }
     }
 }

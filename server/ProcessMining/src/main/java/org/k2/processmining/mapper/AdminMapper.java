@@ -15,5 +15,4 @@ public interface AdminMapper {
 
     Administrator getAdminByWorkId(@Param("workId") String workId);
     Administrator getAdminByWorkIdAndPwd(@Param("workId")String workId,@Param("password")String password);
-    List<Administrator> listAllAdmins();
 }

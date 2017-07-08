@@ -36,7 +36,7 @@ public class AdminUserController {
 
     @RequestMapping(value = "/forbid",method = RequestMethod.POST)
     public @ResponseBody
-    Object freezeUser(@Valid @RequestBody IdListForm idListForm){
+    Object forbidUser(@Valid @RequestBody IdListForm idListForm){
         Map map = new HashMap();
         userService.updateStateByUserId(idListForm.getIdList(),UserState.FORBIDDEN.getValue());
         map.put("code",200);
