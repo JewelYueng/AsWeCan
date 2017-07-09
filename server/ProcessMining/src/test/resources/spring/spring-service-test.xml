@@ -23,4 +23,6 @@
     <aop:aspectj-autoproxy />
     <context:property-placeholder location="classpath*:algorithm.properties" order="0" ignore-unresolvable="true"/>
 
+    <bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl"/>
+
 </beans>

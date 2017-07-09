@@ -2,6 +2,7 @@ package org.k2.processmining.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.k2.processmining.model.user.Administrator;
@@ -27,6 +28,13 @@ public class AdminServiceTest {
         String workId = "1";
         Administrator administrator = adminService.getAdminByWorkId(workId);
         System.out.println(toJSON(administrator));
+    }
+
+    @Test
+    public void checkoutAdminByWorkIdAndPwdTest()throws Exception{
+        String workId = "1";
+        String password = "1";
+        Assert.assertEquals(200,adminService.checkoutAdminByWorkIdAndPwd(workId,password));
     }
 
 

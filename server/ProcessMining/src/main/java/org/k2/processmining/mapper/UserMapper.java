@@ -18,7 +18,7 @@ public interface UserMapper {
     void save(User user);
     User getUserByUserId(@Param("id")String userId);
     User getUserByEmailAndPwd(@Param("email")String email,@Param("password")String password);
-    void updatePwdByIdAndPwd(@Param("id")String id, @Param("password")String password);
+    void updatePwdById(@Param("id")String id, @Param("password")String password);
     void updateStateByUserId(@Param("ids")List<String> ids,@Param("state")int state);
     void updateStateByEmail(@Param("emailList")List<String> emailList,@Param("state")int state);
     void updateUserByUserEmail(@Param("email") String email,

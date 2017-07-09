@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -115,7 +114,7 @@ public class UserServiceImpl implements UserService{
         if ("".equals(pwdForm.getNewPassword()) || !pwdForm.getNewPassword().equals(pwdForm.getRePassword())){
             return 401; //两次输入的密码不一致
         }
-        userMapper.updatePwdByIdAndPwd(userId,Util.encryptStr(pwdForm.getNewPassword()));
+        userMapper.updatePwdById(userId,Util.encryptStr(pwdForm.getNewPassword()));
         return 200;
     }
 
