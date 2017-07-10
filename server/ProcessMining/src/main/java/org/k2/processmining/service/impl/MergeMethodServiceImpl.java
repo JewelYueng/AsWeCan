@@ -168,6 +168,9 @@ public class MergeMethodServiceImpl implements MergeMethodService{
         }
         Algorithm<Merger> mergerAlgorithm = methodManage.loadMergerById(mergeMethod.getId());
         mergeMethod.setMethodName((String)mergerAlgorithm.getConfigMap().get("key"));
+        if (mergeMethod.getMethodName() == null || mergeMethod.getMethodName().length() > Util.METHOD_NAME_LENGTH) {
+            throw new BadRequestException("The length of method name is too long.");
+        }
         MergerFactory.getInstance().put(mergeMethod.getId(), mergerAlgorithm);
         mergeMethodMapper.save(mergeMethod);
         return mergeMethod;

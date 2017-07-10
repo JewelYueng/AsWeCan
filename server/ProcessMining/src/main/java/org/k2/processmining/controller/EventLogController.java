@@ -2,6 +2,7 @@ package org.k2.processmining.controller;
 
 import org.apache.commons.io.IOUtils;
 import org.hibernate.validator.constraints.NotBlank;
+import org.k2.processmining.exception.BadRequestException;
 import org.k2.processmining.exception.InternalServerErrorException;
 import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.LogShareState;
@@ -61,7 +62,9 @@ public class EventLogController extends CommonLogController<EventLog> {
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public@ResponseBody
-    Object upload(@RequestParam("format") @NotBlank(message = "Format should not be empty.") String format,
+    Object upload(@RequestParam("format")
+                  @NotBlank(message = "Format should not be empty.")
+                  @Size(min = 1, max = 20, message = "The length of format is invalid.") String format,
                   @RequestParam(value = "isShare", defaultValue = "0") int isShare,
                   @RequestParam("file") @NotNull(message = "File should not be empty.") CommonsMultipartFile file) {
         User user = Util.getLoginUser();
@@ -70,6 +73,9 @@ public class EventLogController extends CommonLogController<EventLog> {
         }
         EventLog log = createLog(Util.getUUIDString(), user.getId(), format, new Date(),
                 file.getOriginalFilename(), isShare);
+        if (log.getLogName().length() > Util.LOG_NAME_LENGTH) {
+            throw new BadRequestException("The length of file name is too long.");
+        }
         Map<String, Object> res = new HashMap<>();
         try (InputStream inputForRemote = file.getInputStream(); InputStream inputForSummarize = file.getInputStream()){
             logService.save(log, inputForRemote, inputForSummarize);
