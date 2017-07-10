@@ -46,11 +46,13 @@
             {{item.normalLog ? item.normalLog.logName : '无'}}
           </div>
           <div class="merge-relation">
-            <div v-if="item.eventLog.mergeRelation" class="relation1" :class="{pointer: item.eventLog}"
+            <div v-if="item.eventLog.mergeRelation" class="relation1"
+                 :class="{'pointer': item.eventLog,'mergeCss':item.eventLog.mergeRelationLogs[0].state==2}"
                  @click="selectedRel(index,0)"
                  :title="item.eventLog.mergeRelationLogs[0].logName">{{item.eventLog.mergeRelationLogs[0].logName}}
             </div>
-            <div v-if="item.eventLog.mergeRelation" class="relation2" :class="{pointer: item.eventLog}"
+            <div v-if="item.eventLog.mergeRelation" class="relation2"
+                 :class="{'pointer': item.eventLog,'mergeCss':item.eventLog.mergeRelationLogs[1].state==2}"
                  @click="selectedRel(index,1)"
                  :title="item.eventLog.mergeRelationLogs[1].logName">{{item.eventLog.mergeRelationLogs[1].logName}}
             </div>
@@ -130,7 +132,6 @@
         justify-content: center;
         align-items: center;
         .log-name {
-          cursor: pointer;
           flex: 0 0 17%;
           min-width: 175px;
           .too-long-text;
@@ -146,11 +147,15 @@
           font-size: 18px;
         }
         img {
+          cursor: pointer;
           width: 18px;
           height: 18px;
           position: relative;
           top: 2px;
         }
+      }
+      .list-item .log-name{
+        cursor: pointer;
       }
       .date {
         flex: 0 0 10%;
@@ -177,12 +182,12 @@
         .relation1 {
           min-width: 180px;
           .too-long-text;
-          cursor: pointer;
+         // cursor: pointer;
         }
         .relation2 {
           min-width: 180px;
           .too-long-text;
-          cursor: pointer;
+          //cursor: pointer;
         }
       }
     }
@@ -294,7 +299,9 @@
       },
       selectedRel(log_index, index){
         let relation_id = this.items[log_index].eventLog.mergeRelationLogs[index].id
-        if (relation_id) {
+        let relation_state = this.items[log_index].eventLog.mergeRelationLogs[index].state
+
+        if (relation_id && relation_state === 1) {
           this.$api({method: 'getEventLogPage', query: {id: relation_id}}).then( res => {
             this.selectLog({type: 2, id: relation_id, page: res.data.page})
             this.currentPage = res.data.page
@@ -302,6 +309,8 @@
             console.log(err)
             this.$hint(err.data.msg, 'error')
           })
+        }else{
+          this.$hint('该日志不存在', 'warn')
         }
       },
       searchLog(){

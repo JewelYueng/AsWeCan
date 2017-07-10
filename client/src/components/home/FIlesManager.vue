@@ -17,7 +17,7 @@
       </el-menu>
     </div>
     <div id="right-window">
-      <component :is="current_view"></component>
+      <component :is="current_view" id="logs-window"></component>
     </div>
   </div>
 </template>
@@ -47,6 +47,10 @@
     overflow: auto;
     min-width: 1020px;
     position: relative;
+  }
+
+  #logs-window{
+    width: 100%;
   }
 
   input[type='checkbox']{
@@ -80,6 +84,10 @@
       left: -5px;
     }
   }
+
+  .mergeCss{text-decoration: line-through;}
+
+  .pointer{cursor: pointer;}
 
   .head {
     display: flex;
@@ -176,7 +184,7 @@
         return this.view_dict[this.$store.getters.file_path || '1-1']
       },
       current_index(){
-        return this.$store.getters.file_path
+        return this.$store.getters.file_path || '1-1'
       }
     }
   }

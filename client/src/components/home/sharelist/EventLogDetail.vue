@@ -29,19 +29,21 @@
           <div class="date">
             {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()}`}}
           </div>
-          <div  @click="jumpToRaw(index)" class="raw-log relation-logs" :class="{pointer: item.rawLog}"
+          <div  @click="jumpToRaw(index)" class="raw-log " :class="{pointer: item.rawLog}"
                 :title="item.rawLog ? item.rawLog.logName : '无'">
             {{item.rawLog ? item.rawLog.logName : '无'}}
           </div>
-          <div @click="jumpToNormal(index)" class="normal-log relation-logs" :class="{pointer: item.normalLog}"
+          <div @click="jumpToNormal(index)" class="normal-log " :class="{pointer: item.normalLog}"
                :title="item.normalLog ? item.normalLog.logName : '无'">
             {{item.normalLog ? item.normalLog.logName : '无'}}
           </div>
           <div class="merge-relation">
             <div v-if="item.eventLog.mergeRelation" class="relation1" @click="selectedRel(index,0)"
+                 :class="{'pointer': item.eventLog,'mergeCss':item.eventLog.mergeRelationLogs[0].isShared==0}"
                  :title="item.eventLog.mergeRelationLogs[0].logName">{{item.eventLog.mergeRelationLogs[0].logName}}
             </div>
             <div v-if="item.eventLog.mergeRelation" class="relation2" @click="selectedRel(index,1)"
+                 :class="{'pointer': item.eventLog,'mergeCss':item.eventLog.mergeRelationLogs[1].isShared==0}"
                  :title="item.eventLog.mergeRelationLogs[1].logName">{{item.eventLog.mergeRelationLogs[1].logName}}
             </div>
             <div v-show="!item.eventLog.mergeRelation">没有融合来源</div>
@@ -103,11 +105,6 @@
       overflow: auto;
     }
     .list-item, .list-head{
-      img {
-        width: 12px;
-        height: 12px;
-        margin-right: 10px;
-      }
       display: flex;
       flex-direction: row;
       width: 100%;
@@ -116,7 +113,6 @@
       justify-content: flex-start;
       align-items: center;
       .log-name {
-        cursor: pointer;
         min-width: 190px;
         flex: 0 0 20%;
         .too-long-text;
@@ -126,11 +122,15 @@
         flex: 0 0 10%;
         min-width: 40px;
         img {
+          cursor: pointer;
           width: 18px;
           height: 18px;
           position: relative;
           top: 2px;
         }
+      }
+      .list-item .log-name{
+        cursor: pointer;
       }
       .uploader {
         flex: 0 0 8%;
@@ -222,7 +222,9 @@
       },
       selectedRel(log_index, index){
         let relation_id = this.items[log_index].eventLog.mergeRelationLogs[index].id
-        if (relation_id) {
+        let relation_state = this.items[log_index].eventLog.mergeRelationLogs[index].isShared
+
+        if (relation_id && relation_state === 1) {
           this.$api({method: 'getShareEventPage', query: {id: relation_id}}).then( res => {
             this.selectLog({type: 5, id: relation_id, page: res.data.page})
             this.currentPage = res.data.page
@@ -230,6 +232,8 @@
             console.log(err)
             this.$hint(err.data.msg, 'error')
           })
+        } else{
+          this.$hint('融合来源没有被分享', 'warn')
         }
       },
       searchLog(){

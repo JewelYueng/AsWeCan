@@ -132,6 +132,7 @@
           font-size: 18px;
         }
         img {
+          cursor: pointer;
           width: 18px;
           height: 18px;
           position: relative;

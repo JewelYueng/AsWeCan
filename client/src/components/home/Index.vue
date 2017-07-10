@@ -105,7 +105,7 @@
       },
       logout(){
         this.$api({method: 'logout'}).then(res => {
-          if(res.status === 200){
+          if(res.data.code === "200"){
             this.$hint('登出成功','success')
             window.location.href = '/AssWeCan/home/loginPage'
           }
