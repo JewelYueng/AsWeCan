@@ -21,6 +21,7 @@ import org.k2.processmining.support.mining.algorithm.heuristics.models.SimpleHeu
 import org.k2.processmining.support.mining.model.DiagramType;
 import org.k2.processmining.support.reflect.ReflectUtil;
 import org.k2.processmining.util.Message;
+import org.k2.processmining.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,6 +115,9 @@ public class MiningMethodServiceImpl implements MiningMethodService {
         }
         Algorithm<Miner> minerAlgorithm = methodManage.loadMinerById(miningMethod.getId());
         miningMethod.setMethodName((String)minerAlgorithm.getConfigMap().get("key"));
+        if (miningMethod.getMethodName() == null || miningMethod.getMethodName().length() > Util.METHOD_NAME_LENGTH) {
+            throw new BadRequestException("The length of method name is too long.");
+        }
         MinerFactory.getInstance().put(miningMethod.getId(), minerAlgorithm);
         miningMethodMapper.save(miningMethod);
         return miningMethod;

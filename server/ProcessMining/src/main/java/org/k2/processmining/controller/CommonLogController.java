@@ -2,6 +2,7 @@ package org.k2.processmining.controller;
 
 import org.apache.commons.io.IOUtils;
 import org.hibernate.validator.constraints.NotBlank;
+import org.k2.processmining.exception.BadRequestException;
 import org.k2.processmining.exception.InternalServerErrorException;
 import org.k2.processmining.model.LogGroup;
 import org.k2.processmining.model.LogShareState;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -47,7 +49,9 @@ public abstract class CommonLogController<T extends AbstractLog> {
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public@ResponseBody
-    Object upload(@RequestParam("format") @NotBlank(message = "Format should not be empty.") String format,
+    Object upload(@RequestParam("format")
+                  @NotBlank(message = "Format should not be empty.")
+                  @Size(min = 1, max = 20, message = "The length of format is invalid.") String format,
                   @RequestParam(value = "isShare", defaultValue = "0") int isShare,
                   @RequestParam("file") @NotNull(message = "File should not be empty.") CommonsMultipartFile file) {
         User user = Util.getLoginUser();
@@ -56,6 +60,9 @@ public abstract class CommonLogController<T extends AbstractLog> {
         }
         T log = createLog(Util.getUUIDString(), user.getId(), format, new Date(),
                 file.getOriginalFilename(), isShare);
+        if (log.getLogName().length() > Util.LOG_NAME_LENGTH) {
+            throw new BadRequestException("The length of file name is too long.");
+        }
         Map<String, Object> res = new HashMap<>();
         try (InputStream inputStream = file.getInputStream()){
             logService.save(log, inputStream);

@@ -37,6 +37,10 @@ public class Util {
 
     static Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
 
+    public static final int LOG_NAME_LENGTH = 255;
+    public static final int METHOD_NAME_LENGTH = 255;
+
+
     public static String getUUIDString() {
         return UUID.randomUUID().toString();
     }
@@ -50,23 +54,39 @@ public class Util {
         if (j != -1) {
             eventLog2Name = eventLog2Name.substring(0, j);
         }
+        if (6+mergeMethodName.length()+eventLog1Name.length()+eventLog2Name.length() > LOG_NAME_LENGTH) {
+            int len = (LOG_NAME_LENGTH - 6) / 3;
+            mergeMethodName = mergeMethodName.substring(0, len);
+            eventLog1Name = eventLog1Name.substring(0, len);
+            eventLog2Name = eventLog2Name.substring(0, len);
+        }
         return mergeMethodName + "-" + eventLog1Name + "-" + eventLog2Name + ".xes";
     }
 
     public static String getNormalizeName(String rawLogName) {
+        String suffix = "-normal.txt";
         int i = rawLogName.lastIndexOf(".");
         if (i != -1) {
             rawLogName = rawLogName.substring(0, i);
         }
-        return rawLogName + "-normal.txt";
+        String normalLogName = rawLogName + suffix;
+        if (normalLogName.length() > LOG_NAME_LENGTH) {
+            normalLogName = rawLogName.substring(0, LOG_NAME_LENGTH-suffix.length()) + suffix;
+        }
+        return normalLogName;
     }
 
     public static String getTransEventName(String normalLogName) {
+        String suffix = "-event.xes";
         int i = normalLogName.lastIndexOf(".");
         if (i != -1) {
             normalLogName = normalLogName.substring(0, i);
         }
-        return normalLogName + "-event.xes";
+        String eventLogName = normalLogName + suffix;
+        if (eventLogName.length() > LOG_NAME_LENGTH) {
+            eventLogName = normalLogName.substring(0, LOG_NAME_LENGTH-suffix.length()) + suffix;
+        }
+        return eventLogName;
     }
 
     public static boolean isActive(AbstractLog log) {
