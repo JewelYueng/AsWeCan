@@ -431,15 +431,20 @@
       },
       transferToNormal: function (index) {
         this.$modal({type: 'normal-info', data: {id: this.items[index].rawLog.id}}).then((res) => {
-          if (res.data.code === 1) {
-            this.$hint('生成成功', 'success')
-            this.getTotalItems()
-          } else {
-            this.$hint('不明原有失败，建议刷新', 'error')
+          console.log(res);
+          if(parseInt(res)==1){
+            this.getTotalItems();
           }
-        }, err => {
-          console.log(err)
-          this.$hint(err.data.msg, 'error')
+//          if (res.data.code === 1) {
+//            this.$hint('生成成功', 'success')
+//            this.getTotalItems()
+//          } else {
+//            this.$hint('不明原有失败，建议刷新', 'error')
+//          }
+//        }, err => {
+//          console.log(err)
+//          this.$hint(err.data.msg, 'error')
+//        }
         })
 
       }

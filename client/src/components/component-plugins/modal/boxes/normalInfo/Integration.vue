@@ -93,15 +93,24 @@
       },
       saveEdit(index, row){
 
-        this.integration[index].target = this.editing.target
-        this.integration[index].oriName = this.editing.oriName.split(',')
-//        this.integration[index] = this.editing
+//        this.integration[index].target = this.editing.target
+//        this.integration[index].oriName = this.editing.oriName.split(',')
+      this.integration[index] = this.editing
         this.editingRow = -1
         this.$emit('SAVE_INTEGRATION', this.resolveData(this.integration))
       },
       handleDelete(index, row){
-        this.integration.splice(index, 1)
-        this.$emit('SAVE_INTEGRATION', this.resolveData(this.integration))
+
+        if(this.editingRow === -1) {
+          this.integration.splice(index, 1)
+          this.$emit('SAVE_INTEGRATION', this.resolveData(this.integration))
+        }else{
+          this.$hint('请保存编辑后再删除', 'warn')
+        }
+
+
+//        this.integration.splice(index, 1)
+//        this.$emit('SAVE_INTEGRATION', this.resolveData(this.integration))
       },
       isEditing(index){
         return index === this.editingRow
