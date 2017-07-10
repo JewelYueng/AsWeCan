@@ -34,6 +34,11 @@
             @click="saveEdit(scope.$index, scope.row)"
             v-show="isEditing(scope.$index)">保存
           </el-button>
+          <el-button
+            size="small"
+            type="danger"
+            @click="handleDelete(scope.$index, scope.row)">删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -74,7 +79,15 @@
       isEditing(index){
         return index === this.editingRow
       },
+      handleDelete(index, row){
+        if(this.editingRow === -1) {
+          this.record.splice(index, 1)
+          this.$emit('SAVE_FORMAT', this.record)
+        }else{
+          this.$hint('请保存编辑后再删除', 'warn')
+        }
 
+      },
     },
     computed: {
       editing(){

@@ -113,10 +113,11 @@
             "renameOrMergeItems": this.integration,
           }, this.record)
         }).then((res) => {
-          console.log(res);
+          //console.log(res);
           if (res.data.code === 1) {
             this.$hint('规范化成功', 'success');
-            this.commit(true)
+
+            this.commit(res.data.code)
           }
           else {
             this.$hint('不明原因失败，建议刷新', 'erorr');
@@ -139,6 +140,7 @@
       back(){
         this.commit(true)
       },
+
     },
     computed: {
       current_view(){
