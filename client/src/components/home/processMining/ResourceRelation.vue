@@ -1,7 +1,8 @@
 <template>
   <div class="resource-relation">
     <div>
-      <el-select v-model="selectedAttr" placeholder="请选择" @change="produceLayout()">
+      <el-button class="download" v-show="state==1" @click="DownloadImage">下载</el-button>
+      <el-select style="margin-left: 50px" v-model="selectedAttr" placeholder="请选择" @change="produceLayout()">
         <el-option
           v-for="item in items.diagram"
           :key="item.resourceAttr"
@@ -12,7 +13,6 @@
     </div>
     <svg width="1000" height="450" class="chart" v-for="item in items.diagram" v-if="item.resourceAttr === selectedAttr">
     </svg>
-    <el-button class="download" v-show="state==1" type="primary" @click="DownloadImage" >下载</el-button>
   </div>
 </template>
 
