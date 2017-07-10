@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService{
 
         Map map = new HashMap();
 
-        if ("".equals(newUser.getEmail().trim())){
+        if (newUser.getEmail() == null || "".equals(newUser.getEmail().trim())){
             map.put("code",Message.REGISTER_EMAIL_NULL_CODE);
             map.put("message",Message.REGISTER_EMAIL_NULL);
             return map; //邮箱为空
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService{
             map.put("message",Message.REGISTER_EMAIL_REPEAT);
             return map;//邮箱重复
         }
-        if ("".equals(newUser.getName().trim())){
+        if (newUser.getName() == null || "".equals(newUser.getName().trim())){
             map.put("code",Message.REGISTER_NAME_NULL_CODE);
             map.put("message",Message.REGISTER_NAME_NULL);
             return map; //用户名为空
@@ -206,12 +206,10 @@ public class UserServiceImpl implements UserService{
         userMapper.updateStateByUserId(idList,UserState.DELETE.getValue());
     }
 
-    private Date getValidateDate(Date date){
+    public static Date getValidateDate(Date date){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.DATE,2);
-        System.out.println(calendar.getTime());
-        System.out.println(new Date());
         return calendar.getTime();
     }
 

@@ -1,0 +1,33 @@
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <!--<security:http pattern="/html/myLogin.html" security="none"/>-->
+    <!--<security:http pattern="/html/login_failure.html" security="none"/>-->
+
+    <!--<security:http pattern="/**" auto-config="true">-->
+        <!--<security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>-->
+        <!--<security:form-login login-page="/html/myLogin.html"-->
+                             <!--login-processing-url="/myLogin"-->
+                             <!--always-use-default-target="true"-->
+                             <!--username-parameter="name" password-parameter="password"-->
+                             <!--default-target-url="/html/home.html"-->
+                             <!--authentication-failure-forward-url="/html/login_failure.html" />-->
+        <!--<security:csrf disabled="true"/>-->
+    <!--</security:http>-->
+
+    <!--<security:authentication-manager>-->
+        <!--<security:authentication-provider>-->
+            <!--<security:user-service>-->
+                <!--<security:user name="myName" authorities="ROLE_USER" password="123456"/>-->
+            <!--</security:user-service>-->
+        <!--</security:authentication-provider>-->
+    <!--</security:authentication-manager>-->
+
+
+</beans>

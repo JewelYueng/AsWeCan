@@ -3,6 +3,8 @@ package org.k2.processmining.controller;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.k2.processmining.exception.*;
 import org.k2.processmining.util.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,21 @@ import java.util.stream.Collectors;
  */
 @ControllerAdvice
 public class ExceptionController {
+
+
+    private static Logger logger = LoggerFactory.getLogger(ExceptionController.class);
+
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public @ResponseBody
+    Object handle500Exception(Exception e){
+        logger.error("msg",e);
+        Map map = new HashMap();
+        map.put("code","0");
+        map.put("msg","服务器内部错误！");
+        return map;
+    }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public @ResponseBody

@@ -23,10 +23,10 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public int checkoutAdminByWorkIdAndPwd(String workId, String password) {
-        if ("".equals(adminMapper.getAdminByWorkId(workId))){
+        if (adminMapper.getAdminByWorkId(workId) == null){
             return 400; //工号不存在
         }
-        if ("".equals(adminMapper.getAdminByWorkIdAndPwd(workId, Util.encryptStr(password)))){
+        if (adminMapper.getAdminByWorkIdAndPwd(workId, Util.encryptStr(password))==null){
             return 401; //密码错误
         }
         return 200; //验证成功

@@ -11,8 +11,13 @@
   <display-name>Archetype Created Web Application</display-name>
 
   <welcome-file-list>
-    <welcome-file>/WEB-INF/html/home.html</welcome-file>
+    <welcome-file>/WEB-INF/html/index.html</welcome-file>
   </welcome-file-list>
+
+  <error-page>
+    <error-code>404</error-code>
+    <location>/WEB-INF/html/notFound.html</location>
+  </error-page>
 
   <!-- 加载spring容器 -->
   <!-- context-param标签

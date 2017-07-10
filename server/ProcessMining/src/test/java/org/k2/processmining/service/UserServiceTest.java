@@ -86,6 +86,7 @@ public class UserServiceTest {
         pwdForm.setOldPassword("123456");
         pwdForm.setNewPassword("1");
         pwdForm.setRePassword("1");
+        userService.updatePwdById(userId,pwdForm);
         Assert.assertEquals(Util.encryptStr(pwdForm.getNewPassword()), userService.getUserById(userId).getPassword());
     }
 
