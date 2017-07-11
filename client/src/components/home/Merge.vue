@@ -21,15 +21,15 @@
         </el-option>
       </el-select>
     </div>
-
+<br>
     <div class="para" v-for="(item,itemIndex) in methods" v-if="item.id === selectedId">
-      <div v-for="params in item.paramters">
-        <br>{{params.name}}:
-        <el-input size="small" type="number" v-if="params.type!='Enum'" :min="params.minVal" :max="params.maxVal"
+        <div class="para-item" v-for="params in item.paramters">
+          <br><div>{{params.name}}:</div>
+        <div><el-input size="small" type="number" v-if="params.type!='Enum'" :min="params.minVal" :max="params.maxVal"
                   v-model="send_params_arr[itemIndex][params.key]"
-                  @blur="change(itemIndex, params.key, params.minVal,params.maxVal)">
+                  @blur="change(itemIndex, params.key, params.minVal,params.maxVal)" style="width: 200px">
 
-        </el-input>
+        </el-input></div>
         <el-select v-model="send_params_arr[itemIndex][params.key]" v-if="params.type=='Enum'">
           <el-option
             v-for="item in params.values"
@@ -39,7 +39,7 @@
         </el-select>
       </div>
       <br>
-      <el-button type="primary" @click="merge()">开始融合</el-button>
+      <div><el-button type="primary" @click="merge()">开始融合</el-button></div>
     </div>
 
 
@@ -50,8 +50,21 @@
   @import "~assets/layout.less";
 
   .para {
+    display: flex;
+    flex-flow: column;
     margin: auto;
     width: 30%;
+  }
+  .para-item{
+    margin: 10px;
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-start;
+  div{
+    text-align: left;
+    width: 400px;
+    margin:0 3px 0  3px;
+  }
   }
 
   span {

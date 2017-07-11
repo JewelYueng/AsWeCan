@@ -1,7 +1,7 @@
 <template>
   <div class="workNet">
     <div class="download">
-      <el-button type="primary" @click="downloadImage">下载</el-button>
+      <el-button @click="downloadImage" style="width: 80px; height: 35px;margin-bottom: 20px">下载</el-button>
     </div>
     <svg class="chart" width="1130" height="500">
 

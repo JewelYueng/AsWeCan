@@ -1,6 +1,6 @@
 <template>
   <div class="sankey">
-    <div class="download"><el-button type="primary" @click="downloadImg">下载</el-button></div>
+    <div class="download"><el-button @click="downloadImg" style="width: 80px; height: 35px;margin-bottom: 20px">下载</el-button></div>
     <svg class="chart">
     </svg>
 
