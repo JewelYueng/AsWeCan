@@ -1,6 +1,6 @@
 <template>
   <div class="normal-fram">
-    <button @click="back" style="position: absolute;right: 0px;top: 5px;
+    <button @click="back" style="position: absolute;right: 2px;top: 7px;
        color: #324157;background-color: white;z-index: 100;border: none;cursor: pointer"><i class="el-icon-close"></i>
     </button>
     <el-tabs v-model="activeName" type="card" >
@@ -26,11 +26,18 @@
     padding: 20px;
     max-height: 600px;
     width: 700px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 11;
+    /*设定这个div的margin-top的负值为自身的高度的一半,margin-left的值也是自身的宽度的一半的负值.*/
+    /*宽为400,那么margin-top为-200px*/
+    /*高为200那么margin-left为-100px;*/
+    margin: -300px 0 0 -350px;
     box-shadow: 0 0 3px 0 #324157;
     border-radius: 5px;
     overflow: auto;
     background-color: white;
-    position: relative;
     .el-button + .el-button {
       margin-left: 0;
     }

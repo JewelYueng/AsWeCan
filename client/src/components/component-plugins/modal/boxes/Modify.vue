@@ -23,9 +23,17 @@
 </template>
 <style rel="stylesheet/less" lang="less">
   .modify {
-    position: relative;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 11;
+    /*设定这个div的margin-top的负值为自身的高度的一半,margin-left的值也是自身的宽度的一半的负值.*/
+    /*宽为400,那么margin-top为-200px*/
+    /*高为200那么margin-left为-100px;*/
+    margin: -150px 0 0 -200px;
     background-color: white;
-    border-radius: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 3px 0 #324157;
     overflow: hidden;
     height: 300px;
     width: 400px;

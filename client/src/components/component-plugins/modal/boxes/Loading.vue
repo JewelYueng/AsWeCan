@@ -7,6 +7,14 @@
 <style rel="stylesheet/less" scoped lang="less">
   .loading {
     background-color: white;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 11;
+    /*设定这个div的margin-top的负值为自身的高度的一半,margin-left的值也是自身的宽度的一半的负值.*/
+    /*宽为400,那么margin-top为-200px*/
+    /*高为200那么margin-left为-100px;*/
+    margin: -100px 0 0 -100px;
     border-radius: 20px;
     overflow: hidden;
     height: 200px;

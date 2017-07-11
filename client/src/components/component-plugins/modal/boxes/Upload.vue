@@ -1,6 +1,6 @@
 <template>
   <div class="upload">
-    <button @click="cancel" style="position: absolute;right: 0px;top: 5px;
+    <button @click="cancel" style="position: absolute;right: 2px;top: 7px;
        color: #324157;background-color: white;border: none;cursor: pointer"><i class="el-icon-close"></i>
     </button>
     <form action="" class="activityForm">
@@ -33,10 +33,18 @@
 
 <style scoped lang="less" rel="stylesheet/less">
   .upload {
-    display: flex;
-    flex-flow: column;
-    justify-content: flex-start;
-    position: relative;
+    //display: flex;
+    //flex-flow: column;
+    //justify-content: flex-start;
+    height: 150px;
+    position: fixed;
+    left: 50%;
+    //top: 50%;
+    z-index: 11;
+    /*设定这个div的margin-top的负值为自身的高度的一半,margin-left的值也是自身的宽度的一半的负值.*/
+    /*宽为400,那么margin-top为-200px*/
+    /*高为200那么margin-left为-100px;*/
+    margin: -70px 0 0 -250px;
     background-color: white;
     width: 500px;
     box-shadow: 0 0 3px 0 #324157;

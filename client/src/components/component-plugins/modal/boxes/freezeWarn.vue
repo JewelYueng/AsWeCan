@@ -11,6 +11,14 @@
   color: red;
   width: 300px;
   height: 200px;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 11;
+  /*设定这个div的margin-top的负值为自身的高度的一半,margin-left的值也是自身的宽度的一半的负值.*/
+  /*宽为400,那么margin-top为-200px*/
+  /*高为200那么margin-left为-100px;*/
+  margin: -100px 0 0 -150px;
   background-color: white;
   box-shadow: 0 0 3px 0 #324157;
   border-radius: 5px;

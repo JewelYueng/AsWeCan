@@ -15,14 +15,14 @@
     position: absolute;
     top: 0;
     left: 0;
-    height: 100%;
+    height: 860px;
     width: 100%;
     overflow: hidden;
   }
 
   .modal-container {
     position: absolute;
-    height: 100%;
+    height: 860px;
     width: 100%;
     display: flex;
     align-items: center;
