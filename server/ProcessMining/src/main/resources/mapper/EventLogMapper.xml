@@ -63,7 +63,7 @@
                 state=#{state}
                 <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
                 <include refid="org.k2.processmining.mapper.RawLogMapper.addKeyWordIfNotNull"/>
-                ORDER BY create_date DESC LIMIT #{offset}, #{size}
+
             ) EL
             LEFT JOIN
             (SELECT * FROM normal_log <if test="userId != null">WHERE userid=#{userId}</if>
@@ -77,7 +77,7 @@
             <if test="userId == null">
                 LEFT JOIN user ON EL.userid = user.id
             </if>
-        
+        ORDER BY EL.create_date DESC LIMIT #{offset}, #{size}
     </select>
 
     <select id="countLogs" resultType="int">
