@@ -18,25 +18,27 @@
           </el-option>
         </el-select>
       </div>
-
+<br>
       <div class="para" v-for="(item,itemIndex) in methods" v-if="item.id === selectedId">
         <div class="para-item" v-for="params in item.paramters">
           <br><div>{{params.name}}:</div>
           <div>
-          <el-input size="small" type="number" v-if="params.type!='Enum'" :min="params.minVal" :max="params.maxVal"
+          <el-input size="small" type="text" v-if="params.type!='Enum'" :min="params.minVal" :max="params.maxVal"
                     v-model="send_params_arr[itemIndex][params.key]"
-                    @blur="change(itemIndex, params.key, params.minVal,params.maxVal)">
-          </el-input></div>
-          <el-select v-model="send_params_arr[itemIndex][params.key]" v-if="params.type=='Enum'">
+                    @blur="change(itemIndex, params.key, params.minVal,params.maxVal)" style="width: 200px">
+          </el-input>
+            <span v-if="params.type!='Enum'"
+                  style="color: #99a9bf;font-size: 12px">输入范围（{{params.minVal}}-{{params.maxVal}}）</span>
+            <el-select v-model="send_params_arr[itemIndex][params.key]" v-if="params.type=='Enum'" style="width: 200px">
             <el-option
               v-for="item in params.values"
               :key="item"
               :label="item"
               :value="item"></el-option>
-          </el-select>
+          </el-select></div>
         </div>
         <br>
-        <el-button type="primary" @click="mining()">开始挖掘</el-button>
+        <div><el-button type="primary" @click="mining()">开始挖掘</el-button></div>
       </div>
     </div>
     <div v-if="hasMined">
@@ -61,7 +63,7 @@
     justify-content: flex-start;
     div{
       text-align: left;
-      width: 400px;
+      width: 250px;
       margin:0 3px 0  3px;
     }
   }
@@ -148,6 +150,7 @@
       ...mapActions(['changeHomePath']),
       change: function (m_index, p_key, min, max) {
         let send_data = this.send_params_arr[m_index][p_key]
+
 
         if (parseFloat(send_data) <= min) {
           this.send_params_arr[m_index][p_key] = min;
