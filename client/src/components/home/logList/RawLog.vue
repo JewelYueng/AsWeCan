@@ -288,6 +288,9 @@
       upload: function () {
         this.$modal({type: 'upload', data: {type: 'raw'}}).then((res) => {
           console.log(res)
+          if(res===false){
+            this.$hint('未选择任何文件', 'warn')
+          }
           this.getTotalItems()
         })
       },

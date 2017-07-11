@@ -137,7 +137,10 @@
         this.fileName = this.$refs.file.value
       },
       upload(){
-        let file_info = new FormData()
+        if(this.fileName=='未选择任何文件'){
+          this.commit(false)
+        }
+        else{let file_info = new FormData()
         file_info.append('isShare', Number(this.share_status))
         file_info.append('file', this.$refs.file.files[0])
         file_info.append('format', this.$refs.file.files[0].name.split('.').pop())
@@ -155,14 +158,16 @@
 //          this.totalAmount=[]
 //          this.checkedAll=false
 //          this.checked=[]
-          console.log('success', res)
+
           if (res.body.code === 1) {
+            console.log('success', res)
             this.commit(true)
           }
+
         }, err => {
           console.log(err)
           this.$hint(err.data.msg, 'error')
-        })
+        })}
       },
       cancel(){
         this.commit(true)
