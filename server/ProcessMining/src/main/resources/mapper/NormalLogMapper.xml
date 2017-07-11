@@ -65,7 +65,7 @@
                 state=#{state}
                 <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
                 <include refid="org.k2.processmining.mapper.RawLogMapper.addKeyWordIfNotNull"/>
-            ORDER BY create_date DESC LIMIT #{offset}, #{size}
+
             ) NL
             LEFT JOIN
             (SELECT * FROM event_log WHERE
@@ -83,6 +83,7 @@
             <if test="userId == null">
                 LEFT JOIN user ON NL.userid = user.id
             </if>
+        ORDER BY NL.create_date DESC LIMIT #{offset}, #{size}
     </select>
 
     <select id="countLogs" resultType="int">
