@@ -24,19 +24,19 @@
           <br><div>{{params.name}}:</div>
           <div>
           <el-input size="small" type="number" v-if="params.type!='Enum'" :min="params.minVal" :max="params.maxVal"
-                    v-model="send_params_arr[itemIndex][params.key]"
-                    @blur="change(itemIndex, params.key, params.minVal,params.maxVal)">
-          </el-input></div>
-          <el-select v-model="send_params_arr[itemIndex][params.key]" v-if="params.type=='Enum'">
+                    v-model="send_params_arr[itemIndex][params.key]" step="0.01"
+                    @blur="change(itemIndex, params.key, params.minVal,params.maxVal)" style="width: 200px">
+          </el-input>
+            <el-select v-model="send_params_arr[itemIndex][params.key]" v-if="params.type=='Enum'" style="width: 200px">
             <el-option
               v-for="item in params.values"
               :key="item"
               :label="item"
               :value="item"></el-option>
-          </el-select>
+          </el-select></div>
         </div>
         <br>
-        <el-button type="primary" @click="mining()">开始挖掘</el-button>
+        <div><el-button type="primary" @click="mining()">开始挖掘</el-button></div>
       </div>
     </div>
     <div v-if="hasMined">
@@ -148,6 +148,7 @@
       ...mapActions(['changeHomePath']),
       change: function (m_index, p_key, min, max) {
         let send_data = this.send_params_arr[m_index][p_key]
+
 
         if (parseFloat(send_data) <= min) {
           this.send_params_arr[m_index][p_key] = min;

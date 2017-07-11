@@ -103,6 +103,7 @@
     created(){
       register(this)
       window.$modal = this.modal
+      document.body.style.overflow='hidden'
     },
     methods: {
       modal ({type, data}) {
