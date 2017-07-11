@@ -29,14 +29,16 @@
                   v-model="send_params_arr[itemIndex][params.key]"
                   @blur="change(itemIndex, params.key, params.minVal,params.maxVal)" style="width: 200px">
 
-        </el-input></div>
+        </el-input>
+          <span v-if="params.type!='Enum'"
+                style="color: #99a9bf;font-size: 12px">输入范围（{{params.minVal}}-{{params.maxVal}}）</span>
         <el-select v-model="send_params_arr[itemIndex][params.key]" v-if="params.type=='Enum'">
           <el-option
             v-for="item in params.values"
             :key="item"
             :label="item"
             :value="item"></el-option>
-        </el-select>
+        </el-select></div>
       </div>
       <br>
       <div><el-button type="primary" @click="merge()">开始融合</el-button></div>
