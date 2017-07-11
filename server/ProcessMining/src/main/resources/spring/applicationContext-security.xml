@@ -15,8 +15,8 @@
     <security:http pattern="/user/register/**" security="none"/>
     <security:http pattern="/home/accessDeniedPage" security="none"/>
     <security:http pattern="/admin/accessDeniedPage" security="none"/>
-    <security:http pattern="/admin/hasLogoutPage" security="none"/>
-    <security:http pattern="/home/hasLogoutPage" security="none"/>
+    <!--<security:http pattern="/admin/hasLogoutPage" security="none"/>-->
+    <!--<security:http pattern="/home/hasLogoutPage" security="none"/>-->
     <security:http pattern="/html/notFound.html" security="none"/>
 
     <security:http auto-config="false" pattern="/admin/**" entry-point-ref="adminEntryPoint">
@@ -78,8 +78,8 @@
 
 
     <security:http auto-config="false" pattern="/**" entry-point-ref="userEntryPoint">
-        <!--<security:intercept-url pattern="/**" access="permitAll"/>-->
-        <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
+        <security:intercept-url pattern="/**" access="permitAll"/>
+        <!--<security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>-->
         <security:custom-filter ref="userConcurrencyFilter" position="CONCURRENT_SESSION_FILTER"/>
         <security:custom-filter ref="userFilter" position="FORM_LOGIN_FILTER"/>
         <security:custom-filter ref="userRememberMeFilter" position="REMEMBER_ME_FILTER"/>
@@ -125,9 +125,10 @@
         <constructor-arg value="111116aad72443b3b78af239a0b6bd7c"/>
     </bean>
     <bean id="userRememberMeService" class="org.k2.processmining.security.user.UserPersistentRememberMeService">
-        <constructor-arg name="key" value="123"/>
+        <constructor-arg name="key" value="111116aad72443b3b78af239a0b6bd7c"/>
         <constructor-arg name="userDetailsService" ref="userDetailsService"/>
         <constructor-arg name="tokenRepository" ref="tokenRepository"/>
+        <property name="cookieName" value="userRemember"/>
     </bean>
 
     <bean id="tokenRepository" class="org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl">
@@ -157,7 +158,7 @@
         <constructor-arg name="logoutHandlers">
             <list>
                 <bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler"/>
-                <ref bean="userRememberMeService"/>
+                <!--<ref bean="userRememberMeService"/>-->
             </list>
         </constructor-arg>
     </bean>

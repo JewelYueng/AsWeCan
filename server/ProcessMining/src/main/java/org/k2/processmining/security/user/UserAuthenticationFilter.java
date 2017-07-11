@@ -85,7 +85,7 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
                 request.setAttribute(UserRememberMeService.REMEMBER_ME_PARAMER,userForm.getUserRemember());
             }
         }else {
-            String str = request.getParameter(AdminRememberService.REMEMBER_ME_PARAMER);
+            String str = request.getParameter(UserRememberMeService.REMEMBER_ME_PARAMER);
             System.out.println("非JSon请求状况下:"+str);
         }
         System.out.println(jsonUsername+"   "+jsonPassword);

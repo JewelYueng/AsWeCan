@@ -19,6 +19,11 @@
     <location>/WEB-INF/html/notFound.html</location>
   </error-page>
 
+  <error-page>
+    <error-code>500</error-code>
+    <location>/WEB-INF/html/500error.html</location>
+  </error-page>
+
   <!-- 加载spring容器 -->
   <!-- context-param标签
          作用：该元素用来声明应用范围(整个WEB项目)内的上下文初始化参数。
