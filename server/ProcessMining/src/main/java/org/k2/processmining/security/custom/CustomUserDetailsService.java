@@ -20,14 +20,16 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-
+        System.out.println("loadUserByUsername");
         User user = userService.getUserByEmail(email);
         if (user == null){
             //查无此账号
+            System.out.println("user null");
             throw new UsernameNotFoundException(Message.USER_NAME_NOT_FOUND_CODE);
         }
         CustomUserDetails myUserDetails = new CustomUserDetails(user);
         myUserDetails.addAuthority(MyUserDetails.ROLE_USER);
+        System.out.println("user:"+user.getEmail()+"   "+user.getPassword());
         return myUserDetails;
     }
 }

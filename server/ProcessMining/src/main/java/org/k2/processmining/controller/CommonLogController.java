@@ -83,6 +83,7 @@ public abstract class CommonLogController<T extends AbstractLog> {
         try {
             logStorage.download(log, inputStream -> {
                 String fileName = log.getLogName();
+                response.setHeader("Content-Type", "application/octet-stream");
                 response.setHeader("Content-Disposition","attachment;filename=" + Util.encodeForURL(fileName));
                 IOUtils.copyLarge(inputStream, response.getOutputStream());
                 return true;

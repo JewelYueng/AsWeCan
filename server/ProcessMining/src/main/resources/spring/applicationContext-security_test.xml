@@ -9,8 +9,9 @@
 
     <!--<security:http pattern="/html/myLogin.html" security="none"/>-->
     <!--<security:http pattern="/html/login_failure.html" security="none"/>-->
+    <!--<security:http pattern="/js/**" security="none"/>-->
 
-    <!--<security:http pattern="/**" auto-config="true">-->
+    <!--<security:http pattern="/**" auto-config="false" authentication-manager-ref="userAuthenticationManager">-->
         <!--<security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>-->
         <!--<security:form-login login-page="/html/myLogin.html"-->
                              <!--login-processing-url="/myLogin"-->
@@ -21,13 +22,14 @@
         <!--<security:csrf disabled="true"/>-->
     <!--</security:http>-->
 
-    <!--<security:authentication-manager>-->
-        <!--<security:authentication-provider>-->
-            <!--<security:user-service>-->
-                <!--<security:user name="myName" authorities="ROLE_USER" password="123456"/>-->
-            <!--</security:user-service>-->
-        <!--</security:authentication-provider>-->
+    <!--<security:authentication-manager id="userAuthenticationManager">-->
+        <!--<security:authentication-provider ref="userAuthenticationProvider"/>-->
     <!--</security:authentication-manager>-->
 
+    <!--<bean id="userAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">-->
+        <!--<property name="userDetailsService" ref="userDetailsService"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="userDetailsService" class="org.k2.processmining.security.custom.CustomUserDetailsService"/>-->
 
 </beans>
