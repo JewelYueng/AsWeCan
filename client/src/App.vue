@@ -47,6 +47,7 @@
   }
 
   #app {
+    position: relative;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     width: 100%;
@@ -54,6 +55,10 @@
     margin-left: auto;
     margin-right: auto;
 
+  }
+
+  body{
+    margin: 0;
   }
 
   * {
