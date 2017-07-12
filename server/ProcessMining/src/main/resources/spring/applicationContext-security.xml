@@ -7,21 +7,21 @@
 		http://www.springframework.org/schema/security
 		http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <!--<security:http pattern="/admin/loginPage" security="none"/>-->
-    <!--<security:http pattern="/home/loginPage" security="none"/>-->
-    <!--<security:http pattern="/static/**" security="none"/>-->
-    <!--<security:http pattern="/js/**" security="none"/>-->
-    <!--<security:http pattern="/home/code" security="none"/>-->
-    <!--<security:http pattern="/user/register/**" security="none"/>-->
-    <!--<security:http pattern="/home/accessDeniedPage" security="none"/>-->
-    <!--<security:http pattern="/admin/accessDeniedPage" security="none"/>-->
-    <!--&lt;!&ndash;<security:http pattern="/admin/hasLogoutPage" security="none"/>&ndash;&gt;-->
-    <!--&lt;!&ndash;<security:http pattern="/home/hasLogoutPage" security="none"/>&ndash;&gt;-->
-    <!--<security:http pattern="/html/notFound.html" security="none"/>-->
+    <security:http pattern="/admin/loginPage" security="none"/>
+    <security:http pattern="/home/loginPage" security="none"/>
+    <security:http pattern="/static/**" security="none"/>
+    <security:http pattern="/js/**" security="none"/>
+    <security:http pattern="/home/code" security="none"/>
+    <security:http pattern="/user/register/**" security="none"/>
+    <security:http pattern="/home/accessDeniedPage" security="none"/>
+    <security:http pattern="/admin/accessDeniedPage" security="none"/>
+    <!--<security:http pattern="/admin/hasLogoutPage" security="none"/>-->
+    <!--<security:http pattern="/home/hasLogoutPage" security="none"/>-->
+    <security:http pattern="/html/notFound.html" security="none"/>
 
     <security:http auto-config="false" pattern="/admin/**" entry-point-ref="adminEntryPoint">
-        <!--<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>-->
-        <security:intercept-url pattern="/admin/**" access="permitAll"/>
+        <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+        <!--<security:intercept-url pattern="/admin/**" access="permitAll"/>-->
         <security:custom-filter ref="adminConcurrencyFilter" position="CONCURRENT_SESSION_FILTER"/>
         <security:custom-filter ref="adminFilter"  position="FORM_LOGIN_FILTER"/>
         <security:logout logout-url="/admin/logout" delete-cookies="JSESSIONID" success-handler-ref="adminLogoutSuccessHandler" />
