@@ -4,7 +4,6 @@
       <span>全记录动画</span>
       <el-button type="primary" @click="runTotal()" id="all-trace-run">运行</el-button>
       <el-button @click="downloadImage"> 下载 </el-button>
-      <!--<el-button type="primary" @click="cleanTrace()" >清除</el-button>-->
     </div>
     <div class="simple" v-show="showSelector">
       <span>单记录动画</span>
@@ -263,6 +262,7 @@
             })();
           }
         }
+
         this.timers1 = traceTimers;
 
       },
