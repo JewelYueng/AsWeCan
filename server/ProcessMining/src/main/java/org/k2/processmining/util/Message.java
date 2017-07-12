@@ -17,6 +17,7 @@ public class Message {
     public static final String INVALID_EVENT_LOG = "无法解析事件日志！";
     public static final String INVALID_PARAMS = "参数不合法，请检查输入！";
     public static final String MISS_PARAM = "参数缺失";
+    public static final String INVALID_METHOD = "算法包未实现所需接口";
     //用户登录
     public static final String USER_LOGIN_SUCCESS = "用户登录成功！";
     public static final String USER_LOGIN_SUCCESS_CODE = "200";

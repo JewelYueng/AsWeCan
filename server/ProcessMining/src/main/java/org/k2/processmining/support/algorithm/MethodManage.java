@@ -7,6 +7,7 @@ import org.k2.processmining.model.miningmethod.MiningMethod;
 import org.k2.processmining.support.merge.Merger;
 import org.k2.processmining.support.mining.Miner;
 import org.k2.processmining.support.reflect.ReflectUtil;
+import org.k2.processmining.util.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -111,7 +112,7 @@ public class MethodManage {
             throw new LoadMethodException(e, "fail to reflect for interface implement: " + methodDir);
         }
         if (! clazz.isAssignableFrom(method.getClass())) {
-            throw new LoadMethodException("the "+ method.getClass() + " is not the subclass of "+clazz);
+            throw new LoadMethodException(Message.INVALID_METHOD);
         }
         return new Algorithm<>(id, method, configs);
     }
