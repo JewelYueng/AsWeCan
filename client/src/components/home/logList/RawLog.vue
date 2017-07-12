@@ -34,7 +34,7 @@
                   :title="item.rawLog.logName">{{item.rawLog.logName}}</span>
           </div>
           <div class="date">
-            {{`${new Date(item.rawLog.createDate).getFullYear()}-${new Date(item.rawLog.createDate).getMonth() + 1}-${new Date(item.rawLog.createDate).getDate()}`}}
+            {{`${new Date(item.rawLog.createDate).getFullYear()}-${new Date(item.rawLog.createDate).getMonth() + 1}-${new Date(item.rawLog.createDate).getDate()} ${new Date(item.rawLog.createDate).getHours()}:${new Date(item.rawLog.createDate).getMinutes()}`}}
           </div>
           <div @click="jumpToNormal(index)" class="relation-logs normal-log" :class="{pointer: item.normalLog}"
                :title="item.normalLog ? item.normalLog.logName : '无'">{{item.normalLog ? item.normalLog.logName : '无'}}
