@@ -104,6 +104,9 @@
       height: 530px;
       overflow: auto;
     }
+    .list-item .log-name{
+      cursor: pointer;
+    }
     .list-item, .list-head{
       display: flex;
       flex-direction: row;
@@ -113,6 +116,7 @@
       justify-content: flex-start;
       align-items: center;
       .log-name {
+       //cursor:pointer;
         min-width: 190px;
         flex: 0 0 20%;
         .too-long-text;
@@ -128,9 +132,6 @@
           position: relative;
           top: 2px;
         }
-      }
-      .list-item .log-name{
-        cursor: pointer;
       }
       .uploader {
         flex: 0 0 8%;

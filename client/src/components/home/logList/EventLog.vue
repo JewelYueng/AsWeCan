@@ -102,6 +102,10 @@
     white-space: nowrap;
   }
 
+  .list-item .log-name{
+    cursor: pointer;
+  }
+
   #log-list {
     padding-top: 20px;
     margin-left: 10px;
@@ -154,9 +158,6 @@
           top: 2px;
         }
       }
-      .list-item .log-name{
-        cursor: pointer;
-      }
       .date {
         flex: 0 0 10%;
         min-width: 94px;
@@ -192,10 +193,6 @@
       }
     }
 
-  }
-
-  .log-name {
-    cursor: pointer;
   }
 
 

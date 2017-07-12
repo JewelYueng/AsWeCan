@@ -33,13 +33,9 @@
 
 <style scoped lang="less" rel="stylesheet/less">
   .upload {
-    //display: flex;
-    //flex-flow: column;
-    //justify-content: flex-start;
-    height: 150px;
     position: fixed;
     left: 50%;
-    //top: 50%;
+    top: 45%;
     z-index: 11;
     /*设定这个div的margin-top的负值为自身的高度的一半,margin-left的值也是自身的宽度的一半的负值.*/
     /*宽为400,那么margin-top为-200px*/
