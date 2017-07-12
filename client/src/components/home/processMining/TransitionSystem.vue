@@ -166,6 +166,7 @@
               });
           })
         }
+
       },
       runTrace(selector){
         const _this = this;
@@ -263,8 +264,10 @@
           }
         }
         this.timers1 = traceTimers;
+
       },
       runTotal(){
+
         const _this = this;
         _this.cleanTrace(2);
         let traceTimers = []
@@ -273,9 +276,12 @@
         let timerArr = [];
 
         for (let i = 0; i !== _this.items.diagram.allTraces.length; i++) {
+
           let trace = _this.items.diagram.allTraces[i].split(",");
           for (let j = 0; j !== trace.length; j++) {
+
             if (j + 1 < trace.length) {
+
               let tStr = trace[j] + ':' + trace[j + 1];
               if (!_this.linkMap[tStr]) {
                 continue;
@@ -297,16 +303,18 @@
         }
 
         for (let k = 0; k !== timerArr.length; k++) {
+
           traceTimers.push(setTimeout(timerArr[k], 100 * k));
         }
 
-        console.log(links)
+        //console.log(links)
         traceTimers.push(setTimeout(function () {
           links.attr("stroke-width", function (d) {
             return _this.edgeWidthMap[d.v + ':' + d.w];
           });
         }, 100 * timerArr.length));
         _this.timers2 = traceTimers;
+        console.log(_this.timers2)
 
       },
       renderDiagraph: function (data, selector) {
