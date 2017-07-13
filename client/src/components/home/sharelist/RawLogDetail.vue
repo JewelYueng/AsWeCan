@@ -100,8 +100,8 @@
       justify-content: flex-start;
       align-items: center;
       .log-name {
-        min-width: 250px;
-        flex: 0 0 25%;
+        min-width: 200px;
+        flex: 0 0 20%;
         .too-long-text;
         text-align: left;
       }
