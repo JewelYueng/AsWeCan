@@ -30,9 +30,6 @@
     background-color: white;
     box-shadow: 0 0 3px 0 #324157;
     border-radius: 5px;
-
-    overflow-y: auto;
-    overflow-x: hidden;
   }
 
   .form-data {
@@ -40,29 +37,21 @@
     max-height: 500px;
     position: relative;
     left: 6px;
-    overflow-y: auto;
-    overflow-x: hidden;
     margin-bottom: 10px;
+    overflow: auto;
     .el-table {
       width: 90%;
-      overflow-x: hidden;
-
     }
   }
 
-  .el-table__body-wrapper{
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
 
   .form-item {
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: auto;
     /*text-overflow:ellipsis;*/
   }
 
   .back-btn {
-    margin: 20px auto;
+    margin: 10px auto;
   }
 </style>
 
