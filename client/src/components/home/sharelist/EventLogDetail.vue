@@ -39,11 +39,11 @@
           </div>
           <div class="merge-relation">
             <div v-if="item.eventLog.mergeRelation" class="relation1" @click="selectedRel(index,0)"
-                 :class="{'pointer': item.eventLog,'mergeCss':item.eventLog.mergeRelationLogs[0].isShared==0}"
+                 :class="{'pointer': item.eventLog,'mergeCss':item.eventLog.mergeRelationLogs[0].isShared==0||item.eventLog.mergeRelationLogs[0].state==2}"
                  :title="item.eventLog.mergeRelationLogs[0].logName">{{item.eventLog.mergeRelationLogs[0].logName}}
             </div>
             <div v-if="item.eventLog.mergeRelation" class="relation2" @click="selectedRel(index,1)"
-                 :class="{'pointer': item.eventLog,'mergeCss':item.eventLog.mergeRelationLogs[1].isShared==0}"
+                 :class="{'pointer': item.eventLog,'mergeCss':item.eventLog.mergeRelationLogs[1].isShared==0||item.eventLog.mergeRelationLogs[1].state==2}"
                  :title="item.eventLog.mergeRelationLogs[1].logName">{{item.eventLog.mergeRelationLogs[1].logName}}
             </div>
             <div v-show="!item.eventLog.mergeRelation">没有融合来源</div>
