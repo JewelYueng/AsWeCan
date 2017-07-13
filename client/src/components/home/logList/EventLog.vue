@@ -35,7 +35,7 @@
                   :title="item.eventLog.logName">{{item.eventLog.logName}}</span>
           </div>
           <div class="date">
-            {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()}`}}
+            {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()} ${new Date(item.eventLog.createDate).getHours()}:${new Date(item.eventLog.createDate).getMinutes()}`}}
           </div>
           <div @click="jumpToRaw(index)" class="relation-logs raw-log" :class="{pointer: item.rawLog}"
                :title="item.rawLog ? item.rawLog.logName : '无'">
@@ -45,7 +45,7 @@
                :title="item.normalLog ? item.normalLog.logName : '无'">
             {{item.normalLog ? item.normalLog.logName : '无'}}
           </div>
-          <div class="merge-relation">
+          <div class="merge-relation" >
             <div v-if="item.eventLog.mergeRelation" class="relation1"
                  :class="{'pointer': item.eventLog,'mergeCss':item.eventLog.mergeRelationLogs[0].state==2}"
                  @click="selectedRel(index,0)"
@@ -285,7 +285,7 @@
       jumpToRaw(index){
         if (this.items[index].rawLog) {
           this.$api({method: 'getRawLogPage', query: {id: this.items[index].rawLog.id}}).then( res => {
-            debugger
+
             this.selectLog({type: 0, id: this.items[index].rawLog.id, page: res.data.page})
             this.changeFilePath('1-1')
           }, err => {
@@ -294,7 +294,9 @@
           })
         }
       },
+
       selectedRel(log_index, index){
+        debugger
         let relation_id = this.items[log_index].eventLog.mergeRelationLogs[index].id
         let relation_state = this.items[log_index].eventLog.mergeRelationLogs[index].state
 
@@ -302,6 +304,7 @@
           this.$api({method: 'getEventLogPage', query: {id: relation_id}}).then( res => {
             this.selectLog({type: 2, id: relation_id, page: res.data.page})
             this.currentPage = res.data.page
+            this.close_search()
           }, err => {
             console.log(err)
             this.$hint(err.data.msg, 'error')

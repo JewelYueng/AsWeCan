@@ -27,7 +27,7 @@
           </div>
           <div class="uploader">{{item.user.name}}</div>
           <div class="date">
-            {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()}`}}
+            {{`${new Date(item.eventLog.createDate).getFullYear()}-${new Date(item.eventLog.createDate).getMonth() + 1}-${new Date(item.eventLog.createDate).getDate()} ${new Date(item.eventLog.createDate).getHours()}:${new Date(item.eventLog.createDate).getMinutes()}`}}
           </div>
           <div  @click="jumpToRaw(index)" class="raw-log " :class="{pointer: item.rawLog}"
                 :title="item.rawLog ? item.rawLog.logName : '无'">
