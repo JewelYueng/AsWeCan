@@ -29,7 +29,7 @@
                :title="item.rawLog ? item.rawLog.logName : '无'">
             {{item.rawLog ? item.rawLog.logName : '无'}}
           </div>
-          <div  @click="jumpToEvent(index)" class="event-log" :class="{pointer: item.eventlog}"
+          <div  @click="jumpToEvent(index)" class="event-log" :class="{pointer: item.eventLog}"
                 :title="item.eventLog ? item.eventLog.logName : '无'">
             {{item.eventLog ? item.eventLog.logName : '无'}}
           </div>
