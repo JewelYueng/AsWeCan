@@ -160,7 +160,7 @@
       }
       .date {
         flex: 0 0 10%;
-        min-width: 94px;
+        min-width: 100px;
       }
       .raw-log {
         flex: 0 0 18%;

@@ -4,14 +4,14 @@
        color: #324157;background-color: white;border: none;cursor: pointer"><i class="el-icon-close"></i>
     </button>
     <div class="form-data">
-      <el-table :data="eventData" height="500" border style="width: 90%">
+      <el-table :data="eventData" border>
         <el-table-column class="form-item" prop="name" label="名称" width="180">
         </el-table-column>
         <el-table-column class="form-item" prop="value" label="项值" width="180">
         </el-table-column>
       </el-table>
     </div>
-    <el-button type="primary" @click="back" class="back-btn">返回</el-button>
+    <div class="back-btn"><el-button type="primary" @click="back">返回</el-button></div>
   </div>
 </template>
 
@@ -25,13 +25,14 @@
     /*宽为400,那么margin-top为-200px*/
     /*高为200那么margin-left为-100px;*/
     margin: -300px 0 0 -200px;
-    padding-left: 30px;
-    padding-top: 30px;
-    padding-right: 3px;
+    padding: 30px 3px 10px 30px;
     width: 400px;
     background-color: white;
     box-shadow: 0 0 3px 0 #324157;
     border-radius: 5px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .form-data {
@@ -39,14 +40,24 @@
     max-height: 500px;
     position: relative;
     left: 6px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-bottom: 10px;
     .el-table {
-      width: 100%;
+      width: 90%;
+      overflow-x: hidden;
+
     }
   }
 
+  .el-table__body-wrapper{
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
   .form-item {
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     /*text-overflow:ellipsis;*/
   }
 

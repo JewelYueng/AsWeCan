@@ -124,7 +124,7 @@
       }
       .operations {
         flex: 0 0 10%;
-        min-width: 40px;
+        min-width: 25px;
         img {
           cursor: pointer;
           width: 18px;
@@ -134,12 +134,13 @@
         }
       }
       .uploader {
-        flex: 0 0 8%;
+        flex: 0 0 10%;
         min-width: 80px;
+        .too-long-text;
       }
       .date {
         flex: 0 0 10%;
-        min-width: 90px;
+        min-width: 100px;
         .too-long-text;
       }
       .raw-log {
