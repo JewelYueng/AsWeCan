@@ -88,7 +88,8 @@
     font-size: 14px;
     .list{
       height: 530px;
-      overflow: auto;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
     .list-item, .list-head{
       display: flex;
@@ -105,8 +106,8 @@
         text-align: left;
       }
       .operations {
-        flex: 0 0 5%;
-        min-width: 40px;
+        flex: 0 0 3%;
+        min-width: 25px;
         img {
           cursor: pointer;
           width: 18px;
@@ -118,10 +119,11 @@
       .uploader {
         flex: 0 0 8%;
         min-width: 80px;
+        .too-long-text;
       }
       .date {
         flex: 0 0 10%;
-        min-width: 90px;
+        min-width: 120px;
         .too-long-text;
       }
       .normal-log {

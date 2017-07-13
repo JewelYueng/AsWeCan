@@ -113,7 +113,8 @@
     font-size: 14px;
     .list {
       height: 530px;
-      overflow: auto;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
     .list-item, .list-head{
       img {
@@ -128,7 +129,7 @@
       justify-content: center;
       align-items: flex-start;
       .log-head {
-        flex: 0 0 20%;
+        flex: 0 0 17%;
         min-width: 210px;
         display: flex;
         flex-direction: row;
@@ -136,7 +137,7 @@
         justify-content: center;
         align-items: center;
         .log-name {
-          flex: 0 0 17%;
+          flex: 0 0 15%;
           min-width: 175px;
           .too-long-text;
         }
@@ -160,33 +161,35 @@
       }
       .date {
         flex: 0 0 10%;
-        min-width: 94px;
+        min-width: 120px;
+        .too-long-text;
       }
       .raw-log {
-        flex: 0 0 18%;
-        min-width: 160px;
+        flex: 0 0 15%;
+        min-width: 150px;
         .too-long-text;
       }
       .normal-log {
-        flex: 0 0 18%;
-        min-width: 160px;
+        flex: 0 0 15%;
+        min-width: 150px;
         .too-long-text;
       }
       .event-log {
-        flex: 0 0 150px;
+        flex: 0 0 15%;
+        min-width: 150px;
         .too-long-text;
       }
       .merge-relation {
-        flex: 0 0 18%;
-        min-width: 160px;
+        flex: 0 0 15%;
+        min-width: 150px;
         .too-long-text;
         .relation1 {
-          min-width: 180px;
+          min-width: 150px;
           .too-long-text;
          // cursor: pointer;
         }
         .relation2 {
-          min-width: 180px;
+          min-width: 150px;
           .too-long-text;
           //cursor: pointer;
         }

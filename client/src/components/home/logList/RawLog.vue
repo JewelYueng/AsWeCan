@@ -93,7 +93,8 @@
     font-size: 14px;
     .list {
       height: 530px;
-      overflow: auto;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
     .list-item, .list-head {
       img {
