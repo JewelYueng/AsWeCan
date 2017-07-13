@@ -113,7 +113,8 @@
     font-size: 14px;
     .list {
       height: 530px;
-      overflow: auto;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
     .list-item, .list-head{
       img {
@@ -160,7 +161,8 @@
       }
       .date {
         flex: 0 0 10%;
-        min-width: 100px;
+        min-width: 120px;
+        .too-long-text;
       }
       .raw-log {
         flex: 0 0 18%;

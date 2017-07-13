@@ -88,7 +88,8 @@
     font-size: 14px;
     .list{
       height: 530px;
-      overflow: auto;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
     .list-item, .list-head{
       img {
@@ -110,7 +111,7 @@
         text-align: left;
       }
       .operations {
-        flex: 0 0 5%;
+        flex: 0 0 3%;
         min-width: 25px;
         img {
           cursor: pointer;
@@ -127,7 +128,7 @@
       }
       .date {
         flex: 0 0 10%;
-        min-width: 100px;
+        min-width: 120px;
         .too-long-text;
       }
       .raw-log {

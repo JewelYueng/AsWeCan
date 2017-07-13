@@ -102,7 +102,8 @@
     font-size: 14px;
     .list{
       height: 530px;
-      overflow: auto;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
     .list-item .log-name{
       cursor: pointer;
@@ -123,8 +124,8 @@
         text-align: left;
       }
       .operations {
-        flex: 0 0 10%;
-        min-width: 25px;
+        flex: 0 0 3%;
+        width: 25px;
         img {
           cursor: pointer;
           width: 18px;
@@ -140,7 +141,7 @@
       }
       .date {
         flex: 0 0 10%;
-        min-width: 100px;
+        min-width: 120px;
         .too-long-text;
       }
       .raw-log {
