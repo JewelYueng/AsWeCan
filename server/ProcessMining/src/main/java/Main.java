@@ -16,10 +16,8 @@ public class Main {
 
     public static void main(String[] args) throws UnsupportedEncodingException, NoSuchAlgorithmException {
 
-        Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-        String s = encoder.encodePassword("1","666");
-        System.out.println(s);
-        System.out.println(s.length());
+        String str = "你好";
+        System.out.println(str.length());
 
     }
 
