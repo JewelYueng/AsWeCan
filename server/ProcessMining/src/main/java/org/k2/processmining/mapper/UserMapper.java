@@ -14,6 +14,7 @@ import java.util.List;
 @Repository
 public interface UserMapper {
 
+
     List<User> listAllUsers();
     void save(User user);
     User getUserByUserId(@Param("id")String userId);

@@ -51,6 +51,8 @@ public class Message {
     public static final String REGISTER_NAME_NULL_CODE = "405";
     public static final String REGISTER_EMAIL_WRONG = "邮箱不合法！";
     public static final String REGISTER_EMAIL_WRONG_CODE = "406";
+    public static final String REGISTER_NAME_ILLEGAL = "用户名太长或不合法！";
+    public static final String REGISTER_NAME_ILLEGAL_CODE = "407";
     public static final String REGISTER_SUCCESS = "注册成功！";
     public static final String REGISTER_SUCCESS_CODE = "200";
 

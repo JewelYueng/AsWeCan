@@ -62,6 +62,11 @@ public class UserServiceImpl implements UserService{
             map.put("message",Message.REGISTER_NAME_NULL);
             return map; //用户名为空
         }
+        if (newUser.getName().length() > 32){
+            map.put("code",Message.REGISTER_NAME_ILLEGAL_CODE);
+            map.put("message",Message.REGISTER_NAME_ILLEGAL);
+            return map;
+        }
         newUser.setId(Util.getUUIDString());
         newUser.setState(UserState.FREEZE.getValue());
         newUser.setRegisterDate(new Date());

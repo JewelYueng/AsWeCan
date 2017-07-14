@@ -20,8 +20,8 @@
     <security:http pattern="/html/notFound.html" security="none"/>
 
     <security:http auto-config="false" pattern="/admin/**" entry-point-ref="adminEntryPoint">
-        <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
-        <!--<security:intercept-url pattern="/admin/**" access="permitAll"/>-->
+        <!--<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>-->
+        <security:intercept-url pattern="/admin/**" access="permitAll"/>
         <security:custom-filter ref="adminConcurrencyFilter" position="CONCURRENT_SESSION_FILTER"/>
         <security:custom-filter ref="adminFilter"  position="FORM_LOGIN_FILTER"/>
         <security:logout logout-url="/admin/logout" delete-cookies="JSESSIONID" success-handler-ref="adminLogoutSuccessHandler" />
@@ -78,8 +78,8 @@
 
 
     <security:http auto-config="false" pattern="/**" entry-point-ref="userEntryPoint">
-        <!--<security:intercept-url pattern="/**" access="permitAll"/>-->
-        <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
+        <security:intercept-url pattern="/**" access="permitAll"/>
+        <!--<security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>-->
         <security:custom-filter ref="userConcurrencyFilter" position="CONCURRENT_SESSION_FILTER"/>
         <security:custom-filter ref="userFilter" position="FORM_LOGIN_FILTER"/>
         <security:custom-filter ref="userRememberMeFilter" position="REMEMBER_ME_FILTER"/>
