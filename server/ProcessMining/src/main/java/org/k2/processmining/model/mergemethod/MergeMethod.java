@@ -1,12 +1,16 @@
 package org.k2.processmining.model.mergemethod;
 
+import org.k2.processmining.model.MethodState;
+
+import java.io.Serializable;
+
 /**
  * Created by Aria on 2017/6/9.
  */
-public class MergeMethod {
+public class MergeMethod implements Serializable{
     private String id;
     private String methodName;
-    private int state = 1;
+    private int state = MethodState.ACTIVE.getValue();
 
     public void setId(String id) {
         this.id = id;

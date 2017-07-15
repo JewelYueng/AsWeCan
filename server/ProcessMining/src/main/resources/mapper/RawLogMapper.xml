@@ -4,7 +4,123 @@
 
 <mapper namespace="org.k2.processmining.mapper.RawLogMapper">
 
-    <select id="getRawLogById" resultMap="rawLog">
+    <sql id="addUserIdIfNotNull">
+        <if test="userId != null">
+            userid=#{userId} AND
+        </if>
+    </sql>
+
+    <sql id="addIsSharedIfNotMinus1">
+        <if test="isShared != -1">
+            AND isshared=#{isShared}
+        </if>
+    </sql>
+    <sql id="addKeyWordIfNotNull">
+        <if test="keyWord != null">
+            AND log_name LIKE concat(concat('%',#{keyWord}),'%')
+        </if>
+    </sql>
+    <sql id="addUserColumnIfUserIdIsNull">
+        <if test="userId == null">
+            user.id userId, user.username username,
+        </if>
+    </sql>
+
+    <sql id="logGroupSelectColumns">
+        RL.id rawLogId, RL.log_name rawLogName, RL.format rawLogFormat,RL.isshared rawLogIsShared,
+        RL.create_date rawLogCreateDate, RL.state rawLogState, RL.userid rawLogUserId,
+        NL.id normalLogId, NL.log_name normalLogName, NL.format normalLogFormat,
+        NL.create_date normalLogCreateDate, NL.state normalLogState, NL.userid normalLogUserId,
+        NL.raw_log_id normalLogRawLogId, NL.isshared normalLogIsShared,
+        EL.id eventLogId, EL.log_name eventLogName, EL.format eventLogFormat,
+        EL.create_date eventLogCreateDate, EL.state eventLogState, EL.userid eventLogUserId,
+        EL.normal_log_id eventLogNormalLogId, EL.isshared eventLogIsShared,
+        case_number, event_number, per_event_inCase, event_names, operator_names,merge_relation
+    </sql>
+
+    <sql id="rawNormalEventLeftJoin">
+        (SELECT * FROM raw_log WHERE
+            <include refid="addUserIdIfNotNull"/>
+            state=#{state}
+            <include refid="addIsSharedIfNotMinus1"/>
+            <include refid="addKeyWordIfNotNull"/>
+        ) RL
+        LEFT JOIN
+            (SELECT
+                nl.*
+            FROM
+                normal_log nl,
+                (SELECT raw_log_id,MAX(create_date) create_date FROM normal_log GROUP BY raw_log_id HAVING raw_log_id IS NOT NULL) a
+            WHERE <include refid="addUserIdIfNotNull"/> nl.raw_log_id=a.raw_log_id AND nl.create_date=a.create_date) NL
+        ON RL.id = NL.raw_log_id
+        LEFT JOIN
+            (SELECT * FROM event_log
+            WHERE <include refid="addUserIdIfNotNull"/>
+                    state=#{state}
+                    <include refid="addIsSharedIfNotMinus1"/>) EL
+        ON NL.id = EL.normal_log_id
+    </sql>
+
+    <select id="listLogGroups" resultMap="logGroup">
+        SELECT
+          <include refid="addUserColumnIfUserIdIsNull"/>
+          <include refid="logGroupSelectColumns"/>
+        FROM
+            <include refid="rawNormalEventLeftJoin"/>
+            <if test="userId == null">
+                LEFT JOIN user ON RL.userid = user.id
+            </if>
+    </select>
+
+    <select id="listLogGroupsPage" resultMap="logGroup">
+        SELECT
+            <include refid="addUserColumnIfUserIdIsNull"/>
+            <include refid="logGroupSelectColumns"/>
+        FROM
+            <include refid="rawNormalEventLeftJoin"/>
+            <if test="userId == null">
+                LEFT JOIN user ON RL.userid = user.id
+            </if>
+        ORDER BY RL.create_date DESC LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="countLogs" resultType="int">
+      SELECT
+        COUNT(*)
+      FROM raw_log
+      WHERE
+        <include refid="addUserIdIfNotNull"/>
+        state=#{state}
+        <include refid="addIsSharedIfNotMinus1"/>
+        <include refid="addKeyWordIfNotNull"/>
+
+    </select>
+
+    <sql id="lineOfLogIdSQL">
+        set @line:=0;
+        SELECT
+          line
+        FROM
+          (SELECT
+            id, @line:=@line+1 as line
+          FROM
+            (SELECT * FROM ${table}
+            WHERE
+              <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
+              state=#{state}
+              <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
+            ORDER BY create_date DESC) nl
+          ) as t
+        WHERE id=#{id}
+    </sql>
+
+    <select id="lineOfLogId" resultType="int">
+        <include refid="lineOfLogIdSQL">
+            <property name="table" value="raw_log"/>
+        </include>
+    </select>
+
+    <select id="getLogById" resultMap="rawLog">
         SELECT * FROM raw_log WHERE id=#{id}
     </select>
 
@@ -13,40 +129,50 @@
          VALUES (#{id}, #{logName}, #{createDate}, #{userId}, #{format}, #{state}, #{isShared})
     </insert>
 
-    <select id="listLogsByUserIdAndState" resultMap="logGroup">
-        SELECT
-            RL.id rawLogId, RL.log_name rawLogName, RL.format rawLogFormat,RL.isshared rawLogIsShared,
-            RL.create_date rawLogCreateDate, RL.state rawLogState, RL.userid rawLogUserId,
-            normal_log.id normalLogId, normal_log.log_name normalLogName, normal_log.format normalLogFormat,
-            normal_log.create_date normalLogCreateDate, normal_log.state normalLogState, normal_log.userid normalLogUserId,
-            normal_log.raw_log_id normalLogRawLogId, normal_log.isshared normalLogIsShared,
-            event_log.id eventLogId, event_log.log_name eventLogName, event_log.format eventLogFormat,
-            event_log.create_date eventLogCreateDate, event_log.state eventLogState, event_log.userid eventLogUserId,
-            event_log.normal_log_id eventLogNormalLogId, event_log.isshared eventLogIsShared,
-            case_number, event_number, per_event_inCase, event_names, operator_names,merge_relation
-        FROM
-            (SELECT * FROM raw_log where userid=#{id} and state=#{state}) RL
-            left join normal_log on RL.id = normal_log.raw_log_id
-            left join event_log on normal_log.id = event_log.normal_log_id
-    </select>
+    <sql id="updateLogStateSQL">
+        UPDATE ${table} SET state=#{state} WHERE
+        <if test="userId != null">
+            userid = #{userId} AND
+        </if>
+        state!=2 AND
+        id in
+        <foreach item="item" index="index" collection="ids"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </sql>
 
-    <select id="listLogsByStateAndSharedState" resultMap="logGroup">
-        SELECT
-            RL.id rawLogId, RL.log_name rawLogName, RL.format rawLogFormat,
-            RL.create_date rawLogCreateDate, RL.state rawLogState, RL.userid rawLogUserId,
-            normal_log.id normalLogId, normal_log.log_name normalLogName, normal_log.format normalLogFormat,
-            normal_log.create_date normalLogCreateDate, normal_log.state normalLogState, normal_log.userid normalLogUserId,
-            normal_log.raw_log_id normalLogRawLogId,
-            event_log.id eventLogId, event_log.log_name eventLogName, event_log.format eventLogFormat,
-            event_log.create_date eventLogCreateDate, event_log.state eventLogState, event_log.userid eventLogUserId,
-            event_log.normal_log_id eventLogNormalLogId, case_number, event_number, per_event_inCase, event_names, operator_names,merge_relation
-        FROM
-            (SELECT * FROM raw_log WHERE  state=#{state} AND isshared=#{isShared}) RL
-            left join normal_log on RL.id = normal_log.raw_log_id
-            left join event_log on normal_log.id = event_log.normal_log_id
-    </select>
+    <sql id="updateIsSharedSQL">
+        UPDATE ${table} SET isshared=#{isShared} WHERE
+        <if test="userId != null">
+          userid = #{userId} AND
+        </if>
+        state!=2 AND
+        id in
+        <foreach item="item" index="index" collection="ids"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </sql>
+
+    <update id="updateLogState">
+        <include refid="updateLogStateSQL">
+            <property name="table" value="raw_log"/>
+        </include>
+    </update>
+
+    <update id="updateIsShared">
+        <include refid="updateIsSharedSQL">
+            <property name="table" value="raw_log"/>
+        </include>
+    </update>
 
     <resultMap id="logGroup" type="LogGroup">
+        <association property="user" javaType="User">
+            <id column="userId" property="id"/>
+            <id column="username" property="name"/>
+        </association>
+
         <association property="rawLog" javaType="RawLog">
             <id column="rawLogId" property="id"/>
             <result column="rawLogName" property="logName"/>

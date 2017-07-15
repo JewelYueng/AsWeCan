@@ -1,12 +1,16 @@
 package org.k2.processmining.model.miningmethod;
 
+import org.k2.processmining.model.MethodState;
+
+import java.io.Serializable;
+
 /**
  * Created by Aria on 2017/6/9.
  */
-public class MiningMethod {
+public class MiningMethod implements Serializable{
     private String methodName;
     private String id;
-    private int state = 1;
+    private int state = MethodState.ACTIVE.getValue();
 
     public void setState(int state) {
         this.state = state;

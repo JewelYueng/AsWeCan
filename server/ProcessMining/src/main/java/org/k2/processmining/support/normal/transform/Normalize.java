@@ -1,10 +1,14 @@
 package org.k2.processmining.support.normal.transform;
 
+
+import org.k2.processmining.exception.InternalServerErrorException;
+
 import java.io.*;
 
 public class Normalize {
+
     // don't need to close inputStream and outputStream because they should be closed where they were created ?
-    public static boolean normalize(LogConfiguration LC, InputStream inputStream, OutputStream outputStream) {
+    public static void normalize(LogConfiguration LC, InputStream inputStream, OutputStream outputStream) throws NormalizeException, IOException {
         String nulVal=" ";
         String seperator="\t";
         int n = 0;
@@ -37,12 +41,12 @@ public class Normalize {
             }
             // have to flush!!!!!!
             writer.flush();
-
-            return true;
         }
-        catch (IOException e) {
-            e.printStackTrace();
+        catch (Exception e) {
+            if (e instanceof IOException) {
+                throw (IOException) e;
+            }
+            throw new NormalizeException(e);
         }
-        return false;
     }
 }

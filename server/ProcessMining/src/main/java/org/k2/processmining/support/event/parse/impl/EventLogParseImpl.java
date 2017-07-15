@@ -2,7 +2,15 @@ package org.k2.processmining.support.event.parse.impl;
 
 import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XLog;
+import org.k2.processmining.exception.BadRequestException;
+import org.k2.processmining.exception.InternalServerErrorException;
+import org.k2.processmining.model.log.EventLog;
+import org.k2.processmining.storage.LogStorage;
 import org.k2.processmining.support.event.parse.EventLogParse;
+import org.k2.processmining.support.event.parse.EventLogParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedInputStream;
@@ -18,18 +26,38 @@ import java.util.List;
 @Component
 public class EventLogParseImpl implements EventLogParse {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(EventLogParseImpl.class);
+
+	@Autowired
+	private LogStorage logStorage;
+
+	@Override
+	public XLog eventLogParse(EventLog eventLog) {
+		if (eventLog != null) {
+			try {
+				return logStorage.download(eventLog, inputStream -> {
+					try {
+						return eventLogParse(inputStream);
+					}
+					catch (EventLogParseException e) {
+						LOGGER.error("Fail to parse to XLog for eventLog:{}", eventLog, e);
+						throw new BadRequestException("Fail to parse eventLog to XLog.");
+					}
+				});
+			}
+			catch (IOException e) {
+				LOGGER.error("Fail to parse to XLog for eventLog:{}", eventLog, e);
+				throw new InternalServerErrorException("Fail to parse eventLog to XLog.");
+			}
+		}
+		return null;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
-	public XLog eventLogParse(InputStream in) {
-		XLog xlog = null;
-		InputStream input = null;
+	public XLog eventLogParse(InputStream in) throws IOException, EventLogParseException {
 		//检查文件BOM
-		try {
-			input = checkForUtf8BOMAndDiscardIfAny(in);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		InputStream input = checkForUtf8BOMAndDiscardIfAny(in);
 		//创建XesParser对象
 		XesXmlParser xxp = new XesXmlParser();
 		List<XLog> listXLog = new ArrayList<XLog>();
@@ -37,13 +65,15 @@ public class EventLogParseImpl implements EventLogParse {
 		try {
 			listXLog = xxp.parse(input);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (e instanceof IOException) {
+				throw (IOException) e;
+			}
+			throw new EventLogParseException(e);
 		}
-		if(!listXLog.isEmpty()){
-			xlog = listXLog.get(0);
+		if(listXLog.isEmpty()){
+			throw new EventLogParseException("Parse result is empty.");
 		}
-		return xlog;
+		return listXLog.get(0);
 	}
 	
 	private static InputStream checkForUtf8BOMAndDiscardIfAny(InputStream inputStream) throws IOException {

@@ -1,10 +1,97 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>管理员</title>
 </head>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
 <body>
-    <h1>这里是管理员首页</h1>
+<div>
+    <form name='f'
+          action='/admin/adminLogin'
+          method='POST'>
+        <table class="formtable">
+            <tr>
+                <td class="title">输入工号:</td>
+                <td><input  class="control" type='text' name='workId' id="workId"></td>
+            </tr>
+            <tr>
+                <td class="title">输入密码:</td>
+                <td><input class="control" type='password' name='password' id="password"/></td>
+            </tr>
+            <tr>
+                <td class="title">输入验证码:</td>
+                <td><input class="control" type='text' name='code' id="code"/></td>
+                <td><img src="/home/code" id="codeImage"><a href="#" onclick="reloadCode()">看不清？</a></td>
+            </tr>
+            <tr>
+                <td colspan='2'><input name="submit" type="submit"
+                                       value="登录" /></td>
+            </tr>
+            <tr>
+                <td><input type="button" onclick="logout()" value="登出"></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" id="adminRemember" checked="checked">自动登录</td>
+            </tr>
+            <tr>
+                <td><input type="button" id="btnVisitUser" onclick="visistUser()">访问不同权限</td>
+            </tr>
+        </table>
+    </form>
+
+</div>
+<button onclick="clickme(2)" >错误的
+</button>
+<button onclick="clickme(1)">正确的</button>
 </body>
+
+<script>
+    function clickme(username) {
+        var json = {
+            workId: $('#workId').val(),
+            password: $('#password').val(),
+            validateCode: $('#code').val(),
+            adminRemember: 1
+        };
+        $.ajax({
+            type:"POST",
+            url:'/admin/adminLogin',
+            contentType: 'application/json',
+            dataType:'json',
+            data:JSON.stringify(json),
+            success:function (result) {
+                console.log("ceshi");
+                console.log("result:"+result);
+            }
+
+        });
+    }
+    function logout() {
+        $.ajax({
+            type: "POST",
+            url: "/admin/logout",
+            contentType: "application/json",
+            dataType: "json"
+        })
+    }
+
+    function reloadCode() {
+        var image = document.getElementById("codeImage");
+        image.src = "/home/code?date="+Date();
+    }
+    function visistUser() {
+        $.ajax({
+            type:"GET",
+            url:'/home',
+            contentType: 'application/json',
+            dataType:'json',
+//            data:JSON.stringify(json),
+            success:function (result) {
+                console.log("ceshi");
+                console.log("result:"+result);
+            }
+        })
+    }
+</script>
+
 </html>

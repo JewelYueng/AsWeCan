@@ -1,9 +1,11 @@
 package org.k2.processmining.model.user;
 
+import java.io.Serializable;
+
 /**
  * Created by Aria on 2017/6/9.
  */
-public class Administrator {
+public class Administrator implements Serializable{
     private String id;
     private String workId;
     private String password;

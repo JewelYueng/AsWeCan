@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.k2.processmining.mapper.NormalLogMapper">
+
+    <select id="getLogById" resultMap="normalLog">
+        SELECT * FROM normal_log WHERE id=#{id}
+    </select>
+
+
+
+    <select id="listLogGroups" resultMap="org.k2.processmining.mapper.RawLogMapper.logGroup">
+        SELECT
+        <include refid="org.k2.processmining.mapper.RawLogMapper.addUserColumnIfUserIdIsNull"/>
+        <include refid="org.k2.processmining.mapper.RawLogMapper.logGroupSelectColumns"/>
+        FROM
+            (SELECT * FROM normal_log WHERE
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
+                state=#{state}
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addKeyWordIfNotNull"/>
+            ) NL
+            LEFT JOIN
+            (SELECT * FROM event_log WHERE
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
+                normal_log_id IS NOT NULL AND
+                state=#{state}
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
+              ) EL ON EL.normal_log_id = NL.id
+              LEFT JOIN
+              (SELECT * FROM raw_log WHERE
+                  <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
+                  state=#{state}
+                  <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
+              ) RL ON NL.raw_log_id = RL.id
+            <if test="userId == null">
+                LEFT JOIN user ON NL.userid = user.id
+            </if>
+    </select>
+
+    <update id="updateLogState">
+        <include refid="org.k2.processmining.mapper.RawLogMapper.updateLogStateSQL">
+            <property name="table" value="normal_log"/>
+        </include>
+    </update>
+
+    <update id="updateIsShared">
+        <include refid="org.k2.processmining.mapper.RawLogMapper.updateIsSharedSQL">
+            <property name="table" value="normal_log"/>
+        </include>
+    </update>
+
+    <insert id="save" parameterType="NormalLog">
+        INSERT INTO normal_log(id,log_name,create_date,userid,format, isshared, state, raw_log_id)
+        VALUES(#{id}, #{logName}, #{createDate}, #{userId}, #{format}, #{isShared}, #{state}, #{rawLogId})
+    </insert>
+
+    <select id="listLogGroupsPage" resultMap="org.k2.processmining.mapper.RawLogMapper.logGroup">
+        SELECT
+        <include refid="org.k2.processmining.mapper.RawLogMapper.addUserColumnIfUserIdIsNull"/>
+        <include refid="org.k2.processmining.mapper.RawLogMapper.logGroupSelectColumns"/>
+        FROM
+            (SELECT * FROM normal_log WHERE
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
+                state=#{state}
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addKeyWordIfNotNull"/>
+
+            ) NL
+            LEFT JOIN
+            (SELECT * FROM event_log WHERE
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
+                normal_log_id IS NOT NULL AND
+                state=#{state}
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
+              ) EL ON EL.normal_log_id = NL.id
+              LEFT JOIN
+              (SELECT * FROM raw_log WHERE
+                  <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
+                  state=#{state}
+                  <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
+              ) RL ON NL.raw_log_id = RL.id
+            <if test="userId == null">
+                LEFT JOIN user ON NL.userid = user.id
+            </if>
+        ORDER BY NL.create_date DESC LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="countLogs" resultType="int">
+      SELECT
+        COUNT(*)
+      FROM normal_log
+      WHERE
+        <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
+        state=#{state}
+        <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
+        <include refid="org.k2.processmining.mapper.RawLogMapper.addKeyWordIfNotNull"/>
+
+    </select>
+
+    <select id="lineOfLogId" resultType="int">
+        <include refid="org.k2.processmining.mapper.RawLogMapper.lineOfLogIdSQL">
+            <property name="table" value="normal_log"/>
+        </include>
+    </select>
+
+    <resultMap id="normalLog" type="NormalLog">
+        <id column="id" property="id"/>
+        <result column="log_name" property="logName"/>
+        <result column="create_date" property="createDate"/>
+        <result column="format" property="format"/>
+        <result column="state" property="state"/>
+        <result column="userid" property="userId"/>
+        <result column="isshared" property="isShared"/>
+        <result column="raw_log_id" property="rawLogId"/>
+    </resultMap>
+
+</mapper>

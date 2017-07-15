@@ -11,8 +11,100 @@
                   #{mergeRelation}, #{caseNumber}, #{eventNumber}, #{perEventInCase}, #{eventNames}, #{operatorNames})
     </insert>
     
-    <select id="getEventLogById" resultMap="eventLog">
+    <select id="getLogById" resultMap="eventLog">
         SELECT * FROM event_log WHERE id=#{id}
+    </select>
+
+
+    <select id="listLogGroups" resultMap="org.k2.processmining.mapper.RawLogMapper.logGroup">
+        SELECT
+        <include refid="org.k2.processmining.mapper.RawLogMapper.addUserColumnIfUserIdIsNull"/>
+        <include refid="org.k2.processmining.mapper.RawLogMapper.logGroupSelectColumns"/>
+        FROM
+            (SELECT * FROM event_log WHERE
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
+                state=#{state}
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addKeyWordIfNotNull"/>
+            ) EL
+            LEFT JOIN
+            (SELECT * FROM normal_log <if test="userId != null">WHERE userid=#{userId}</if>
+              ) NL ON EL.normal_log_id = NL.id
+              LEFT JOIN
+              (SELECT * FROM raw_log WHERE 
+                  <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
+                  state=#{state} 
+                  <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
+              ) RL ON NL.raw_log_id = RL.id
+            <if test="userId == null">
+                LEFT JOIN user ON EL.userid = user.id
+            </if>
+    </select>
+
+    <update id="updateLogState">
+        <include refid="org.k2.processmining.mapper.RawLogMapper.updateLogStateSQL">
+            <property name="table" value="event_log"/>
+        </include>
+    </update>
+
+    <update id="updateIsShared">
+        <include refid="org.k2.processmining.mapper.RawLogMapper.updateIsSharedSQL">
+            <property name="table" value="event_log"/>
+        </include>
+    </update>
+
+    <select id="listLogGroupsPage" resultMap="org.k2.processmining.mapper.RawLogMapper.logGroup">
+        SELECT
+        <include refid="org.k2.processmining.mapper.RawLogMapper.addUserColumnIfUserIdIsNull"/>
+        <include refid="org.k2.processmining.mapper.RawLogMapper.logGroupSelectColumns"/>
+        FROM
+            (SELECT * FROM event_log WHERE
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
+                state=#{state}
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
+                <include refid="org.k2.processmining.mapper.RawLogMapper.addKeyWordIfNotNull"/>
+
+            ) EL
+            LEFT JOIN
+            (SELECT * FROM normal_log <if test="userId != null">WHERE userid=#{userId}</if>
+              ) NL ON EL.normal_log_id = NL.id
+              LEFT JOIN
+              (SELECT * FROM raw_log WHERE 
+                  <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
+                  state=#{state} 
+                  <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
+              ) RL ON NL.raw_log_id = RL.id
+            <if test="userId == null">
+                LEFT JOIN user ON EL.userid = user.id
+            </if>
+        ORDER BY EL.create_date DESC LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="countLogs" resultType="int">
+        SELECT
+          COUNT(*)
+        FROM event_log
+        WHERE
+          <include refid="org.k2.processmining.mapper.RawLogMapper.addUserIdIfNotNull"/>
+          state=#{state}
+          <include refid="org.k2.processmining.mapper.RawLogMapper.addIsSharedIfNotMinus1"/>
+          <include refid="org.k2.processmining.mapper.RawLogMapper.addKeyWordIfNotNull"/>
+    </select>
+
+    <select id="lineOfLogId" resultType="int">
+        <include refid="org.k2.processmining.mapper.RawLogMapper.lineOfLogIdSQL">
+            <property name="table" value="event_log"/>
+        </include>
+    </select>
+
+    <select id="listEventLogByIds" resultMap="eventLog">
+        SELECT *
+        FROM event_log
+        WHERE id in
+        <foreach item="item" index="index" collection="ids"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </select>
 
     <resultMap id="eventLog" type="EventLog">

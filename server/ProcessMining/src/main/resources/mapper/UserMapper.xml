@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.k2.processmining.mapper.UserMapper">
+
+    <update id="updateStateByUserId">
+        UPDATE user SET state = #{state}
+        WHERE
+        id IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="updateStateByEmail">
+        UPDATE user SET state = #{state}
+        WHERE
+        email IN
+        <foreach collection="emailList" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <insert id="save">
+        INSERT INTO user(id,username,password,email,state,registerdate,activatecode)
+        VALUE (#{id},#{name},#{password},#{email},#{state},#{registerDate},#{activateCode})
+    </insert>
+
+    <select id="listAllUsers" resultMap="user">
+        SELECT * FROM user
+    </select>
+
+    <select id="getUserByUserId" resultMap="user">
+        SELECT * FROM user WHERE id = #{id}
+    </select>
+
+    <select id="getUserByEmailAndPwd" resultMap="user">
+        SELECT * FROM user WHERE email = #{email} <if test="password != null"> AND password = #{password}</if>
+    </select>
+
+    <update id="updatePwdById" >
+        UPDATE user SET password = #{password} WHERE id = #{id}
+    </update>
+
+    <update id="updateUserByUserEmail">
+        UPDATE user SET username = #{name},password = #{password},state = #{state},registerdate = #{registerDate}
+        ,activatecode = #{activateCode}
+        WHERE email = #{email}
+    </update>
+
+    <update id="deleteLogsByUserId">
+        UPDATE raw_log SET state = 2 WHERE userid IN
+        <foreach collection="idList" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="deleteRawLogsByUserId">
+        UPDATE raw_log SET state = 2 WHERE userid IN
+        <foreach collection="idList" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="deleteNormalLogsByUserId">
+        UPDATE normal_log SET state = 2 WHERE userid IN
+        <foreach collection="idList" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="deleteEventLogsByUserId">
+        UPDATE event_log SET state = 2 WHERE userid IN
+        <foreach collection="idList" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="updateRegisterDateByEmail">
+        UPDATE user SET registerdate = #{date} WHERE email = #{email}
+    </update>
+
+    <resultMap id="user" type="User">
+        <id column="id" property="id"/>
+        <result column="username" property="name"/>
+        <result column="password" property="password"/>
+        <result column="email" property="email"/>
+        <result column="state" property="state"/>
+        <result column="registerdate" property="registerDate"/>
+        <result column="activatecode" property="activateCode"/>
+    </resultMap>
+
+</mapper>

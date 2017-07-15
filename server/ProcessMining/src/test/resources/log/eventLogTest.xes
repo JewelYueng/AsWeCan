@@ -1,0 +1,3543 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file has been generated with the OpenXES library. It conforms -->
+<!-- to the XML serialization of the XES standard for log storage and -->
+<!-- management. -->
+<!-- XES standard version: 1.0 -->
+<!-- OpenXES library version: 1.0RC7 -->
+<!-- OpenXES is available from http://www.openxes.org/ -->
+<log xes.version="1.0" xes.features="nested-attributes" openxes.version="1.0RC7" xmlns="http://www.xes-standard.org/">
+	<extension name="Organizational" prefix="org" uri="http://www.xes-standard.org/org.xesext"/>
+	<extension name="Time" prefix="time" uri="http://www.xes-standard.org/time.xesext"/>
+	<extension name="Lifecycle" prefix="lifecycle" uri="http://www.xes-standard.org/lifecycle.xesext"/>
+	<extension name="Semantic" prefix="semantic" uri="http://www.xes-standard.org/semantic.xesext"/>
+	<extension name="Concept" prefix="concept" uri="http://www.xes-standard.org/concept.xesext"/>
+	<global scope="trace">
+		<string key="concept:name" value="__INVALID__"/>
+	</global>
+	<global scope="event">
+		<string key="concept:name" value="__INVALID__"/>
+		<string key="lifecycle:transition" value="complete"/>
+	</global>
+	<classifier name="MXML Legacy Classifier" keys="concept:name lifecycle:transition"/>
+	<classifier name="Event Name" keys="concept:name"/>
+	<classifier name="Resource" keys="org:resource"/>
+	<string key="source" value="Rapid Synthesizer"/>
+	<string key="concept:name" value="test.mxml"/>
+	<string key="lifecycle:model" value="standard"/>
+	<trace>
+		<string key="concept:name" value="case-1"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-02T11:00:32+08:00"/>
+			<string key="org:resource" value="plan-100"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-02T11:06:26+08:00"/>
+			<string key="org:resource" value="plan-100"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-02T11:09:32+08:00"/>
+			<string key="org:resource" value="plan-100"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-03-02T11:12:32+08:00"/>
+			<string key="org:resource" value="plan-100"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-03-02T11:15:48+08:00"/>
+			<string key="org:resource" value="plan-100"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-03-02T11:21:44+08:00"/>
+			<string key="org:resource" value="plan-100"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-2"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-27T11:56:51+08:00"/>
+			<string key="org:resource" value="plan-39"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-27T12:02:20+08:00"/>
+			<string key="org:resource" value="plan-39"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskHangOn"/>
+			<date key="time:timestamp" value="2016-02-27T12:06:55+08:00"/>
+			<string key="org:resource" value="plan-39"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-27T12:12:28+08:00"/>
+			<string key="org:resource" value="plan-39"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-27T12:19:14+08:00"/>
+			<string key="org:resource" value="plan-39"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-27T12:21:52+08:00"/>
+			<string key="org:resource" value="plan-39"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-27T12:24:39+08:00"/>
+			<string key="org:resource" value="plan-39"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-27T12:29:09+08:00"/>
+			<string key="org:resource" value="plan-39"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-3"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-27T08:47:24+08:00"/>
+			<string key="org:resource" value="plan-37"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-27T09:04:03+08:00"/>
+			<string key="org:resource" value="plan-37"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-27T09:06:54+08:00"/>
+			<string key="org:resource" value="plan-37"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskDispatch"/>
+			<date key="time:timestamp" value="2016-02-27T09:12:53+08:00"/>
+			<string key="org:resource" value="plan-37"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-27T09:17:57+08:00"/>
+			<string key="org:resource" value="plan-37"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-4"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-27T10:13:04+08:00"/>
+			<string key="org:resource" value="plan-38"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-27T10:32:19+08:00"/>
+			<string key="org:resource" value="plan-38"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-27T10:35:02+08:00"/>
+			<string key="org:resource" value="plan-38"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-27T10:39:45+08:00"/>
+			<string key="org:resource" value="plan-38"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-27T10:51:31+08:00"/>
+			<string key="org:resource" value="plan-38"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-27T10:56:42+08:00"/>
+			<string key="org:resource" value="plan-38"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-5"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-27T05:13:35+08:00"/>
+			<string key="org:resource" value="plan-35"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-27T05:20:22+08:00"/>
+			<string key="org:resource" value="plan-35"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-27T05:22:10+08:00"/>
+			<string key="org:resource" value="plan-35"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-27T05:30:14+08:00"/>
+			<string key="org:resource" value="plan-35"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-27T05:36:24+08:00"/>
+			<string key="org:resource" value="plan-35"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-27T05:43:29+08:00"/>
+			<string key="org:resource" value="plan-35"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-6"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-27T06:40:15+08:00"/>
+			<string key="org:resource" value="plan-36"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-27T06:49:21+08:00"/>
+			<string key="org:resource" value="plan-36"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskHangOn"/>
+			<date key="time:timestamp" value="2016-02-27T06:55:34+08:00"/>
+			<string key="org:resource" value="plan-36"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-27T07:05:05+08:00"/>
+			<string key="org:resource" value="plan-36"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-27T07:12:13+08:00"/>
+			<string key="org:resource" value="plan-36"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-27T07:19:50+08:00"/>
+			<string key="org:resource" value="plan-36"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-27T07:30:05+08:00"/>
+			<string key="org:resource" value="plan-36"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-27T07:37:25+08:00"/>
+			<string key="org:resource" value="plan-36"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-7"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-27T01:57:51+08:00"/>
+			<string key="org:resource" value="plan-33"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-27T02:11:36+08:00"/>
+			<string key="org:resource" value="plan-33"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-27T02:18:48+08:00"/>
+			<string key="org:resource" value="plan-33"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskCancel"/>
+			<date key="time:timestamp" value="2016-02-27T02:24:55+08:00"/>
+			<string key="org:resource" value="plan-33"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-27T02:34:16+08:00"/>
+			<string key="org:resource" value="plan-33"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-8"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-27T03:33:39+08:00"/>
+			<string key="org:resource" value="plan-34"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-27T03:45:40+08:00"/>
+			<string key="org:resource" value="plan-34"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-27T03:51:10+08:00"/>
+			<string key="org:resource" value="plan-34"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-27T03:57:27+08:00"/>
+			<string key="org:resource" value="plan-34"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-27T04:03:21+08:00"/>
+			<string key="org:resource" value="plan-34"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-27T04:11:06+08:00"/>
+			<string key="org:resource" value="plan-34"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-9"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-26T22:34:18+08:00"/>
+			<string key="org:resource" value="plan-31"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-26T22:47:25+08:00"/>
+			<string key="org:resource" value="plan-31"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-26T22:51:52+08:00"/>
+			<string key="org:resource" value="plan-31"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-26T22:56:35+08:00"/>
+			<string key="org:resource" value="plan-31"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-26T23:04:21+08:00"/>
+			<string key="org:resource" value="plan-31"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-26T23:11:30+08:00"/>
+			<string key="org:resource" value="plan-31"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-10"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-27T00:11:17+08:00"/>
+			<string key="org:resource" value="plan-32"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-27T00:26:39+08:00"/>
+			<string key="org:resource" value="plan-32"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-27T00:33:59+08:00"/>
+			<string key="org:resource" value="plan-32"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-27T00:41:05+08:00"/>
+			<string key="org:resource" value="plan-32"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-27T00:46:12+08:00"/>
+			<string key="org:resource" value="plan-32"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-27T00:51:47+08:00"/>
+			<string key="org:resource" value="plan-32"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-11"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-26T21:36:09+08:00"/>
+			<string key="org:resource" value="plan-30"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-12"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-28T02:25:33+08:00"/>
+			<string key="org:resource" value="plan-48"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-28T02:32:14+08:00"/>
+			<string key="org:resource" value="plan-48"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-28T02:35:41+08:00"/>
+			<string key="org:resource" value="plan-48"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskCancel"/>
+			<date key="time:timestamp" value="2016-02-28T02:45:11+08:00"/>
+			<string key="org:resource" value="plan-48"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-28T02:52:28+08:00"/>
+			<string key="org:resource" value="plan-48"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-13"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-28T04:10:04+08:00"/>
+			<string key="org:resource" value="plan-49"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-28T04:23:28+08:00"/>
+			<string key="org:resource" value="plan-49"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskHangOn"/>
+			<date key="time:timestamp" value="2016-02-28T04:25:36+08:00"/>
+			<string key="org:resource" value="plan-49"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-28T04:32:56+08:00"/>
+			<string key="org:resource" value="plan-49"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-28T04:37:36+08:00"/>
+			<string key="org:resource" value="plan-49"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskDispatch"/>
+			<date key="time:timestamp" value="2016-02-28T04:46:03+08:00"/>
+			<string key="org:resource" value="plan-49"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-28T04:54:54+08:00"/>
+			<string key="org:resource" value="plan-49"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-14"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-27T23:35:38+08:00"/>
+			<string key="org:resource" value="plan-46"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-27T23:44:46+08:00"/>
+			<string key="org:resource" value="plan-46"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-27T23:53:48+08:00"/>
+			<string key="org:resource" value="plan-46"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-27T23:59:28+08:00"/>
+			<string key="org:resource" value="plan-46"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-28T00:02:39+08:00"/>
+			<string key="org:resource" value="plan-46"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-28T00:08:38+08:00"/>
+			<string key="org:resource" value="plan-46"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-15"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-28T01:19:40+08:00"/>
+			<string key="org:resource" value="plan-47"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-28T01:30:54+08:00"/>
+			<string key="org:resource" value="plan-47"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-28T01:35:55+08:00"/>
+			<string key="org:resource" value="plan-47"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskDispatch"/>
+			<date key="time:timestamp" value="2016-02-28T01:40:15+08:00"/>
+			<string key="org:resource" value="plan-47"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-28T01:44:10+08:00"/>
+			<string key="org:resource" value="plan-47"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-16"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-27T20:29:46+08:00"/>
+			<string key="org:resource" value="plan-44"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-27T20:40:46+08:00"/>
+			<string key="org:resource" value="plan-44"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-27T20:43:48+08:00"/>
+			<string key="org:resource" value="plan-44"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-27T20:48:16+08:00"/>
+			<string key="org:resource" value="plan-44"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-27T20:56:07+08:00"/>
+			<string key="org:resource" value="plan-44"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-27T21:05:32+08:00"/>
+			<string key="org:resource" value="plan-44"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-17"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-27T21:56:27+08:00"/>
+			<string key="org:resource" value="plan-45"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-27T22:09:30+08:00"/>
+			<string key="org:resource" value="plan-45"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-27T22:16:40+08:00"/>
+			<string key="org:resource" value="plan-45"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-27T22:21:54+08:00"/>
+			<string key="org:resource" value="plan-45"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-27T22:28:17+08:00"/>
+			<string key="org:resource" value="plan-45"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-27T22:34:50+08:00"/>
+			<string key="org:resource" value="plan-45"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-18"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-27T17:18:37+08:00"/>
+			<string key="org:resource" value="plan-42"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-27T17:34:21+08:00"/>
+			<string key="org:resource" value="plan-42"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-27T17:46:38+08:00"/>
+			<string key="org:resource" value="plan-42"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskDispatch"/>
+			<date key="time:timestamp" value="2016-02-27T17:50:55+08:00"/>
+			<string key="org:resource" value="plan-42"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-27T17:59:08+08:00"/>
+			<string key="org:resource" value="plan-42"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-19"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-27T18:55:41+08:00"/>
+			<string key="org:resource" value="plan-43"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-27T19:07:10+08:00"/>
+			<string key="org:resource" value="plan-43"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-27T19:12:45+08:00"/>
+			<string key="org:resource" value="plan-43"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-27T19:19:20+08:00"/>
+			<string key="org:resource" value="plan-43"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-27T19:21:14+08:00"/>
+			<string key="org:resource" value="plan-43"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-27T19:24:04+08:00"/>
+			<string key="org:resource" value="plan-43"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-20"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-27T13:45:08+08:00"/>
+			<string key="org:resource" value="plan-40"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-27T13:49:49+08:00"/>
+			<string key="org:resource" value="plan-40"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-27T13:55:56+08:00"/>
+			<string key="org:resource" value="plan-40"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-27T14:05:04+08:00"/>
+			<string key="org:resource" value="plan-40"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-27T14:09:18+08:00"/>
+			<string key="org:resource" value="plan-40"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-27T14:13:55+08:00"/>
+			<string key="org:resource" value="plan-40"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-21"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-27T15:27:22+08:00"/>
+			<string key="org:resource" value="plan-41"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-27T15:43:09+08:00"/>
+			<string key="org:resource" value="plan-41"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskHangOn"/>
+			<date key="time:timestamp" value="2016-02-27T15:47:39+08:00"/>
+			<string key="org:resource" value="plan-41"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-27T15:56:35+08:00"/>
+			<string key="org:resource" value="plan-41"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-27T16:03:38+08:00"/>
+			<string key="org:resource" value="plan-41"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-27T16:08:33+08:00"/>
+			<string key="org:resource" value="plan-41"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-27T16:13:48+08:00"/>
+			<string key="org:resource" value="plan-41"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-27T16:18:40+08:00"/>
+			<string key="org:resource" value="plan-41"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-22"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-28T06:04:31+08:00"/>
+			<string key="org:resource" value="plan-50"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-28T06:11:38+08:00"/>
+			<string key="org:resource" value="plan-50"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-28T06:19:58+08:00"/>
+			<string key="org:resource" value="plan-50"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-28T06:30:50+08:00"/>
+			<string key="org:resource" value="plan-50"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-28T06:33:18+08:00"/>
+			<string key="org:resource" value="plan-50"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-28T06:42:04+08:00"/>
+			<string key="org:resource" value="plan-50"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-23"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-28T19:34:48+08:00"/>
+			<string key="org:resource" value="plan-59"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-28T19:44:51+08:00"/>
+			<string key="org:resource" value="plan-59"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskHangOn"/>
+			<date key="time:timestamp" value="2016-02-28T19:48:23+08:00"/>
+			<string key="org:resource" value="plan-59"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-28T19:53:49+08:00"/>
+			<string key="org:resource" value="plan-59"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-28T20:03:22+08:00"/>
+			<string key="org:resource" value="plan-59"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-28T20:07:52+08:00"/>
+			<string key="org:resource" value="plan-59"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-28T20:12:56+08:00"/>
+			<string key="org:resource" value="plan-59"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-28T20:17:43+08:00"/>
+			<string key="org:resource" value="plan-59"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-24"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-28T16:58:04+08:00"/>
+			<string key="org:resource" value="plan-57"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-28T17:12:56+08:00"/>
+			<string key="org:resource" value="plan-57"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-28T17:16:30+08:00"/>
+			<string key="org:resource" value="plan-57"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskCancel"/>
+			<date key="time:timestamp" value="2016-02-28T17:19:28+08:00"/>
+			<string key="org:resource" value="plan-57"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-28T17:25:18+08:00"/>
+			<string key="org:resource" value="plan-57"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-25"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-28T18:30:54+08:00"/>
+			<string key="org:resource" value="plan-58"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-26"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-28T13:44:50+08:00"/>
+			<string key="org:resource" value="plan-55"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-28T14:01:18+08:00"/>
+			<string key="org:resource" value="plan-55"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-28T14:12:46+08:00"/>
+			<string key="org:resource" value="plan-55"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskCancel"/>
+			<date key="time:timestamp" value="2016-02-28T14:16:48+08:00"/>
+			<string key="org:resource" value="plan-55"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-28T14:26:46+08:00"/>
+			<string key="org:resource" value="plan-55"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-27"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-28T15:36:29+08:00"/>
+			<string key="org:resource" value="plan-56"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-28T15:46:19+08:00"/>
+			<string key="org:resource" value="plan-56"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-28T15:50:17+08:00"/>
+			<string key="org:resource" value="plan-56"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskCancel"/>
+			<date key="time:timestamp" value="2016-02-28T15:53:38+08:00"/>
+			<string key="org:resource" value="plan-56"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-28T15:57:19+08:00"/>
+			<string key="org:resource" value="plan-56"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-28"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-28T10:42:24+08:00"/>
+			<string key="org:resource" value="plan-53"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-28T10:55:59+08:00"/>
+			<string key="org:resource" value="plan-53"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-28T10:58:10+08:00"/>
+			<string key="org:resource" value="plan-53"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-28T11:08:01+08:00"/>
+			<string key="org:resource" value="plan-53"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-28T11:11:20+08:00"/>
+			<string key="org:resource" value="plan-53"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-28T11:17:34+08:00"/>
+			<string key="org:resource" value="plan-53"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-29"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-28T12:14:11+08:00"/>
+			<string key="org:resource" value="plan-54"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-28T12:26:34+08:00"/>
+			<string key="org:resource" value="plan-54"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskHangOn"/>
+			<date key="time:timestamp" value="2016-02-28T12:29:47+08:00"/>
+			<string key="org:resource" value="plan-54"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-28T12:33:49+08:00"/>
+			<string key="org:resource" value="plan-54"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-28T12:37:42+08:00"/>
+			<string key="org:resource" value="plan-54"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-28T12:40:49+08:00"/>
+			<string key="org:resource" value="plan-54"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-28T12:51:49+08:00"/>
+			<string key="org:resource" value="plan-54"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-28T12:55:02+08:00"/>
+			<string key="org:resource" value="plan-54"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-30"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-28T07:47:18+08:00"/>
+			<string key="org:resource" value="plan-51"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-28T08:03:15+08:00"/>
+			<string key="org:resource" value="plan-51"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-28T08:11:29+08:00"/>
+			<string key="org:resource" value="plan-51"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-28T08:18:54+08:00"/>
+			<string key="org:resource" value="plan-51"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-28T08:24:18+08:00"/>
+			<string key="org:resource" value="plan-51"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-28T08:32:42+08:00"/>
+			<string key="org:resource" value="plan-51"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-31"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-28T09:30:13+08:00"/>
+			<string key="org:resource" value="plan-52"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-32"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-28T21:29:34+08:00"/>
+			<string key="org:resource" value="plan-60"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-28T21:36:59+08:00"/>
+			<string key="org:resource" value="plan-60"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-28T21:41:18+08:00"/>
+			<string key="org:resource" value="plan-60"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-28T21:45:33+08:00"/>
+			<string key="org:resource" value="plan-60"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-28T21:53:39+08:00"/>
+			<string key="org:resource" value="plan-60"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-28T22:03:44+08:00"/>
+			<string key="org:resource" value="plan-60"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-33"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-28T23:07:17+08:00"/>
+			<string key="org:resource" value="plan-61"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-28T23:22:29+08:00"/>
+			<string key="org:resource" value="plan-61"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-28T23:27:41+08:00"/>
+			<string key="org:resource" value="plan-61"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskDispatch"/>
+			<date key="time:timestamp" value="2016-02-28T23:31:28+08:00"/>
+			<string key="org:resource" value="plan-61"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-28T23:38:14+08:00"/>
+			<string key="org:resource" value="plan-61"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-34"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-29T10:05:09+08:00"/>
+			<string key="org:resource" value="plan-68"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-29T10:16:04+08:00"/>
+			<string key="org:resource" value="plan-68"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-29T10:22:14+08:00"/>
+			<string key="org:resource" value="plan-68"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-29T10:28:54+08:00"/>
+			<string key="org:resource" value="plan-68"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-29T10:37:40+08:00"/>
+			<string key="org:resource" value="plan-68"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-29T10:44:07+08:00"/>
+			<string key="org:resource" value="plan-68"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-35"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-29T11:40:42+08:00"/>
+			<string key="org:resource" value="plan-69"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-29T11:59:14+08:00"/>
+			<string key="org:resource" value="plan-69"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-29T12:04:13+08:00"/>
+			<string key="org:resource" value="plan-69"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskDispatch"/>
+			<date key="time:timestamp" value="2016-02-29T12:09:55+08:00"/>
+			<string key="org:resource" value="plan-69"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-29T12:16:50+08:00"/>
+			<string key="org:resource" value="plan-69"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-36"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-29T06:45:29+08:00"/>
+			<string key="org:resource" value="plan-66"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-29T06:55:35+08:00"/>
+			<string key="org:resource" value="plan-66"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-29T07:01:43+08:00"/>
+			<string key="org:resource" value="plan-66"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-29T07:06:16+08:00"/>
+			<string key="org:resource" value="plan-66"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-29T07:08:34+08:00"/>
+			<string key="org:resource" value="plan-66"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-29T07:12:52+08:00"/>
+			<string key="org:resource" value="plan-66"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-37"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-29T08:27:07+08:00"/>
+			<string key="org:resource" value="plan-67"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-29T08:40:01+08:00"/>
+			<string key="org:resource" value="plan-67"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-29T08:48:34+08:00"/>
+			<string key="org:resource" value="plan-67"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-29T08:54:32+08:00"/>
+			<string key="org:resource" value="plan-67"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-29T08:57:12+08:00"/>
+			<string key="org:resource" value="plan-67"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-29T09:02:56+08:00"/>
+			<string key="org:resource" value="plan-67"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-38"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-29T03:34:20+08:00"/>
+			<string key="org:resource" value="plan-64"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-29T03:44:12+08:00"/>
+			<string key="org:resource" value="plan-64"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-29T03:49:56+08:00"/>
+			<string key="org:resource" value="plan-64"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-29T03:57:05+08:00"/>
+			<string key="org:resource" value="plan-64"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-29T03:58:35+08:00"/>
+			<string key="org:resource" value="plan-64"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-29T04:03:58+08:00"/>
+			<string key="org:resource" value="plan-64"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-39"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-29T04:58:11+08:00"/>
+			<string key="org:resource" value="plan-65"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-29T05:14:00+08:00"/>
+			<string key="org:resource" value="plan-65"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskHangOn"/>
+			<date key="time:timestamp" value="2016-02-29T05:19:09+08:00"/>
+			<string key="org:resource" value="plan-65"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-29T05:21:44+08:00"/>
+			<string key="org:resource" value="plan-65"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-29T05:31:27+08:00"/>
+			<string key="org:resource" value="plan-65"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-29T05:36:00+08:00"/>
+			<string key="org:resource" value="plan-65"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-29T05:38:39+08:00"/>
+			<string key="org:resource" value="plan-65"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-29T05:47:09+08:00"/>
+			<string key="org:resource" value="plan-65"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-40"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-29T00:43:24+08:00"/>
+			<string key="org:resource" value="plan-62"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-41"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-29T01:54:01+08:00"/>
+			<string key="org:resource" value="plan-63"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-29T02:09:33+08:00"/>
+			<string key="org:resource" value="plan-63"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-29T02:15:03+08:00"/>
+			<string key="org:resource" value="plan-63"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskDispatch"/>
+			<date key="time:timestamp" value="2016-02-29T02:23:43+08:00"/>
+			<string key="org:resource" value="plan-63"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-29T02:31:31+08:00"/>
+			<string key="org:resource" value="plan-63"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-42"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-29T14:55:10+08:00"/>
+			<string key="org:resource" value="plan-71"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-29T15:02:16+08:00"/>
+			<string key="org:resource" value="plan-71"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-29T15:04:50+08:00"/>
+			<string key="org:resource" value="plan-71"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-29T15:12:39+08:00"/>
+			<string key="org:resource" value="plan-71"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-29T15:18:40+08:00"/>
+			<string key="org:resource" value="plan-71"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-29T15:21:54+08:00"/>
+			<string key="org:resource" value="plan-71"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-43"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-29T16:34:37+08:00"/>
+			<string key="org:resource" value="plan-72"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-29T16:44:46+08:00"/>
+			<string key="org:resource" value="plan-72"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-29T16:49:54+08:00"/>
+			<string key="org:resource" value="plan-72"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-29T16:51:45+08:00"/>
+			<string key="org:resource" value="plan-72"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-29T16:57:28+08:00"/>
+			<string key="org:resource" value="plan-72"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-29T17:05:30+08:00"/>
+			<string key="org:resource" value="plan-72"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-44"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-29T13:21:07+08:00"/>
+			<string key="org:resource" value="plan-70"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-29T13:29:44+08:00"/>
+			<string key="org:resource" value="plan-70"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-29T13:35:06+08:00"/>
+			<string key="org:resource" value="plan-70"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-29T13:44:04+08:00"/>
+			<string key="org:resource" value="plan-70"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-29T13:47:21+08:00"/>
+			<string key="org:resource" value="plan-70"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-29T13:57:57+08:00"/>
+			<string key="org:resource" value="plan-70"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-45"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-01T03:35:09+08:00"/>
+			<string key="org:resource" value="plan-79"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-01T03:53:28+08:00"/>
+			<string key="org:resource" value="plan-79"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-01T03:56:42+08:00"/>
+			<string key="org:resource" value="plan-79"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskDispatch"/>
+			<date key="time:timestamp" value="2016-03-01T04:00:01+08:00"/>
+			<string key="org:resource" value="plan-79"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-01T04:02:42+08:00"/>
+			<string key="org:resource" value="plan-79"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-46"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-01T00:11:45+08:00"/>
+			<string key="org:resource" value="plan-77"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-01T00:19:02+08:00"/>
+			<string key="org:resource" value="plan-77"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-01T00:27:30+08:00"/>
+			<string key="org:resource" value="plan-77"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-03-01T00:35:12+08:00"/>
+			<string key="org:resource" value="plan-77"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-03-01T00:43:01+08:00"/>
+			<string key="org:resource" value="plan-77"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-03-01T00:48:39+08:00"/>
+			<string key="org:resource" value="plan-77"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-47"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-01T02:06:16+08:00"/>
+			<string key="org:resource" value="plan-78"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-01T02:20:37+08:00"/>
+			<string key="org:resource" value="plan-78"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-01T02:28:39+08:00"/>
+			<string key="org:resource" value="plan-78"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskCancel"/>
+			<date key="time:timestamp" value="2016-03-01T02:33:53+08:00"/>
+			<string key="org:resource" value="plan-78"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-03-01T02:40:10+08:00"/>
+			<string key="org:resource" value="plan-78"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-48"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-29T21:21:27+08:00"/>
+			<string key="org:resource" value="plan-75"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-29T21:31:29+08:00"/>
+			<string key="org:resource" value="plan-75"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-29T21:35:48+08:00"/>
+			<string key="org:resource" value="plan-75"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskDispatch"/>
+			<date key="time:timestamp" value="2016-02-29T21:37:55+08:00"/>
+			<string key="org:resource" value="plan-75"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-29T21:46:00+08:00"/>
+			<string key="org:resource" value="plan-75"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-49"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-29T22:39:38+08:00"/>
+			<string key="org:resource" value="plan-76"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-29T22:50:33+08:00"/>
+			<string key="org:resource" value="plan-76"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskHangOn"/>
+			<date key="time:timestamp" value="2016-02-29T22:58:42+08:00"/>
+			<string key="org:resource" value="plan-76"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-29T23:07:24+08:00"/>
+			<string key="org:resource" value="plan-76"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-29T23:10:20+08:00"/>
+			<string key="org:resource" value="plan-76"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskDispatch"/>
+			<date key="time:timestamp" value="2016-02-29T23:16:27+08:00"/>
+			<string key="org:resource" value="plan-76"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-29T23:24:04+08:00"/>
+			<string key="org:resource" value="plan-76"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-50"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-29T18:04:00+08:00"/>
+			<string key="org:resource" value="plan-73"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-29T18:16:52+08:00"/>
+			<string key="org:resource" value="plan-73"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-29T18:19:57+08:00"/>
+			<string key="org:resource" value="plan-73"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-29T18:24:49+08:00"/>
+			<string key="org:resource" value="plan-73"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-29T18:28:58+08:00"/>
+			<string key="org:resource" value="plan-73"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-29T18:35:51+08:00"/>
+			<string key="org:resource" value="plan-73"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-51"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-29T19:39:29+08:00"/>
+			<string key="org:resource" value="plan-74"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-29T19:48:26+08:00"/>
+			<string key="org:resource" value="plan-74"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-29T19:52:39+08:00"/>
+			<string key="org:resource" value="plan-74"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-29T20:01:54+08:00"/>
+			<string key="org:resource" value="plan-74"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-29T20:03:10+08:00"/>
+			<string key="org:resource" value="plan-74"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-29T20:10:15+08:00"/>
+			<string key="org:resource" value="plan-74"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-52"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-01T07:34:59+08:00"/>
+			<string key="org:resource" value="plan-82"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-01T07:47:50+08:00"/>
+			<string key="org:resource" value="plan-82"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskHangOn"/>
+			<date key="time:timestamp" value="2016-03-01T07:54:57+08:00"/>
+			<string key="org:resource" value="plan-82"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-01T07:59:44+08:00"/>
+			<string key="org:resource" value="plan-82"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-01T08:07:26+08:00"/>
+			<string key="org:resource" value="plan-82"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskDispatch"/>
+			<date key="time:timestamp" value="2016-03-01T08:11:54+08:00"/>
+			<string key="org:resource" value="plan-82"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-01T08:16:44+08:00"/>
+			<string key="org:resource" value="plan-82"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-53"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-01T09:16:54+08:00"/>
+			<string key="org:resource" value="plan-83"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-54"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-01T04:57:45+08:00"/>
+			<string key="org:resource" value="plan-80"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-01T05:13:16+08:00"/>
+			<string key="org:resource" value="plan-80"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-01T05:17:47+08:00"/>
+			<string key="org:resource" value="plan-80"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-03-01T05:25:44+08:00"/>
+			<string key="org:resource" value="plan-80"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-03-01T05:33:40+08:00"/>
+			<string key="org:resource" value="plan-80"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-03-01T05:36:49+08:00"/>
+			<string key="org:resource" value="plan-80"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-55"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-01T06:32:31+08:00"/>
+			<string key="org:resource" value="plan-81"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-56"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-25T13:04:36+08:00"/>
+			<string key="org:resource" value="plan-8"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-25T13:17:45+08:00"/>
+			<string key="org:resource" value="plan-8"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-25T13:24:27+08:00"/>
+			<string key="org:resource" value="plan-8"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-25T13:28:20+08:00"/>
+			<string key="org:resource" value="plan-8"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-25T13:39:17+08:00"/>
+			<string key="org:resource" value="plan-8"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-25T13:46:21+08:00"/>
+			<string key="org:resource" value="plan-8"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-57"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-01T17:05:05+08:00"/>
+			<string key="org:resource" value="plan-88"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-01T17:17:45+08:00"/>
+			<string key="org:resource" value="plan-88"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-01T17:25:24+08:00"/>
+			<string key="org:resource" value="plan-88"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-03-01T17:30:37+08:00"/>
+			<string key="org:resource" value="plan-88"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-03-01T17:35:28+08:00"/>
+			<string key="org:resource" value="plan-88"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-03-01T17:40:52+08:00"/>
+			<string key="org:resource" value="plan-88"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-58"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-25T14:54:14+08:00"/>
+			<string key="org:resource" value="plan-9"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-59"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-01T18:37:16+08:00"/>
+			<string key="org:resource" value="plan-89"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-60"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-25T09:33:21+08:00"/>
+			<string key="org:resource" value="plan-6"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-25T09:45:00+08:00"/>
+			<string key="org:resource" value="plan-6"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskHangOn"/>
+			<date key="time:timestamp" value="2016-02-25T09:51:23+08:00"/>
+			<string key="org:resource" value="plan-6"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-25T09:58:26+08:00"/>
+			<string key="org:resource" value="plan-6"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-25T10:10:41+08:00"/>
+			<string key="org:resource" value="plan-6"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-25T10:12:50+08:00"/>
+			<string key="org:resource" value="plan-6"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-25T10:21:42+08:00"/>
+			<string key="org:resource" value="plan-6"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-25T10:30:39+08:00"/>
+			<string key="org:resource" value="plan-6"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-61"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-01T13:51:26+08:00"/>
+			<string key="org:resource" value="plan-86"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-01T14:05:21+08:00"/>
+			<string key="org:resource" value="plan-86"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-01T14:10:09+08:00"/>
+			<string key="org:resource" value="plan-86"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-03-01T14:15:41+08:00"/>
+			<string key="org:resource" value="plan-86"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-03-01T14:24:03+08:00"/>
+			<string key="org:resource" value="plan-86"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-03-01T14:27:43+08:00"/>
+			<string key="org:resource" value="plan-86"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-62"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-25T11:19:50+08:00"/>
+			<string key="org:resource" value="plan-7"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-25T11:26:08+08:00"/>
+			<string key="org:resource" value="plan-7"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskHangOn"/>
+			<date key="time:timestamp" value="2016-02-25T11:34:43+08:00"/>
+			<string key="org:resource" value="plan-7"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-25T11:38:39+08:00"/>
+			<string key="org:resource" value="plan-7"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-25T11:42:15+08:00"/>
+			<string key="org:resource" value="plan-7"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-25T11:46:46+08:00"/>
+			<string key="org:resource" value="plan-7"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-25T11:55:04+08:00"/>
+			<string key="org:resource" value="plan-7"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-25T12:00:52+08:00"/>
+			<string key="org:resource" value="plan-7"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-63"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-01T15:31:37+08:00"/>
+			<string key="org:resource" value="plan-87"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-01T15:41:48+08:00"/>
+			<string key="org:resource" value="plan-87"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-01T15:47:51+08:00"/>
+			<string key="org:resource" value="plan-87"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-03-01T15:55:21+08:00"/>
+			<string key="org:resource" value="plan-87"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-03-01T15:59:27+08:00"/>
+			<string key="org:resource" value="plan-87"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-03-01T16:08:50+08:00"/>
+			<string key="org:resource" value="plan-87"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-64"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-25T06:05:35+08:00"/>
+			<string key="org:resource" value="plan-4"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-25T06:11:44+08:00"/>
+			<string key="org:resource" value="plan-4"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-25T06:17:57+08:00"/>
+			<string key="org:resource" value="plan-4"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-25T06:27:11+08:00"/>
+			<string key="org:resource" value="plan-4"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-25T06:31:13+08:00"/>
+			<string key="org:resource" value="plan-4"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-25T06:39:33+08:00"/>
+			<string key="org:resource" value="plan-4"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-65"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-01T10:27:50+08:00"/>
+			<string key="org:resource" value="plan-84"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-01T10:33:20+08:00"/>
+			<string key="org:resource" value="plan-84"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-01T10:39:36+08:00"/>
+			<string key="org:resource" value="plan-84"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-03-01T10:44:42+08:00"/>
+			<string key="org:resource" value="plan-84"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-03-01T10:50:43+08:00"/>
+			<string key="org:resource" value="plan-84"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-03-01T10:55:01+08:00"/>
+			<string key="org:resource" value="plan-84"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-66"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-25T07:49:18+08:00"/>
+			<string key="org:resource" value="plan-5"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-25T07:58:50+08:00"/>
+			<string key="org:resource" value="plan-5"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskHangOn"/>
+			<date key="time:timestamp" value="2016-02-25T08:05:29+08:00"/>
+			<string key="org:resource" value="plan-5"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-25T08:12:46+08:00"/>
+			<string key="org:resource" value="plan-5"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-25T08:17:11+08:00"/>
+			<string key="org:resource" value="plan-5"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskDispatch"/>
+			<date key="time:timestamp" value="2016-02-25T08:24:16+08:00"/>
+			<string key="org:resource" value="plan-5"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-25T08:31:41+08:00"/>
+			<string key="org:resource" value="plan-5"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-67"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-01T11:59:00+08:00"/>
+			<string key="org:resource" value="plan-85"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-01T12:09:08+08:00"/>
+			<string key="org:resource" value="plan-85"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-01T12:12:23+08:00"/>
+			<string key="org:resource" value="plan-85"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-03-01T12:21:28+08:00"/>
+			<string key="org:resource" value="plan-85"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-03-01T12:29:24+08:00"/>
+			<string key="org:resource" value="plan-85"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-03-01T12:31:59+08:00"/>
+			<string key="org:resource" value="plan-85"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-68"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-25T03:10:12+08:00"/>
+			<string key="org:resource" value="plan-2"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-25T03:22:43+08:00"/>
+			<string key="org:resource" value="plan-2"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-25T03:29:34+08:00"/>
+			<string key="org:resource" value="plan-2"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-25T03:33:23+08:00"/>
+			<string key="org:resource" value="plan-2"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-25T03:35:10+08:00"/>
+			<string key="org:resource" value="plan-2"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-25T03:38:40+08:00"/>
+			<string key="org:resource" value="plan-2"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-69"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-02T00:55:34+08:00"/>
+			<string key="org:resource" value="plan-93"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-02T01:04:22+08:00"/>
+			<string key="org:resource" value="plan-93"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-02T01:15:13+08:00"/>
+			<string key="org:resource" value="plan-93"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-03-02T01:18:35+08:00"/>
+			<string key="org:resource" value="plan-93"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-03-02T01:22:35+08:00"/>
+			<string key="org:resource" value="plan-93"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-03-02T01:30:59+08:00"/>
+			<string key="org:resource" value="plan-93"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-70"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-25T04:35:01+08:00"/>
+			<string key="org:resource" value="plan-3"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-25T04:49:12+08:00"/>
+			<string key="org:resource" value="plan-3"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-25T04:54:50+08:00"/>
+			<string key="org:resource" value="plan-3"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-25T05:01:37+08:00"/>
+			<string key="org:resource" value="plan-3"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-25T05:05:20+08:00"/>
+			<string key="org:resource" value="plan-3"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-25T05:11:05+08:00"/>
+			<string key="org:resource" value="plan-3"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-71"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-02T02:13:16+08:00"/>
+			<string key="org:resource" value="plan-94"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-72"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-01T21:32:11+08:00"/>
+			<string key="org:resource" value="plan-91"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-01T21:38:55+08:00"/>
+			<string key="org:resource" value="plan-91"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-01T21:42:34+08:00"/>
+			<string key="org:resource" value="plan-91"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-03-01T21:44:16+08:00"/>
+			<string key="org:resource" value="plan-91"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-03-01T21:52:34+08:00"/>
+			<string key="org:resource" value="plan-91"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-03-01T22:04:52+08:00"/>
+			<string key="org:resource" value="plan-91"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-73"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-25T01:46:25+08:00"/>
+			<string key="org:resource" value="plan-1"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-25T01:54:34+08:00"/>
+			<string key="org:resource" value="plan-1"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-25T02:01:47+08:00"/>
+			<string key="org:resource" value="plan-1"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-25T02:05:32+08:00"/>
+			<string key="org:resource" value="plan-1"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-25T02:13:26+08:00"/>
+			<string key="org:resource" value="plan-1"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-25T02:19:21+08:00"/>
+			<string key="org:resource" value="plan-1"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-74"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-01T23:07:55+08:00"/>
+			<string key="org:resource" value="plan-92"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-01T23:21:55+08:00"/>
+			<string key="org:resource" value="plan-92"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskHangOn"/>
+			<date key="time:timestamp" value="2016-03-01T23:31:24+08:00"/>
+			<string key="org:resource" value="plan-92"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-01T23:33:57+08:00"/>
+			<string key="org:resource" value="plan-92"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-01T23:39:38+08:00"/>
+			<string key="org:resource" value="plan-92"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-03-01T23:47:48+08:00"/>
+			<string key="org:resource" value="plan-92"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-03-01T23:49:29+08:00"/>
+			<string key="org:resource" value="plan-92"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-03-01T23:57:27+08:00"/>
+			<string key="org:resource" value="plan-92"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-75"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-01T19:59:10+08:00"/>
+			<string key="org:resource" value="plan-90"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-01T20:12:21+08:00"/>
+			<string key="org:resource" value="plan-90"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-01T20:16:54+08:00"/>
+			<string key="org:resource" value="plan-90"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-03-01T20:20:42+08:00"/>
+			<string key="org:resource" value="plan-90"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-03-01T20:26:02+08:00"/>
+			<string key="org:resource" value="plan-90"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-03-01T20:33:04+08:00"/>
+			<string key="org:resource" value="plan-90"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-76"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-26T05:16:31+08:00"/>
+			<string key="org:resource" value="plan-19"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-26T05:27:03+08:00"/>
+			<string key="org:resource" value="plan-19"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-26T05:31:12+08:00"/>
+			<string key="org:resource" value="plan-19"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskCancel"/>
+			<date key="time:timestamp" value="2016-02-26T05:42:07+08:00"/>
+			<string key="org:resource" value="plan-19"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-26T05:51:54+08:00"/>
+			<string key="org:resource" value="plan-19"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-77"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-26T02:26:07+08:00"/>
+			<string key="org:resource" value="plan-17"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-78"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-26T03:41:17+08:00"/>
+			<string key="org:resource" value="plan-18"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-26T03:51:23+08:00"/>
+			<string key="org:resource" value="plan-18"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-26T03:53:34+08:00"/>
+			<string key="org:resource" value="plan-18"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-26T03:59:52+08:00"/>
+			<string key="org:resource" value="plan-18"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-26T04:05:28+08:00"/>
+			<string key="org:resource" value="plan-18"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-26T04:08:55+08:00"/>
+			<string key="org:resource" value="plan-18"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-79"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-25T23:54:30+08:00"/>
+			<string key="org:resource" value="plan-15"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-80"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-26T01:02:22+08:00"/>
+			<string key="org:resource" value="plan-16"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-26T01:08:11+08:00"/>
+			<string key="org:resource" value="plan-16"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-26T01:13:55+08:00"/>
+			<string key="org:resource" value="plan-16"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-26T01:22:39+08:00"/>
+			<string key="org:resource" value="plan-16"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-26T01:30:38+08:00"/>
+			<string key="org:resource" value="plan-16"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-26T01:32:03+08:00"/>
+			<string key="org:resource" value="plan-16"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-81"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-25T20:40:13+08:00"/>
+			<string key="org:resource" value="plan-13"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-25T20:46:49+08:00"/>
+			<string key="org:resource" value="plan-13"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-25T20:55:01+08:00"/>
+			<string key="org:resource" value="plan-13"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-25T21:03:36+08:00"/>
+			<string key="org:resource" value="plan-13"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-25T21:07:49+08:00"/>
+			<string key="org:resource" value="plan-13"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-25T21:10:20+08:00"/>
+			<string key="org:resource" value="plan-13"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-82"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-25T22:09:13+08:00"/>
+			<string key="org:resource" value="plan-14"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-25T22:16:35+08:00"/>
+			<string key="org:resource" value="plan-14"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-25T22:25:53+08:00"/>
+			<string key="org:resource" value="plan-14"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-25T22:36:35+08:00"/>
+			<string key="org:resource" value="plan-14"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-25T22:45:04+08:00"/>
+			<string key="org:resource" value="plan-14"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-25T22:52:52+08:00"/>
+			<string key="org:resource" value="plan-14"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-83"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-25T17:28:27+08:00"/>
+			<string key="org:resource" value="plan-11"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-25T17:44:59+08:00"/>
+			<string key="org:resource" value="plan-11"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-25T17:49:40+08:00"/>
+			<string key="org:resource" value="plan-11"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskCancel"/>
+			<date key="time:timestamp" value="2016-02-25T17:53:37+08:00"/>
+			<string key="org:resource" value="plan-11"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-25T18:01:04+08:00"/>
+			<string key="org:resource" value="plan-11"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-84"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-02T09:30:39+08:00"/>
+			<string key="org:resource" value="plan-99"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-02T09:43:38+08:00"/>
+			<string key="org:resource" value="plan-99"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-02T09:48:06+08:00"/>
+			<string key="org:resource" value="plan-99"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-03-02T09:51:42+08:00"/>
+			<string key="org:resource" value="plan-99"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-03-02T09:54:17+08:00"/>
+			<string key="org:resource" value="plan-99"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-03-02T10:00:18+08:00"/>
+			<string key="org:resource" value="plan-99"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-85"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-25T19:07:33+08:00"/>
+			<string key="org:resource" value="plan-12"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-25T19:15:51+08:00"/>
+			<string key="org:resource" value="plan-12"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-25T19:20:06+08:00"/>
+			<string key="org:resource" value="plan-12"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskCancel"/>
+			<date key="time:timestamp" value="2016-02-25T19:28:17+08:00"/>
+			<string key="org:resource" value="plan-12"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-25T19:32:20+08:00"/>
+			<string key="org:resource" value="plan-12"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-86"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-02T06:16:28+08:00"/>
+			<string key="org:resource" value="plan-97"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-02T06:26:35+08:00"/>
+			<string key="org:resource" value="plan-97"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-02T06:37:36+08:00"/>
+			<string key="org:resource" value="plan-97"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskDispatch"/>
+			<date key="time:timestamp" value="2016-03-02T06:42:04+08:00"/>
+			<string key="org:resource" value="plan-97"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-02T06:47:02+08:00"/>
+			<string key="org:resource" value="plan-97"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-87"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-25T16:01:12+08:00"/>
+			<string key="org:resource" value="plan-10"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-25T16:18:25+08:00"/>
+			<string key="org:resource" value="plan-10"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-25T16:22:30+08:00"/>
+			<string key="org:resource" value="plan-10"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-25T16:28:24+08:00"/>
+			<string key="org:resource" value="plan-10"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-25T16:33:16+08:00"/>
+			<string key="org:resource" value="plan-10"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-25T16:41:37+08:00"/>
+			<string key="org:resource" value="plan-10"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-88"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-02T07:50:35+08:00"/>
+			<string key="org:resource" value="plan-98"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-02T07:58:38+08:00"/>
+			<string key="org:resource" value="plan-98"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-02T08:07:57+08:00"/>
+			<string key="org:resource" value="plan-98"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-03-02T08:12:50+08:00"/>
+			<string key="org:resource" value="plan-98"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-03-02T08:22:48+08:00"/>
+			<string key="org:resource" value="plan-98"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-03-02T08:26:47+08:00"/>
+			<string key="org:resource" value="plan-98"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-89"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-02T03:13:49+08:00"/>
+			<string key="org:resource" value="plan-95"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-02T03:22:04+08:00"/>
+			<string key="org:resource" value="plan-95"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-02T03:26:12+08:00"/>
+			<string key="org:resource" value="plan-95"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskDispatch"/>
+			<date key="time:timestamp" value="2016-03-02T03:29:34+08:00"/>
+			<string key="org:resource" value="plan-95"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-02T03:37:20+08:00"/>
+			<string key="org:resource" value="plan-95"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-90"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-03-02T04:42:33+08:00"/>
+			<string key="org:resource" value="plan-96"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-03-02T04:55:12+08:00"/>
+			<string key="org:resource" value="plan-96"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-03-02T04:59:45+08:00"/>
+			<string key="org:resource" value="plan-96"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskCancel"/>
+			<date key="time:timestamp" value="2016-03-02T05:02:00+08:00"/>
+			<string key="org:resource" value="plan-96"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-03-02T05:08:03+08:00"/>
+			<string key="org:resource" value="plan-96"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-91"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-26T18:32:41+08:00"/>
+			<string key="org:resource" value="plan-28"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-26T18:42:55+08:00"/>
+			<string key="org:resource" value="plan-28"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-26T18:47:05+08:00"/>
+			<string key="org:resource" value="plan-28"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskCancel"/>
+			<date key="time:timestamp" value="2016-02-26T18:52:25+08:00"/>
+			<string key="org:resource" value="plan-28"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-26T18:57:39+08:00"/>
+			<string key="org:resource" value="plan-28"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-92"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-26T19:58:27+08:00"/>
+			<string key="org:resource" value="plan-29"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-26T20:04:58+08:00"/>
+			<string key="org:resource" value="plan-29"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-26T20:08:51+08:00"/>
+			<string key="org:resource" value="plan-29"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-26T20:16:20+08:00"/>
+			<string key="org:resource" value="plan-29"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-26T20:21:33+08:00"/>
+			<string key="org:resource" value="plan-29"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-26T20:28:58+08:00"/>
+			<string key="org:resource" value="plan-29"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-93"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-26T15:28:14+08:00"/>
+			<string key="org:resource" value="plan-26"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-26T15:40:51+08:00"/>
+			<string key="org:resource" value="plan-26"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-26T15:45:06+08:00"/>
+			<string key="org:resource" value="plan-26"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-26T15:46:57+08:00"/>
+			<string key="org:resource" value="plan-26"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-26T15:54:14+08:00"/>
+			<string key="org:resource" value="plan-26"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-26T15:58:53+08:00"/>
+			<string key="org:resource" value="plan-26"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-94"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-26T16:53:17+08:00"/>
+			<string key="org:resource" value="plan-27"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-26T17:11:03+08:00"/>
+			<string key="org:resource" value="plan-27"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-26T17:16:15+08:00"/>
+			<string key="org:resource" value="plan-27"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskCancel"/>
+			<date key="time:timestamp" value="2016-02-26T17:23:30+08:00"/>
+			<string key="org:resource" value="plan-27"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-26T17:27:46+08:00"/>
+			<string key="org:resource" value="plan-27"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-95"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-26T12:36:50+08:00"/>
+			<string key="org:resource" value="plan-24"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-96"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-26T13:43:46+08:00"/>
+			<string key="org:resource" value="plan-25"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-26T14:00:46+08:00"/>
+			<string key="org:resource" value="plan-25"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskHangOn"/>
+			<date key="time:timestamp" value="2016-02-26T14:05:14+08:00"/>
+			<string key="org:resource" value="plan-25"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-26T14:12:02+08:00"/>
+			<string key="org:resource" value="plan-25"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-26T14:18:55+08:00"/>
+			<string key="org:resource" value="plan-25"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskCancel"/>
+			<date key="time:timestamp" value="2016-02-26T14:21:56+08:00"/>
+			<string key="org:resource" value="plan-25"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-26T14:25:39+08:00"/>
+			<string key="org:resource" value="plan-25"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-97"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-26T10:22:28+08:00"/>
+			<string key="org:resource" value="plan-22"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-98"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-26T11:22:17+08:00"/>
+			<string key="org:resource" value="plan-23"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-26T11:32:47+08:00"/>
+			<string key="org:resource" value="plan-23"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-26T11:37:23+08:00"/>
+			<string key="org:resource" value="plan-23"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-26T11:41:21+08:00"/>
+			<string key="org:resource" value="plan-23"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-26T11:42:48+08:00"/>
+			<string key="org:resource" value="plan-23"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-26T11:46:26+08:00"/>
+			<string key="org:resource" value="plan-23"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-99"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-26T07:06:59+08:00"/>
+			<string key="org:resource" value="plan-20"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-26T07:16:09+08:00"/>
+			<string key="org:resource" value="plan-20"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-26T07:21:05+08:00"/>
+			<string key="org:resource" value="plan-20"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-26T07:25:48+08:00"/>
+			<string key="org:resource" value="plan-20"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-26T07:30:25+08:00"/>
+			<string key="org:resource" value="plan-20"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-26T07:38:00+08:00"/>
+			<string key="org:resource" value="plan-20"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="case-100"/>
+		<event>
+			<string key="concept:name" value="TaskCreate"/>
+			<date key="time:timestamp" value="2016-02-26T08:45:17+08:00"/>
+			<string key="org:resource" value="plan-21"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskAssign"/>
+			<date key="time:timestamp" value="2016-02-26T08:58:41+08:00"/>
+			<string key="org:resource" value="plan-21"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskExecute"/>
+			<date key="time:timestamp" value="2016-02-26T09:00:55+08:00"/>
+			<string key="org:resource" value="plan-21"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskComplete"/>
+			<date key="time:timestamp" value="2016-02-26T09:07:34+08:00"/>
+			<string key="org:resource" value="plan-21"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskEvaluate"/>
+			<date key="time:timestamp" value="2016-02-26T09:11:03+08:00"/>
+			<string key="org:resource" value="plan-21"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="TaskClose"/>
+			<date key="time:timestamp" value="2016-02-26T09:19:02+08:00"/>
+			<string key="org:resource" value="plan-21"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+</log>

@@ -1,24 +1,24 @@
 package org.k2.processmining.controller;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.k2.processmining.exception.BadRequestException;
 import org.k2.processmining.model.LogState;
+import org.k2.processmining.model.MethodState;
 import org.k2.processmining.model.log.EventLog;
 import org.k2.processmining.model.mergemethod.MergeMethod;
 import org.k2.processmining.model.user.User;
 import org.k2.processmining.service.EventLogService;
 import org.k2.processmining.service.MergeMethodService;
+import org.k2.processmining.service.TimeResult;
+import org.k2.processmining.util.Message;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Aria on 2017/6/13.
@@ -43,6 +43,7 @@ public class MergeController {
             Map<String, Object> configs = mergeMethodService.getMethodConfig(method);
             if (configs != null && configs.size() > 0) {
                 configs.put("state", method.getState());
+                configs.put("id", method.getId());
                 methodsConfigs.add(configs);
             }
         }
@@ -53,60 +54,26 @@ public class MergeController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public @ResponseBody Object merge(@Valid @RequestBody MergeMethodForm form) {
         MergeMethod mergeMethod = mergeMethodService.getMethodById(form.methodId);
-        Map<String, Object> res = new HashMap<>();
-        if (mergeMethod == null || ! mergeMethodService.isActive(mergeMethod)) {
-            res.put("msg", "The merge algorithm is not exist!");
-            return ResponseEntity.badRequest().body(res);
-        }
-        User user = getUser();
-        EventLog eventLog1 = eventLogService.getEventLogById(form.getEventLogId1());
-        EventLog eventLog2 = eventLogService.getEventLogById(form.getEventLogId2());
-        if (!isValidate(eventLog1, user) || !isValidate(eventLog2, user)) {
-            res.put("msg", "The event logs are not exist!");
-            return ResponseEntity.badRequest().body(res);
-        }
-        long start = System.currentTimeMillis(); // have to modify
-        EventLog result = mergeMethodService.merge(eventLog1, eventLog2, form.methodId, form.parameters);
-
+        EventLog eventLog1 = eventLogService.getLogById(form.getEventLogId1());
+        EventLog eventLog2 = eventLogService.getLogById(form.getEventLogId2());
+        TimeResult<EventLog> result = mergeMethodService.merge(eventLog1, eventLog2, mergeMethod, form.parameters);
         if (result == null) {
-            res.put("msg", "Fail to merge the logs. Please check the input content and try again!");
-            return ResponseEntity.status(HttpServletResponse.SC_BAD_REQUEST).body(res);
+            throw new BadRequestException(Message.MERGE_FAIL);
         }
-        res.put("timeCost", System.currentTimeMillis()-start);
-        res.put("eventLog", result);
+        Map<String, Object> res = new HashMap<>();
+        res.put("timeCost", result.getTime());
+        res.put("eventLog", result.getResult());
         return res;
     }
 
-    public void addMergeMethod(){}
-
-    public void setMethodState(){}
-
-    public void deleteMergeMethod(){}
-
-    private boolean isValidate(EventLog eventLog, User user) {
-        return eventLog != null && user != null
-                && eventLog.getUserId() != null && user.getId() != null
-                && eventLog.getUserId().equals(user.getId())
-                && eventLog.getState() == LogState.ACTIVE.getValue();
-    }
-
-    private User getUser() {
-        User user = new User();
-        user.setId("1");
-        user.setName("y2k");
-        return user;
-    }
-
     public static class MergeMethodForm {
-        @NotNull
-        @Size(min = 1, max = 36)
+        @NotBlank(message = "The methodId is invalid.")
         private String methodId;
-        @NotNull
-        @Size(min = 1, max = 36)
+        @NotBlank(message = "The eventLogId1 is invalid.")
         private String eventLogId1;
-        @NotNull
-        @Size(min = 1, max = 36)
+        @NotBlank(message = "The eventLogId1 is invalid.")
         private String eventLogId2;
+        @NotNull(message = "Params is invalid.")
         private Map<String, Object> parameters;
 
         public String getMethodId() {

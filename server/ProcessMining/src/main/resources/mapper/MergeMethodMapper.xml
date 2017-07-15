@@ -16,6 +16,28 @@
         SELECT * FROM merge_method WHERE id=#{id}
     </select>
 
+    <insert id="save" parameterType="MergeMethod">
+        INSERT INTO merge_method(id, state, method_name) VALUES (#{id}, #{state}, #{methodName})
+    </insert>
+
+    <update id="updateState">
+        UPDATE merge_method
+        SET state = #{state}
+        WHERE id IN
+        <foreach item="item" index="index" collection="ids"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <delete id="delete">
+        DELETE FROM merge_method WHERE id IN
+        <foreach item="item" index="index" collection="ids"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
     <resultMap id="MergeMethodResult" type="MergeMethod">
         <id column="id" property="id"/>
         <result column="method_name" property="methodName"/>

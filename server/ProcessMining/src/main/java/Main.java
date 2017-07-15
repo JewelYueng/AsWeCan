@@ -1,21 +1,24 @@
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import org.k2.processmining.model.log.RawLog;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import sun.misc.BASE64Encoder;
 
-import java.util.UUID;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
 
 /**
  * Created by Aria on 2017/6/9.
  */
 public class Main {
 
-    public static void main(String[] args){
-        byte b1 = (byte) 0XEF;
-        byte b2 = (byte) 0XBB;
-        byte b3 = (byte) 0XBF;
+    public static void main(String[] args) throws UnsupportedEncodingException, NoSuchAlgorithmException {
 
-        String str = UUID.randomUUID().toString();
-        System.out.println(str+"   size:"+str.length());
-        System.out.println(UUID.randomUUID());
+        String str = "你好";
+        System.out.println(str.length());
 
-        System.out.println("b1:"+b1+"b2:"+b2+"b3:"+b3);
     }
+
 }

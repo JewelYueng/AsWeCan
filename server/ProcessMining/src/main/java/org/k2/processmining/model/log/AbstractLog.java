@@ -1,18 +1,22 @@
 package org.k2.processmining.model.log;
 
+import org.k2.processmining.model.LogShareState;
+import org.k2.processmining.model.LogState;
+
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Aria on 2017/6/13.
  */
-public abstract class AbstractLog {
+public abstract class AbstractLog implements Serializable{
     private String type;  //日志类型
     private String id;
     private String logName;
     private Date createDate;
     private String format; //日志文件格式
-    private int state = 1;
-    private int isShared = 0;
+    private int state = LogState.ACTIVE.getValue();
+    private int isShared = LogShareState.UNSHARED.getValue();
     private String userId;
 
     public AbstractLog(String type) {

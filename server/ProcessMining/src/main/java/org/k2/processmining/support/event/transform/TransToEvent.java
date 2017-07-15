@@ -5,62 +5,59 @@ import org.k2.processmining.support.event.entity.ConjunctiveCorrelation;
 import org.k2.processmining.support.event.entity.DisjunctiveCorrelation;
 import org.k2.processmining.support.event.entity.Log4Normal;
 import org.k2.processmining.support.event.util.CorRatio;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by nyq on 2017/6/13.
  */
 public class TransToEvent {
-    public static File transToEvent(InputStream normalLogInputStream, String path, String name) {
-        Log4Normal log4Normal = getLog(normalLogInputStream, name);
-        if (log4Normal != null) {
-            try {
-                return runEC(log4Normal, path);
-            }
-            catch (IOException|ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
+    private static Logger LOGGER = LoggerFactory.getLogger(TransToEvent.class);
 
-    public static Log4Normal getLog(InputStream normalLogInputStream, String outputFileName) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(normalLogInputStream));
+    public static File transToEvent(InputStream normalLogInputStream, String path, String name) throws TransToEventException, IOException {
         try {
-            String line;
-            String nulVal = Log4Normal.nulVal;
-            String separator = Log4Normal.seperator;
-            if ((line=reader.readLine()) == null) {
-                return null;
-            }
-            String[] indexs = line.split(separator);
-            ArrayList<String> events = new ArrayList<String>();
-            while ((line=reader.readLine()) != null && !line.equals(nulVal)) {
-                events.add(line);
-            }
-            // 将每一列数据放入内存
-            Map<Integer, ArrayList<String>> attValsMap = new HashMap<Integer, ArrayList<String>>();
-            for (int q = 0; q < indexs.length; q++) {
-                ArrayList<String> attVals = new ArrayList<String>();
-                for (String e : events)
-                    attVals.add(e.split(separator)[q]);
-                attValsMap.put(q, attVals);
-            }
-            return new Log4Normal(outputFileName, indexs, events, attValsMap);
+            if (!path.endsWith("/") && !path.endsWith("\\")) path += File.separatorChar;
+            Log4Normal log4Normal = getLog(normalLogInputStream, name);
+            return runEC(log4Normal, path);
         }
-        catch (IOException e) {
-            e.printStackTrace();
+        catch (Exception e) {
+            if (e instanceof IOException) {
+                throw (IOException) e;
+            }
+            throw new TransToEventException(e);
         }
-        return null;
     }
 
-    public static File runEC(Log4Normal log, String path) throws IOException, ParseException {
+    private static Log4Normal getLog(InputStream normalLogInputStream, String outputFileName) throws IOException, TransToEventException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(normalLogInputStream));
+
+        String line;
+        String nulVal = Log4Normal.nulVal;
+        String separator = Log4Normal.seperator;
+        if ((line=reader.readLine()) == null) {
+            throw new TransToEventException("The normalLog is illegal!");
+        }
+        String[] indexs = line.split(separator);
+        ArrayList<String> events = new ArrayList<String>();
+        while ((line=reader.readLine()) != null && !line.equals(nulVal)) {
+            events.add(line);
+        }
+        // 将每一列数据放入内存
+        Map<Integer, ArrayList<String>> attValsMap = new HashMap<Integer, ArrayList<String>>();
+        for (int q = 0; q < indexs.length; q++) {
+            ArrayList<String> attVals = new ArrayList<String>();
+            for (String e : events)
+                attVals.add(e.split(separator)[q]);
+            attValsMap.put(q, attVals);
+        }
+        return new Log4Normal(outputFileName, indexs, events, attValsMap);
+    }
+
+    private static File runEC(Log4Normal log, String path) throws IOException, ParseException {
         Long tStart = System.currentTimeMillis();
         System.out.println("Mission Start!");
         String nulVal = Log4Normal.nulVal;
